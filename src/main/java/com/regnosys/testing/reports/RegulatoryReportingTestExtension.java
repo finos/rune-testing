@@ -14,11 +14,6 @@ import com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResultField;
 import com.regnosys.rosetta.common.serialisation.reportdata.JsonReportDataLoader;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
-import com.regnosys.rosetta.common.util.UrlUtils;
-import com.regnosys.rosetta.rosetta.RosettaBlueprintReport;
-import com.regnosys.rosetta.rosetta.RosettaNamed;
-import com.regnosys.rosetta.transgest.ModelLoader;
-import com.regnosys.rosetta.transgest.ModelLoaderImpl;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -32,9 +27,11 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.regnosys.rosetta.blueprints.report.ReportUtil.loadRegReportIdentifier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@Deprecated
 public class RegulatoryReportingTestExtension implements BeforeAllCallback, AfterAllCallback {
     private static final Logger LOGGER = LoggerFactory.getLogger(RegulatoryReportingTestExtension.class);
 
@@ -105,23 +102,6 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
         }
     }
 
-	public List<RegReportIdentifier> loadRegReportIdentifier(ImmutableList<String> rosettaFolderPathNames) {
-		ModelLoader modelLoader = new ModelLoaderImpl(ClassPathUtils.findPathsFromClassPath(
-						rosettaFolderPathNames,
-						".*\\.rosetta",
-						Optional.empty(),
-						ClassPathUtils.class.getClassLoader())
-				.stream()
-				.map(UrlUtils::toUrl)
-				.toArray(URL[]::new));
-
-		return modelLoader.rosettaElements(RosettaBlueprintReport.class).stream()
-				.map(rosettaReport -> new RegReportIdentifier(rosettaReport.getRegulatoryBody().getBody().getName(),
-						rosettaReport.getRegulatoryBody().getCorpuses().stream().map(RosettaNamed::getName).collect(Collectors.toList()),
-						rosettaReport.name(),
-						String.format("%s.blueprint.%sBlueprintReport", rosettaReport.getModel().getName(), rosettaReport.name()))).collect(Collectors.toList());
-	}
-
 	public List<String> getDataDescriptorNames() {
 		return ClassPathUtils.findPathsFromClassPath(
 						List.of(regReportingRoot.resolve(DATA_FOLDER).toString().replace("\\", "/")),
@@ -179,12 +159,13 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 								 Multimap<String, String> exclusionList) {
 		for (ExpectedResultField reportField : actualReportFields) {
 			if (!exclusionList.containsEntry(identifier.getName(), reportField.getName())) {
-				Optional<ExpectedResultField> expectedResultField = expectedReportFields.stream()
+				Optional<ExpectedResultField> expectedResultFieldOptional = expectedReportFields.stream()
 						.filter(f -> f.getName().equals(reportField.getName()))
 						.findFirst();
                 if (isWriteOutputFiles()) {
-                    if (expectedResultField.isPresent()) {
-                        if (!reportField.equals(expectedResultField.get())) {
+                    if (expectedResultFieldOptional.isPresent()) {
+						ExpectedResultField expectedResultField = expectedResultFieldOptional.get();
+						if (!reportField.equals(expectedResultField)) {
                             LOGGER.warn("field {} not expected {}", reportField, expectedResultField);
                         }
                     } else {
@@ -194,8 +175,8 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
                 } else {
                     assertThat(String.format("Field %s not found in the expected output for %s",
                             reportField.getName(), identifier),
-                            expectedResultField.isPresent(), equalTo(true));
-                    assertThat(reportField, equalTo(expectedResultField));
+                            expectedResultFieldOptional.isPresent(), equalTo(true));
+					assertThat(reportField, equalTo(expectedResultFieldOptional.orElse(null)));
                 }
 			}
 		}
@@ -208,7 +189,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
                 expectedReportFields.stream().map(ExpectedResultField::getName).collect(Collectors.toSet())
         ));
         if (isWriteOutputFiles()) {
-            if (!actualReportFields.equals(expectedReportFields.size())) {
+            if (actualReportFields.size() != expectedReportFields.size()) {
                 LOGGER.warn("missingNames {}", missingNames);
             }
         } else {
