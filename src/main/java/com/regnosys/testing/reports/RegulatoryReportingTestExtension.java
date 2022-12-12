@@ -36,74 +36,74 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class RegulatoryReportingTestExtension implements BeforeAllCallback, AfterAllCallback {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegulatoryReportingTestExtension.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RegulatoryReportingTestExtension.class);
 
-    public static final Path REGULATORY_REPORTING_RESOURCE_ROOT = Path.of("regulatory-reporting");
-    public static final Path LOOKUP_FOLDER = Path.of("lookup");
+	public static final Path REGULATORY_REPORTING_RESOURCE_ROOT = Path.of("regulatory-reporting");
+	public static final Path LOOKUP_FOLDER = Path.of("lookup");
 	public static final Path DATA_FOLDER = Path.of("data");
 	public static final Path SRC_DATA_FOLDER = Path.of("..", "rosetta-source", "src", "main", "resources").resolve(REGULATORY_REPORTING_RESOURCE_ROOT).resolve(DATA_FOLDER);
 
-    private final Path regReportingRoot;
-    private final List<ExpectationResult> collectedExpectationResult = new ArrayList<>();
+	private final Path regReportingRoot;
+	private final List<ExpectationResult> collectedExpectationResult = new ArrayList<>();
 
-    private URL reportDescriptorLocation;
-    private boolean writeOutputFiles = false;
-    private List<ReportDataSet> reportDataSetDefinitions;
-    private URL lookupDescriptorLocation;
+	private URL reportDescriptorLocation;
+	private boolean writeOutputFiles = false;
+	private List<ReportDataSet> reportDataSetDefinitions;
+	private URL lookupDescriptorLocation;
 	private DescriptorWriter descriptorWriter;
-    private ExpectationWriter expectationWriter;
+	private ExpectationWriter expectationWriter;
 
 	private Multimap<String, String> exclusionList;
 
 	public RegulatoryReportingTestExtension() {
-        this(REGULATORY_REPORTING_RESOURCE_ROOT);
-    }
+		this(REGULATORY_REPORTING_RESOURCE_ROOT);
+	}
 
-    public RegulatoryReportingTestExtension(Path regReportingRoot) {
-        this.regReportingRoot = regReportingRoot;
-    }
+	public RegulatoryReportingTestExtension(Path regReportingRoot) {
+		this.regReportingRoot = regReportingRoot;
+	}
 
-    public RegulatoryReportingTestExtension writeOutputFiles(boolean writeOutputFiles) {
-        this.writeOutputFiles = writeOutputFiles;
-        return this;
-    }
+	public RegulatoryReportingTestExtension writeOutputFiles(boolean writeOutputFiles) {
+		this.writeOutputFiles = writeOutputFiles;
+		return this;
+	}
 
 	public RegulatoryReportingTestExtension withExclusionList(Multimap<String, String> exclusionList) {
 		this.exclusionList = exclusionList;
 		return this;
 	}
 
-    @Override
-    public void beforeAll(ExtensionContext context) throws Exception {
+	@Override
+	public void beforeAll(ExtensionContext context) throws Exception {
 		ObjectMapper noExpectationWriteMapper = ObjectMapperGenerator.createWriterMapper(true);
 		ObjectMapper writeMapper = ObjectMapperGenerator.createWriterMapper();
 		this.descriptorWriter =  new DescriptorWriter(writeMapper);
 		this.expectationWriter =  new ExpectationWriter(noExpectationWriteMapper, writeMapper);
 		reportDescriptorLocation = Objects.requireNonNull(ClassPathUtils.getResource(regReportingRoot.resolve(DATA_FOLDER), RegulatoryReportingTestExtension.class.getClassLoader()));
-        lookupDescriptorLocation =  Objects.requireNonNull(ClassPathUtils.getResource(regReportingRoot.resolve(LOOKUP_FOLDER), RegulatoryReportingTestExtension.class.getClassLoader()));
+		lookupDescriptorLocation =  Objects.requireNonNull(ClassPathUtils.getResource(regReportingRoot.resolve(LOOKUP_FOLDER), RegulatoryReportingTestExtension.class.getClassLoader()));
 		if (isWriteOutputFiles()) {
 			this.expectationWriter.writeMissingExpectationsFilesForAllDescriptors(SRC_DATA_FOLDER,
 					descriptorWriter.readAllDescriptorFiles(SRC_DATA_FOLDER));
 		}
-        reportDataSetDefinitions = createJsonReportDataLoader(getDataDescriptorNames(),
+		reportDataSetDefinitions = createJsonReportDataLoader(getDataDescriptorNames(),
 				false).load();
-    }
+	}
 
-    @Override
-    public void afterAll(ExtensionContext context) throws Exception {
-        if (writeOutputFiles) {
-            // expectation file -> report name -> results
-            Table<String, String, List<ExpectedResultField>> results = expectationWriter.groupByExpectationFileAndReportName(collectedExpectationResult, reportDataSetDefinitions);
+	@Override
+	public void afterAll(ExtensionContext context) throws Exception {
+		if (writeOutputFiles) {
+			// expectation file -> report name -> results
+			Table<String, String, List<ExpectedResultField>> results = expectationWriter.groupByExpectationFileAndReportName(collectedExpectationResult, reportDataSetDefinitions);
 
-            ObjectWriter objectWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
-            for (String fileName : results.rowKeySet()) {
-                Map<String, List<ExpectedResultField>> reportNameToExpectations = results.row(fileName);
-                TreeMap<String, List<ExpectedResultField>> sortedReportNameToExpectations = new TreeMap<>(reportNameToExpectations);
-                Path filePath = SRC_DATA_FOLDER.resolve(fileName);
-                objectWriter.writeValue(filePath.toFile(), sortedReportNameToExpectations);
-            }
-        }
-    }
+			ObjectWriter objectWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
+			for (String fileName : results.rowKeySet()) {
+				Map<String, List<ExpectedResultField>> reportNameToExpectations = results.row(fileName);
+				TreeMap<String, List<ExpectedResultField>> sortedReportNameToExpectations = new TreeMap<>(reportNameToExpectations);
+				Path filePath = SRC_DATA_FOLDER.resolve(fileName);
+				objectWriter.writeValue(filePath.toFile(), sortedReportNameToExpectations);
+			}
+		}
+	}
 
 	public List<RegReportIdentifier> loadRegReportIdentifier(ImmutableList<String> rosettaFolderPathNames) {
 		ModelLoader modelLoader = new ModelLoaderImpl(ClassPathUtils.findPathsFromClassPath(
@@ -148,14 +148,14 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 	}
 
 	public List<String> getLookupDescriptorNames() {
-        return ClassPathUtils.findPathsFromClassPath(
-                        List.of(regReportingRoot.resolve(LOOKUP_FOLDER).toString().replace("\\", "/")),
-                        ".*-descriptor\\.json",
-                        Optional.empty(),
-                        RegulatoryReportingTestExtension.class.getClassLoader()
-                ).stream().map(path -> path.getFileName().toString())
-                .collect(Collectors.toList());
-    }
+		return ClassPathUtils.findPathsFromClassPath(
+						List.of(regReportingRoot.resolve(LOOKUP_FOLDER).toString().replace("\\", "/")),
+						".*-descriptor\\.json",
+						Optional.empty(),
+						RegulatoryReportingTestExtension.class.getClassLoader()
+				).stream().map(path -> path.getFileName().toString())
+				.collect(Collectors.toList());
+	}
 
 	public List<Arguments> loadTestArgs(ImmutableList<String> rosettaFolderPathNames) {
 		List<RegReportIdentifier> regReportIdentifiers = loadRegReportIdentifier(rosettaFolderPathNames);
@@ -179,42 +179,43 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 								 Multimap<String, String> exclusionList) {
 		for (ExpectedResultField reportField : actualReportFields) {
 			if (!exclusionList.containsEntry(identifier.getName(), reportField.getName())) {
-				Optional<ExpectedResultField> expectedResultField = expectedReportFields.stream()
+				Optional<ExpectedResultField> expectedResultFieldOptional = expectedReportFields.stream()
 						.filter(f -> f.getName().equals(reportField.getName()))
 						.findFirst();
-                if (isWriteOutputFiles()) {
-                    if (expectedResultField.isPresent()) {
-                        if (!reportField.equals(expectedResultField.get())) {
-                            LOGGER.warn("field {} not expected {}", reportField, expectedResultField);
-                        }
-                    } else {
-                        LOGGER.warn("field {} not found in the expected output for {}",
-                                reportField.getName(), identifier);
-                    }
-                } else {
-                    assertThat(String.format("Field %s not found in the expected output for %s",
-                            reportField.getName(), identifier),
-                            expectedResultField.isPresent(), equalTo(true));
-                    assertThat(reportField, equalTo(expectedResultField));
-                }
+				if (isWriteOutputFiles()) {
+					if (expectedResultFieldOptional.isPresent()) {
+						ExpectedResultField expectedResultField = expectedResultFieldOptional.get();
+						if (!reportField.equals(expectedResultField)) {
+							LOGGER.warn("field {} not expected {}", reportField, expectedResultField);
+						}
+					} else {
+						LOGGER.warn("field {} not found in the expected output for {}",
+								reportField.getName(), identifier);
+					}
+				} else {
+					assertThat(String.format("Field %s not found in the expected output for %s",
+									reportField.getName(), identifier),
+							expectedResultFieldOptional.isPresent(), equalTo(true));
+					assertThat(reportField, equalTo(expectedResultFieldOptional.orElse(null)));
+				}
 			}
 		}
 	}
 
 	public void assertSameNumberOfFields(List<ExpectedResultField> expectedReportFields, List<ExpectedResultField> actualReportFields) {
-        String missingNames = String.join("", Sets.difference(
-                actualReportFields.stream().map(ExpectedResultField::getName)
-                        .collect(Collectors.toSet()),
-                expectedReportFields.stream().map(ExpectedResultField::getName).collect(Collectors.toSet())
-        ));
-        if (isWriteOutputFiles()) {
-            if (!actualReportFields.equals(expectedReportFields.size())) {
-                LOGGER.warn("missingNames {}", missingNames);
-            }
-        } else {
-            assertThat(missingNames, actualReportFields.size(), equalTo(expectedReportFields.size()));
-        }
-    }
+		String missingNames = String.join("", Sets.difference(
+				actualReportFields.stream().map(ExpectedResultField::getName)
+						.collect(Collectors.toSet()),
+				expectedReportFields.stream().map(ExpectedResultField::getName).collect(Collectors.toSet())
+		));
+		if (isWriteOutputFiles()) {
+			if (actualReportFields.size() != expectedReportFields.size()) {
+				LOGGER.warn("missingNames {}", missingNames);
+			}
+		} else {
+			assertThat(missingNames, actualReportFields.size(), equalTo(expectedReportFields.size()));
+		}
+	}
 
 	public void assertRegReport(RegReportIdentifier identifier,
 								List<RegReport> regReports,
@@ -238,8 +239,8 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 					List<ExpectedResultField> expectedResultFields = expectedResultFields(actualReportFields, exclusionList, identifier);
 					String dataSetName = useCase.getDataSetName();
 					String useCase1 = useCase.getUseCase();
-						LOGGER.info("Collecting expectations for {} in {} for {}", useCase1, dataSetName, identifier.getName());
-						collectedExpectationResult.add(new ExpectationResult(dataSetName, useCase1, identifier, expectedResultFields));
+					LOGGER.info("Collecting expectations for {} in {} for {}", useCase1, dataSetName, identifier.getName());
+					collectedExpectationResult.add(new ExpectationResult(dataSetName, useCase1, identifier, expectedResultFields));
 				}
 			}
 		}
@@ -278,8 +279,8 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 	}
 
 	public ExpectationWriter getExpectationWriter() {
-        return expectationWriter;
-    }
+		return expectationWriter;
+	}
 
 	public URL getReportDescriptorLocation() {
 		return reportDescriptorLocation;
