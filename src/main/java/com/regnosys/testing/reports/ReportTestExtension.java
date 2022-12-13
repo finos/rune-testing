@@ -114,8 +114,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                     // input file to be tested
                                     String fileName = dataItemExpectation.getFileName();
                                     URL inputFileUrl = Resources.getResource(fileName);
-                                    // deserialise into ReportableEvent
-                                    T reportableEvent = readFile(inputFileUrl, mapper, inputType);
+                                    // deserialise into input (e.g. ReportableEvent)
+                                    T input = readFile(inputFileUrl, mapper, inputType);
                                     // get the report identifier
                                     String reportName = reportExpectation.getReportName();
                                     RegReportIdentifier reportIdentifier = reportIdentifiers.stream()
@@ -127,7 +127,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                             String.format("%s | %s", reportName, inputName),
                                             reportIdentifier,
                                             reportExpectation.getDataSetName(),
-                                            reportableEvent,
+                                            input,
                                             dataItemExpectation);
                                 }));
     }
