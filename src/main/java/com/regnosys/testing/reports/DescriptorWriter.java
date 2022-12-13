@@ -27,14 +27,15 @@ public class DescriptorWriter {
 		this.writeMapper = writeMapper;
 	}
 
-	public void writeDescriptorFile(Path configFolder, Path rootFolder, ReportDataSet reportDataSet) {
-		Path path = generateDescriptorPath(configFolder, reportDataSet.getDataSetName());
+	public void writeDescriptorFile(Path writePath, Path configPath, ReportDataSet reportDataSet) {
+		Path path = generateDescriptorPath(configPath, reportDataSet.getDataSetName());
 		SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
 		try {
-			ReportDataSet filteredReportDataSet = sortAndRemoveUningestedFiles(rootFolder, reportDataSet);
+			ReportDataSet filteredReportDataSet = sortAndRemoveUningestedFiles(writePath, reportDataSet);
+			Path fullPath = writePath.resolve(path);
 			Files.createDirectories(path.getParent());
-			try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+			try (BufferedWriter writer = Files.newBufferedWriter(fullPath)) {
 				writer.write(
 						writeMapper.writer(filterProvider)
 								.withDefaultPrettyPrinter()
@@ -47,10 +48,10 @@ public class DescriptorWriter {
 		}
 	}
 
-	private ReportDataSet sortAndRemoveUningestedFiles(Path rootFolder, ReportDataSet reportDataSet) {
+	private ReportDataSet sortAndRemoveUningestedFiles(Path writePath, ReportDataSet reportDataSet) {
 		List<ReportDataItem> data = reportDataSet.getData()
 				.stream()
-				.filter(datum -> dataItemInputExists(rootFolder, datum))
+				.filter(datum -> dataItemInputExists(writePath, datum))
 				.sorted(Comparator.comparing(ReportDataItem::getName))
 				.collect(Collectors.toList());
 
@@ -60,9 +61,9 @@ public class DescriptorWriter {
 				data);
 	}
 
-	private boolean dataItemInputExists(Path rootFolder, ReportDataItem datum) {
+	private boolean dataItemInputExists(Path writePath, ReportDataItem datum) {
 		String input = datum.getInput().toString();
-		return Files.exists(rootFolder.resolve(input));
+		return Files.exists(writePath.resolve(input));
 	}
 
 	private List<ReportDataSet> readDescriptorFile(Path file) {
