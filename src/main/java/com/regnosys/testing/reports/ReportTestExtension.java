@@ -86,7 +86,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         Path reportDataSetExpectationsPath = getReportExpectationsFilePath(reportIdentifier, dataSetName);
         ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(reportDataSetExpectationsPath, expectation.getValidationFailures(), actualValidationFailures);
 
-        ReportTestResult testExpectation = new ReportTestResult(expectation.getName(), expectation.getFileName(), keyValue, report, validationFailures);
+        ReportTestResult testExpectation = new ReportTestResult(expectation.getFileName(), keyValue, report, validationFailures);
 
         actualExpectation.put(new ReportIdentifierAndDataSet(reportIdentifier, dataSetName), testExpectation);
 
@@ -112,7 +112,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                         reportExpectation.getDataItemExpectations().stream()
                                 .map(dataItemExpectation -> {
                                     // input file to be tested
-                                    URL inputFileUrl = Resources.getResource(dataItemExpectation.getFileName());
+                                    String fileName = dataItemExpectation.getFileName();
+                                    URL inputFileUrl = Resources.getResource(fileName);
                                     // deserialise into ReportableEvent
                                     T reportableEvent = readFile(inputFileUrl, mapper, inputType);
                                     // get the report identifier
@@ -120,8 +121,10 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                     RegReportIdentifier reportIdentifier = reportIdentifiers.stream()
                                             .filter(r -> r.getName().equals(reportName))
                                             .findFirst().orElseThrow();
+                                    // data item name
+                                    String inputName = FileNameProcessor.removeFilePrefix(fileName).replace("-", " ");
                                     return Arguments.of(
-                                            String.format("%s | %s", reportName, dataItemExpectation.getName()),
+                                            String.format("%s | %s", reportName, inputName),
                                             reportIdentifier,
                                             reportExpectation.getDataSetName(),
                                             reportableEvent,
