@@ -27,12 +27,12 @@ public class DescriptorWriter {
 		this.writeMapper = writeMapper;
 	}
 
-	public void writeDescriptorFile(Path outFolder, ReportDataSet reportDataSet) {
-		Path path = generateDescriptorPath(outFolder, reportDataSet.getDataSetName());
+	public void writeDescriptorFile(Path configFolder, Path rootFolder, ReportDataSet reportDataSet) {
+		Path path = generateDescriptorPath(configFolder, reportDataSet.getDataSetName());
 		SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
 		try {
-			ReportDataSet filteredReportDataSet = sortAndRemoveUningestedFiles(outFolder, reportDataSet);
+			ReportDataSet filteredReportDataSet = sortAndRemoveUningestedFiles(rootFolder, reportDataSet);
 			Files.createDirectories(path.getParent());
 			try (BufferedWriter writer = Files.newBufferedWriter(path)) {
 				writer.write(
@@ -47,10 +47,10 @@ public class DescriptorWriter {
 		}
 	}
 
-	private ReportDataSet sortAndRemoveUningestedFiles(Path outFolder, ReportDataSet reportDataSet) {
+	private ReportDataSet sortAndRemoveUningestedFiles(Path rootFolder, ReportDataSet reportDataSet) {
 		List<ReportDataItem> data = reportDataSet.getData()
 				.stream()
-				.filter(datum -> dataItemInputExists(outFolder, datum))
+				.filter(datum -> dataItemInputExists(rootFolder, datum))
 				.sorted(Comparator.comparing(ReportDataItem::getName))
 				.collect(Collectors.toList());
 
@@ -60,14 +60,14 @@ public class DescriptorWriter {
 				data);
 	}
 
-	private boolean dataItemInputExists(Path outFolder, ReportDataItem datum) {
+	private boolean dataItemInputExists(Path rootFolder, ReportDataItem datum) {
 		String input = datum.getInput().toString();
-		return Files.exists(outFolder.resolve(input));
+		return Files.exists(rootFolder.resolve(input));
 	}
 
 	private List<ReportDataSet> readDescriptorFile(Path file) {
 		try {
-			return writeMapper.readValue(file.toFile(), new TypeReference<List<ReportDataSet>>() {
+			return writeMapper.readValue(file.toFile(), new TypeReference<>() {
 			});
 		} catch (IOException e) {
 			throw new RuntimeException(e);

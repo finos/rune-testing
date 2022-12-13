@@ -7,21 +7,15 @@ import java.util.Comparator;
  */
 public class ReportDataItemExpectation implements Comparable<ReportDataItemExpectation> {
 
-    private String name;
     private String fileName;
     private int validationFailures;
 
-    public ReportDataItemExpectation(String name, String fileName, int validationFailures) {
-        this.name = name;
+    public ReportDataItemExpectation(String fileName, int validationFailures) {
         this.fileName = fileName;
         this.validationFailures = validationFailures;
     }
 
     private ReportDataItemExpectation() {
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getFileName() {

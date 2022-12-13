@@ -65,7 +65,7 @@ public class ReportExpectationUtil {
 
             Collection<ReportTestResult> reportTestExpectations = entry.getValue();
             List<ReportDataItemExpectation> dataItemExpectations = reportTestExpectations.stream()
-                    .map(x -> new ReportDataItemExpectation(x.getName(), x.getInputFileName(), x.getValidationFailures().getActual()))
+                    .map(x -> new ReportDataItemExpectation(x.getInputFileName(), x.getValidationFailures().getActual()))
                     .sorted()
                     .collect(Collectors.toList());
             ReportDataSetExpectation reportDataSetExpectation = new ReportDataSetExpectation(reportIdentifier.getName(), dataSetName, dataItemExpectations);
