@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <rosetta.dsl.version>5.0.0</rosetta.dsl.version>
-        <rosetta.bundle.version>0.0.0.master</rosetta.bundle.version>
+        <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -200,12 +200,7 @@
             <dependency>
                 <groupId>com.regnosys</groupId>
                 <artifactId>rosetta-common</artifactId>
-                <version>${rosetta.bundle.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.regnosys</groupId>
-                <artifactId>rosetta-reports</artifactId>
-                <version>${rosetta.bundle.version}</version>
+                <version>${rosetta.common.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
@@ -336,10 +331,6 @@
         <dependency>
             <groupId>com.regnosys.rosetta</groupId>
             <artifactId>com.regnosys.rosetta.blueprints</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.regnosys</groupId>
-            <artifactId>rosetta-reports</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

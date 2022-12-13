@@ -8,20 +8,13 @@ import com.google.common.io.Resources;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.regnosys.rosetta.blueprints.report.RosettaActionFactoryImpl;
-import com.regnosys.rosetta.common.reports.RegReport;
 import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportUseCase;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
-import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
-import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
-import com.regnosys.rosetta.reports.api.ReflectiveBlueprintLoader;
-import com.regnosys.rosetta.reports.api.RegReportRunner;
-import com.regnosys.rosetta.reports.api.ReportExceptionHandler;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,14 +22,11 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,16 +39,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ReportTestExtension<T extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportTestExtension.class);
-
     private final Module runtimeModule;
     private final ImmutableList<String> rosettaPaths;
     private final Class<T> inputType;
     private final Path rootExpectationsPath;
 
     private List<RegReportIdentifier> reportIdentifiers;
-    private RegReportRunner reportRunner;
-    @Inject RosettaTypeValidator typeValidator;
+    @Inject @SuppressWarnings("unused")
+    private RosettaTypeValidator typeValidator;
 
     private Multimap<ReportIdentifierAndDataSet, ReportTestResult> actualExpectation;
 
@@ -74,32 +62,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         Guice.createInjector(runtimeModule).injectMembers(this);
         actualExpectation = ArrayListMultimap.create();
         reportIdentifiers = loadRegReportIdentifier(rosettaPaths);
-
-        RosettaActionFactoryImpl actionFactory = new RosettaActionFactoryImpl();
-        ReflectiveBlueprintLoader blueprintLoader =
-                new ReflectiveBlueprintLoader(ReportTestExtension.class.getClassLoader(), actionFactory);
-
-        reportRunner = new RegReportRunner(
-                blueprintLoader,
-                Collections.emptyList(),
-                Collections.emptyList(),
-                reportIdentifiers,
-                actionFactory,
-                runtimeModule,
-                ReportExceptionHandler.noOp());
-    }
-
-    public RegReportUseCase runTest(RegReportIdentifier reportIdentifier, String dataSetName, T reportableEvent, ReportDataItemExpectation expectation) {
-        LOGGER.info("Running report \"{}\" with data set \"{}\" file \"{}\"", reportIdentifier.getName(), dataSetName, expectation.getName());
-
-        // Create data set with single item
-        List<ReportDataItem> reportDataItems = List.of(new ReportDataItem("", reportableEvent, null));
-        ReportDataSet reportDataSet = new ReportDataSet(dataSetName, inputType.getSimpleName(), Collections.emptyList(), reportDataItems);
-
-        // Run report
-        RegReport result = reportRunner.run(reportIdentifier, List.of(reportDataSet));
-
-        return result.getUseCases().stream().findFirst().orElse(null);
     }
 
     public void assertTest(RegReportIdentifier reportIdentifier, String dataSetName, ReportDataItemExpectation expectation, RegReportUseCase reportResult) throws IOException {
@@ -195,5 +157,13 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         return Optional.ofNullable(str)
                 .map(s -> s.replace("\r", ""))
                 .orElse(null);
+    }
+
+    public Module getRuntimeModule() {
+        return runtimeModule;
+    }
+
+    public List<RegReportIdentifier> getReportIdentifiers() {
+        return reportIdentifiers;
     }
 }
