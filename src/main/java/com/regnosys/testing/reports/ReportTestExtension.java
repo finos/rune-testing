@@ -42,8 +42,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.regnosys.rosetta.blueprints.report.ReportUtil.loadRegReportIdentifier;
 import static com.regnosys.testing.reports.ReportExpectationUtil.*;
+import static com.regnosys.testing.reports.ReportUtil.loadRegReportIdentifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

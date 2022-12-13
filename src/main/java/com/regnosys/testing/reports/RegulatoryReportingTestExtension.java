@@ -27,7 +27,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.regnosys.rosetta.blueprints.report.ReportUtil.loadRegReportIdentifier;
+import static com.regnosys.testing.reports.ReportUtil.loadRegReportIdentifier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
