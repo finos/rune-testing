@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Comparator;
 import java.util.List;
 
+@Deprecated
 public class ExpectationResult implements Comparable<ExpectationResult> {
 
 	private final String datasetName;

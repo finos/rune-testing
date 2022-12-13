@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+@Deprecated
 public class ExpectationWriter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpectationWriter.class);
 

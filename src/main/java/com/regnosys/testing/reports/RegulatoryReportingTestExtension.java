@@ -14,11 +14,6 @@ import com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResultField;
 import com.regnosys.rosetta.common.serialisation.reportdata.JsonReportDataLoader;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
-import com.regnosys.rosetta.common.util.UrlUtils;
-import com.regnosys.rosetta.rosetta.RosettaBlueprintReport;
-import com.regnosys.rosetta.rosetta.RosettaNamed;
-import com.regnosys.rosetta.transgest.ModelLoader;
-import com.regnosys.rosetta.transgest.ModelLoaderImpl;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -32,9 +27,11 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.regnosys.testing.reports.ReportUtil.loadRegReportIdentifier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@Deprecated
 public class RegulatoryReportingTestExtension implements BeforeAllCallback, AfterAllCallback {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegulatoryReportingTestExtension.class);
 
@@ -103,23 +100,6 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 				objectWriter.writeValue(filePath.toFile(), sortedReportNameToExpectations);
 			}
 		}
-	}
-
-	public List<RegReportIdentifier> loadRegReportIdentifier(ImmutableList<String> rosettaFolderPathNames) {
-		ModelLoader modelLoader = new ModelLoaderImpl(ClassPathUtils.findPathsFromClassPath(
-						rosettaFolderPathNames,
-						".*\\.rosetta",
-						Optional.empty(),
-						ClassPathUtils.class.getClassLoader())
-				.stream()
-				.map(UrlUtils::toUrl)
-				.toArray(URL[]::new));
-
-		return modelLoader.rosettaElements(RosettaBlueprintReport.class).stream()
-				.map(rosettaReport -> new RegReportIdentifier(rosettaReport.getRegulatoryBody().getBody().getName(),
-						rosettaReport.getRegulatoryBody().getCorpuses().stream().map(RosettaNamed::getName).collect(Collectors.toList()),
-						rosettaReport.name(),
-						String.format("%s.blueprint.%sBlueprintReport", rosettaReport.getModel().getName(), rosettaReport.name()))).collect(Collectors.toList());
 	}
 
 	public List<String> getDataDescriptorNames() {
