@@ -9,6 +9,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.regnosys.rosetta.common.reports.RegReportIdentifier;
+import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.reports.RegReportUseCase;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
@@ -48,7 +49,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     @Inject @SuppressWarnings("unused")
     private RosettaTypeValidator typeValidator;
 
-    private Multimap<ReportIdentifierAndDataSet, ReportTestResult> actualExpectation;
+    private Multimap<ReportIdentifierAndDataSetName, ReportTestResult> actualExpectation;
 
     public ReportTestExtension(Module runtimeModule, ImmutableList<String> rosettaPaths, Class<T> inputType, Path rootExpectationsPath) {
         this.runtimeModule = runtimeModule;
@@ -67,28 +68,29 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     public void assertTest(RegReportIdentifier reportIdentifier, String dataSetName, ReportDataItemExpectation expectation, RegReportUseCase reportResult) throws IOException {
         assertNotNull(reportResult);
 
-        Path inputPath = Paths.get(expectation.getFileName());
+        Path inputFileName = Paths.get(expectation.getFileName());
+        RegReportPaths paths = RegReportPaths.getDefault();
 
         // key value
         List<ReportField> results = filterEmptyReportFields(reportResult.getResults());
-        Path keyValueExpectationPath = getKeyValueExpectationFilePath(reportIdentifier, dataSetName, inputPath);
+        Path keyValueExpectationPath = paths.getKeyValueExpectationFilePath(reportIdentifier, dataSetName, inputFileName);
         ExpectedAndActual<String> keyValue = getExpectedAndActual(keyValueExpectationPath, results);
 
         // report
         RosettaModelObject useCaseReport = reportResult.getUseCaseReport();
-        Path reportExpectationPath = getReportExpectationFilePath(reportIdentifier, dataSetName, inputPath);
+        Path reportExpectationPath = paths.getReportExpectationFilePath(reportIdentifier, dataSetName, inputFileName);
         ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, useCaseReport);
 
         // validation failures
         ValidationReport validationReport = typeValidator.runProcessStep(useCaseReport.getType(), useCaseReport);
         validationReport.logReport();
         int actualValidationFailures = validationReport.validationFailures().size();
-        Path reportDataSetExpectationsPath = getReportExpectationsFilePath(reportIdentifier, dataSetName);
+        Path reportDataSetExpectationsPath = paths.getReportExpectationsFilePath(reportIdentifier, dataSetName);
         ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(reportDataSetExpectationsPath, expectation.getValidationFailures(), actualValidationFailures);
 
         ReportTestResult testExpectation = new ReportTestResult(expectation.getFileName(), keyValue, report, validationFailures);
 
-        actualExpectation.put(new ReportIdentifierAndDataSet(reportIdentifier, dataSetName), testExpectation);
+        actualExpectation.put(new ReportIdentifierAndDataSetName(reportIdentifier, dataSetName), testExpectation);
 
         assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
         assertJsonEquals(report.getExpected(), report.getActual());
