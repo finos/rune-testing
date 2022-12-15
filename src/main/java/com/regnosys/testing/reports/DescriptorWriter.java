@@ -3,6 +3,7 @@ package com.regnosys.testing.reports;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet;
 import org.slf4j.Logger;
@@ -21,14 +22,16 @@ import java.util.stream.Collectors;
 public class DescriptorWriter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DescriptorWriter.class);
 
-	public final ObjectMapper writeMapper;
+	private final ObjectMapper writeMapper;
+	private final RegReportPaths paths;
 
 	public DescriptorWriter(ObjectMapper writeMapper) {
 		this.writeMapper = writeMapper;
+		this.paths = RegReportPaths.getDefault();
 	}
 
-	public void writeDescriptorFile(Path writePath, Path configPath, ReportDataSet reportDataSet) {
-		Path path = generateDescriptorPath(configPath, reportDataSet.getDataSetName());
+	public void writeDescriptorFile(Path writePath, ReportDataSet reportDataSet) {
+		Path path = generateDescriptorPath(paths.getConfigPath(), reportDataSet.getDataSetName());
 		SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
 		try {
@@ -63,7 +66,7 @@ public class DescriptorWriter {
 
 	private boolean dataItemInputExists(Path writePath, ReportDataItem datum) {
 		String input = datum.getInput().toString();
-		return Files.exists(writePath.resolve(input));
+		return Files.exists(writePath.resolve(paths.getInputPath()).resolve(input));
 	}
 
 	private List<ReportDataSet> readDescriptorFile(Path file) {
