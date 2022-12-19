@@ -65,14 +65,14 @@ public class ReportExpectationUtil {
             ReportDataSetExpectation reportDataSetExpectation = new ReportDataSetExpectation(reportIdentifier.getName(), dataSetName, dataItemExpectations);
             String expectationFileContent = EXPECTATIONS_WRITER.writeValueAsString(reportDataSetExpectation);
 
-            RegReportPaths paths = RegReportPaths.getDefault();
+            Path outputPath = RegReportPaths.getDefault().getOutputPath();
             // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
             // TEST_WRITE_BASE_PATH=/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/resources/
             TEST_WRITE_BASE_PATH
                     .filter(Files::exists)
                     .ifPresent(writeBasePath -> {
                         // 1. write new expectations file
-                        Path expectationFileWritePath = writeBasePath.resolve(paths.getReportExpectationsFilePath(reportIdentifier, dataSetName));
+                        Path expectationFileWritePath = writeBasePath.resolve(RegReportPaths.getReportExpectationsFilePath(outputPath, reportIdentifier, dataSetName));
                         writeFile(expectationFileWritePath, expectationFileContent, CREATE_EXPECTATION_FILES);
 
                         // 2. write new key-value json
