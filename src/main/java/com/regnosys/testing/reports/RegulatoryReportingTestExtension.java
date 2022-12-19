@@ -71,7 +71,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 	}
 
 	@Override
-	public void beforeAll(ExtensionContext context) throws Exception {
+	public void beforeAll(ExtensionContext context) {
 		ObjectMapper noExpectationWriteMapper = ObjectMapperGenerator.createWriterMapper(true);
 		ObjectMapper writeMapper = ObjectMapperGenerator.createWriterMapper();
 		this.descriptorWriter =  new DescriptorWriter(writeMapper);
@@ -82,8 +82,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 			this.expectationWriter.writeMissingExpectationsFilesForAllDescriptors(SRC_DATA_FOLDER,
 					descriptorWriter.readAllDescriptorFiles(SRC_DATA_FOLDER));
 		}
-		reportDataSetDefinitions = createJsonReportDataLoader(getDataDescriptorNames(),
-				false).load();
+		reportDataSetDefinitions = createJsonDescriptorLoader(getDataDescriptorNames()).load();
 	}
 
 	@Override
@@ -112,19 +111,27 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 				.collect(Collectors.toList());
 	}
 
-	public JsonReportDataLoader createJsonReportDataLoader(List<String> descriptorNames,
-														   boolean loadFromInputFile) {
+	public JsonReportDataLoader createJsonDescriptorLoader(List<String> descriptorNames) {
 		return new JsonReportDataLoader(getClass().getClassLoader(),
 				expectationWriter.noExpectationWriteMapper,
 				reportDescriptorLocation,
-				descriptorNames, loadFromInputFile);
+				descriptorNames);
+	}
+
+	public JsonReportDataLoader createJsonReportDataLoader(List<String> descriptorNames) {
+		return new JsonReportDataLoader(getClass().getClassLoader(),
+				expectationWriter.noExpectationWriteMapper,
+				reportDescriptorLocation,
+				descriptorNames,
+				reportDescriptorLocation);
 	}
 
 	public JsonLookupDataLoader createJsonLookupDataLoader() {
 		return new JsonLookupDataLoader(getClass().getClassLoader(),
 				expectationWriter.noExpectationWriteMapper,
 				lookupDescriptorLocation,
-				getLookupDescriptorNames());
+				getLookupDescriptorNames(),
+				lookupDescriptorLocation);
 	}
 
 	public List<String> getLookupDescriptorNames() {
@@ -143,7 +150,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 		for (RegReportIdentifier regReportIdentifier : regReportIdentifiers) {
 			List<String> descrNames = getDataDescriptorNames();
 			for (String dataDescriptorName : descrNames) {
-				JsonReportDataLoader jsonReportDataLoader = createJsonReportDataLoader(List.of(dataDescriptorName), true);
+				JsonReportDataLoader jsonReportDataLoader = createJsonReportDataLoader(List.of(dataDescriptorName));
 				List<ReportDataSet> reportDataSets = jsonReportDataLoader.load();
 				for (ReportDataSet reportDataSet : reportDataSets) {
 					args.add(Arguments.of(regReportIdentifier, reportDataSet, regReportIdentifier.getName(), reportDataSet.getDataSetName()));

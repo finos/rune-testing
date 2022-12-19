@@ -31,7 +31,7 @@ public class DescriptorWriter {
 	}
 
 	public void writeDescriptorFile(Path writePath, ReportDataSet reportDataSet) {
-		Path path = generateDescriptorPath(paths.getConfigPath(), reportDataSet.getDataSetName());
+		Path path = generateDescriptorPath(paths.getConfigRelativePath(), reportDataSet.getDataSetName());
 		SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
 		try {
@@ -66,7 +66,7 @@ public class DescriptorWriter {
 
 	private boolean dataItemInputExists(Path writePath, ReportDataItem datum) {
 		String input = datum.getInput().toString();
-		return Files.exists(writePath.resolve(paths.getInputPath()).resolve(input));
+		return Files.exists(writePath.resolve(paths.getInputRelativePath()).resolve(input));
 	}
 
 	private List<ReportDataSet> readDescriptorFile(Path file) {
