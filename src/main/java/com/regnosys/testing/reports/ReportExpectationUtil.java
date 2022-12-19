@@ -65,7 +65,7 @@ public class ReportExpectationUtil {
             ReportDataSetExpectation reportDataSetExpectation = new ReportDataSetExpectation(reportIdentifier.getName(), dataSetName, dataItemExpectations);
             String expectationFileContent = EXPECTATIONS_WRITER.writeValueAsString(reportDataSetExpectation);
 
-            Path outputPath = RegReportPaths.getDefault().getOutputPath();
+            Path outputPath = RegReportPaths.getDefault().getOutputRelativePath();
             // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
             // TEST_WRITE_BASE_PATH=/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/resources/
             TEST_WRITE_BASE_PATH

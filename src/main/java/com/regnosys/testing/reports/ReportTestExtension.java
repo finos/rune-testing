@@ -69,7 +69,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         assertNotNull(reportResult);
 
         Path inputFileName = Paths.get(expectation.getFileName());
-        Path outputPath = RegReportPaths.getDefault().getOutputPath();
+        Path outputPath = RegReportPaths.getDefault().getOutputRelativePath();
 
         // key value
         List<ReportField> results = filterEmptyReportFields(reportResult.getResults());
