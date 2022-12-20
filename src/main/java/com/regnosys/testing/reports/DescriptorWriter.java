@@ -37,7 +37,7 @@ public class DescriptorWriter {
 		try {
 			ReportDataSet filteredReportDataSet = sortAndRemoveUningestedFiles(writePath, reportDataSet);
 			Path fullPath = writePath.resolve(path);
-			Files.createDirectories(path.getParent());
+			Files.createDirectories(fullPath.getParent());
 			try (BufferedWriter writer = Files.newBufferedWriter(fullPath)) {
 				writer.write(
 						writeMapper.writer(filterProvider)
