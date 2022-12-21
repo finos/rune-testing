@@ -10,9 +10,7 @@ import com.regnosys.rosetta.common.reports.RegReport;
 import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportUseCase;
 import com.regnosys.rosetta.common.serialisation.lookup.JsonLookupDataLoader;
-import com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResultField;
-import com.regnosys.rosetta.common.serialisation.reportdata.JsonReportDataLoader;
-import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet;
+import com.regnosys.rosetta.common.serialisation.reportdata.*;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -126,6 +124,12 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 				reportDescriptorLocation);
 	}
 
+	public JsonExpectedResultLoader createJsonExpectedResultLoader() {
+		return new JsonExpectedResultLoader(getClass().getClassLoader(),
+				expectationWriter.noExpectationWriteMapper,
+				reportDescriptorLocation);
+	}
+
 	public JsonLookupDataLoader createJsonLookupDataLoader() {
 		return new JsonLookupDataLoader(getClass().getClassLoader(),
 				expectationWriter.noExpectationWriteMapper,
@@ -150,10 +154,18 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 		for (RegReportIdentifier regReportIdentifier : regReportIdentifiers) {
 			List<String> descrNames = getDataDescriptorNames();
 			for (String dataDescriptorName : descrNames) {
-				JsonReportDataLoader jsonReportDataLoader = createJsonReportDataLoader(List.of(dataDescriptorName));
-				List<ReportDataSet> reportDataSets = jsonReportDataLoader.load();
+				// Load descriptor files
+				JsonReportDataLoader descriptorLoader = createJsonDescriptorLoader(List.of(dataDescriptorName));
+				List<ReportDataSet> reportDataSets = descriptorLoader.load();
 				for (ReportDataSet reportDataSet : reportDataSets) {
-					args.add(Arguments.of(regReportIdentifier, reportDataSet, regReportIdentifier.getName(), reportDataSet.getDataSetName()));
+					// Enrich expected result
+					JsonExpectedResultLoader jsonExpectedResultLoader = createJsonExpectedResultLoader();
+					ReportDataSet reportDataSet1 = jsonExpectedResultLoader.loadInputFiles(new ReportIdentifierDataSet(regReportIdentifier, reportDataSet)).getDataSet();
+					// Enrich input
+					JsonReportDataLoader jsonReportDataLoader = createJsonReportDataLoader(Collections.emptyList());
+					ReportDataSet reportDataSet2 = jsonReportDataLoader.loadInputFiles(reportDataSet1);
+					// Build args
+					args.add(Arguments.of(regReportIdentifier, reportDataSet2, regReportIdentifier.getName(), reportDataSet.getDataSetName()));
 				}
 			}
 		}
