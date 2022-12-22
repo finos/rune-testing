@@ -26,18 +26,22 @@ public class DescriptorWriter {
 	private final RegReportPaths paths;
 
 	public DescriptorWriter(ObjectMapper writeMapper) {
-		this.writeMapper = writeMapper;
-		this.paths = RegReportPaths.getDefault();
+		this(writeMapper, RegReportPaths.getDefault());
 	}
 
-	public void writeDescriptorFile(Path writePath, ReportDataSet reportDataSet) {
-		Path path = generateDescriptorPath(paths.getConfigPath(), reportDataSet.getDataSetName());
+	public DescriptorWriter(ObjectMapper writeMapper, RegReportPaths paths) {
+		this.writeMapper = writeMapper;
+		this.paths = paths;
+	}
+
+	public void writeDescriptorFile(Path resourcesPath, ReportDataSet reportDataSet) {
+		Path path = generateDescriptorPath(paths.getConfigRelativePath(), reportDataSet.getDataSetName());
 		SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
 		try {
-			ReportDataSet filteredReportDataSet = sortAndRemoveUningestedFiles(writePath, reportDataSet);
-			Path fullPath = writePath.resolve(path);
-			Files.createDirectories(path.getParent());
+			ReportDataSet filteredReportDataSet = sortAndRemoveUningestedFiles(resourcesPath, reportDataSet);
+			Path fullPath = resourcesPath.resolve(path);
+			Files.createDirectories(fullPath.getParent());
 			try (BufferedWriter writer = Files.newBufferedWriter(fullPath)) {
 				writer.write(
 						writeMapper.writer(filterProvider)
@@ -51,10 +55,10 @@ public class DescriptorWriter {
 		}
 	}
 
-	private ReportDataSet sortAndRemoveUningestedFiles(Path writePath, ReportDataSet reportDataSet) {
+	private ReportDataSet sortAndRemoveUningestedFiles(Path resourcesPath, ReportDataSet reportDataSet) {
 		List<ReportDataItem> data = reportDataSet.getData()
 				.stream()
-				.filter(datum -> dataItemInputExists(writePath, datum))
+				.filter(datum -> dataItemInputExists(resourcesPath, datum))
 				.sorted(Comparator.comparing(ReportDataItem::getName))
 				.collect(Collectors.toList());
 
@@ -64,9 +68,9 @@ public class DescriptorWriter {
 				data);
 	}
 
-	private boolean dataItemInputExists(Path writePath, ReportDataItem datum) {
+	private boolean dataItemInputExists(Path resourcesPath, ReportDataItem datum) {
 		String input = datum.getInput().toString();
-		return Files.exists(writePath.resolve(paths.getInputPath()).resolve(input));
+		return Files.exists(resourcesPath.resolve(paths.getInputRelativePath()).resolve(input));
 	}
 
 	private List<ReportDataSet> readDescriptorFile(Path file) {

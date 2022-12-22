@@ -71,23 +71,23 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         assertNotNull(reportResult);
 
         Path inputFileName = Paths.get(expectation.getFileName());
-        RegReportPaths paths = RegReportPaths.getDefault();
+        Path outputPath = RegReportPaths.getDefault().getOutputRelativePath();
 
         // key value
         List<ReportField> results = filterEmptyReportFields(reportResult.getResults());
-        Path keyValueExpectationPath = paths.getKeyValueExpectationFilePath(reportIdentifier, dataSetName, inputFileName);
+        Path keyValueExpectationPath = RegReportPaths.getKeyValueExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
         ExpectedAndActual<String> keyValue = getExpectedAndActual(keyValueExpectationPath, results);
 
         // report
         RosettaModelObject useCaseReport = reportResult.getUseCaseReport();
-        Path reportExpectationPath = paths.getReportExpectationFilePath(reportIdentifier, dataSetName, inputFileName);
+        Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
         ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, useCaseReport);
 
         // validation failures
         ValidationReport validationReport = typeValidator.runProcessStep(useCaseReport.getType(), useCaseReport);
         validationReport.logReport();
         int actualValidationFailures = validationReport.validationFailures().size();
-        Path reportDataSetExpectationsPath = paths.getReportExpectationsFilePath(reportIdentifier, dataSetName);
+        Path reportDataSetExpectationsPath = RegReportPaths.getReportExpectationsFilePath(outputPath, reportIdentifier, dataSetName);
         ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(reportDataSetExpectationsPath, expectation.getValidationFailures(), actualValidationFailures);
 
         ReportTestResult testExpectation = new ReportTestResult(expectation.getFileName(), keyValue, report, validationFailures);
