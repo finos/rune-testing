@@ -1,6 +1,8 @@
 package util;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Injector;
+import com.regnosys.rosetta.RosettaStandaloneSetup;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.rosetta.*;
@@ -8,15 +10,13 @@ import com.regnosys.rosetta.rosetta.simple.AnnotationRef;
 import com.regnosys.rosetta.rosetta.simple.Attribute;
 import com.regnosys.rosetta.rosetta.simple.Data;
 import com.regnosys.rosetta.rosetta.simple.Function;
-import com.regnosys.rosetta.transgest.ModelLoaderImpl;
+import com.regnosys.rosetta.transgest.ModelLoader;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -25,19 +25,23 @@ import java.util.*;
 public class UnusedModelElementFinder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UnusedModelElementFinder.class);
-    private Set<String> listOfTypes = new HashSet<>();
-    private Set<String> listOfUsedTypes = new HashSet<>();
-    private Set<String> listOfOrphanedTypes = new HashSet<>();
+    private final Set<String> listOfTypes = new HashSet<>();
+    private final Set<String> listOfUsedTypes = new HashSet<>();
+    private final Set<String> listOfOrphanedTypes = new HashSet<>();
 
-    private Set<String> listOfDeprecatedTypes = new HashSet<>();
-    private static List<RosettaModel> models;
+    private final Set<String> listOfDeprecatedTypes = new HashSet<>();
+    private final List<RosettaModel> models;
 
-    public UnusedModelElementFinder(ModelLoaderImpl modelLoader) {
-        models = modelLoader.models();
+    public UnusedModelElementFinder(List<RosettaModel> models) {
+        this.models = models;
     }
 
     public static void main(String[] args) {
-        new UnusedModelElementFinder(new ModelLoaderImpl(ClassPathUtils.findRosettaFilePaths().stream().map(UrlUtils::toUrl).toArray(URL[]::new))).run();
+        Injector injector = new RosettaStandaloneSetup().createInjectorAndDoEMFRegistration();
+        ModelLoader loader = injector.getInstance(ModelLoader.class);
+        List<RosettaModel> models = loader.loadRosettaModels(ClassPathUtils.findRosettaFilePaths().stream().map(UrlUtils::toUrl));
+
+        new UnusedModelElementFinder(models).run();
     }
 
     public void run() {

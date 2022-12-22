@@ -5,28 +5,29 @@ import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.rosetta.RosettaBlueprintReport;
+import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.rosetta.RosettaNamed;
 import com.regnosys.rosetta.transgest.ModelLoader;
-import com.regnosys.rosetta.transgest.ModelLoaderImpl;
 
-import java.net.URL;
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ReportUtil {
+    @Inject
+    private ModelLoader modelLoader;
 
-    public static List<RegReportIdentifier> loadRegReportIdentifier(ImmutableList<String> rosettaFolderPathNames) {
-        ModelLoader modelLoader = new ModelLoaderImpl(ClassPathUtils.findPathsFromClassPath(
+    public List<RegReportIdentifier> loadRegReportIdentifier(ImmutableList<String> rosettaFolderPathNames) {
+        List<RosettaModel> models = modelLoader.loadRosettaModels(ClassPathUtils.findPathsFromClassPath(
                         rosettaFolderPathNames,
                         ".*\\.rosetta",
                         Optional.empty(),
                         ClassPathUtils.class.getClassLoader())
                 .stream()
-                .map(UrlUtils::toUrl)
-                .toArray(URL[]::new));
+                .map(UrlUtils::toUrl));
 
-        return modelLoader.rosettaElements(RosettaBlueprintReport.class).stream()
+        return modelLoader.rosettaElements(models, RosettaBlueprintReport.class).stream()
                 .map(rosettaReport -> new RegReportIdentifier(rosettaReport.getRegulatoryBody().getBody().getName(),
                         rosettaReport.getRegulatoryBody().getCorpuses().stream().map(RosettaNamed::getName).collect(Collectors.toList()),
                         rosettaReport.name(),
