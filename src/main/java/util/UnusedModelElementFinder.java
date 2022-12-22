@@ -11,6 +11,7 @@ import com.regnosys.rosetta.rosetta.simple.Attribute;
 import com.regnosys.rosetta.rosetta.simple.Data;
 import com.regnosys.rosetta.rosetta.simple.Function;
 import com.regnosys.rosetta.transgest.ModelLoader;
+import com.regnosys.testing.RosettaTestingInjectorProvider;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
@@ -37,7 +38,7 @@ public class UnusedModelElementFinder {
     }
 
     public static void main(String[] args) {
-        Injector injector = new RosettaStandaloneSetup().createInjectorAndDoEMFRegistration();
+        Injector injector = new RosettaTestingInjectorProvider().getInjector();
         ModelLoader loader = injector.getInstance(ModelLoader.class);
         List<RosettaModel> models = loader.loadRosettaModels(ClassPathUtils.findRosettaFilePaths().stream().map(UrlUtils::toUrl));
 

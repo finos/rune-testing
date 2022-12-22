@@ -5,7 +5,7 @@ import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.transgest.ModelLoader;
-import com.regnosys.testing.RosettaInjectorProvider;
+import com.regnosys.testing.RosettaTestingInjectorProvider;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(InjectionExtension.class)
-@InjectWith(RosettaInjectorProvider.class)
+@InjectWith(RosettaTestingInjectorProvider.class)
 public class UnusedModelElementFinderTest {
     @Inject
     private ModelLoader modelLoader;

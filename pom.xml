@@ -198,6 +198,11 @@
                 <version>${rosetta.dsl.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.regnosys.rosetta</groupId>
+                <artifactId>com.regnosys.rosetta.tests</artifactId>
+                <version>${rosetta.dsl.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.regnosys</groupId>
                 <artifactId>rosetta-common</artifactId>
                 <version>${rosetta.common.version}</version>
@@ -331,6 +336,10 @@
         <dependency>
             <groupId>com.regnosys.rosetta</groupId>
             <artifactId>com.regnosys.rosetta.blueprint.lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.regnosys.rosetta</groupId>
+            <artifactId>com.regnosys.rosetta.tests</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
