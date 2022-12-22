@@ -1,27 +1,35 @@
 package util;
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
-import com.regnosys.rosetta.transgest.ModelLoaderImpl;
+import com.regnosys.rosetta.rosetta.RosettaModel;
+import com.regnosys.rosetta.transgest.ModelLoader;
+import com.regnosys.testing.RosettaTestingInjectorProvider;
+import org.eclipse.xtext.testing.InjectWith;
+import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith(InjectionExtension.class)
+@InjectWith(RosettaTestingInjectorProvider.class)
 public class UnusedModelElementFinderTest {
+    @Inject
+    private ModelLoader modelLoader;
 
     @Test
     public void getlistOfOrphanedTypes() {
 
-        ModelLoaderImpl modelLoader = new ModelLoaderImpl(ClassPathUtils.findPathsFromClassPath(ImmutableList.of("model", "unused-model-element-finder"), ".*\\.rosetta", Optional.empty(), ClassPathUtils.class.getClassLoader()
+        List<RosettaModel> models = modelLoader.loadRosettaModels(ClassPathUtils.findPathsFromClassPath(ImmutableList.of("model", "unused-model-element-finder"), ".*\\.rosetta", Optional.empty(), ClassPathUtils.class.getClassLoader()
                 ).stream()
-                .map(UrlUtils::toUrl)
-                .toArray(URL[]::new));
-        UnusedModelElementFinder unusedModelElementFinder = new UnusedModelElementFinder(modelLoader);
+                .map(UrlUtils::toUrl));
+        UnusedModelElementFinder unusedModelElementFinder = new UnusedModelElementFinder(models);
 
         unusedModelElementFinder.run();
         assertEquals(7, unusedModelElementFinder.getListOfTypes().size(), unusedModelElementFinder.getListOfTypes().toString());

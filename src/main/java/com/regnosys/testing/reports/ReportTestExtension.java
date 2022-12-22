@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.regnosys.testing.reports.ReportExpectationUtil.*;
-import static com.regnosys.testing.reports.ReportUtil.loadRegReportIdentifier;
+import com.regnosys.testing.reports.ReportUtil;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -48,6 +48,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     private List<RegReportIdentifier> reportIdentifiers;
     @Inject @SuppressWarnings("unused")
     private RosettaTypeValidator typeValidator;
+    @Inject
+    private ReportUtil reportUtil;
 
     private Multimap<ReportIdentifierAndDataSetName, ReportTestResult> actualExpectation;
 
@@ -62,7 +64,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     public void beforeAll(ExtensionContext context) {
         Guice.createInjector(runtimeModule).injectMembers(this);
         actualExpectation = ArrayListMultimap.create();
-        reportIdentifiers = loadRegReportIdentifier(rosettaPaths);
+        reportIdentifiers = reportUtil.loadRegReportIdentifier(rosettaPaths);
     }
 
     public void assertTest(RegReportIdentifier reportIdentifier, String dataSetName, ReportDataItemExpectation expectation, RegReportUseCase reportResult) throws IOException {

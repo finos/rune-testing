@@ -25,7 +25,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.regnosys.testing.reports.ReportUtil.loadRegReportIdentifier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -37,6 +36,8 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 	public static final Path LOOKUP_FOLDER = Path.of("lookup");
 	public static final Path DATA_FOLDER = Path.of("data");
 	public static final Path SRC_DATA_FOLDER = Path.of("..", "rosetta-source", "src", "main", "resources").resolve(REGULATORY_REPORTING_RESOURCE_ROOT).resolve(DATA_FOLDER);
+
+    private final ReportUtil reportUtil;
 
 	private final Path regReportingRoot;
 	private final List<ExpectationResult> collectedExpectationResult = new ArrayList<>();
@@ -50,12 +51,13 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 
 	private Multimap<String, String> exclusionList;
 
-	public RegulatoryReportingTestExtension() {
-		this(REGULATORY_REPORTING_RESOURCE_ROOT);
+	public RegulatoryReportingTestExtension(ReportUtil reportUtil) {
+		this(reportUtil, REGULATORY_REPORTING_RESOURCE_ROOT);
 	}
 
-	public RegulatoryReportingTestExtension(Path regReportingRoot) {
+	public RegulatoryReportingTestExtension(ReportUtil reportUtil, Path regReportingRoot) {
 		this.regReportingRoot = regReportingRoot;
+        this.reportUtil = reportUtil;
 	}
 
 	public RegulatoryReportingTestExtension writeOutputFiles(boolean writeOutputFiles) {
@@ -149,7 +151,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 	}
 
 	public List<Arguments> loadTestArgs(ImmutableList<String> rosettaFolderPathNames) {
-		List<RegReportIdentifier> regReportIdentifiers = loadRegReportIdentifier(rosettaFolderPathNames);
+		List<RegReportIdentifier> regReportIdentifiers = reportUtil.loadRegReportIdentifier(rosettaFolderPathNames);
 		List<Arguments> args = new ArrayList<>();
 		for (RegReportIdentifier regReportIdentifier : regReportIdentifiers) {
 			List<String> descrNames = getDataDescriptorNames();

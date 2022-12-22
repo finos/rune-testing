@@ -17,7 +17,7 @@
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <rosetta.dsl.version>5.0.0</rosetta.dsl.version>
+        <rosetta.dsl.version>6.0.0</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
@@ -194,7 +194,12 @@
             </dependency>
             <dependency>
                 <groupId>com.regnosys.rosetta</groupId>
-                <artifactId>com.regnosys.rosetta.blueprints</artifactId>
+                <artifactId>com.regnosys.rosetta.blueprint.lib</artifactId>
+                <version>${rosetta.dsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.regnosys.rosetta</groupId>
+                <artifactId>com.regnosys.rosetta.tests</artifactId>
                 <version>${rosetta.dsl.version}</version>
             </dependency>
             <dependency>
@@ -330,7 +335,11 @@
         </dependency>
         <dependency>
             <groupId>com.regnosys.rosetta</groupId>
-            <artifactId>com.regnosys.rosetta.blueprints</artifactId>
+            <artifactId>com.regnosys.rosetta.blueprint.lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.regnosys.rosetta</groupId>
+            <artifactId>com.regnosys.rosetta.tests</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
