@@ -12,12 +12,10 @@
     <version>0.0.0.master</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <rosetta.dsl.version>6.0.0</rosetta.dsl.version>
+        <rosetta.dsl.version>6.1.0</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
@@ -441,8 +439,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
