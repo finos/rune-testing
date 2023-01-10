@@ -33,8 +33,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.regnosys.testing.reports.FileNameProcessor.removeFileExtension;
+import static com.regnosys.testing.reports.FileNameProcessor.removeFilePrefix;
 import static com.regnosys.testing.reports.ReportExpectationUtil.*;
-import com.regnosys.testing.reports.ReportUtil;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -43,7 +44,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     private final Module runtimeModule;
     private final ImmutableList<String> rosettaPaths;
     private final Class<T> inputType;
-    private final Path rootExpectationsPath;
+    private Path rootExpectationsPath;
 
     private List<RegReportIdentifier> reportIdentifiers;
     @Inject @SuppressWarnings("unused")
@@ -53,11 +54,15 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
     private Multimap<ReportIdentifierAndDataSetName, ReportTestResult> actualExpectation;
 
-    public ReportTestExtension(Module runtimeModule, ImmutableList<String> rosettaPaths, Class<T> inputType, Path rootExpectationsPath) {
+    public ReportTestExtension(Module runtimeModule, ImmutableList<String> rosettaPaths, Class<T> inputType) {
         this.runtimeModule = runtimeModule;
         this.rosettaPaths = rosettaPaths;
         this.inputType = inputType;
+    }
+
+    public ReportTestExtension withRootExpectationsPath(Path rootExpectationsPath) {
         this.rootExpectationsPath = rootExpectationsPath;
+        return this;
     }
 
     @BeforeAll
@@ -106,7 +111,12 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
     public Stream<Arguments> getArguments() {
         // find list of expectation files within the report path
+        // - warning this will find paths in all classpath jars, so may return additional unwanted paths
         List<URL> expectationFiles = readReportExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader());
+        return getArguments(expectationFiles);
+    }
+
+    public Stream<Arguments> getArguments(List<URL> expectationFiles) {
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
                 // report-data-set expectation contains all expectations for a data-set (e.g. a test pack)
@@ -126,7 +136,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                             .filter(r -> r.getName().equals(reportName))
                                             .findFirst().orElseThrow();
                                     // data item name
-                                    String inputName = FileNameProcessor.removeFilePrefix(fileName).replace("-", " ");
+                                    String inputName = removeFileExtension(removeFilePrefix(fileName)).replace("-", " ");
                                     return Arguments.of(
                                             String.format("%s | %s", reportName, inputName),
                                             reportIdentifier,
