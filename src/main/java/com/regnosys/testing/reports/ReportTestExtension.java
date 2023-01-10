@@ -60,7 +60,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         this.inputType = inputType;
     }
 
-    public ReportTestExtension withRootExpectationsPath(Path rootExpectationsPath) {
+    public ReportTestExtension<T> withRootExpectationsPath(Path rootExpectationsPath) {
         this.rootExpectationsPath = rootExpectationsPath;
         return this;
     }
