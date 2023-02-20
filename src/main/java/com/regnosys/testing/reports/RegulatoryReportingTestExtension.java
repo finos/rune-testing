@@ -12,6 +12,7 @@ import com.regnosys.rosetta.common.reports.RegReportUseCase;
 import com.regnosys.rosetta.common.serialisation.lookup.JsonLookupDataLoader;
 import com.regnosys.rosetta.common.serialisation.reportdata.*;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
+import com.regnosys.rosetta.common.util.UrlUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -103,7 +104,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 
 	public List<String> getDataDescriptorNames() {
 		return ClassPathUtils.findPathsFromClassPath(
-						List.of(regReportingRoot.resolve(DATA_FOLDER).toString().replace("\\", "/")),
+						List.of(UrlUtils.toPortableString(regReportingRoot.resolve(DATA_FOLDER))),
 						".*-descriptor\\.json",
 						Optional.empty(),
 						RegulatoryReportingTestExtension.class.getClassLoader()
@@ -142,7 +143,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 
 	public List<String> getLookupDescriptorNames() {
 		return ClassPathUtils.findPathsFromClassPath(
-						List.of(regReportingRoot.resolve(LOOKUP_FOLDER).toString().replace("\\", "/")),
+						List.of(UrlUtils.toPortableString(regReportingRoot.resolve(LOOKUP_FOLDER))),
 						".*-descriptor\\.json",
 						Optional.empty(),
 						RegulatoryReportingTestExtension.class.getClassLoader()

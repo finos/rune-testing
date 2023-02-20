@@ -90,7 +90,7 @@ public class ReportExpectationUtil {
 
     public static List<URL> readReportExpectationsFromPath(Path basePath, ClassLoader classLoader) {
         List<URL> expectations = ClassPathUtils
-                .findPathsFromClassPath(List.of(basePath.toString()),
+                .findPathsFromClassPath(List.of(UrlUtils.toPortableString(basePath)),
                         REPORT_EXPECTATIONS_FILE_NAME,
                         Optional.empty(),
                         classLoader)
