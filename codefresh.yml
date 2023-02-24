@@ -38,6 +38,17 @@ steps:
       - mvn -s /settings.xml versions:update-property -Dproperty=rosetta.common.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true
       - mvn -U -s /settings.xml clean deploy
 
+  FailPipeline:
+    title: Fail pipeline if the Maven build failed
+    image: codefresh/cli
+    when:
+      steps:
+        - name: BuildTesting
+          on:
+            - failure
+    commands:
+      - exit 1
+
   TagRepo:
     title: Tag git repo with release name
     image: alpine/git
