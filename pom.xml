@@ -15,175 +15,52 @@
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <rosetta.dsl.version>6.5.0</rosetta.dsl.version>
+        <rosetta.dsl.version>0.0.0.remove-tycho</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
-        <hamcrest.version>1.3</hamcrest.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <unruly.version>1.6</unruly.version>
         <kotlin.version>1.7.21</kotlin.version>
         <jmock.version>2.12.0</jmock.version>
         <!-- plugin versions -->
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 
-        <!-- Locked versions of eclipse libs that need to be kept in sync with each other -->
-        <org.eclipse.jdt.core.version>3.30.0</org.eclipse.jdt.core.version>
-        <org.eclipse.equinox.common.version>3.16.100</org.eclipse.equinox.common.version>
-        <org.eclipse.equinox.registry.version>3.11.100</org.eclipse.equinox.registry.version>
-        <org.eclipse.equinox.preferences.version>3.10.0</org.eclipse.equinox.preferences.version>
-        <org.eclipse.core.runtime.version>3.25.0</org.eclipse.core.runtime.version>
-
         <!-- remove once common moved to parent START -->
-        <jackson.version>2.14.0</jackson.version>
-        <guice.version>5.0.1</guice.version>
-        <guava.version>30.1.1-jre</guava.version>
-        <slf4j-api.version>2.0.1</slf4j-api.version>
-        <logback.version>1.4.4</logback.version>
-        <junit.jupiter.version>5.9.1</junit.jupiter.version>
-        <junit.platform.version>1.9.1</junit.platform.version>
-        <mockito.version>3.9.0</mockito.version>
-        <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
-        <commons.io.version>2.11.0</commons.io.version>
-        <jaxb.version>2.0.1.Final</jaxb.version>
+        <junit.version>5.9.1</junit.version>
+        <mockito.version>5.1.1</mockito.version>
         <!-- remove once common moved to parent END -->
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- remove once common moved to parent START -->
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-parameter-names</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-afterburner</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jdk8</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-guava</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-joda</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-xml</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.inject</groupId>
-                <artifactId>guice</artifactId>
-                <version>${guice.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${jaxb.version}</version>
+                <groupId>org.eclipse.xtext</groupId>
+                <artifactId>xtext-dev-bom</artifactId>
+                <version>${xtext.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <!-- test -->
             <dependency>
                 <groupId>org.hamcrest</groupId>
-                <artifactId>java-hamcrest</artifactId>
-                <version>${java-hamcrest.version}</version>
-                <scope>test</scope>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
+                <artifactId>mockito-bom</artifactId>
                 <version>${mockito.version}</version>
-                <scope>test</scope>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-launcher</artifactId>
-                <version>${junit.platform.version}</version>
-                <scope>test</scope>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-params</artifactId>
-                <version>${junit.jupiter.version}</version>
-                <!-- Restore me: task-2558 <scope>test</scope>-->
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.jupiter.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.jupiter.version}</version>
-                <!-- Restore me: task-2558 <scope>test</scope>-->
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${slf4j-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <!-- remove once common moved to parent END -->
 
             <dependency>
                 <groupId>com.regnosys.rosetta</groupId>
@@ -206,49 +83,9 @@
                 <version>${rosetta.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-junit-jupiter</artifactId>
-                <version>${mockito.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.xtext</groupId>
-                <artifactId>org.eclipse.xtext.testing</artifactId>
-                <version>${xtext.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>org.eclipse.lsp4j.generator</artifactId>
-                        <groupId>org.eclipse.lsp4j</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>org.eclipse.emf.ecore</artifactId>
-                        <groupId>org.eclipse.emf</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>org.eclipse.osgi</artifactId>
-                        <groupId>org.eclipse.platform</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.xtext</groupId>
-                <artifactId>org.eclipse.xtext.xbase.testing</artifactId>
-                <version>${xtext.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>org.eclipse.osgi</artifactId>
-                        <groupId>org.eclipse.platform</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>co.unruly</groupId>
                 <artifactId>java-8-matchers</artifactId>
                 <version>${unruly.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest-all</artifactId>
-                <version>${hamcrest.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -259,41 +96,6 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-test-junit</artifactId>
                 <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-                <artifactId>org.eclipse.equinox.common</artifactId>
-                <groupId>org.eclipse.platform</groupId>
-                <version>${org.eclipse.equinox.common.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jdt</groupId>
-                <artifactId>org.eclipse.jdt.core</artifactId>
-                <version>${org.eclipse.jdt.core.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>org.eclipse.core.filesystem</artifactId>
-                        <groupId>org.eclipse.platform</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>org.eclipse.osgi</artifactId>
-                        <groupId>org.eclipse.platform</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.platform</groupId>
-                <artifactId>org.eclipse.core.runtime</artifactId>
-                <version>${org.eclipse.core.runtime.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.platform</groupId>
-                <artifactId>org.eclipse.equinox.preferences</artifactId>
-                <version>${org.eclipse.equinox.preferences.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.platform</groupId>
-                <artifactId>org.eclipse.equinox.registry</artifactId>
-                <version>${org.eclipse.equinox.registry.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jmock</groupId>
@@ -307,10 +109,6 @@
                     <exclusion>
                         <artifactId>jsr305</artifactId>
                         <groupId>com.google.code.findbugs</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>hamcrest-core</artifactId>
-                        <groupId>org.hamcrest</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -341,19 +139,7 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
+            <artifactId>junit-jupiter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -364,40 +150,16 @@
             <artifactId>mockito-junit-jupiter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.xtext</groupId>
-            <artifactId>org.eclipse.xtext.testing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.xtext</groupId>
-            <artifactId>org.eclipse.xtext.xbase.testing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jdt</groupId>
-            <artifactId>org.eclipse.jdt.core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
             <groupId>co.unruly</groupId>
             <artifactId>java-8-matchers</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
+            <artifactId>hamcrest</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.platform</groupId>
-            <artifactId>org.eclipse.equinox.common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jmock</groupId>
