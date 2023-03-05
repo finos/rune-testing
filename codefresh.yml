@@ -38,6 +38,17 @@ steps:
       - mvn -s /settings.xml versions:update-property -Dproperty=rosetta.common.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true
       - mvn -U -s /settings.xml clean deploy
 
+  FailPipeline:
+    title: Fail pipeline if the Maven build failed
+    image: codefresh/cli
+    when:
+      steps:
+        - name: BuildTesting
+          on:
+            - failure
+    commands:
+      - exit 1
+
   TagRepo:
     title: Tag git repo with release name
     image: alpine/git
@@ -51,3 +62,18 @@ steps:
       - git fetch --prune https://${{REGNOSYS_OPS}}:${{REGNOSYS_OPS_TOKEN}}@github.com/REGnosys/${{CF_REPO_NAME}}.git "+refs/tags/*:refs/tags/*"
       - git tag ${{RELEASE_NAME}}
       - git push https://${{REGNOSYS_OPS}}:${{REGNOSYS_OPS_TOKEN}}@github.com/REGnosys/${{CF_REPO_NAME}}.git ${{RELEASE_NAME}}
+
+  StartNextBuild:
+    title: Build rosetta-components if on master
+    image: codefresh/cli
+    when:
+      branch:
+        only:
+          - master
+      condition:
+        all:
+          buildPassed: steps.BuildTesting.result == 'success'
+          variableDefined: "${{TAG_REPO}} == false"
+          skipNextBuild: "${{SKIP_NEXT_BUILD}} == false"
+    commands:
+      - codefresh run REGnosys/rosetta-components/rosetta-components --branch master --detach
