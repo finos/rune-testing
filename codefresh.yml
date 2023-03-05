@@ -72,7 +72,7 @@ steps:
           - master
       condition:
         all:
-          buildPassed: steps.Build.result == 'success'
+          buildPassed: steps.BuildTesting.result == 'success'
           variableDefined: "${{TAG_REPO}} == false"
           skipNextBuild: "${{SKIP_NEXT_BUILD}} == false"
     commands:
