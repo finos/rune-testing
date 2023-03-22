@@ -105,7 +105,7 @@ public class RosettaFileNameValidator {
     }
 
     private Pair<String, String> extractNamespaceFromLine(Path rosettaFile, String line) {
-        Pattern pattern = Pattern.compile("^namespace ([a-zA-Z0-9\\.]*)");
+        Pattern pattern = Pattern.compile("^namespace ([a-zA-Z0-9_\\.]*)");
         Matcher matcher = pattern.matcher(line);
         if (matcher.find() && matcher.groupCount() == 1) {
             return Pair.of(rosettaFile.getFileName().toString(), matcher.group(1));
