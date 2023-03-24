@@ -8,7 +8,6 @@ import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResultField;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +99,6 @@ public class ExpectationWriter {
 		return builder.build();
 	}
 
-	@NotNull
 	private Optional<String> expectedFileName(String datasetName, String useCaseName, RegReportIdentifier identifier, List<ReportDataSet> reportDataSetDefinitions) {
 		return reportDataSetDefinitions.stream()
 				.filter(ds -> ds.getDataSetName().equals(datasetName))

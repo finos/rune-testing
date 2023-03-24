@@ -19,49 +19,19 @@
         <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
+        <junit.version>5.9.1</junit.version>
+        <junit-platform-commons.version>1.9.1</junit-platform-commons.version>
+        <mockito.version>5.1.1</mockito.version>
         <hamcrest.version>2.2</hamcrest.version>
         <unruly.version>1.6</unruly.version>
         <kotlin.version>1.7.21</kotlin.version>
         <jmock.version>2.12.0</jmock.version>
-        <!-- plugin versions -->
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 
-        <!-- remove once common moved to parent START -->
-        <junit.version>5.9.1</junit.version>
-        <mockito.version>5.1.1</mockito.version>
-        <!-- remove once common moved to parent END -->
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.eclipse.xtext</groupId>
-                <artifactId>xtext-dev-bom</artifactId>
-                <version>${xtext.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- test -->
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest</artifactId>
-                <version>${hamcrest.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-bom</artifactId>
-                <version>${mockito.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>${junit.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <dependency>
                 <groupId>com.regnosys.rosetta</groupId>
                 <artifactId>com.regnosys.rosetta</artifactId>
@@ -81,6 +51,47 @@
                 <groupId>com.regnosys</groupId>
                 <artifactId>rosetta-common</artifactId>
                 <version>${rosetta.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.xtext</groupId>
+                <artifactId>xtext-dev-bom</artifactId>
+                <version>${xtext.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-commons</artifactId>
+                <version>${junit-platform-commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-bom</artifactId>
+                <version>${mockito.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>co.unruly</groupId>
@@ -126,10 +137,6 @@
             <artifactId>com.regnosys.rosetta</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.regnosys</groupId>
-            <artifactId>rosetta-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.regnosys.rosetta</groupId>
             <artifactId>com.regnosys.rosetta.blueprint.lib</artifactId>
         </dependency>
@@ -137,6 +144,11 @@
             <groupId>com.regnosys.rosetta</groupId>
             <artifactId>com.regnosys.rosetta.tests</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.regnosys</groupId>
+            <artifactId>rosetta-common</artifactId>
+        </dependency>
+        <!-- add junit in non-test scope -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
