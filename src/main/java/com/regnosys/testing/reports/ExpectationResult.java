@@ -2,7 +2,6 @@ package com.regnosys.testing.reports;
 
 import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResultField;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +42,7 @@ public class ExpectationResult implements Comparable<ExpectationResult> {
 	}
 
 	@Override
-	public int compareTo(@NotNull ExpectationResult o) {
+	public int compareTo(ExpectationResult o) {
 		return comparator.compare(this, o);
 	}
 }

@@ -13,7 +13,6 @@ import com.regnosys.rosetta.common.serialisation.lookup.JsonLookupDataLoader;
 import com.regnosys.rosetta.common.serialisation.reportdata.*;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -26,7 +25,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @Deprecated
@@ -265,7 +264,6 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 		}
 	}
 
-	@NotNull
 	private List<ExpectedResultField> expectedResultFields(List<ExpectedResultField> actualReportFields, Multimap<String, String> exclusionList, RegReportIdentifier identifier) {
 		List<ExpectedResultField> reportFieldsWithoutExclusions = actualReportFields.stream()
 				.filter(reportField -> !exclusionList.containsEntry(identifier.getName(), reportField.getName()))
@@ -273,7 +271,6 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 		return reportFieldsWithoutExclusions;
 	}
 
-	@NotNull
 	private List<ExpectedResultField> actualReportFields(RegReportUseCase useCase) {
 		return useCase.getResults().stream()
 				.map(f -> new ExpectedResultField(f.getName(), f.getValue()))
