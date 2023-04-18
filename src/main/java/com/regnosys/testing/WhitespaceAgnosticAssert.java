@@ -6,8 +6,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class WhitespaceAgnosticAssert {
-    public static void assertEquals(String s1, String s2) {
-        Assertions.assertEquals(normalize(s1), normalize(s2));
+    public static void assertEquals(String expected, String actual) {
+        Assertions.assertEquals(normalize(expected), normalize(actual));
+    }
+
+    public static void assertEquals(String expected, String actual, String message) {
+        Assertions.assertEquals(normalize(expected), normalize(actual), message);
     }
 
     public static boolean equals(String s1, String s2) {
