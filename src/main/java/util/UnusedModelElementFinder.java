@@ -2,12 +2,10 @@ package util;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Injector;
-import com.regnosys.rosetta.RosettaStandaloneSetup;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.rosetta.*;
 import com.regnosys.rosetta.rosetta.simple.AnnotationRef;
-import com.regnosys.rosetta.rosetta.simple.Attribute;
 import com.regnosys.rosetta.rosetta.simple.Data;
 import com.regnosys.rosetta.rosetta.simple.Function;
 import com.regnosys.rosetta.transgest.ModelLoader;
@@ -119,12 +117,12 @@ public class UnusedModelElementFinder {
     }
 
     private void updateUsedTypes(TreeIterator<EObject> eObjectTreeIterator) {
-        ArrayList<EObject> attributes = Lists.newArrayList(eObjectTreeIterator);
+        ArrayList<EObject> elements = Lists.newArrayList(eObjectTreeIterator);
 
-        attributes.stream()
-                .filter(Attribute.class::isInstance)
-                .map(Attribute.class::cast)
-                .forEach(attribute -> listOfUsedTypes.add(getQualifiedName(attribute.getType())));
+        elements.stream()
+                .filter(TypeCall.class::isInstance)
+                .map(TypeCall.class::cast)
+                .forEach(typeCall -> listOfUsedTypes.add(getQualifiedName(typeCall.getType())));
 
     }
 
