@@ -15,7 +15,7 @@
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <rosetta.dsl.version>7.5.2</rosetta.dsl.version>
+        <rosetta.dsl.version>0.0.0.patch</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
