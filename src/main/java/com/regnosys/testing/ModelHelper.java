@@ -26,7 +26,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+// TODO: this is duplicated in the DSL! See `CodeGeneratorTestHelper` and `ModelHelper` in DSL test project.
 public class ModelHelper {
+    private static final String commonTestTypes =
+              "namespace \"com.rosetta.test.model\"\n"
+            + "version \"test\"\n"
+            + "\n"
+            + "metaType scheme string\n";
 
 	@Inject
 	private RosettaGenerator rosettaGenerator;
@@ -80,7 +86,7 @@ public class ModelHelper {
 		}
 	}
 
-	public GeneratedCode generateCode(List<Resource> eResources) {
+	public GeneratedCode generateCode(List<Resource> resources) {
 		var fsa = new RegisteringFileSystemAccess();
 		var ctx = new GeneratorContext() {
 			@Override
@@ -89,11 +95,20 @@ public class ModelHelper {
 			}
 		};
 
-		for (Resource eResource : eResources) {
-			rosettaGenerator.beforeGenerate(eResource, fsa, ctx);
-			rosettaGenerator.doGenerate(eResource, fsa, ctx);
-			rosettaGenerator.afterGenerate(eResource, fsa, ctx);
-		}
+        ResourceSet resourceSet = resources.get(0).getResourceSet();
+        try {
+            rosettaGenerator.beforeAllGenerate(resourceSet, fsa, ctx);
+            for (Resource eResource : resources) {
+                try {
+                    rosettaGenerator.beforeGenerate(eResource, fsa, ctx);
+                    rosettaGenerator.doGenerate(eResource, fsa, ctx);
+                } finally {
+                    rosettaGenerator.afterGenerate(eResource, fsa, ctx);
+                }
+            }
+        } finally {
+            rosettaGenerator.afterAllGenerate(resourceSet, fsa, ctx);
+        }
 
 		var generatedCode = new HashMap<String, String>();
 
@@ -125,9 +140,13 @@ public class ModelHelper {
 	}
 
 	private ResourceSet testResourceSet() {
-		var resourceSet = resourceSetProvider.get();
-		resourceSet.getResource(URI.createURI("classpath:/model/basictypes.rosetta"), true);
-		resourceSet.getResource(URI.createURI("classpath:/model/annotations.rosetta"), true);
-		return resourceSet;
+        try {
+            ResourceSet resourceSet = parseHelper.parse(ModelHelper.commonTestTypes).eResource().getResourceSet();
+            resourceSet.getResource(URI.createURI("classpath:/model/basictypes.rosetta"), true);
+            resourceSet.getResource(URI.createURI("classpath:/model/annotations.rosetta"), true);
+            return resourceSet;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 }
