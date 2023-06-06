@@ -19,6 +19,7 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
@@ -65,7 +66,7 @@ public class IsoCurrencySchemeEnumReader implements SchemeEnumReader {
         String xmlContents = getXmlContents(schemaLocationForEnum);
         JAXBContext jaxbContext = JAXBContext.newInstance(ISO4217.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        InputStream inputStream = new ByteArrayInputStream(removeLineBreaks(xmlContents).getBytes());
+        InputStream inputStream = new ByteArrayInputStream(removeLineBreaks(xmlContents).getBytes(StandardCharsets.UTF_8));
         return (ISO4217) jaxbUnmarshaller.unmarshal(inputStream);
     }
 
