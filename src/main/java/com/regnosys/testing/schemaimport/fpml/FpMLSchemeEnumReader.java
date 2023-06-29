@@ -132,16 +132,20 @@ public class FpMLSchemeEnumReader implements SchemeEnumReader {
 		CodeListSetDocument schemeList = doc.getValue();
 
 		return schemeList.getCodeListRef().stream()
-			.filter(r -> {
-				if (r.getLocationUri().get(0).isEmpty()) {
-					LOGGER.warn("No location URI for resource: " + r.getCanonicalUri());
-					return false;
-				}
-				return true;
-			})
-			.map(r -> loadCodeListDocumentEntry(codingSchemeRelativePath, r, jaxbContext, inputFactory))
-			.filter(Objects::nonNull)
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				.filter(r -> {
+					if (r.getLocationUri().get(0).isEmpty()) {
+						LOGGER.warn("No location URI for resource: " + r.getCanonicalUri());
+						return false;
+					}
+					return true;
+				})
+				.map(r -> loadCodeListDocumentEntry(codingSchemeRelativePath, r, jaxbContext, inputFactory))
+				.filter(Objects::nonNull)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+						(first, second) -> {
+							LOGGER.warn("Duplicate key found");
+							return first;
+						}));
 	}
 
 	private Map.Entry<String, CodeListDocument> loadCodeListDocumentEntry(String codingSchemeRelativePath, CodeListRef codeListRef, JAXBContext jaxbContext, XMLInputFactory inputFactory) {
@@ -151,6 +155,7 @@ public class FpMLSchemeEnumReader implements SchemeEnumReader {
 		if (localUrl != null) {
 			CodeListDocument codeListDocument = readUrl(jaxbContext, inputFactory, localUrl);
 			if (codeListDocument != null) {
+				LOGGER.debug("Adding entry: key {}, value hashcode {}", codeListRef.getCanonicalUri(), codeListDocument.hashCode());
 				return Map.entry(codeListRef.getCanonicalUri(), codeListDocument);
 			}
 		} else {
