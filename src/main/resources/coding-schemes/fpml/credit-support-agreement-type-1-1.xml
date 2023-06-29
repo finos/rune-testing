@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the type of ISDA Credit Support Agreement governing the transaction.</doc:definition>
+         <doc:definition>Specifies the type of ISDA Credit Support Agreement governing the
+			transaction.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -41,7 +42,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The ISDA 1994 Credit Support Annex New York Law (pledge) applies.</SimpleValue>
+            <SimpleValue>The ISDA 1994 Credit Support Annex New York Law (pledge)
+					applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -52,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The ISDA 1995 Credit Support Annex English Law (title transfer) applies.</SimpleValue>
+            <SimpleValue>The ISDA 1995 Credit Support Annex English Law (title transfer)
+					applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -74,7 +77,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The ISDA 1995 Credit Support Deed English Law (charge) applies.</SimpleValue>
+            <SimpleValue>The ISDA 1995 Credit Support Deed English Law (charge)
+					applies.</SimpleValue>
          </Value>
       </Row>
       <Row>

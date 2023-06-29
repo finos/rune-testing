@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>FpML coding scheme supporting the ESMA Asset Class and Sub Asset Class product classification. Each value contains an FpML defined taxonomy style code for the corresponding ESMA codes. The description of the code contains the full string ESMA value. This coding scheme should be used in the productType element.</doc:definition>
+         <doc:definition>FpML coding scheme supporting the ESMA Asset Class and Sub Asset Class
+			product classification. Each value contains an FpML defined taxonomy style code for the
+			corresponding ESMA codes. The description of the code contains the full string ESMA
+			value. This coding scheme should be used in the productType element.</doc:definition>
          <doc:publicationDate>2016-12-22</doc:publicationDate>
       </Description>
    </Annotation>
@@ -504,7 +507,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Fixed-to-Fixed 'multi-currency swaps' or ‘cross-currency swaps’ and futures/forwards on Fixed-to-Fixed 'multi-currency swaps' or ‘cross-currency swaps’</SimpleValue>
+            <SimpleValue>Fixed-to-Fixed 'multi-currency swaps' or ‘cross-currency swaps’ and
+					futures/forwards on Fixed-to-Fixed 'multi-currency swaps' or ‘cross-currency
+					swaps’</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -515,7 +520,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Fixed-to-Fixed 'single currency swaps' and futures/forwards on Fixed-to-Fixed 'single currency swaps'</SimpleValue>
+            <SimpleValue>Fixed-to-Fixed 'single currency swaps' and futures/forwards on
+					Fixed-to-Fixed 'single currency swaps'</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -526,7 +532,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Fixed-to-Float 'multi-currency swaps' or ‘cross-currency swaps’ and futures/forwards on Fixed-to-Float 'multi-currency swaps' or ‘cross-currency swaps’</SimpleValue>
+            <SimpleValue>Fixed-to-Float 'multi-currency swaps' or ‘cross-currency swaps’ and
+					futures/forwards on Fixed-to-Float 'multi-currency swaps' or ‘cross-currency
+					swaps’</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -537,7 +545,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Fixed-to-Float 'single currency swaps' and futures/forwards on Fixed-to-Float 'single currency swaps'</SimpleValue>
+            <SimpleValue>Fixed-to-Float 'single currency swaps' and futures/forwards on
+					Fixed-to-Float 'single currency swaps'</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -548,7 +557,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Float-to-Float 'multi-currency swaps' or ‘cross-currency swaps’ and futures/forwards on Float-to-Float 'multi-currency swaps' or ‘cross-currency swaps’</SimpleValue>
+            <SimpleValue>Float-to-Float 'multi-currency swaps' or ‘cross-currency swaps’ and
+					futures/forwards on Float-to-Float 'multi-currency swaps' or ‘cross-currency
+					swaps’</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -559,7 +570,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Float-to-Float 'single currency swaps' and futures/forwards on Float-to-Float 'single currency swaps'</SimpleValue>
+            <SimpleValue>Float-to-Float 'single currency swaps' and futures/forwards on
+					Float-to-Float 'single currency swaps'</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -581,7 +593,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Inflation 'multi-currency swaps' or ‘cross-currency swaps’ and futures/forwards on Inflation 'multi-currency swaps' or ‘cross-currency swaps’</SimpleValue>
+            <SimpleValue>Inflation 'multi-currency swaps' or ‘cross-currency swaps’ and
+					futures/forwards on Inflation 'multi-currency swaps' or ‘cross-currency
+					swaps’</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -592,7 +606,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Inflation 'single currency swaps' and futures/forwards on Inflation 'single currency swaps'</SimpleValue>
+            <SimpleValue>Inflation 'single currency swaps' and futures/forwards on Inflation
+					'single currency swaps'</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -603,7 +618,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Overnight Index Swap (OIS) 'multi-currency swaps' or ‘cross-currency swaps’ and futures/forwards on Overnight Index Swap (OIS) 'multi-currency swaps' or ‘cross-currency swaps’</SimpleValue>
+            <SimpleValue>Overnight Index Swap (OIS) 'multi-currency swaps' or ‘cross-currency
+					swaps’ and futures/forwards on Overnight Index Swap (OIS) 'multi-currency swaps'
+					or ‘cross-currency swaps’</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -614,7 +631,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Overnight Index Swap (OIS) 'single currency swaps' and futures/forwards on Overnight Index Swap (OIS) 'single currency swaps'</SimpleValue>
+            <SimpleValue>Overnight Index Swap (OIS) 'single currency swaps' and futures/forwards
+					on Overnight Index Swap (OIS) 'single currency swaps'</SimpleValue>
          </Value>
       </Row>
       <Row>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the OTC post-trade indicator, as defined under ESMA MiFID II.</doc:definition>
+         <doc:definition>Specifies the OTC post-trade indicator, as defined under ESMA MiFID
+			II.</doc:definition>
          <doc:publicationDate>2017-02-17</doc:publicationDate>
       </Description>
    </Annotation>
@@ -130,7 +131,8 @@
             <SimpleValue>ESMA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Negotiated transactions in liquid financial instruments (For equity instruments).</SimpleValue>
+            <SimpleValue>Negotiated transactions in liquid financial instruments (For equity
+					instruments).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +154,8 @@
             <SimpleValue>ESMA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Negotiated transactions in illiquid financial instruments (For equity instruments).</SimpleValue>
+            <SimpleValue>Negotiated transactions in illiquid financial instruments (For equity
+					instruments).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -163,7 +166,8 @@
             <SimpleValue>ESMA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Negotiated transactions subject to conditions other than the current market price (For equity instruments).</SimpleValue>
+            <SimpleValue>Negotiated transactions subject to conditions other than the current
+					market price (For equity instruments).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +189,8 @@
             <SimpleValue>ESMA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Transactions which have received price improvement (For equity instruments).</SimpleValue>
+            <SimpleValue>Transactions which have received price improvement (For equity
+					instruments).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -218,7 +223,9 @@
             <SimpleValue>ESMA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Transactions not contributing to the price discovery process for the purposes of Article 23 of Regulation (EU) No 600/2014 (For equity instruments).</SimpleValue>
+            <SimpleValue>Transactions not contributing to the price discovery process for the
+					purposes of Article 23 of Regulation (EU) No 600/2014 (For equity
+					instruments).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -240,7 +247,8 @@
             <SimpleValue>ESMA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Exchange for Physical transaction (For non-equity instruments).</SimpleValue>
+            <SimpleValue>Exchange for Physical transaction (For non-equity
+					instruments).</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

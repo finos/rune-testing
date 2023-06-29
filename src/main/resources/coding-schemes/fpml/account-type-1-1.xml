@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Contains a code representing the type of an account, for example in a clearing or exchange model.</doc:definition>
+         <doc:definition>Contains a code representing the type of an account, for example in a
+			clearing or exchange model.</doc:definition>
          <doc:publicationDate>2016-06-13</doc:publicationDate>
       </Description>
    </Annotation>
@@ -53,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The account contains trading activity or positions that belong to a client of the firm that opened the account.</SimpleValue>
+            <SimpleValue>The account contains trading activity or positions that belong to a
+					client of the firm that opened the account.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +66,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The account contains proprietary trading activity or positions, belonging to the firm that is the owner of the account.</SimpleValue>
+            <SimpleValue>The account contains proprietary trading activity or positions, belonging
+					to the firm that is the owner of the account.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

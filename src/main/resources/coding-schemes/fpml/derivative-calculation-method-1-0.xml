@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the method by which a derivative is computed.</doc:definition>
@@ -41,7 +41,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The derivative is computed analytically, e.g. by a closed form analytical equation.</SimpleValue>
+            <SimpleValue>The derivative is computed analytically, e.g. by a closed form analytical
+					equation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -52,7 +53,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The derivative is computed by other (non-perturbative) numerical means, such as a direct output from a numerical model.</SimpleValue>
+            <SimpleValue>The derivative is computed by other (non-perturbative) numerical means,
+					such as a direct output from a numerical model.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -63,7 +65,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The derivative is computed by a numerical difference method, ie. by numerically perturbing the input, recalculating the measure, and dividing by the amount of the perturbation.</SimpleValue>
+            <SimpleValue>The derivative is computed by a numerical difference method, ie. by
+					numerically perturbing the input, recalculating the measure, and dividing by the
+					amount of the perturbation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -74,7 +78,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The derivative is computed by finite difference based on the substitution of a supplied pricing input, e.g. a bumped yield curve.</SimpleValue>
+            <SimpleValue>The derivative is computed by finite difference based on the substitution
+					of a supplied pricing input, e.g. a bumped yield curve.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

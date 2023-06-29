@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Indicates a type of embedded option contained in an OTC derivative contract.</doc:definition>
+         <doc:definition>Indicates a type of embedded option contained in an OTC derivative
+			contract.</doc:definition>
          <doc:publicationDate>2012-05-11</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The right but not the obligation to terminate a trade early without additional payment.</SimpleValue>
+            <SimpleValue>The right but not the obligation to terminate a trade early without
+					additional payment.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +55,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The right but not the obligation to increase the term of a trade (without changing other terms) without additional payment.</SimpleValue>
+            <SimpleValue>The right but not the obligation to increase the term of a trade (without
+					changing other terms) without additional payment.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +67,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The right but not the obligation to terminate a trade early with payment of fair market replacement value of the trade by the out of the money counterparty.</SimpleValue>
+            <SimpleValue>The right but not the obligation to terminate a trade early with payment
+					of fair market replacement value of the trade by the out of the money
+					counterparty.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

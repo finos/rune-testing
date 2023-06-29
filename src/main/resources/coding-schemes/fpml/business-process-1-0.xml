@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Contains a code representing the type of business process a message (e.g. a status request) applies to.</doc:definition>
+         <doc:definition>Contains a code representing the type of business process a message (e.g.
+			a status request) applies to.</doc:definition>
          <doc:publicationDate>2011-09-29</doc:publicationDate>
       </Description>
    </Annotation>
@@ -53,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Process for novating a trade to a central counterparty (with margining) for credit risk mitigation.</SimpleValue>
+            <SimpleValue>Process for novating a trade to a central counterparty (with margining)
+					for credit risk mitigation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +88,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Process for comparing representations of a trade or portfolio for the purpose of identifying and resolving discrepancies.</SimpleValue>
+            <SimpleValue>Process for comparing representations of a trade or portfolio for the
+					purpose of identifying and resolving discrepancies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,7 +100,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Process for calculating payment amounts and performing payments as required by the terms of a transaction.</SimpleValue>
+            <SimpleValue>Process for calculating payment amounts and performing payments as
+					required by the terms of a transaction.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

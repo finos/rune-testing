@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines the type of Broker Confirm the FpML trade represents.</doc:definition>
+         <doc:definition>Defines the type of Broker Confirm the FpML trade
+			represents.</doc:definition>
          <doc:publicationDate>2013-01-15</doc:publicationDate>
       </Description>
    </Annotation>
@@ -97,7 +98,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for use with Credit Derivative Transactions on Leveraged Loans.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for use with Credit Derivative Transactions on
+					Leveraged Loans.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,7 +110,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for use with Credit Derivative Transactions on Mortgage-backed Security with Pay-As-You-Go or Physical Settlement.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for use with Credit Derivative Transactions on
+					Mortgage-backed Security with Pay-As-You-Go or Physical Settlement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -119,7 +122,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for CDX Emerging Markets Untranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for CDX Emerging Markets Untranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +134,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for CDX Emerging Markets Diversified Untranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for CDX Emerging Markets Diversified Untranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +157,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Dow Jones CDX Tranche Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Dow Jones CDX Tranche
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -174,7 +180,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for CDS Index trades relating to Dow Jones CDX.EM index series.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for CDS Index trades relating to Dow Jones
+					CDX.EM index series.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +192,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for CDS Index trades relating to Dow Jones CDX.NA.IG and Dow Jones CDX.NA.HY index series.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for CDS Index trades relating to Dow Jones
+					CDX.NA.IG and Dow Jones CDX.NA.HY index series.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -196,7 +204,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type of Emerging European and Middle Eastern Sovereign.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type of Emerging European and Middle Eastern
+					Sovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +238,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Single Name European CMBS Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Single Name European CMBS
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -251,7 +261,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Single Name European RMBS Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Single Name European RMBS
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +284,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Asia Ex-Japan Swaption Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Asia Ex-Japan Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -284,7 +296,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Asia Excluding Japan Tranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Asia Excluding Japan Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -306,7 +319,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Australia Swaption Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Australia Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -317,7 +331,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Australia Tranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Australia Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -372,7 +387,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Europe Swaption Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Europe Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -383,7 +399,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Europe Tranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Europe Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -405,7 +422,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Japan Swaption Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Japan Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -416,7 +434,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for iTraxx Japan Tranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for iTraxx Japan Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -537,7 +556,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Municipal CDX Untranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Municipal CDX Untranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -658,7 +678,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Standard CDX Tranche Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Standard CDX Tranche
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -669,7 +690,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type of STANDARD EMERGING EUROPEAN AND MIDDLE EASTERN SOVEREIGN.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type of STANDARD EMERGING EUROPEAN AND MIDDLE EASTERN
+					SOVEREIGN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -680,7 +702,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type of STANDARD EMERGING EUROPEAN CORPORATE.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type of STANDARD EMERGING EUROPEAN
+					CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -691,7 +714,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type of STANDARD EMERGING EUROPEAN CORPORATE LPN.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type of STANDARD EMERGING EUROPEAN CORPORATE
+					LPN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -713,7 +737,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Standard iTraxx Europe Tranched Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Standard iTraxx Europe Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -746,7 +771,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type of STANDARD LATIN AMERICA CORPORATE B.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type of STANDARD LATIN AMERICA CORPORATE
+					B.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -757,7 +783,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type of STANDARD LATIN AMERICA CORPORATE BL.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type of STANDARD LATIN AMERICA CORPORATE
+					BL.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -779,7 +806,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Syndicated Secured Loan Credit Default Swap Broker Confirmation Type.</SimpleValue>
+            <SimpleValue>Standard Syndicated Secured Loan Credit Default Swap Broker Confirmation
+					Type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -790,7 +818,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Standard Syndicated Secured Loan Credit Default Swap Bullet Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Standard Syndicated Secured Loan Credit
+					Default Swap Bullet Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -801,7 +830,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Standard Syndicated Secured Loan Credit Default Swap Index Bullet Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Standard Syndicated Secured Loan Credit
+					Default Swap Index Bullet Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -812,7 +842,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for Standard Syndicated Secured Loan Credit Default Swap Index Bullet Tranche Transactions.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for Standard Syndicated Secured Loan Credit
+					Default Swap Index Bullet Tranche Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -845,7 +876,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for STANDARD NORTH AMERICAN CORPORATE.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for STANDARD NORTH AMERICAN
+					CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -878,7 +910,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for STANDARD SUBORDINATED EUROPEAN INSURANCE CORPORATE.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for STANDARD SUBORDINATED EUROPEAN INSURANCE
+					CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -889,7 +922,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for STANDARD WESTERN EUROPEAN SOVEREIGN.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for STANDARD WESTERN EUROPEAN
+					SOVEREIGN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -900,7 +934,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type of Subordinated European Insurance Corporate.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type of Subordinated European Insurance
+					Corporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -933,7 +968,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Syndicated Secured Loan Credit Default Swap Broker Confirmation Type.</SimpleValue>
+            <SimpleValue>Syndicated Secured Loan Credit Default Swap Broker Confirmation
+					Type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -966,7 +1002,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Broker Confirmation Type for U.S. MUNICIPAL FULL FAITH AND CREDIT.</SimpleValue>
+            <SimpleValue>Broker Confirmation Type for U.S. MUNICIPAL FULL FAITH AND
+					CREDIT.</SimpleValue>
          </Value>
       </Row>
       <Row>

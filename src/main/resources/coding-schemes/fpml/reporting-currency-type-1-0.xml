@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines the type of currency that was used to report the value of an asset.</doc:definition>
+         <doc:definition>Defines the type of currency that was used to report the value of an
+			asset.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -52,7 +53,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The currency whose increase in value will result in a DECREASE in value to the Base Organization.</SimpleValue>
+            <SimpleValue>The currency whose increase in value will result in a DECREASE in value
+					to the Base Organization.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -63,7 +65,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The currency that represents the primary risk as seen from the perspective of the Base Organization.</SimpleValue>
+            <SimpleValue>The currency that represents the primary risk as seen from the
+					perspective of the Base Organization.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -85,7 +88,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>This is the currency whose increase in value will result in an INCREASE in value to the Base Organization.</SimpleValue>
+            <SimpleValue>This is the currency whose increase in value will result in an INCREASE
+					in value to the Base Organization.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -96,7 +100,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A standard currency used for reporting all values within a report, irrespective of the currency of the trades or units within the report.</SimpleValue>
+            <SimpleValue>A standard currency used for reporting all values within a report,
+					irrespective of the currency of the trades or units within the
+					report.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -107,7 +113,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The currency that the Base Organization is receiving in settlements involving the trade.</SimpleValue>
+            <SimpleValue>The currency that the Base Organization is receiving in settlements
+					involving the trade.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -118,7 +125,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A standardized currency for reporting values within a single unit, such as a legal entity, fund, account, branch, business unit, etc., irrespective of the currency of the trades within the report.</SimpleValue>
+            <SimpleValue>A standardized currency for reporting values within a single unit, such
+					as a legal entity, fund, account, branch, business unit, etc., irrespective of
+					the currency of the trades within the report.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

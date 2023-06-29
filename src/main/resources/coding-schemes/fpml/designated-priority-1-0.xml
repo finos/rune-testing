@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the types of liens that can be associated with a loan facility. In practice there could be any number of liens. Practice shows that the number does not typically goes beyond 3.</doc:definition>
+         <doc:definition>Specifies the types of liens that can be associated with a loan facility.
+			In practice there could be any number of liens. Practice shows that the number does not
+			typically goes beyond 3.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -74,7 +76,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>It is unknown whether a lien is associated with a loan facility.</SimpleValue>
+            <SimpleValue>It is unknown whether a lien is associated with a loan
+					facility.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

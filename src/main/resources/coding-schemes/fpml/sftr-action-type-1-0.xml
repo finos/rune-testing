@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Action type as defined by SFTR. A notation to indicate whether the report is New, Modification, Valuation, Collateral update, Error, Correction, Termination / Early Termination or Position component.</doc:definition>
+         <doc:definition>Action type as defined by SFTR. A notation to indicate whether the report
+			is New, Modification, Valuation, Collateral update, Error, Correction, Termination /
+			Early Termination or Position component.</doc:definition>
          <doc:publicationDate>2019-08-02</doc:publicationDate>
       </Description>
    </Annotation>
