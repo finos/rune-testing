@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Contains a code representing the type of a resource (e.g. document).</doc:definition>
+         <doc:definition>Contains a code representing the type of a resource (e.g.
+			document).</doc:definition>
          <doc:publicationDate>2013-09-10</doc:publicationDate>
       </Description>
    </Annotation>
@@ -53,7 +54,11 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Document providing supplemental material economic terms to the FpML data representation. The initial intended usage is to fulfill the CFTC Part 45 rule requirement to report 'Any other terms(s) of the swap matched or affirmed by the counterparties in verifying the swap' when the reporting is done via the generic FpML representation.</SimpleValue>
+            <SimpleValue>Document providing supplemental material economic terms to the FpML data
+					representation. The initial intended usage is to fulfill the CFTC Part 45 rule
+					requirement to report 'Any other terms(s) of the swap matched or affirmed by the
+					counterparties in verifying the swap' when the reporting is done via the generic
+					FpML representation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +69,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Document describing the economic characteristics of a transaction.</SimpleValue>
+            <SimpleValue>Document describing the economic characteristics of a
+					transaction.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

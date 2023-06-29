@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines the alternate meaning for Exchange Date as specified in Paragraph 3(d)(ii) of the ISDA Standard Credit Support Annex (English Law).</doc:definition>
+         <doc:definition>Defines the alternate meaning for Exchange Date as specified in Paragraph
+			3(d)(ii) of the ISDA Standard Credit Support Annex (English Law).</doc:definition>
          <doc:publicationDate>2015-01-20</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA Equivalent Credit Support in respect of the Original Credit Support no later than the date on which the Transferee receives the New Credit Support (the "Exchange Date").</SimpleValue>
+            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA
+					Equivalent Credit Support in respect of the Original Credit Support no later
+					than the date on which the Transferee receives the New Credit Support (the
+					"Exchange Date").</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +57,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA Equivalent Credit Support in respect of the Original Credit Support no later than Two Settlement Days following the date on which the Transferee receives the New Credit Support (the "Exchange Date").</SimpleValue>
+            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA
+					Equivalent Credit Support in respect of the Original Credit Support no later
+					than Two Settlement Days following the date on which the Transferee receives the
+					New Credit Support (the "Exchange Date").</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +71,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA Equivalent Credit Support in respect of the Original Credit Support no later than Three Settlement Days following the date on which the Transferee receives the New Credit Support (the "Exchange Date").</SimpleValue>
+            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA
+					Equivalent Credit Support in respect of the Original Credit Support no later
+					than Three Settlement Days following the date on which the Transferee receives
+					the New Credit Support (the "Exchange Date").</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +85,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA Equivalent Credit Support in respect of the Original Credit Support no later than four Settlement Days following the date on which the Transferee receives the New Credit Support (the "Exchange Date").</SimpleValue>
+            <SimpleValue>The Transferee will be obliged to transfer to the Transferor IA
+					Equivalent Credit Support in respect of the Original Credit Support no later
+					than four Settlement Days following the date on which the Transferee receives
+					the New Credit Support (the "Exchange Date").</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

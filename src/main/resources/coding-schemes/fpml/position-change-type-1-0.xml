@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines the types of business events which can cause a change in position for a given facility.</doc:definition>
+         <doc:definition>Defines the types of business events which can cause a change in position
+			for a given facility.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -41,7 +42,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A purchase, by assignment (change in lender of record), of a portion of a facility within the secondary markets.</SimpleValue>
+            <SimpleValue>A purchase, by assignment (change in lender of record), of a portion of a
+					facility within the secondary markets.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -52,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A sale, by assignment (change in lender of record), of a portion of a facility within the secondary markets.</SimpleValue>
+            <SimpleValue>A sale, by assignment (change in lender of record), of a portion of a
+					facility within the secondary markets.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -63,7 +66,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A decrease in the commitment level against a particular facility.</SimpleValue>
+            <SimpleValue>A decrease in the commitment level against a particular
+					facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -74,7 +78,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue> An increase in the commitment level against a particular facility.</SimpleValue>
+            <SimpleValue> An increase in the commitment level against a particular
+					facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -85,7 +90,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The repayment of a loan within a given facility, resulting in a decrease of the commitment level of the facility.</SimpleValue>
+            <SimpleValue>The repayment of a loan within a given facility, resulting in a decrease
+					of the commitment level of the facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -96,7 +102,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The increase of a loan within a facility, due to the borrower requiring further credit in order to cover interest costs.</SimpleValue>
+            <SimpleValue>The increase of a loan within a facility, due to the borrower requiring
+					further credit in order to cover interest costs.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

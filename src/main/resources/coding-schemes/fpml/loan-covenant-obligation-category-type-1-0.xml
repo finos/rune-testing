@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>A structure used to uniquely identify a loan covenant obligation category type (e.g. affirmative, negative, or financial) based on a scheme.</doc:definition>
+         <doc:definition>A structure used to uniquely identify a loan covenant obligation category
+			type (e.g. affirmative, negative, or financial) based on a scheme.</doc:definition>
          <doc:publicationDate>2021-06-25</doc:publicationDate>
          <doc:status>working-draft</doc:status>
       </Description>
@@ -43,7 +44,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A covenant requiring a borrower/issuer to affirmatively perform an action or maintain a specified condition.</SimpleValue>
+            <SimpleValue>A covenant requiring a borrower/issuer to affirmatively perform an action
+					or maintain a specified condition.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -54,7 +56,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A covenant based on a borrower's/issuer's financial performance.</SimpleValue>
+            <SimpleValue>A covenant based on a borrower's/issuer's financial
+					performance.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -65,7 +68,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A covenant forbidding a borrower/issuer from performing a certain action or creating a specified condition.</SimpleValue>
+            <SimpleValue>A covenant forbidding a borrower/issuer from performing a certain action
+					or creating a specified condition.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

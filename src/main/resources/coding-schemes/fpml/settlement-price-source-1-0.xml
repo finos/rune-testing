@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>The source from which the settlement price is to be obtained.</doc:definition>
+         <doc:definition>The source from which the settlement price is to be
+			obtained.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -41,7 +42,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The bid price per share on the exchange at the valuation time on the valuation date</SimpleValue>
+            <SimpleValue>The bid price per share on the exchange at the valuation time on the
+					valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -52,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The mid-market price per share on the exchange at the valuation time on the valuation date</SimpleValue>
+            <SimpleValue>The mid-market price per share on the exchange at the valuation time on
+					the valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -63,7 +66,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>An amount equal to the arithmetic average of the two prices constituting the Bid/Offer Spread. "Bid/Offer Spread" means the highest bid price per share and the corresponding lowest offer price per share last published prior to or at the expiration time on the expiration date.</SimpleValue>
+            <SimpleValue>An amount equal to the arithmetic average of the two prices constituting
+					the Bid/Offer Spread. "Bid/Offer Spread" means the highest bid price per share
+					and the corresponding lowest offer price per share last published prior to or at
+					the expiration time on the expiration date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -74,7 +80,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The offer price per share on the exchange at the valuation time on the valuation date</SimpleValue>
+            <SimpleValue>The offer price per share on the exchange at the valuation time on the
+					valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -85,7 +92,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>(i) The published official closing price of the shares on the exchange on the valuation date, or (ii) the official closing level of the index, as published by the index sponsor, on the valuation date</SimpleValue>
+            <SimpleValue>(i) The published official closing price of the shares on the exchange on
+					the valuation date, or (ii) the official closing level of the index, as
+					published by the index sponsor, on the valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -96,7 +105,12 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The official settlement price (however described under the rules of the relevant exchange or its clearing house) on maturity of any of the relevant exchange-traded contracts published by the exchange or its clearing house. For this purpose, exchange-traded contract shall mean a future or listed option contract on the Index whose delivery date is expected to be on the valuation date</SimpleValue>
+            <SimpleValue>The official settlement price (however described under the rules of the
+					relevant exchange or its clearing house) on maturity of any of the relevant
+					exchange-traded contracts published by the exchange or its clearing house. For
+					this purpose, exchange-traded contract shall mean a future or listed option
+					contract on the Index whose delivery date is expected to be on the valuation
+					date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -107,7 +121,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The official reference price per share quoted by the exchange on the exchange business day immediately prior to the expiration date equal to the weighted average of the last 10% traded volume on the share</SimpleValue>
+            <SimpleValue>The official reference price per share quoted by the exchange on the
+					exchange business day immediately prior to the expiration date equal to the
+					weighted average of the last 10% traded volume on the share</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

@@ -2,18 +2,17 @@
 <gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>A structure that uniquely identifies a task type within a legal action
-			structure.</doc:definition>
-         <doc:publicationDate>2021-06-25</doc:publicationDate>
-         <doc:status>working-draft</doc:status>
+         <doc:definition>A scheme identifiying whether the product is based on a crypto
+			asset.</doc:definition>
+         <doc:publicationDate>2023-06-21</doc:publicationDate>
       </Description>
    </Annotation>
    <Identification>
-      <ShortName>loanLegalActionTaskTypeScheme</ShortName>
-      <Version/>
-      <CanonicalUri>http://www.fpml.org/coding-scheme/loan-legal-action-task-type</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/loan-legal-action-task-type-1-0</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/loan-legal-action-task-type-1-0.xml</LocationUri>
+      <ShortName>productTypeCryptoAssetIndicatorScheme</ShortName>
+      <Version>1-0</Version>
+      <CanonicalUri>http://www.fpml.org/coding-scheme/esma-emir-refit-crypto-asset-indicator</CanonicalUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/esma-emir-refit-crypto-asset-indicator</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/esma-emir-refit-crypto-asset-indicator-1-0.xml</LocationUri>
    </Identification>
    <ColumnSet>
       <Column Id="Code" Use="required">
@@ -38,25 +37,24 @@
    <SimpleCodeList>
       <Row>
          <Value>
-            <SimpleValue>ProvideFeedback</SimpleValue>
+            <SimpleValue>false</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The recipient must provide their feedback on the legal
-					action.</SimpleValue>
+            <SimpleValue>A product not based on a crypto asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ProvideVote</SimpleValue>
+            <SimpleValue>true</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The recipient must provide their vote on the legal action.</SimpleValue>
+            <SimpleValue>A product based on a crypto asset.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the entity classification of a party under ESMA.</doc:definition>
+         <doc:definition>Specifies the entity classification of a party under
+			ESMA.</doc:definition>
          <doc:publicationDate>2017-03-17</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the organization with respect to the reporting Regime is a Central Counterparty, for example under ESMA EMIR.</SimpleValue>
+            <SimpleValue>Indicates the organization with respect to the reporting Regime is a
+					Central Counterparty, for example under ESMA EMIR.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +55,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Parties that are exempted from reporting Financial, NonFinancial status as per Article 1(5) of EMIR, such as Multilateral Development Banks.</SimpleValue>
+            <SimpleValue>Parties that are exempted from reporting Financial, NonFinancial status
+					as per Article 1(5) of EMIR, such as Multilateral Development Banks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +67,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the organization referenced by the partyTradeInformation with respect to the reporting Regime is a Financial Entity, for example in ESMA reporting.</SimpleValue>
+            <SimpleValue>Indicates the organization referenced by the partyTradeInformation with
+					respect to the reporting Regime is a Financial Entity, for example in ESMA
+					reporting.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +80,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the organization referenced by the partyTradeInformation with respect to the reporting Regime is a NonFinancial Entity, for example in ESMA reporting.</SimpleValue>
+            <SimpleValue>Indicates the organization referenced by the partyTradeInformation with
+					respect to the reporting Regime is a NonFinancial Entity, for example in ESMA
+					reporting.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

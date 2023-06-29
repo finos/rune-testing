@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>A code that describes the reason that an update occurred.</doc:definition>
+         <doc:definition>A code that describes the reason that an update
+			occurred.</doc:definition>
          <doc:publicationDate>2012-03-21</doc:publicationDate>
       </Description>
    </Annotation>
@@ -53,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A trade was removed for reasons other than a negotiated agreement (e.g. reported in error).</SimpleValue>
+            <SimpleValue>A trade was removed for reasons other than a negotiated agreement (e.g.
+					reported in error).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +77,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>An option was invoked and therefore the original option is no longer in effect.</SimpleValue>
+            <SimpleValue>An option was invoked and therefore the original option is no longer in
+					effect.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +89,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A trade's notional size was increased via a negotiated agreement.</SimpleValue>
+            <SimpleValue>A trade's notional size was increased via a negotiated
+					agreement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -119,7 +123,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Trade details were adjusted for other reasons, e.g. corporate action.</SimpleValue>
+            <SimpleValue>Trade details were adjusted for other reasons, e.g. corporate
+					action.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +135,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>An existing trade was transferred to a new counterparty via a negotiated agreement.</SimpleValue>
+            <SimpleValue>An existing trade was transferred to a new counterparty via a negotiated
+					agreement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +147,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>An existing trade was exited early via a negotiated agreement.</SimpleValue>
+            <SimpleValue>An existing trade was exited early via a negotiated
+					agreement.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
