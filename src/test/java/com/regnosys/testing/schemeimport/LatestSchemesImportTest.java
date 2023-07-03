@@ -35,7 +35,7 @@ public class LatestSchemesImportTest {
         try (FileOutputStream fos = new FileOutputStream(LatestSchemesImportTest.CODE_LIST_ZIP)) {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             String checksum = getZipCheckSum(Paths.get(CODE_LIST_ZIP));
-            assertThat("CodeList zip has been updated, run again with write WRITE_LATEST_VERSION enabled then update expected checksum",
+            assertThat("CodeList zip has been updated, run again with WRITE_LATEST_VERSION enabled then update expected checksum",
                     checksum, equalTo("940834a1e5d185ffe3eccf0146596252"));
 
             if (WRITE_LATEST_VERSION) {
