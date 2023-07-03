@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies a typology for loan facilities.</doc:definition>
@@ -64,7 +64,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Letter of credit, i.e. commitment by a bank or syndicate to provide a certain amount of funding.</SimpleValue>
+            <SimpleValue>Letter of credit, i.e. commitment by a bank or syndicate to provide a
+					certain amount of funding.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +87,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Swingline funding, which refers to the portion of revolving loan facility that can be funded without advance notice. Sometimes, the swingline is traded separately from the rest of the loan facility.</SimpleValue>
+            <SimpleValue>Swingline funding, which refers to the portion of revolving loan facility
+					that can be funded without advance notice. Sometimes, the swingline is traded
+					separately from the rest of the loan facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,7 +111,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Trade claim, i.e. claim on assets that result from a restructuring or bankruptcy.</SimpleValue>
+            <SimpleValue>Trade claim, i.e. claim on assets that result from a restructuring or
+					bankruptcy.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

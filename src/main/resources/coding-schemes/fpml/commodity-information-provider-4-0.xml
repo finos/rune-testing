@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines a publication in which the rate, price, index or factor is to be found. (e.g Gas Daily, Platts Bloomberg.)</doc:definition>
+         <doc:definition>Defines a publication in which the rate, price, index or factor is to be
+			found. (e.g Gas Daily, Platts Bloomberg.)</doc:definition>
          <doc:publicationDate>2014-09-15</doc:publicationDate>
       </Description>
    </Annotation>
@@ -108,7 +109,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Argus Media Fertilizer Reports. http://www.argusmedia.com/Fertilizer</SimpleValue>
+            <SimpleValue>Argus Media Fertilizer Reports.
+					http://www.argusmedia.com/Fertilizer</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +154,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Argus US Products report. http://www.argusmedia.com/Petroleum/Petroleum-Products/Argus-US-Products</SimpleValue>
+            <SimpleValue>The Argus US Products report.
+					http://www.argusmedia.com/Petroleum/Petroleum-Products/Argus-US-Products</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +276,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>CMAI Monomers Market Report. http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;rd=cmai"</SimpleValue>
+            <SimpleValue>CMAI Monomers Market Report.
+					http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;rd=cmai"</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -284,7 +288,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>CMAI Global Plastics and Polymers Market Report. http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;=cmai</SimpleValue>
+            <SimpleValue>CMAI Global Plastics and Polymers Market Report.
+					http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;=cmai</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -328,7 +333,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>US Energy Information Adminstration publishes prices as reported by the US Department of Energy. http://www.eia.gov/petroleum/gasdiesel/</SimpleValue>
+            <SimpleValue>US Energy Information Adminstration publishes prices as reported by the
+					US Department of Energy. http://www.eia.gov/petroleum/gasdiesel/</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -339,7 +345,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>US Department of Labor Bureau of Labor Statistics. http://data.bls.gov/cgi-bin/surveymost?wp</SimpleValue>
+            <SimpleValue>US Department of Labor Bureau of Labor Statistics.
+					http://data.bls.gov/cgi-bin/surveymost?wp</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -416,7 +423,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>FERTECON Limited Information Services. http://fertecon.com/current_information_services.asp</SimpleValue>
+            <SimpleValue>FERTECON Limited Information Services.
+					http://fertecon.com/current_information_services.asp</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -427,7 +435,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Fertilizer Week. http://www.crugroup.com/market-analysis/products/fertilizerweek</SimpleValue>
+            <SimpleValue>Fertilizer Week.
+					http://www.crugroup.com/market-analysis/products/fertilizerweek</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -438,7 +447,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Federal Home Loan Bank of San Francisco, or its successor.</SimpleValue>
+            <SimpleValue>The Federal Home Loan Bank of San Francisco, or its
+					successor.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -636,7 +646,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Nuclear Market Review report as published by Trade tech. http://www.uranium.info/nuclear_market_review.php</SimpleValue>
+            <SimpleValue>The Nuclear Market Review report as published by Trade tech.
+					http://www.uranium.info/nuclear_market_review.php</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -691,7 +702,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>PetroChemWire Publication Calendar. http://www.petrochemwire.com/</SimpleValue>
+            <SimpleValue>PetroChemWire Publication Calendar.
+					http://www.petrochemwire.com/</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -702,7 +714,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>PIX Pulp Benchmark Indexes, or any successor publication, published by FOEX Indexes Ltd. or its successor (http://www.foex.fi).</SimpleValue>
+            <SimpleValue>PIX Pulp Benchmark Indexes, or any successor publication, published by
+					FOEX Indexes Ltd. or its successor (http://www.foex.fi).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -933,7 +946,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Steel Index Iron Ore Service. http://www.thesteelindex.com/en/iron-ore</SimpleValue>
+            <SimpleValue>The Steel Index Iron Ore Service.
+					http://www.thesteelindex.com/en/iron-ore</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -944,7 +958,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Steel Index Scrap Reference Prices. http://www.thesteelindex.com/en/scrapprices</SimpleValue>
+            <SimpleValue>The Steel Index Scrap Reference Prices.
+					http://www.thesteelindex.com/en/scrapprices</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -955,7 +970,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Steel Index. http://www.thesteelindex.com/en/price-specifications</SimpleValue>
+            <SimpleValue>The Steel Index.
+					http://www.thesteelindex.com/en/price-specifications</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -988,7 +1004,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Paper Packaging Monitor, or any successor publication, published by RISI or its successor (http://www.www.risiinfo.com).</SimpleValue>
+            <SimpleValue>Paper Packaging Monitor, or any successor publication, published by RISI
+					or its successor (http://www.www.risiinfo.com).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -999,7 +1016,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Paper Packaging Monitor-Europe, or any successor publication, published by RISI or its successor (http://www.www.risiinfo.com).</SimpleValue>
+            <SimpleValue>Paper Packaging Monitor-Europe, or any successor publication, published
+					by RISI or its successor (http://www.www.risiinfo.com).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1010,7 +1028,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Pulp &amp; Paper Week, or any successor publication, published by RISI or its successor (http://www.www.risiinfo.com).</SimpleValue>
+            <SimpleValue>Pulp &amp; Paper Week, or any successor publication, published by RISI or
+					its successor (http://www.www.risiinfo.com).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1109,7 +1128,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Ux Consulting Company. http://www.uxc.com/products/uxw_overview.aspx</SimpleValue>
+            <SimpleValue>The Ux Consulting Company.
+					http://www.uxc.com/products/uxw_overview.aspx</SimpleValue>
          </Value>
       </Row>
       <Row>

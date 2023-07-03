@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines the type of each spread schedule type.</doc:definition>
@@ -41,7 +41,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Represents a Long Spread Schedule. Spread schedules defined as "Long" will be applied to Long Positions.</SimpleValue>
+            <SimpleValue>Represents a Long Spread Schedule. Spread schedules defined as "Long"
+					will be applied to Long Positions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -52,7 +53,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Represents a Short Spread Schedule. Spread schedules defined as "Short" will be applied to Short Positions.</SimpleValue>
+            <SimpleValue>Represents a Short Spread Schedule. Spread schedules defined as "Short"
+					will be applied to Short Positions.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

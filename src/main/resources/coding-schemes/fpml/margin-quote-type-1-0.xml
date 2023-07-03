@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Allows the requestor to specify if they want this trade/trade set margining with an associated portfolio with the Clearing Organization or not.</doc:definition>
+         <doc:definition>Allows the requestor to specify if they want this trade/trade set
+			margining with an associated portfolio with the Clearing Organization or
+			not.</doc:definition>
          <doc:publicationDate>2013-08-30</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +44,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates margining applies to the trade and its associated portfolio.</SimpleValue>
+            <SimpleValue>Indicates margining applies to the trade and its associated
+					portfolio.</SimpleValue>
          </Value>
       </Row>
       <Row>

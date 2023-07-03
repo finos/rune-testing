@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines a list of machine interpretable error codes.</doc:definition>
@@ -250,7 +250,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Invalid FpML message - message doesn't validate w.r.t. specified DTD/schema.</SimpleValue>
+            <SimpleValue>Invalid FpML message - message doesn't validate w.r.t. specified
+					DTD/schema.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -272,7 +273,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Validation failure - mandatory FpML rule (a rule we say must always be followed).</SimpleValue>
+            <SimpleValue>Validation failure - mandatory FpML rule (a rule we say must always be
+					followed).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -283,7 +285,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Validation failure - master agreement rule (a rule 2 parties agree to follow).</SimpleValue>
+            <SimpleValue>Validation failure - master agreement rule (a rule 2 parties agree to
+					follow).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -294,7 +297,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Validation failure - business policy (a rule that only the recipient has).</SimpleValue>
+            <SimpleValue>Validation failure - business policy (a rule that only the recipient
+					has).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -327,7 +331,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Signature not accepted - problem with message signer (cert revoked, unacceptable principal, etc.).</SimpleValue>
+            <SimpleValue>Signature not accepted - problem with message signer (cert revoked,
+					unacceptable principal, etc.).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -360,7 +365,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Suitability - trade can't be done for client or dealer suitability reasons.</SimpleValue>
+            <SimpleValue>Suitability - trade can't be done for client or dealer suitability
+					reasons.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -404,7 +410,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Message expired - message arrived on time, but a response was not generated in time.</SimpleValue>
+            <SimpleValue>Message expired - message arrived on time, but a response was not
+					generated in time.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

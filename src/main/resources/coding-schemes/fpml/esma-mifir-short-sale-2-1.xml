@@ -2,7 +2,8 @@
 <gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the type of short selling indicator, as defined under ESMA MiFID II.</doc:definition>
+         <doc:definition>Specifies the type of short selling indicator, as defined under ESMA MiFID
+			II.</doc:definition>
          <doc:publicationDate>2022-03-28</doc:publicationDate>
       </Description>
    </Annotation>

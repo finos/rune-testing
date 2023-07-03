@@ -12,26 +12,35 @@
     <version>0.0.0.master</version>
 
     <properties>
-        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.enforced.version>[11,12)</java.enforced.version>
+        <maven.compiler.release>11</maven.compiler.release>
 
         <rosetta.dsl.version>8.1.0</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
-        <junit.version>5.9.1</junit.version>
-        <junit-platform-commons.version>1.9.1</junit-platform-commons.version>
-        <mockito.version>5.1.1</mockito.version>
-        <hamcrest.version>2.2</hamcrest.version>
         <unruly.version>1.6</unruly.version>
         <kotlin.version>1.7.21</kotlin.version>
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
+        <guava.version>32.0.1-jre</guava.version>
 
+        <!-- test -->
+        <junit.version>5.9.1</junit.version>
+        <junit-platform-commons.version>1.9.1</junit-platform-commons.version>
+        <mockito.version>5.1.1</mockito.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <logback.version>1.4.7</logback.version>
+
+        <!-- plugins -->
+        <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <cxf-xjc-plugin.version>3.3.1</cxf-xjc-plugin.version>
-        <logback.version>1.4.7</logback.version>
+        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -79,6 +88,11 @@
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -224,11 +238,37 @@
     </dependencies>
     <build>
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-java</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>${java.enforced.version}</version>
+                                </requireJavaVersion>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>log4j:log4j</exclude>
+                                        <exclude>org.apache.logging.log4j:log4j-core</exclude>
+                                        <exclude>ch.qos.reload4j:reload4j</exclude>
+                                    </excludes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>${maven-clean-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>clean</phase>
@@ -256,7 +296,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -307,7 +346,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <release>${maven.compiler.release}</release>
                 </configuration>
@@ -315,7 +354,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

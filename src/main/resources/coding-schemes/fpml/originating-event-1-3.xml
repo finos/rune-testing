@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the type of business event that triggered the origination of this trade. This is used to provide additional detail about how or why a trade originatated, particularly when this is not self-evident. For example, it can indicated that the trade was created as a result of netting, or as a result of a novation or transfer party initiated by a third party.</doc:definition>
+         <doc:definition>Specifies the type of business event that triggered the origination of
+			this trade. This is used to provide additional detail about how or why a trade
+			originatated, particularly when this is not self-evident. For example, it can indicated
+			that the trade was created as a result of netting, or as a result of a novation or
+			transfer party initiated by a third party.</doc:definition>
          <doc:publicationDate>2016-06-13</doc:publicationDate>
       </Description>
    </Annotation>
@@ -53,7 +57,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade results from an amendment. (Normally an amendment should be represented directly as an amendment event; this originating event reason is provided to cover the case where a system must cancel and rebook the trade as a result of the amendment.)</SimpleValue>
+            <SimpleValue>Indicates the trade results from an amendment. (Normally an amendment
+					should be represented directly as an amendment event; this originating event
+					reason is provided to cover the case where a system must cancel and rebook the
+					trade as a result of the amendment.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +93,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates that the trade was put on as the result of the reassignment of a trade formerly held by a now defaulted clearing member firm.</SimpleValue>
+            <SimpleValue>Indicates that the trade was put on as the result of the reassignment of
+					a trade formerly held by a now defaulted clearing member firm.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +138,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade results from a novation event (the terms transfer, assignment are also used in the industry).</SimpleValue>
+            <SimpleValue>Indicates the trade results from a novation event (the terms transfer,
+					assignment are also used in the industry).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +150,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade results from a partial novation event (the terms transfer, assignment are also used in the industry).</SimpleValue>
+            <SimpleValue>Indicates the trade results from a partial novation event (the terms
+					transfer, assignment are also used in the industry).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -163,7 +173,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was created as a result of porting. ("Porting" is a type of novation in a cleared environment where the actual parties to the trade don't change, but one of the parties moves to a new clearing firm or account.)</SimpleValue>
+            <SimpleValue>Indicates the trade was created as a result of porting. ("Porting" is a
+					type of novation in a cleared environment where the actual parties to the trade
+					don't change, but one of the parties moves to a new clearing firm or
+					account.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -196,7 +209,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade results from a reorganization succession event.</SimpleValue>
+            <SimpleValue>Indicates the trade results from a reorganization succession
+					event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -207,7 +221,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade or trade package is the result of a trade transaction.</SimpleValue>
+            <SimpleValue>Indicates the trade or trade package is the result of a trade
+					transaction.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

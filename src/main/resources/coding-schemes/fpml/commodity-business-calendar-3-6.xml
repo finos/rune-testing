@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the commodity business calendar.</doc:definition>
          <doc:description>
-            <doc:paragraph>The commodity business calendar codes are based on the Section 7.2 of the 2005 ISDA Commodity Definitions, or exchange code, or some other codes.</doc:paragraph>
-            <doc:paragraph>Exchange codes could be added based on the ISO 10383 MIC code [https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.xls] according to the following rules: 1. it would be the acronym of the MIC. If acronym is not available, 2. it would be the MIC code. If the MIC code starts with an 'X', 3. the FpML AWG will compose the code.</doc:paragraph>
+            <doc:paragraph>The commodity business calendar codes are based on the Section 7.2 of the
+				2005 ISDA Commodity Definitions, or exchange code, or some other codes.</doc:paragraph>
+            <doc:paragraph>Exchange codes could be added based on the ISO 10383 MIC code
+				[https://www.iso20022.org/sites/default/files/ISO10383_MIC/ISO10383_MIC.xls]
+				according to the following rules: 1. it would be the acronym of the MIC. If acronym
+				is not available, 2. it would be the MIC code. If the MIC code starts with an 'X',
+				3. the FpML AWG will compose the code.</doc:paragraph>
          </doc:description>
          <doc:publicationDate>2020-02-04</doc:publicationDate>
       </Description>
@@ -57,7 +62,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Argus Media Fertilizer Reports. http://www.argusmedia.com/Fertilizer</SimpleValue>
+            <SimpleValue>Argus Media Fertilizer Reports.
+					http://www.argusmedia.com/Fertilizer</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -68,7 +74,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,7 +86,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -90,7 +98,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -101,7 +110,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -112,7 +122,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -123,7 +134,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -134,7 +146,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Argus US Products report. http://www.argusmedia.com/Petroleum/Petroleum-Products/Argus-US-Products</SimpleValue>
+            <SimpleValue>The Argus US Products report.
+					http://www.argusmedia.com/Petroleum/Petroleum-Products/Argus-US-Products</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -178,7 +191,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -189,7 +203,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar of the Bank Negara Malaysia Policy Committee.</SimpleValue>
+            <SimpleValue>The business calendar of the Bank Negara Malaysia Policy
+					Committee.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -200,7 +215,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar for the Belpex power exchange (www.belpex.be).</SimpleValue>
+            <SimpleValue>The business calendar for the Belpex power exchange
+					(www.belpex.be).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -222,7 +238,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -255,7 +272,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -266,7 +284,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -277,7 +296,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -288,7 +308,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>CMAI Global Plastics and Polymers Market Report. http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;rd=cmai</SimpleValue>
+            <SimpleValue>CMAI Global Plastics and Polymers Market Report.
+					http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;rd=cmai</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -299,7 +320,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -310,7 +332,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>CMAI Monomers Market Report. http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;rd=cmai</SimpleValue>
+            <SimpleValue>CMAI Monomers Market Report.
+					http://www.ihs.com/products/chemical/index.aspx?pu=1&amp;rd=cmai</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -321,7 +344,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -332,7 +356,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -343,7 +368,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -354,7 +380,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -365,7 +392,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -376,7 +404,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar for statistical publications by the by the United States Department of Energy (DOE).</SimpleValue>
+            <SimpleValue>The business calendar for statistical publications by the by the United
+					States Department of Energy (DOE).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -387,7 +416,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -420,7 +450,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -431,7 +462,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -497,7 +529,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>FERTECON Limited Information Services. http://fertecon.com/current_information_services.asp</SimpleValue>
+            <SimpleValue>FERTECON Limited Information Services.
+					http://fertecon.com/current_information_services.asp</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -508,7 +541,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Fertilizer Week. http://www.crugroup.com/market-analysis/products/fertilizerweek</SimpleValue>
+            <SimpleValue>Fertilizer Week.
+					http://www.crugroup.com/market-analysis/products/fertilizerweek</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -519,7 +553,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -530,7 +565,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -541,7 +577,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -552,7 +589,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -563,7 +601,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -574,7 +613,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -585,7 +625,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -607,7 +648,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -618,7 +660,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar oil and refined product contracts on ICE Futures Europe.</SimpleValue>
+            <SimpleValue>The business calendar oil and refined product contracts on ICE Futures
+					Europe.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -629,7 +672,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -640,7 +684,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar for publication of ICIS Benzene (Europe) data.</SimpleValue>
+            <SimpleValue>The business calendar for publication of ICIS Benzene (Europe)
+					data.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -651,7 +696,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar for publication of ICIS Ethylene (Europe) data.</SimpleValue>
+            <SimpleValue>The business calendar for publication of ICIS Ethylene (Europe)
+					data.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -662,7 +708,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar for publication of ICIS Polyproylene (Europe) data.</SimpleValue>
+            <SimpleValue>The business calendar for publication of ICIS Polyproylene (Europe)
+					data.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -673,7 +720,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -684,7 +732,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -695,7 +744,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -728,7 +778,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -739,7 +790,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -750,7 +802,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -761,7 +814,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -772,7 +826,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The London Platinum and Palladium Market in London on which members quote prices for the buying and selling of Platinum and Palladium.</SimpleValue>
+            <SimpleValue>The London Platinum and Palladium Market in London on which members quote
+					prices for the buying and selling of Platinum and Palladium.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -794,7 +849,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The business calendar for the N2EX UK power exchange (https://www.n2ex.com/aboutn2ex).</SimpleValue>
+            <SimpleValue>The business calendar for the N2EX UK power exchange
+					(https://www.n2ex.com/aboutn2ex).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -805,7 +861,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>NASDAQ-OMX (Formerly known as Nordpool). http://www.nasdaqomx.com/commodities</SimpleValue>
+            <SimpleValue>NASDAQ-OMX (Formerly known as Nordpool).
+					http://www.nasdaqomx.com/commodities</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -816,7 +873,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -838,7 +896,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -849,7 +908,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -860,7 +920,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Nuclear Market Review report as published by Trade tech. http://www.uranium.info/nuclear_market_review.php</SimpleValue>
+            <SimpleValue>The Nuclear Market Review report as published by Trade tech.
+					http://www.uranium.info/nuclear_market_review.php</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -871,7 +932,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -882,7 +944,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -893,7 +956,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -904,7 +968,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -915,7 +980,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -926,7 +992,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -937,7 +1004,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -948,7 +1016,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -959,7 +1028,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -981,7 +1051,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>PetroChemWire Publication Calendar. http://www.petrochemwire.com/</SimpleValue>
+            <SimpleValue>PetroChemWire Publication Calendar.
+					http://www.petrochemwire.com/</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -992,7 +1063,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1003,7 +1075,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1014,7 +1087,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1025,7 +1099,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1036,7 +1111,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1047,7 +1123,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1058,7 +1135,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1069,7 +1147,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1080,7 +1159,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1091,7 +1171,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1102,7 +1183,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Steel Index Iron Ore Service. http://www.thesteelindex.com/en/iron-ore</SimpleValue>
+            <SimpleValue>The Steel Index Iron Ore Service.
+					http://www.thesteelindex.com/en/iron-ore</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1113,7 +1195,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Steel Index Scrap Reference Prices. http://www.thesteelindex.com/en/scrapprices</SimpleValue>
+            <SimpleValue>The Steel Index Scrap Reference Prices.
+					http://www.thesteelindex.com/en/scrapprices</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1124,7 +1207,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Steel Index. http://www.thesteelindex.com/en/price-specifications</SimpleValue>
+            <SimpleValue>The Steel Index.
+					http://www.thesteelindex.com/en/price-specifications</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1135,7 +1219,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1146,7 +1231,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1157,7 +1243,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1168,7 +1255,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1179,7 +1267,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1190,7 +1279,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1212,7 +1302,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1223,7 +1314,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard and Poor's GSCI. http://us.spindices.com/index-family/commodities/sp-gsci</SimpleValue>
+            <SimpleValue>Standard and Poor's GSCI.
+					http://us.spindices.com/index-family/commodities/sp-gsci</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1234,7 +1326,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1256,7 +1349,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1267,7 +1361,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1278,7 +1373,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1289,7 +1385,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Ux Consulting Company. http://www.uxc.com/products/uxw_overview.aspx</SimpleValue>
+            <SimpleValue>The Ux Consulting Company.
+					http://www.uxc.com/products/uxw_overview.aspx</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1300,7 +1397,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions Relating To Commodity Reference Prices.</SimpleValue>
+            <SimpleValue>Per 2005 ISDA Commodity Definitions, Section 7.2 Certain Definitions
+					Relating To Commodity Reference Prices.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
