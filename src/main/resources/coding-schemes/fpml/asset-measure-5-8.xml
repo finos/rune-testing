@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>The type of measure about an asset. Used for escribing valuation, sensitivity, and risk measures.</doc:definition>
-         <doc:publicationDate>2021-05-06</doc:publicationDate>
+         <doc:definition>The type of measure about an asset. Used for escribing valuation,
+			sensitivity, and risk measures.</doc:definition>
+         <doc:publicationDate>2023-06-21</doc:publicationDate>
       </Description>
    </Annotation>
    <Identification>
       <ShortName>assetMeasureScheme</ShortName>
-      <Version>5-6</Version>
+      <Version>5-8</Version>
       <CanonicalUri>http://www.fpml.org/coding-scheme/asset-measure</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/asset-measure-5-6</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/asset-measure-5-6.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/asset-measure-5-8</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/asset-measure-5-8.xml</LocationUri>
    </Identification>
    <ColumnSet>
       <Column Id="Code" Use="required">
@@ -42,7 +43,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The coupon accrued on the underlying bonds from that the most recent bond coupon payment date until the valuation date.</SimpleValue>
+            <SimpleValue>The coupon accrued on the underlying bonds from that the most recent bond
+					coupon payment date until the valuation date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +55,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The value of interest accrued from the previous payment to the valuation date.</SimpleValue>
+            <SimpleValue>The value of interest accrued from the previous payment to the valuation
+					date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +78,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The secondary price field as required by CFTC's 17 CFR Part 43.</SimpleValue>
+            <SimpleValue>The secondary price field as required by CFTC's 17 CFR Part
+					43.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,7 +101,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a point change shift in the credit spread.</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a point change shift in the credit
+					spread.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,7 +113,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a point change shift in the default probability.</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a point change shift in the default
+					probability.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -119,7 +125,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in interest rate sensitivity caused by a single point change in the yield curve (IR Gamma).</SimpleValue>
+            <SimpleValue>Change in interest rate sensitivity caused by a single point change in
+					the yield curve (IR Gamma).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +137,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a single point change in the yield curve (IR Delta).</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a single point change in the yield curve
+					(IR Delta).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +149,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a point change shift in the volatility matrix (vega).</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a point change shift in the volatility
+					matrix (vega).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +161,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a point change shift in the credit default recovery rate.</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a point change shift in the credit default
+					recovery rate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -163,7 +173,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The effective strike price of the option as derived from the underlying asset swap. (Used for options on asset swaps).</SimpleValue>
+            <SimpleValue>The effective strike price of the option as derived from the underlying
+					asset swap. (Used for options on asset swaps).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -174,7 +185,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Systematic risk = Ratio of expected return to expected return of the market</SimpleValue>
+            <SimpleValue>Systematic risk = Ratio of expected return to expected return of the
+					market</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +197,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A monetary amount paid or received. For example, a monetary amount payable on the valuation date, or a monetary amount payable on another specified date, such as a payment date.</SimpleValue>
+            <SimpleValue>A monetary amount paid or received. For example, a monetary amount
+					payable on the valuation date, or a monetary amount payable on another specified
+					date, such as a payment date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -196,7 +210,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The CashEquivalentLocalCurrency converted to the reporting currency (e.g. USD) at the spot exchange rate.</SimpleValue>
+            <SimpleValue>The CashEquivalentLocalCurrency converted to the reporting currency (e.g.
+					USD) at the spot exchange rate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -207,7 +222,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The aggregated equivalent FX position in a specific currency. This includes the NPVs payable in that currency, plus equivalent positions generated by trades price sensitivity to FX rates.</SimpleValue>
+            <SimpleValue>The aggregated equivalent FX position in a specific currency. This
+					includes the NPVs payable in that currency, plus equivalent positions generated
+					by trades price sensitivity to FX rates.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -218,7 +235,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, excluding accrued interest, excluding commissions, as observed on a market.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, excluding accrued
+					interest, excluding commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +247,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, excluding accrued interest, excluding commissions, for settlement purposes.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, excluding accrued
+					interest, excluding commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -240,7 +259,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The reset price of an asset, expressed in par value, excluding accrued interest, excluding commissions.</SimpleValue>
+            <SimpleValue>The reset price of an asset, expressed in par value, excluding accrued
+					interest, excluding commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -251,7 +271,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, excluding accrued interest, including commissions, as observed on a market.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, excluding accrued
+					interest, including commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -262,7 +283,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, excluding accrued interest, including commissions, for settlement purposes.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, excluding accrued
+					interest, including commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +295,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The reset price of an asset, expressed in par value, excluding accrued interest, including commissions.</SimpleValue>
+            <SimpleValue>The reset price of an asset, expressed in par value, excluding accrued
+					interest, including commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -284,7 +307,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>An adjustment to the price of an instrument (such as a future) to compensate for its lack of convexity.</SimpleValue>
+            <SimpleValue>An adjustment to the price of an instrument (such as a future) to
+					compensate for its lack of convexity.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -295,7 +319,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The spread between the return of a credit instrument and of a corresponding risk free instrument.</SimpleValue>
+            <SimpleValue>The spread between the return of a credit instrument and of a
+					corresponding risk free instrument.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -361,7 +386,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, including accrued interest, excluding commissions, as observed on a market.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, including accrued
+					interest, excluding commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -372,7 +398,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, including accrued interest, excluding commissions, for settlement purposes.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, including accrued
+					interest, excluding commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -383,7 +410,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The reset price of an asset, expressed in par value, including accrued interest, excluding commissions.</SimpleValue>
+            <SimpleValue>The reset price of an asset, expressed in par value, including accrued
+					interest, excluding commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -394,7 +422,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, including accrued interest, including commissions, as observed on a market.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, including accrued
+					interest, including commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -405,7 +434,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an asset, expressed in par value, including accrued interest, including commissions, for settlement purposes.</SimpleValue>
+            <SimpleValue>The price of an asset, expressed in par value, including accrued
+					interest, including commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -416,7 +446,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The reset price of an asset, expressed in par value, including accrued interest, including commissions.</SimpleValue>
+            <SimpleValue>The reset price of an asset, expressed in par value, including accrued
+					interest, including commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -427,7 +458,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The dividend payout ratio, expressed as a decimal (e.g. 0.03 = 3%) per year.</SimpleValue>
+            <SimpleValue>The dividend payout ratio, expressed as a decimal (e.g. 0.03 = 3%) per
+					year.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -438,7 +470,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Capital which is kept aside to compensate for unexpected losses due to credit risk. (VAR for 1 year and 99.97%)</SimpleValue>
+            <SimpleValue>Capital which is kept aside to compensate for unexpected losses due to
+					credit risk. (VAR for 1 year and 99.97%)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -449,7 +482,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Unrealized profit or loss on an equity price based stream or product. This is based on the difference between current market price and the reset/reference price.</SimpleValue>
+            <SimpleValue>Unrealized profit or loss on an equity price based stream or product.
+					This is based on the difference between current market price and the
+					reset/reference price.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -460,7 +495,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Economic Value Added = (Spread + Fees - Expected loss - Operating cost) -ROE*(Capital at risk)</SimpleValue>
+            <SimpleValue>Economic Value Added = (Spread + Fees - Expected loss - Operating cost)
+					-ROE*(Capital at risk)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -471,7 +507,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A numerical price (usually a stock or bond price or a commodity price) that is used to price a derivative.</SimpleValue>
+            <SimpleValue>A numerical price (usually a stock or bond price or a commodity price)
+					that is used to price a derivative.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -482,7 +519,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A numerical rate (usually an interest or FX rate) that is used to price a derivative.</SimpleValue>
+            <SimpleValue>A numerical rate (usually an interest or FX rate) that is used to price a
+					derivative.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -493,7 +531,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Funding-related interest charges associated with profit or loss on realized gains that have not yet been exchanged.</SimpleValue>
+            <SimpleValue>Funding-related interest charges associated with profit or loss on
+					realized gains that have not yet been exchanged.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -537,7 +576,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The implied volatility of the underlying asset from the valuation date to the expiration of the option.</SimpleValue>
+            <SimpleValue>The implied volatility of the underlying asset from the valuation date to
+					the expiration of the option.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -548,7 +588,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Accrued interest on realized gains, for portfolio swap agreements where unwind profit/loss not exchanged until reset.</SimpleValue>
+            <SimpleValue>Accrued interest on realized gains, for portfolio swap agreements where
+					unwind profit/loss not exchanged until reset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -559,7 +600,20 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The average excess return on a portfolio relative to the excess return predicted by CAPM</SimpleValue>
+            <SimpleValue>The average excess return on a portfolio relative to the excess return
+					predicted by CAPM</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>LastAvailableSpotPrice</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>The last available spot price at the time of the transaction of the
+					underlying asset with no spread.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -614,7 +668,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price of an instrument as quoted on an exchange or similar market.</SimpleValue>
+            <SimpleValue>The price of an instrument as quoted on an exchange or similar
+					market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -625,7 +680,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Sharpe ratio where both return and risk are defined relative to a benchmark portfolio</SimpleValue>
+            <SimpleValue>Sharpe ratio where both return and risk are defined relative to a
+					benchmark portfolio</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -658,7 +714,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Net Present Value = sum of present values of all cash flows; excludes cash flows paid or received on the valution date.</SimpleValue>
+            <SimpleValue>Net Present Value = sum of present values of all cash flows; excludes
+					cash flows paid or received on the valution date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -680,7 +737,20 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Used for bond positions to report the product of the open units and the par value of the bond.</SimpleValue>
+            <SimpleValue>Used for bond positions to report the product of the open units and the
+					par value of the bond.</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PackagePrice</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Traded price of the entire package in which the reported derivative
+					transaction is a component.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -691,7 +761,11 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Traded price of the entire package in which the reported derivative transaction is a component of a package transaction. Package transaction price when the price of the package is expressed as a spread, difference between two reference prices. See CFTC Amendments to Part 45 for full definition.</SimpleValue>
+            <SimpleValue>Traded price of the entire package in which the reported derivative
+					transaction is a component of a package transaction. Package transaction price
+					when the price of the package is expressed as a spread, difference between two
+					reference prices. See CFTC Amendments to Part 45 for full
+					definition.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -702,7 +776,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Price adjustment interest ... the amount of interest owing on the NPV over the previous calculation period (use in clearing models).</SimpleValue>
+            <SimpleValue>Price adjustment interest ... the amount of interest owing on the NPV
+					over the previous calculation period (use in clearing models).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -713,7 +788,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a parallel shift in the credit spread.</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a parallel shift in the credit
+					spread.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -724,7 +800,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a parallel shift in the default probability.</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a parallel shift in the default
+					probability.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -735,7 +812,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a parallel shift in the yield curve/risk free rate of interest (IR Delta, rho).</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a parallel shift in the yield curve/risk
+					free rate of interest (IR Delta, rho).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -746,7 +824,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a parallel shift in the volatility matrix (vega).</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a parallel shift in the volatility matrix
+					(vega).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -757,7 +836,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a parallel shift in the credit default recovery rate.</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a parallel shift in the credit default
+					recovery rate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -790,7 +870,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A fee paid or received to purchase a contract (usually an option).</SimpleValue>
+            <SimpleValue>A fee paid or received to purchase a contract (usually an
+					option).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -812,7 +893,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Net Present Value for prior day/processing run = sum of present values of all cash flows; excludes cash flows paid or received on the valution date.</SimpleValue>
+            <SimpleValue>Net Present Value for prior day/processing run = sum of present values of
+					all cash flows; excludes cash flows paid or received on the valution
+					date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -823,7 +906,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Risk adjusted return on capital = (Adjusted income)/(Capital at risk)</SimpleValue>
+            <SimpleValue>Risk adjusted return on capital = (Adjusted income)/(Capital at
+					risk)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -834,7 +918,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Realized profit or loss that has not yet been exchanged. This is based on positions that have been closed out but not settled.</SimpleValue>
+            <SimpleValue>Realized profit or loss that has not yet been exchanged. This is based on
+					positions that have been closed out but not settled.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -867,7 +952,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The estimated amount that a creditor would receive in final satisfaction of the claims on a defaulted credit.</SimpleValue>
+            <SimpleValue>The estimated amount that a creditor would receive in final satisfaction
+					of the claims on a defaulted credit.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -889,7 +975,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The return from an asset expressed as a percentage of the amount of economic capital involved in holding that asset.</SimpleValue>
+            <SimpleValue>The return from an asset expressed as a percentage of the amount of
+					economic capital involved in holding that asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -900,7 +987,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The return from an asset expressed as a percentage of the amount of regulatory capital involved in holding that asset.</SimpleValue>
+            <SimpleValue>The return from an asset expressed as a percentage of the amount of
+					regulatory capital involved in holding that asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -911,7 +999,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Measures the amount of risk concentrated in individual counterparties, similar assets, common geographical locations, or common industries.</SimpleValue>
+            <SimpleValue>Measures the amount of risk concentrated in individual counterparties,
+					similar assets, common geographical locations, or common industries.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -933,7 +1022,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Return on risk-adjusted capital = (Adjusted income)/(BIS risk - based capital requirement)</SimpleValue>
+            <SimpleValue>Return on risk-adjusted capital = (Adjusted income)/(BIS risk - based
+					capital requirement)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -966,7 +1056,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The ratio between portfolio return in excess of the risk-free return and portfolio risk (measured as volatility)</SimpleValue>
+            <SimpleValue>The ratio between portfolio return in excess of the risk-free return and
+					portfolio risk (measured as volatility)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -999,7 +1090,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Similar to Sharpe Ratio but risk defined as downside risk rather than portfolio variance.</SimpleValue>
+            <SimpleValue>Similar to Sharpe Ratio but risk defined as downside risk rather than
+					portfolio variance.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1021,7 +1113,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price, exclusive of any commission, at which a transaction has been conducted.</SimpleValue>
+            <SimpleValue>The price, exclusive of any commission, at which a transaction has been
+					conducted.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1032,7 +1125,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The actual price (inclusive of commissions, when applicable) at which a transaction has been conducted.</SimpleValue>
+            <SimpleValue>The actual price (inclusive of commissions, when applicable) at which a
+					transaction has been conducted.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1054,7 +1148,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Similar to Sharpe Ratio but risk defined as CAPM systematic risk (beta) rather than portfolio variance.</SimpleValue>
+            <SimpleValue>Similar to Sharpe Ratio but risk defined as CAPM systematic risk (beta)
+					rather than portfolio variance.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1065,7 +1160,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Change in NPV/value caused by a change in valuation date (theta).</SimpleValue>
+            <SimpleValue>Change in NPV/value caused by a change in valuation date
+					(theta).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1076,7 +1172,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Value at Risk is the amount of money that could be lost over a pre-defined period of time with a a given level of confidence.</SimpleValue>
+            <SimpleValue>Value at Risk is the amount of money that could be lost over a
+					pre-defined period of time with a a given level of confidence.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1087,7 +1184,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Amount required to be posted to accommodate change in net value of trade or portfolio.</SimpleValue>
+            <SimpleValue>Amount required to be posted to accommodate change in net value of trade
+					or portfolio.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1098,7 +1196,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The underlying price volatility used for calculating the value of this asset.</SimpleValue>
+            <SimpleValue>The underlying price volatility used for calculating the value of this
+					asset.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

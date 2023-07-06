@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>The method jointly employed by the Credit Extender and Limit Checker for a given Credit User through which the credit value of a trade is verified to be within the credit limit prior to the placement of an order and the execution of a trade. Defines the pre-execution model.</doc:definition>
+         <doc:definition>The method jointly employed by the Credit Extender and Limit Checker for a
+			given Credit User through which the credit value of a trade is verified to be within the
+			credit limit prior to the placement of an order and the execution of a trade. Defines
+			the pre-execution model.</doc:definition>
          <doc:publicationDate>2013-06-07</doc:publicationDate>
       </Description>
    </Annotation>

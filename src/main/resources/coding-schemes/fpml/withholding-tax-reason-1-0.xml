@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>A list of reasons for withholding tax being applied to a cash flow.</doc:definition>
+         <doc:definition>A list of reasons for withholding tax being applied to a cash
+			flow.</doc:definition>
          <doc:publicationDate>2015-07-15</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,16 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Tax that is levied on investment income, at an established tax rate, as the investor/lender withdraws it. Backup withholding helps to ensure that government tax-collecting agencies (such as the IRS or Canada Revenue Agency) will be able to receive income taxes owed to them from investors' earnings. Backup withholding may be applied when an investor has not met rules regarding taxpayer identification numbers (TIN). At the time the investor withdraws his or her investment income, the amount mandated by the backup withholding tax is remitted to the government, providing the tax-collecting body with the required funds immediately, but leaving the investor with less short-term cash flow.</SimpleValue>
+            <SimpleValue>Tax that is levied on investment income, at an established tax rate, as
+					the investor/lender withdraws it. Backup withholding helps to ensure that
+					government tax-collecting agencies (such as the IRS or Canada Revenue Agency)
+					will be able to receive income taxes owed to them from investors' earnings.
+					Backup withholding may be applied when an investor has not met rules regarding
+					taxpayer identification numbers (TIN). At the time the investor withdraws his or
+					her investment income, the amount mandated by the backup withholding tax is
+					remitted to the government, providing the tax-collecting body with the required
+					funds immediately, but leaving the investor with less short-term cash
+					flow.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +63,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Chapter 3 withhholding tax applies at a rate of 30% (subject to reduction by treaty) to all payments of fixed or determinable annual or periodical ("FDAP") income.</SimpleValue>
+            <SimpleValue>Chapter 3 withhholding tax applies at a rate of 30% (subject to reduction
+					by treaty) to all payments of fixed or determinable annual or periodical
+					("FDAP") income.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +76,12 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Chapter 4 withholding tax, Foreign Account Tax Compliance Act ("FATCA"), effective July 2014, imposes a 30% withholding tax on payments to foreign financial institutions that do not participate in the FATCA scheme as implemented in the U.S. or their home jurisdiction, as the case may be. Chapter 4 withholding tax is not subject to reduction by treaty and the portfolio interest exemption is not applicable.</SimpleValue>
+            <SimpleValue>Chapter 4 withholding tax, Foreign Account Tax Compliance Act ("FATCA"),
+					effective July 2014, imposes a 30% withholding tax on payments to foreign
+					financial institutions that do not participate in the FATCA scheme as
+					implemented in the U.S. or their home jurisdiction, as the case may be. Chapter
+					4 withholding tax is not subject to reduction by treaty and the portfolio
+					interest exemption is not applicable.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +92,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>An alien is any individual who is not a U.S. citizen or U.S. national. A nonresident alien is an alien who has not passed the green card test or the substantial presence test. </SimpleValue>
+            <SimpleValue>An alien is any individual who is not a U.S. citizen or U.S. national. A
+					nonresident alien is an alien who has not passed the green card test or the
+					substantial presence test. </SimpleValue>
          </Value>
       </Row>
       <Row>

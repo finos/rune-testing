@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>A structure used to uniquely identify a loan covenant obligation metric type.</doc:definition>
+         <doc:definition>A structure used to uniquely identify a loan covenant obligation metric
+			type.</doc:definition>
          <doc:publicationDate>2021-06-25</doc:publicationDate>
          <doc:status>working-draft</doc:status>
       </Description>
@@ -54,7 +55,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Debt Service Ratio: the ratio of EBITDA to scheduled debt payments (principal plus interest).</SimpleValue>
+            <SimpleValue>Debt Service Ratio: the ratio of EBITDA to scheduled debt payments
+					(principal plus interest).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -65,7 +67,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Fixed Charge Coverage Ratio: the ratio of EBITDA to Debt Service plus capital expenditure plus taxes plus dividends.</SimpleValue>
+            <SimpleValue>Fixed Charge Coverage Ratio: the ratio of EBITDA to Debt Service plus
+					capital expenditure plus taxes plus dividends.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -76,7 +79,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Interest Coverage Ratio: the ratio of EBITDA to interest expenses.</SimpleValue>
+            <SimpleValue>Interest Coverage Ratio: the ratio of EBITDA to interest
+					expenses.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -87,7 +91,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Lease Payments: the amount of lease payments, usually expressed as a specified amount or % of EBITDA.</SimpleValue>
+            <SimpleValue>Lease Payments: the amount of lease payments, usually expressed as a
+					specified amount or % of EBITDA.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -98,7 +103,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Leverage Ratio: the ratio of debt at a fiscal end date (usually quarter-end) to EBITDA for the previous two or four quarters.</SimpleValue>
+            <SimpleValue>Leverage Ratio: the ratio of debt at a fiscal end date (usually
+					quarter-end) to EBITDA for the previous two or four quarters.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -109,7 +115,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Net Worth: the net worth (usually stock value + assets + x% of revenue) of borrower and subsidiaries.</SimpleValue>
+            <SimpleValue>Net Worth: the net worth (usually stock value + assets + x% of revenue)
+					of borrower and subsidiaries.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -120,7 +127,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Net Worth Ratio: ratio of total liabilities to tangible net worth.</SimpleValue>
+            <SimpleValue>Net Worth Ratio: ratio of total liabilities to tangible net
+					worth.</SimpleValue>
          </Value>
       </Row>
       <Row>

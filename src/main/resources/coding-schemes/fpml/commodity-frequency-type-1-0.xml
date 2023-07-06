@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the frequency with which a price shall be observed.</doc:definition>
+         <doc:definition>Specifies the frequency with which a price shall be
+			observed.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -41,7 +42,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price will be observed on all days (day type is defined in the message) in the Calculation Period.</SimpleValue>
+            <SimpleValue>The price will be observed on all days (day type is defined in the
+					message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -52,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price will be observed only on the first day (day type is defined in the message) in the Calculation Period.</SimpleValue>
+            <SimpleValue>The price will be observed only on the first day (day type is defined in
+					the message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -63,7 +66,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price will be observed only on the last day (day type is defined in the message) in the Calculation Period.</SimpleValue>
+            <SimpleValue>The price will be observed only on the last day (day type is defined in
+					the message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -74,7 +78,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The price will be observed only on the penultimate day (day type is defined in the message) in the Calculation Period.</SimpleValue>
+            <SimpleValue>The price will be observed only on the penultimate day (day type is
+					defined in the message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

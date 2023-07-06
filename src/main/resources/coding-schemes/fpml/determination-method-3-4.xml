@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the method according to which an amount or a date is determined.</doc:definition>
+         <doc:definition>Specifies the method according to which an amount or a date is
+			determined.</doc:definition>
          <doc:publicationDate>2015-07-15</doc:publicationDate>
       </Description>
    </Annotation>
@@ -97,7 +98,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The initial Index Level is the level of the Expiring Contract as provided in the Master Confirmation.</SimpleValue>
+            <SimpleValue>The initial Index Level is the level of the Expiring Contract as provided
+					in the Master Confirmation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -174,7 +176,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Date on which the strike is determined in respect of a forward starting swap.</SimpleValue>
+            <SimpleValue>Date on which the strike is determined in respect of a forward starting
+					swap.</SimpleValue>
          </Value>
       </Row>
       <Row>

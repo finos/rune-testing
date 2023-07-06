@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>A structure used to uniquely identify a financial metric type, described by a scheme.</doc:definition>
+         <doc:definition>A structure used to uniquely identify a financial metric type, described
+			by a scheme.</doc:definition>
          <doc:publicationDate>2021-06-25</doc:publicationDate>
          <doc:status>working-draft</doc:status>
       </Description>
@@ -65,7 +66,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of accrued salaries and wages.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of accrued salaries and
+					wages.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -131,7 +133,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of current portion of long term debt.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of current portion of long term
+					debt.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -153,7 +156,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of earnings before interest and taxes.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of earnings before interest and
+					taxes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -164,7 +168,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of earnings before interest, taxes, and depreciation.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of earnings before interest, taxes, and
+					depreciation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -175,7 +180,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of earnings before interest, taxes, depreciation, and amortization.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of earnings before interest, taxes,
+					depreciation, and amortization.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -186,7 +192,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of earnings before interest, taxes, depreciation, amortization, and restructuring or rent costs.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of earnings before interest, taxes,
+					depreciation, amortization, and restructuring or rent costs.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -285,7 +292,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of property, plant, and equipment.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of property, plant, and
+					equipment.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -307,7 +315,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a financial metric type of selling, general, and administrative expenses.</SimpleValue>
+            <SimpleValue>Indicates a financial metric type of selling, general, and administrative
+					expenses.</SimpleValue>
          </Value>
       </Row>
       <Row>

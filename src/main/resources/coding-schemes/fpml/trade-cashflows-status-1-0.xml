@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Status of the set of payments once the matching process is performed.</doc:definition>
+         <doc:definition>Status of the set of payments once the matching process is
+			performed.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -41,7 +42,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>No corresponding payment (or set of payments) was found in "your" submitted sets.</SimpleValue>
+            <SimpleValue>No corresponding payment (or set of payments) was found in "your"
+					submitted sets.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -52,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Both sides have the same payment (or set of payments) information within matching policies.</SimpleValue>
+            <SimpleValue>Both sides have the same payment (or set of payments) information within
+					matching policies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -63,7 +66,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Both sides have the same payment (or set of payments), but there are differences greater than the acceptable tolerance in the matching policies.</SimpleValue>
+            <SimpleValue>Both sides have the same payment (or set of payments), but there are
+					differences greater than the acceptable tolerance in the matching
+					policies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -74,7 +79,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>No corresponding payment (or set of payments) was found in the "other party's" submitted sets.</SimpleValue>
+            <SimpleValue>No corresponding payment (or set of payments) was found in the "other
+					party's" submitted sets.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
