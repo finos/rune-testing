@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies the type of business event that triggered the termination of this trade. This is used to provide additional detail about how or why a trade terminatated, particularly when this is not self-evident. For example, it can indicated that the trade was terminated as a result of netting, or as a result of a novation or transfer party initiated by a third party.</doc:definition>
+         <doc:definition>Specifies the type of business event that triggered the termination of
+			this trade. This is used to provide additional detail about how or why a trade
+			terminatated, particularly when this is not self-evident. For example, it can indicated
+			that the trade was terminated as a result of netting, or as a result of a novation or
+			transfer party initiated by a third party.</doc:definition>
          <doc:publicationDate>2015-12-14</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +46,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (AdditionalDisruptionEvents).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(AdditionalDisruptionEvents).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +58,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an allocation.</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an
+					allocation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +70,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an amendment. (Normally an amendment should be represented directly as an amendment event; this originating event reason is provided to cover the case where a system must cancel and rebook the trade as a result of the amendment.)</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an amendment. (Normally
+					an amendment should be represented directly as an amendment event; this
+					originating event reason is provided to cover the case where a system must
+					cancel and rebook the trade as a result of the amendment.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +84,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (ChangeInLaw).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(ChangeInLaw).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +96,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of a credit event.</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of a credit
+					event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,7 +108,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (Delisting).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(Delisting).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,7 +120,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an option exercise event.</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an option exercise
+					event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -119,7 +132,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (FailureToDeliver).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(FailureToDeliver).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +144,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (ForeignOwnershipEvent).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(ForeignOwnershipEvent).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +156,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of full netting. (All netted trades offset each other exactly and as a result there was no resulting trade.)</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of full netting. (All
+					netted trades offset each other exactly and as a result there was no resulting
+					trade.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +169,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (HedgingDisruption).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(HedgingDisruption).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -163,7 +181,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (IncreasedCostOfHedging).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(IncreasedCostOfHedging).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -174,7 +193,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (IncreasedCostOfStockBorrow).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(IncreasedCostOfStockBorrow).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +205,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (IndexAdjustmentEvents).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(IndexAdjustmentEvents).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -196,7 +217,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (InsolvencyFiling).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(InsolvencyFiling).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -207,7 +229,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (LossOfStockBorrow).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(LossOfStockBorrow).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -218,7 +241,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (MergerEvents).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(MergerEvents).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +253,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (NationalisationOrInsolvency).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(NationalisationOrInsolvency).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -251,7 +276,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of a novation event (the terms transfer, assignment are also used in the industry).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of a novation event (the
+					terms transfer, assignment are also used in the industry).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -262,7 +288,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of partial netting. (There was a residual trade as a result of netting.)</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of partial netting. (There
+					was a residual trade as a result of netting.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +300,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of portfolio compression.</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of portfolio
+					compression.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -284,7 +312,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of porting. ("Porting" is a type of novation in a cleared environment where the actual parties to the trade don't change, but one of the parties moves to a new clearing firm or account.)</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of porting. ("Porting" is
+					a type of novation in a cleared environment where the actual parties to the
+					trade don't change, but one of the parties moves to a new clearing firm or
+					account.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -295,7 +326,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of strategic restructuring.</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of strategic
+					restructuring.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -306,7 +338,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of a renaming succession event.</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of a renaming succession
+					event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -317,7 +350,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of a reorganization succession event.</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of a reorganization
+					succession event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -328,7 +362,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event (TenderOffer).</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
+					(TenderOffer).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -339,7 +374,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated because it was voided. (Trade was voided before it was cleared/confirmed.)</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated because it was voided. (Trade was
+					voided before it was cleared/confirmed.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -350,7 +386,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the trade was terminated as a result of withdrawal. (One party withdrew from the trade prior to confirmation or clearing of the trade.)</SimpleValue>
+            <SimpleValue>Indicates the trade was terminated as a result of withdrawal. (One party
+					withdrew from the trade prior to confirmation or clearing of the
+					trade.)</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

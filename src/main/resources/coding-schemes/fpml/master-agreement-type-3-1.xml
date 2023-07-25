@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines the type of the master agreement governing the transaction.</doc:definition>
+         <doc:definition>Defines the type of the master agreement governing the
+			transaction.</doc:definition>
          <doc:publicationDate>2018-09-04</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>AFB Master Agreement for Foreign Exchange and Derivatives Transactions</SimpleValue>
+            <SimpleValue>AFB Master Agreement for Foreign Exchange and Derivatives
+					Transactions</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +55,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A Bespoke (custom) Master Agreement, including one-off agreements for transactions</SimpleValue>
+            <SimpleValue>A Bespoke (custom) Master Agreement, including one-off agreements for
+					transactions</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,7 +100,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>EFET General Agreement Concerning the Delivery and Acceptance of Electricity</SimpleValue>
+            <SimpleValue>EFET General Agreement Concerning the Delivery and Acceptance of
+					Electricity</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,7 +112,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>EFET General Agreement Concerning The Delivery And Acceptance of Natural Gas</SimpleValue>
+            <SimpleValue>EFET General Agreement Concerning The Delivery And Acceptance of Natural
+					Gas</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -119,7 +124,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>European Master Agreement and the Derivatives Annex (Banking Federation of the European Union)</SimpleValue>
+            <SimpleValue>European Master Agreement and the Derivatives Annex (Banking Federation
+					of the European Union)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +136,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Master Agreement Relating to transactions on Forward Financial Instruments (Federation Bancaire Francaise)</SimpleValue>
+            <SimpleValue>Master Agreement Relating to transactions on Forward Financial
+					Instruments (Federation Bancaire Francaise)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +148,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>GasEDI Base Contract for Short-term Sale and Purchase of Natural Gas</SimpleValue>
+            <SimpleValue>GasEDI Base Contract for Short-term Sale and Purchase of Natural
+					Gas</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +160,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>German Master Agreement for Financial derivatives and Addendum for Options on Stock Exchange Indices or Securities</SimpleValue>
+            <SimpleValue>German Master Agreement for Financial derivatives and Addendum for
+					Options on Stock Exchange Indices or Securities</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -207,7 +216,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>International Emissions Trading Association Emissions Reduction Purchase Agreement</SimpleValue>
+            <SimpleValue>International Emissions Trading Association Emissions Reduction Purchase
+					Agreement</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -218,7 +228,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>International Emissions Trading Association Emissions Trading Master Agreement</SimpleValue>
+            <SimpleValue>International Emissions Trading Association Emissions Trading Master
+					Agreement</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +240,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>International Emissions Trading Association International Emissions Trading Master Agreement</SimpleValue>
+            <SimpleValue>International Emissions Trading Association International Emissions
+					Trading Master Agreement</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -295,7 +307,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>International Bullion Master Agreement Terms published by the London Bullion Market Association</SimpleValue>
+            <SimpleValue>International Bullion Master Agreement Terms published by the London
+					Bullion Market Association</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -350,7 +363,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Documentation for Derivative Transactions on the Russian Financial Markets</SimpleValue>
+            <SimpleValue>Standard Documentation for Derivative Transactions on the Russian
+					Financial Markets</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -361,7 +375,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Master Agreement and Contractual Terms for Repurchase Agreements on the Russian Financial Market</SimpleValue>
+            <SimpleValue>Master Agreement and Contractual Terms for Repurchase Agreements on the
+					Russian Financial Market</SimpleValue>
          </Value>
       </Row>
       <Row>

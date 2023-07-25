@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines a scheme of values for specifying the type of corporate action.</doc:definition>
+         <doc:definition>Defines a scheme of values for specifying the type of corporate
+			action.</doc:definition>
          <doc:publicationDate>2016-06-13</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a Backward Induction method used to evaluate the price of an asset. Backward induction is the process of reasoning backwards in time, from the end of a problem or situation, to determine a sequence of optimal actions.</SimpleValue>
+            <SimpleValue>Indicates a Backward Induction method used to evaluate the price of an
+					asset. Backward induction is the process of reasoning backwards in time, from
+					the end of a problem or situation, to determine a sequence of optimal
+					actions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +57,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a Closed Form model is used to evaluate the price of an asset. In mathematics, an expression is said to be a closed-form expression if it can be expressed analytically in terms of a finite number of certain "well-known" functions.</SimpleValue>
+            <SimpleValue>Indicates a Closed Form model is used to evaluate the price of an asset.
+					In mathematics, an expression is said to be a closed-form expression if it can
+					be expressed analytically in terms of a finite number of certain "well-known"
+					functions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +71,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the market value as obtained by forecasting cash flows and discounting them to the present using a risk free rate of interest, without requiring probabilistic assumptions or models. </SimpleValue>
+            <SimpleValue>Indicates the market value as obtained by forecasting cash flows and
+					discounting them to the present using a risk free rate of interest, without
+					requiring probabilistic assumptions or models. </SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +84,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates the value is calculated based on an internal pricing model (e.g. Mark to Model).</SimpleValue>
+            <SimpleValue>Indicates the value is calculated based on an internal pricing model
+					(e.g. Mark to Model).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +96,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a Monte Carlo method used to evaluate the price of an asset. The Method encompasses any technique of statistical sampling employed to approximate solutions to quantitative problems.</SimpleValue>
+            <SimpleValue>Indicates a Monte Carlo method used to evaluate the price of an asset.
+					The Method encompasses any technique of statistical sampling employed to
+					approximate solutions to quantitative problems.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

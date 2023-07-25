@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Collateralization Level. Indicates whether the trade is collateralized at the individual trade level, the portfolio level, or position level.</doc:definition>
+         <doc:definition>Collateralization Level. Indicates whether the trade is collateralized at
+			the individual trade level, the portfolio level, or position level.</doc:definition>
          <doc:publicationDate>2019-08-02</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,12 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Code indicates collateralized exposure calculated on a set of trades or transactions (more than 1) identified by a portfolio ID. The collateral exposure is based on the net position of the combined set of transactions rather than on a trade-by-trade basis. Value matches to CPMI-IOSCO CDE, CFTC Part 45 (2019), EMIR, and MIFID 'Portfolio' values, and to SFTR 'Collateralisation of net exposure' = 'True' value.</SimpleValue>
+            <SimpleValue>Code indicates collateralized exposure calculated on a set of trades or
+					transactions (more than 1) identified by a portfolio ID. The collateral exposure
+					is based on the net position of the combined set of transactions rather than on
+					a trade-by-trade basis. Value matches to CPMI-IOSCO CDE, CFTC Part 45 (2019),
+					EMIR, and MIFID 'Portfolio' values, and to SFTR 'Collateralisation of net
+					exposure' = 'True' value.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +59,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Code indicates collateralized exposure calculated on a trade by trade basis. Value matches CPMI-IOSCO CDE, CFTC Part 45 (2019), EMIR, and MIFID 'Trade' value and to SFTR 'Collateralisation of net exposure' = 'False' value.</SimpleValue>
+            <SimpleValue>Code indicates collateralized exposure calculated on a trade by trade
+					basis. Value matches CPMI-IOSCO CDE, CFTC Part 45 (2019), EMIR, and MIFID
+					'Trade' value and to SFTR 'Collateralisation of net exposure' = 'False'
+					value.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

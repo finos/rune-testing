@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>The purpose of a person or business unit in relation to an asset or assets.</doc:definition>
+         <doc:definition>The purpose of a person or business unit in relation to an asset or
+			assets.</doc:definition>
          <doc:publicationDate>2017-12-22</doc:publicationDate>
       </Description>
    </Annotation>
@@ -53,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Brokerage - Indicates details related to the broker/dealer relationship.</SimpleValue>
+            <SimpleValue>Brokerage - Indicates details related to the broker/dealer
+					relationship.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +66,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>CallBack - Indicates details related to the team that verifies settlement instructions (i.e. the 'callback' team).</SimpleValue>
+            <SimpleValue>CallBack - Indicates details related to the team that verifies settlement
+					instructions (i.e. the 'callback' team).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +78,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Credit - Indicates details for a specific credit (asset), usually a business contact that is involved in structuring the syndicated loan deal or facility.</SimpleValue>
+            <SimpleValue>Credit - Indicates details for a specific credit (asset), usually a
+					business contact that is involved in structuring the syndicated loan deal or
+					facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +91,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Custody - Indicates details related to the custodian relationship.</SimpleValue>
+            <SimpleValue>Custody - Indicates details related to the custodian
+					relationship.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,7 +103,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DistressedLoanClosing - Indicates details related to specifically the closing of a distressed syndicated loan deal or facility.</SimpleValue>
+            <SimpleValue>DistressedLoanClosing - Indicates details related to specifically the
+					closing of a distressed syndicated loan deal or facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,7 +115,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DistressedLoanServicing - Indicates details related to specifically the ongoing loan servicing of a distressed syndicated loan deal or facility.</SimpleValue>
+            <SimpleValue>DistressedLoanServicing - Indicates details related to specifically the
+					ongoing loan servicing of a distressed syndicated loan deal or
+					facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -119,7 +128,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DistressedLoanTradeSettlement - Indicates details related to specifically the settlement of distressed syndicated loan trades.</SimpleValue>
+            <SimpleValue>DistressedLoanTradeSettlement - Indicates details related to specifically
+					the settlement of distressed syndicated loan trades.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +140,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DistressedLoanTrading - Indicates details related to specifically the trading of distressed syndicated loan facilities.</SimpleValue>
+            <SimpleValue>DistressedLoanTrading - Indicates details related to specifically the
+					trading of distressed syndicated loan facilities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +152,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DueDiligence - Indicates details specifically related to the due diligence process.</SimpleValue>
+            <SimpleValue>DueDiligence - Indicates details specifically related to the due
+					diligence process.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +164,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>KnowYourCustomer - Indicates details specifically related to the know-your-customer (i.e. KYC) process.</SimpleValue>
+            <SimpleValue>KnowYourCustomer - Indicates details specifically related to the
+					know-your-customer (i.e. KYC) process.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -174,7 +187,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>LetterOfCreditServicing - Indicates details related to the ongoing servicing of letters of credit (i.e. L/C team).</SimpleValue>
+            <SimpleValue>LetterOfCreditServicing - Indicates details related to the ongoing
+					servicing of letters of credit (i.e. L/C team).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +199,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>LoanClosing - Indicates details related to the closing of a syndicated loan deal or facility (i.e. the operations closing team).</SimpleValue>
+            <SimpleValue>LoanClosing - Indicates details related to the closing of a syndicated
+					loan deal or facility (i.e. the operations closing team).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -196,7 +211,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>LoanOrigination - May be used instead of the 'Credit' code, and is used to more explicitly indicate details related to the origination of a syndicated loan asset.</SimpleValue>
+            <SimpleValue>LoanOrigination - May be used instead of the 'Credit' code, and is used
+					to more explicitly indicate details related to the origination of a syndicated
+					loan asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -207,7 +224,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>LoanServicing - Indicates details related to the ongoing loan servicing of a syndicated loan deal or facility.</SimpleValue>
+            <SimpleValue>LoanServicing - Indicates details related to the ongoing loan servicing
+					of a syndicated loan deal or facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -218,7 +236,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>LoanTradeSettlement - Indicates details related to the settlement of syndicated loan trades.</SimpleValue>
+            <SimpleValue>LoanTradeSettlement - Indicates details related to the settlement of
+					syndicated loan trades.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +248,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>LoanTrading - Indicates details related to the trading of syndicated loan facilities.</SimpleValue>
+            <SimpleValue>LoanTrading - Indicates details related to the trading of syndicated loan
+					facilities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -240,7 +260,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>PrimaryLoanTradeSettlement - Indicates details related to specifically the settlement of syndicated loan trades in the primary stage.</SimpleValue>
+            <SimpleValue>PrimaryLoanTradeSettlement - Indicates details related to specifically
+					the settlement of syndicated loan trades in the primary stage.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -251,7 +272,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>SecondaryLoanTradeSettlement - Indicates details related to specifically the settlement of syndicated loan trades in the secondary stage.</SimpleValue>
+            <SimpleValue>SecondaryLoanTradeSettlement - Indicates details related to specifically
+					the settlement of syndicated loan trades in the secondary stage.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +295,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Trust - Indicates details related to the trustee relationship.</SimpleValue>
+            <SimpleValue>Trust - Indicates details related to the trustee
+					relationship.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

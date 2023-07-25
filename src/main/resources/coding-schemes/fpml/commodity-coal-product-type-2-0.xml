@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines a scheme of Coal Products specified in Exhibit A to the ISDA Coal Annex.</doc:definition>
+         <doc:definition>Defines a scheme of Coal Products specified in Exhibit A to the ISDA Coal
+			Annex.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -52,7 +53,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Any rail loadout located on the Norfolk Southern railroad within the Kenova Rate District or the Thacker Rate Districts capable of loading 100 car/10,000 Ton Unit Trains in four hours or less.</SimpleValue>
+            <SimpleValue>Any rail loadout located on the Norfolk Southern railroad within the
+					Kenova Rate District or the Thacker Rate Districts capable of loading 100
+					car/10,000 Ton Unit Trains in four hours or less.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -63,7 +66,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Any dock located on the Ohio River between MP 306 and MP 317 or on the Big Sandy River.</SimpleValue>
+            <SimpleValue>Any dock located on the Ohio River between MP 306 and MP 317 or on the
+					Big Sandy River.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -74,7 +78,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Any rail loadout located on the joint line (Burlington Northern Santa Fe/Union Pacific) in the Southern Powder River Basin within Converse or Campbell Counties, Wyoming capable of loading 12,000 to 15,000 Ton Unit Trains.</SimpleValue>
+            <SimpleValue>Any rail loadout located on the joint line (Burlington Northern Santa
+					Fe/Union Pacific) in the Southern Powder River Basin within Converse or Campbell
+					Counties, Wyoming capable of loading 12,000 to 15,000 Ton Unit
+					Trains.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -85,7 +92,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Any rail loadout located on the joint line (Burlington Northern Santa Fe/Union Pacific) in the Southern Powder River Basin within Converse or Campbell Counties, Wyoming capable of loading 12,000 to 15,000 Ton Unit Trains.</SimpleValue>
+            <SimpleValue>Any rail loadout located on the joint line (Burlington Northern Santa
+					Fe/Union Pacific) in the Southern Powder River Basin within Converse or Campbell
+					Counties, Wyoming capable of loading 12,000 to 15,000 Ton Unit
+					Trains.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -96,7 +106,10 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Any rail loadout located on the joint line (Burlington Northern Santa Fe/Union Pacific) in the Southern Powder River Basin within Converse or Campbell Counties, Wyoming capable of loading 12,000 to 15,000 Ton Unit Trains.</SimpleValue>
+            <SimpleValue>Any rail loadout located on the joint line (Burlington Northern Santa
+					Fe/Union Pacific) in the Southern Powder River Basin within Converse or Campbell
+					Counties, Wyoming capable of loading 12,000 to 15,000 Ton Unit
+					Trains.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

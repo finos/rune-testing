@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Specifies how the parties to the trade aportion responsibility for the delivery of the commodity product (for example Free On Board, Cost, Insurance, Freight).</doc:definition>
+         <doc:definition>Specifies how the parties to the trade aportion responsibility for the
+			delivery of the commodity product (for example Free On Board, Cost, Insurance,
+			Freight).</doc:definition>
          <doc:publicationDate>2012-08-02</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +44,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Cost and Freight (requires names port of destination) Abbreviation was formerly C&amp;F.</SimpleValue>
+            <SimpleValue>Cost and Freight (requires names port of destination) Abbreviation was
+					formerly C&amp;F.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +56,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Cost, Insurance and Freight (required name port of destination).</SimpleValue>
+            <SimpleValue>Cost, Insurance and Freight (required name port of
+					destination).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +68,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Carriage and Insurance Paid To (requires named place of destination).</SimpleValue>
+            <SimpleValue>Carriage and Insurance Paid To (requires named place of
+					destination).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -86,7 +91,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Deliver at Frontier (requires named place of destination) DAF was in Incoterms 2000 but was eliminated from Incoterms 2010.</SimpleValue>
+            <SimpleValue>Deliver at Frontier (requires named place of destination) DAF was in
+					Incoterms 2000 but was eliminated from Incoterms 2010.</SimpleValue>
          </Value>
       </Row>
       <Row>

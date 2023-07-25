@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines a scheme for expressing the level of reporting for regulatory reporting</doc:definition>
+         <doc:definition>Defines a scheme for expressing the level of reporting for regulatory
+			reporting</doc:definition>
          <doc:publicationDate>2016-06-13</doc:publicationDate>
       </Description>
    </Annotation>
@@ -42,7 +43,12 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Code indicates that this is reported at the Position level. Position level means a collection (or portfolio) of trades all of which are on the identical security, which have been aggregated into a net position in that security, and this is represented by a single FpML trade conveying the aggregate exposure. This is equivalent to the SFTR “Position” (PSTN) value. It is not to be used for OTC derivative transaction.</SimpleValue>
+            <SimpleValue>Code indicates that this is reported at the Position level. Position
+					level means a collection (or portfolio) of trades all of which are on the
+					identical security, which have been aggregated into a net position in that
+					security, and this is represented by a single FpML trade conveying the aggregate
+					exposure. This is equivalent to the SFTR “Position” (PSTN) value. It is not to
+					be used for OTC derivative transaction.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -53,7 +59,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Code indicates that this is reported on a trade by trade basis. SFTR synonym: Transaction. Value matches CPMI-IOSCO CDE, CFTC Part 45 (2019), EMIR, and MIFID ‘Trade' value and to SFTR 'Single Transaction' value.</SimpleValue>
+            <SimpleValue>Code indicates that this is reported on a trade by trade basis. SFTR
+					synonym: Transaction. Value matches CPMI-IOSCO CDE, CFTC Part 45 (2019), EMIR,
+					and MIFID ‘Trade' value and to SFTR 'Single Transaction' value.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

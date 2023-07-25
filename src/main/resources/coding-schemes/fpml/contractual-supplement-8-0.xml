@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines the supplements to a base set of ISDA Definitions that are applicable to the transaction.</doc:definition>
+         <doc:definition>Defines the supplements to a base set of ISDA Definitions that are
+			applicable to the transaction.</doc:definition>
          <doc:publicationDate>2015-10-16</doc:publicationDate>
       </Description>
    </Annotation>
@@ -53,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Asset-Backed Tranche Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Asset-Backed Tranche
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -64,7 +66,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA Standard Terms Supplement for use with Credit Derivative Transactions on Leveraged Loans.</SimpleValue>
+            <SimpleValue>ISDA Standard Terms Supplement for use with Credit Derivative
+					Transactions on Leveraged Loans.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -75,7 +78,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA Standard Terms Supplement for use with Credit Derivative Transactions on Mortgage-backed Security with Pay-As-You-Go or Physical Settlement.</SimpleValue>
+            <SimpleValue>ISDA Standard Terms Supplement for use with Credit Derivative
+					Transactions on Mortgage-backed Security with Pay-As-You-Go or Physical
+					Settlement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,7 +102,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for CDX Emerging Markets Untranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for CDX Emerging Markets Untranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,7 +114,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for CDX Emerging Markets Diversified Untranched Transactions..</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for CDX Emerging Markets Diversified Untranched
+					Transactions..</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -130,7 +137,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Dow Jones CDX Tranche Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Dow Jones CDX Tranche
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +160,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Single Name European CMBS Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Single Name European CMBS
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -163,7 +172,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Single Name European RMBS Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Single Name European RMBS
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +195,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Supplement to the 1999 ISDA Credit Derivatives Definitions Relating to Convertible, Exchangeable or Accreting Obligations dated November 9, 2001.</SimpleValue>
+            <SimpleValue>Supplement to the 1999 ISDA Credit Derivatives Definitions Relating to
+					Convertible, Exchangeable or Accreting Obligations dated November 9,
+					2001.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -196,7 +208,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Restructuring Supplement to the 1999 ISDA Credit Derivatives Definitions dated May 11, 2001.</SimpleValue>
+            <SimpleValue>Restructuring Supplement to the 1999 ISDA Credit Derivatives Definitions
+					dated May 11, 2001.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -207,7 +220,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Supplement Relating to Successor and Credit Events to the 1999 ISDA Credit Derivatives Definitions dated November 28, 2001.</SimpleValue>
+            <SimpleValue>Supplement Relating to Successor and Credit Events to the 1999 ISDA
+					Credit Derivatives Definitions dated November 28, 2001.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +243,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Contingent Credit Spread Transactions dated August 15, 2008.</SimpleValue>
+            <SimpleValue>Additional Provisions for Contingent Credit Spread Transactions dated
+					August 15, 2008.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -251,7 +266,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for the Argentine Republic: Excluded Obligations and Excluded Deliverable Obligations dated December 21, 2005.</SimpleValue>
+            <SimpleValue>Additional Provisions for the Argentine Republic: Excluded Obligations
+					and Excluded Deliverable Obligations dated December 21, 2005.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -262,7 +278,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA Credit Derivatives Determinations Committees and Auction Settlement Supplement to the 2003 ISDA Credit Derivatives Definitions (published on [TBD]).</SimpleValue>
+            <SimpleValue>ISDA Credit Derivatives Determinations Committees and Auction Settlement
+					Supplement to the 2003 ISDA Credit Derivatives Definitions (published on
+					[TBD]).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +291,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>May 2003 Supplement to the 2003 ISDA Credit Derivatives Definitions.</SimpleValue>
+            <SimpleValue>May 2003 Supplement to the 2003 ISDA Credit Derivatives
+					Definitions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -284,7 +303,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Physically Settled Default Swaps Monoline Insurer as Reference Entity dated May 9, 2003.</SimpleValue>
+            <SimpleValue>Additional Provisions for Physically Settled Default Swaps Monoline
+					Insurer as Reference Entity dated May 9, 2003.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -295,7 +315,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Physically Settled Default Swaps Monoline Insurer as Reference Entity dated January 21, 2005.</SimpleValue>
+            <SimpleValue>Additional Provisions for Physically Settled Default Swaps Monoline
+					Insurer as Reference Entity dated January 21, 2005.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -306,7 +327,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for the Republic of Hungary: Obligation Characteristics and Deliverable Obligation Characteristics dated August 13, 2004.</SimpleValue>
+            <SimpleValue>Additional Provisions for the Republic of Hungary: Obligation
+					Characteristics and Deliverable Obligation Characteristics dated August 13,
+					2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -317,7 +340,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for the Republic of Hungary: Obligation Characteristics and Deliverable Obligation Characteristics dated February 14, 2005. </SimpleValue>
+            <SimpleValue>Additional Provisions for the Republic of Hungary: Obligation
+					Characteristics and Deliverable Obligation Characteristics dated February 14,
+					2005. </SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -328,7 +353,9 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for the Russian Federation: Obligation Characteristics and Deliverable Obligation Characteristics dated August 13, 2004.</SimpleValue>
+            <SimpleValue>Additional Provisions for the Russian Federation: Obligation
+					Characteristics and Deliverable Obligation Characteristics dated August 13,
+					2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -339,7 +366,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Credit Derivative Transactions - U.S. Municipal Entity as Reference Entity dated September 17, 2004.</SimpleValue>
+            <SimpleValue>Additional Provisions for Credit Derivative Transactions - U.S. Municipal
+					Entity as Reference Entity dated September 17, 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -350,7 +378,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for STMicroelectronics NV dated December 6, 2007.</SimpleValue>
+            <SimpleValue>Additional Provisions for STMicroelectronics NV dated December 6,
+					2007.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -361,7 +390,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>2007 Full Lookthrough Depository Receipt Supplement to the 2002 Equity Derivatives Definitions.</SimpleValue>
+            <SimpleValue>2007 Full Lookthrough Depository Receipt Supplement to the 2002 Equity
+					Derivatives Definitions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -372,7 +402,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>2007 Partial Lookthrough Depository Receipt Supplement to the 2002 ISDA Equity Derivatives Definitions.</SimpleValue>
+            <SimpleValue>2007 Partial Lookthrough Depository Receipt Supplement to the 2002 ISDA
+					Equity Derivatives Definitions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -383,7 +414,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Physically Settled Default Swaps Monoline Insurer.</SimpleValue>
+            <SimpleValue>Additional Provisions for Physically Settled Default Swaps Monoline
+					Insurer.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -394,7 +426,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Fixed Recovery Credit Default Swap Transactions</SimpleValue>
+            <SimpleValue>Additional Provisions for Fixed Recovery Credit Default Swap
+					Transactions</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -405,7 +438,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Fixed Recovery Credit Default Swap Transactions.</SimpleValue>
+            <SimpleValue>Additional Provisions for Fixed Recovery Credit Default Swap
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -427,7 +461,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Canadian Supplement to the 2004 Americas Interdealer Master Equity Derivatives Confirmation Agreement dated March 29, 2004.</SimpleValue>
+            <SimpleValue>Canadian Supplement to the 2004 Americas Interdealer Master Equity
+					Derivatives Confirmation Agreement dated March 29, 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -438,7 +473,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Recovery Lock Credit Default Swap Transactions.</SimpleValue>
+            <SimpleValue>Additional Provisions for Recovery Lock Credit Default Swap
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -449,7 +485,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Additional Provisions for Secured Deliverable Obligation Characteristic.</SimpleValue>
+            <SimpleValue>Additional Provisions for Secured Deliverable Obligation
+					Characteristic.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -471,7 +508,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Asia Ex-Japan Swaption Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Asia Ex-Japan Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -482,7 +520,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Asia Excluding Japan Tranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Asia Excluding Japan Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -504,7 +543,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Australia Swaption Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Australia Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -515,7 +555,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Australia Tranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Australia Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -537,7 +578,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx CJ Tranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx CJ Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -581,7 +623,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Europe Swaption Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Europe Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -592,7 +635,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Europe Tranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Europe Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -614,7 +658,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Japan Swaption Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Japan Swaption
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -625,7 +670,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx Japan Tranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx Japan Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -647,7 +693,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx SDI 75 Dealer Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx SDI 75 Dealer
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -658,7 +705,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for iTraxx SDI 75 Non-Dealer Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for iTraxx SDI 75 Non-Dealer
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -680,7 +728,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Syndicated Secured Loan Credit Default Swap Index Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Syndicated Secured Loan Credit Default Swap
+					Index Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -691,7 +740,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Syndicated Secured Loan Credit Default Swap Index Tranche Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Syndicated Secured Loan Credit Default Swap
+					Index Tranche Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -713,7 +763,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Municipal CDX Untranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Municipal CDX Untranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -746,7 +797,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Standard CDX Tranche Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Standard CDX Tranche
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -757,7 +809,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Standard iTraxx Europe Tranched Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Standard iTraxx Europe Tranched
+					Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -768,7 +821,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Syndicated Secured Loan Credit Default Swap Standard Terms Supplement.</SimpleValue>
+            <SimpleValue>Standard Syndicated Secured Loan Credit Default Swap Standard Terms
+					Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -779,7 +833,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Standard Syndicated Secured Loan Credit Default Swap Bullet Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Standard Syndicated Secured Loan Credit
+					Default Swap Bullet Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -790,7 +845,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Standard Syndicated Secured Loan Credit Default Swap Index Bullet Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Standard Syndicated Secured Loan Credit
+					Default Swap Index Bullet Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -801,7 +857,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Standard Terms Supplement for Standard Syndicated Secured Loan Credit Default Swap Index Bullet Tranche Transactions.</SimpleValue>
+            <SimpleValue>Standard Terms Supplement for Standard Syndicated Secured Loan Credit
+					Default Swap Index Bullet Tranche Transactions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -812,7 +869,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Syndicated Secured Loan Credit Default Swap Standard Terms Supplement.</SimpleValue>
+            <SimpleValue>Syndicated Secured Loan Credit Default Swap Standard Terms
+					Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>

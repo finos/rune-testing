@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
          <doc:definition>Identification of the law governing the transaction.</doc:definition>
          <doc:description>
-            <doc:paragraph>In general the codes are the ISO country code where the applicable law is the law of an entire country</doc:paragraph>
-            <doc:paragraph>For countries that have more than one legal regime the code is constructed from the two-character ISO country code followed by two characters indicating the legal regime. In the cases of Canada and the United States of America, these two characters are the conventional abbreviations for the provinces and states respectively. In the case of the United Kingdom, the first two characters are "GB" followed by two characters indicating the legal regime.</doc:paragraph>
-            <doc:paragraph>The following are examples of valid codes, not an exhaustive list.</doc:paragraph>
+            <doc:paragraph>In general the codes are the ISO country code where the applicable law is the
+				law of an entire country</doc:paragraph>
+            <doc:paragraph>For countries that have more than one legal regime the code is constructed
+				from the two-character ISO country code followed by two characters indicating the
+				legal regime. In the cases of Canada and the United States of America, these two
+				characters are the conventional abbreviations for the provinces and states
+				respectively. In the case of the United Kingdom, the first two characters are "GB"
+				followed by two characters indicating the legal regime.</doc:paragraph>
+            <doc:paragraph>The following are examples of valid codes, not an exhaustive
+				list.</doc:paragraph>
          </doc:description>
          <doc:publicationDate>2012-03-21</doc:publicationDate>
       </Description>
@@ -47,7 +54,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Governing Law is determined by reference to the relevant master agreement.</SimpleValue>
+            <SimpleValue>The Governing Law is determined by reference to the relevant master
+					agreement.</SimpleValue>
          </Value>
       </Row>
       <Row>

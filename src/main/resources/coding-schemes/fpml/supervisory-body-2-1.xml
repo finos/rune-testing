@@ -2,7 +2,8 @@
 <gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Contains a code representing a supervisory-body that may be supervising this transaction.</doc:definition>
+         <doc:definition>Contains a code representing a supervisory-body that may be supervising
+			this transaction.</doc:definition>
          <doc:publicationDate>2022-06-10</doc:publicationDate>
       </Description>
    </Annotation>
@@ -108,7 +109,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Deputy Superintendent of Securities, Service Newfoundland and Labrador</SimpleValue>
+            <SimpleValue>Deputy Superintendent of Securities, Service Newfoundland and
+					Labrador</SimpleValue>
          </Value>
       </Row>
       <Row>

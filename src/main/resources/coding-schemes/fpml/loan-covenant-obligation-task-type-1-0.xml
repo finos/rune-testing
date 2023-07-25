@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
    <Annotation>
       <Description>
-         <doc:definition>A structure used to uniquely identify a loan covenant obligation task type.</doc:definition>
+         <doc:definition>A structure used to uniquely identify a loan covenant obligation task
+			type.</doc:definition>
          <doc:publicationDate>2021-06-25</doc:publicationDate>
          <doc:status>working-draft</doc:status>
       </Description>
@@ -43,7 +44,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates that the recipient must fulfill a covenant obligation.</SimpleValue>
+            <SimpleValue>Indicates that the recipient must fulfill a covenant
+					obligation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -54,7 +56,8 @@
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Indicates a request for the recipient to waive a covenant obligation.</SimpleValue>
+            <SimpleValue>Indicates a request for the recipient to waive a covenant
+					obligation.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
