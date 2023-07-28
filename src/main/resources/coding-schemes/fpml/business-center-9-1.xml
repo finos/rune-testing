@@ -54,7 +54,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Abu Dhabi, Business Day (as defined in 2021 ISDA Definitions Section 2.1.9 (ii))</SimpleValue>
+            <SimpleValue>Abu Dhabi, Business Day (as defined in 2021 ISDA Definitions Section 2.1.9
+                (ii))</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -65,7 +66,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Abu Dhabi, Settlement Day (as defined in 2021 ISDA Definitions Section 2.1.9 (i))</SimpleValue>
+            <SimpleValue>Abu Dhabi, Settlement Day (as defined in 2021 ISDA Definitions Section
+                2.1.9 (i))</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -303,7 +305,11 @@
          <Annotation>
             <Description>
                <doc:description>
-                  <doc:paragraph>This means a business day in all of Sao Paulo, Rio de Janeiro or Brasilia not otherwise declared as a financial market holiday by the Bolsa de Mercadorias &amp;amp; Futuros (BM&amp;F). BRBD should not be used for setting fixing time, instead the city centers (e.g. BRBR, BRRJ, BRSP) should be used, because they are locatable places.</doc:paragraph>
+                  <doc:paragraph>This means a business day in all of Sao Paulo, Rio de Janeiro or
+                Brasilia not otherwise declared as a financial market holiday by the Bolsa de
+                Mercadorias &amp;amp; Futuros (BM&amp;F). BRBD should not be used for setting fixing
+                time, instead the city centers (e.g. BRBR, BRRJ, BRSP) should be used, because they
+                are locatable places.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -321,7 +327,9 @@
          <Annotation>
             <Description>
                <doc:description>
-                  <doc:paragraph>BRBD (Brazil Business Days; adopted at business-center-6-7, May 2009) replaces business center collection - BRBR, BRRJ, BRSP. See: the 2009 ISDA/EMTA recommendation for BRL CDI Non-Deliverable swaps.</doc:paragraph>
+                  <doc:paragraph>BRBD (Brazil Business Days; adopted at business-center-6-7, May 2009)
+                replaces business center collection - BRBR, BRRJ, BRSP. See: the 2009 ISDA/EMTA
+                recommendation for BRL CDI Non-Deliverable swaps.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -339,7 +347,9 @@
          <Annotation>
             <Description>
                <doc:description>
-                  <doc:paragraph>BRBD (Brazil Business Days; adopted at business-center-6-7, May 2009) replaces business center collection - BRBR, BRRJ, BRSP. See: the 2009 ISDA/EMTA recommendation for BRL CDI Non-Deliverable swaps.</doc:paragraph>
+                  <doc:paragraph>BRBD (Brazil Business Days; adopted at business-center-6-7, May 2009)
+                replaces business center collection - BRBR, BRRJ, BRSP. See: the 2009 ISDA/EMTA
+                recommendation for BRL CDI Non-Deliverable swaps.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -357,7 +367,9 @@
          <Annotation>
             <Description>
                <doc:description>
-                  <doc:paragraph>BRDB (Brazil Business Days; adopted at business-center-6-7, May 2009) replaces business center collection - BRBR, BRRJ, BRSP. See: the 2009 ISDA/EMTA recommendation for BRL CDI Non-Deliverable swaps.</doc:paragraph>
+                  <doc:paragraph>BRDB (Brazil Business Days; adopted at business-center-6-7, May 2009)
+                replaces business center collection - BRBR, BRRJ, BRSP. See: the 2009 ISDA/EMTA
+                recommendation for BRL CDI Non-Deliverable swaps.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -804,7 +816,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ESAS Settlement Day (as defined in 2006 ISDA Definitions Section 7.1 and Supplement Number 15 to the 2000 ISDA Definitions)</SimpleValue>
+            <SimpleValue>ESAS Settlement Day (as defined in 2006 ISDA Definitions Section 7.1 and
+                Supplement Number 15 to the 2000 ISDA Definitions)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -859,7 +872,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Publication dates for ICE Swap rates based on EUR-EURIBOR rates</SimpleValue>
+            <SimpleValue>Publication dates for ICE Swap rates based on EUR-EURIBOR
+                rates</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1640,7 +1654,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>New York Fed Business Day (as defined in 2006 ISDA Definitions Section 1.9 and 2000 ISDA Definitions Section 1.9)</SimpleValue>
+            <SimpleValue>New York Fed Business Day (as defined in 2006 ISDA Definitions Section 1.9
+                and 2000 ISDA Definitions Section 1.9)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1651,7 +1666,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>New York Stock Exchange Business Day (as defined in 2006 ISDA Definitions Section 1.10 and 2000 ISDA Definitions Section 1.10)</SimpleValue>
+            <SimpleValue>New York Stock Exchange Business Day (as defined in 2006 ISDA Definitions
+                Section 1.10 and 2000 ISDA Definitions Section 1.10)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -2135,7 +2151,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>U.S. Government Securities Business Day (as defined in 2006 ISDA Definitions Section 1.11 and 2000 ISDA Definitions Section 1.11)</SimpleValue>
+            <SimpleValue>U.S. Government Securities Business Day (as defined in 2006 ISDA
+                Definitions Section 1.11 and 2000 ISDA Definitions Section 1.11)</SimpleValue>
          </Value>
       </Row>
       <Row>

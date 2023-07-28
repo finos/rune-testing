@@ -58,7 +58,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A numerical amount (typically a currency amount), expressed as a decimal value.</SimpleValue>
+            <SimpleValue>A numerical amount (typically a currency amount), expressed as a decimal
+                value.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -69,7 +70,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A value expressed in terms of one hundredths of a percent, i.e. 5 means 5 basis points (bp) or 0.05%.</SimpleValue>
+            <SimpleValue>A value expressed in terms of one hundredths of a percent, i.e. 5 means 5
+                basis points (bp) or 0.05%.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -80,7 +82,9 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The value (expressed in currency units) per basis point change in the underlying rate. Typically used for expressing sensitivity to interest rate chages ("IR delta" risk, "rho" risk).</SimpleValue>
+            <SimpleValue>The value (expressed in currency units) per basis point change in the
+                underlying rate. Typically used for expressing sensitivity to interest rate chages
+                ("IR delta" risk, "rho" risk).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -91,7 +95,10 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The Basis Point Value (BPV) (expressed in currency units per basis point) per basis point change in the underlying rate. Typically used for expressing second order sensitivity to interest rate changes (IR "gamma" risk, "convexity").</SimpleValue>
+            <SimpleValue>The Basis Point Value (BPV) (expressed in currency units per basis point)
+                per basis point change in the underlying rate. Typically used for expressing second
+                order sensitivity to interest rate changes (IR "gamma" risk,
+                "convexity").</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -135,7 +142,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Bushel] Bushel split into GBBSH (8 imperial gal)and USBSH (8 US dry gal).</SimpleValue>
+            <SimpleValue>DEPRECATED [Bushel] Bushel split into GBBSH (8 imperial gal)and USBSH (8 US
+                dry gal).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -146,7 +154,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [British Thermal Unit ] Replaced by GBBTU, USBTU and ISOBTU.</SimpleValue>
+            <SimpleValue>DEPRECATED [British Thermal Unit ] Replaced by GBBTU, USBTU and
+                ISOBTU.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -256,7 +265,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Dry Metric Ton (Tonne) Units - Consists of a metric ton of mass excluding moisture.</SimpleValue>
+            <SimpleValue>Dry Metric Ton (Tonne) Units - Consists of a metric ton of mass excluding
+                moisture.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -267,7 +277,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Dekatherm] Replaced by GBMMBTU, USMMBTU and ISOMMBTU.</SimpleValue>
+            <SimpleValue>DEPRECATED [Dekatherm] Replaced by GBMMBTU, USMMBTU and
+                ISOMMBTU.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -300,7 +311,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A dimensionless conversion rate, e.g. 1.2. Typically used for FX.</SimpleValue>
+            <SimpleValue>A dimensionless conversion rate, e.g. 1.2. Typically used for
+                FX.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -344,7 +356,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>GB Bushel - When associated with a specific commodity implies standard unit of weight.</SimpleValue>
+            <SimpleValue>GB Bushel - When associated with a specific commodity implies standard unit
+                of weight.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -509,7 +522,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Ingot] Ingot split into Standard Gold Bar (400 troy-oz) and Hundred Ounces Gold Bar (100 troy-oz).</SimpleValue>
+            <SimpleValue>DEPRECATED [Ingot] Ingot split into Standard Gold Bar (400 troy-oz) and
+                Hundred Ounces Gold Bar (100 troy-oz).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -641,7 +655,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Kilowatt Hour Capacity] KWHC consolidated with KWh.</SimpleValue>
+            <SimpleValue>DEPRECATED [Kilowatt Hour Capacity] KWHC consolidated with
+                KWh.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -685,7 +700,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Kilowatt Minute Capacity] KWMINC replaced by KWmin.</SimpleValue>
+            <SimpleValue>DEPRECATED [Kilowatt Minute Capacity] KWMINC replaced by
+                KWmin.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -740,7 +756,9 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A log normal volatility, expressed in %/month, where the percentage is represented as a decimal. For example, 0.15 means a log-normal volatility of 15% per month.</SimpleValue>
+            <SimpleValue>A log normal volatility, expressed in %/month, where the percentage is
+                represented as a decimal. For example, 0.15 means a log-normal volatility of 15% per
+                month.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -762,7 +780,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Thousand board feet. Used in contracts on forestry underlyers.</SimpleValue>
+            <SimpleValue>Thousand board feet. Used in contracts on forestry
+                underlyers.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -773,7 +792,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Thousand British Thermal Units] MBTU replaced by GBMBTU, USMBTU and ISOMBTU.</SimpleValue>
+            <SimpleValue>DEPRECATED [Thousand British Thermal Units] MBTU replaced by GBMBTU, USMBTU
+                and ISOMBTU.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -817,7 +837,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Million British Thermal Units] MMBTU replaced by GBMMBTU, USMMBTU and ISOMMBTU.</SimpleValue>
+            <SimpleValue>DEPRECATED [Million British Thermal Units] MMBTU replaced by GBMMBTU,
+                USMMBTU and ISOMMBTU.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -894,7 +915,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Megawatt Hour Capacity] MWHC consolidated with MWh.</SimpleValue>
+            <SimpleValue>DEPRECATED [Megawatt Hour Capacity] MWHC consolidated with
+                MWh.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -938,7 +960,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>DEPRECATED [Megawatt Minute Capacity] MWMINC replaced by MWmin.</SimpleValue>
+            <SimpleValue>DEPRECATED [Megawatt Minute Capacity] MWMINC replaced by
+                MWmin.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -982,7 +1005,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A price, expressed in percentage of face value as a decimal, e.g. 101.5.</SimpleValue>
+            <SimpleValue>A price, expressed in percentage of face value as a decimal, e.g.
+                101.5.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -993,7 +1017,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A price, expressed in percentage of face value with fractions, e.g. 101 3/8. Normally used for quoting bonds.</SimpleValue>
+            <SimpleValue>A price, expressed in percentage of face value with fractions, e.g. 101
+                3/8. Normally used for quoting bonds.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1026,7 +1051,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A yield (typically an interest rate) expressed as a decimal. I.e. 0.05 means 5%.</SimpleValue>
+            <SimpleValue>A yield (typically an interest rate) expressed as a decimal. I.e. 0.05
+                means 5%.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1048,7 +1074,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The number of units of stock. Typically used for expressing sensitivity to equity prices (equity "delta" risk).</SimpleValue>
+            <SimpleValue>The number of units of stock. Typically used for expressing sensitivity to
+                equity prices (equity "delta" risk).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1059,7 +1086,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A difference in rates or prices expressed as a decimal. I.e. 0.05 means 5%.</SimpleValue>
+            <SimpleValue>A difference in rates or prices expressed as a decimal. I.e. 0.05 means
+                5%.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1114,7 +1142,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>A difference in rates (typically FX rates) expressed as a decimal value.</SimpleValue>
+            <SimpleValue>A difference in rates (typically FX rates) expressed as a decimal
+                value.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1125,7 +1154,8 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>US Bushel - When associated with a specific commodity implies standard unit of weight.</SimpleValue>
+            <SimpleValue>US Bushel - When associated with a specific commodity implies standard unit
+                of weight.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1213,7 +1243,9 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The value (expressed in currency units) for a one day change in a valuation date. Typically used for expressing sensitivity to the passage of time ("theta" risk, "carry", etc.).</SimpleValue>
+            <SimpleValue>The value (expressed in currency units) for a one day change in a valuation
+                date. Typically used for expressing sensitivity to the passage of time ("theta"
+                risk, "carry", etc.).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1224,7 +1256,9 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The value (expressed in currency units) per percent change in the underlying rate. Typically used for expressing sensitivity to volatility changes ("vega" risk).</SimpleValue>
+            <SimpleValue>The value (expressed in currency units) per percent change in the
+                underlying rate. Typically used for expressing sensitivity to volatility changes
+                ("vega" risk).</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

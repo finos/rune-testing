@@ -3,56 +3,47 @@
    <Annotation>
       <Description>
          <doc:definition>Definition of references to the set of FpML coding schemes.</doc:definition>
-         <doc:publicationDate>2023-06-21</doc:publicationDate>
+         <doc:publicationDate>2023-07-28</doc:publicationDate>
          <doc:changeDescription>
 		The International Swaps and Derivatives Association, Inc. (ISDA) has published a
-			new basic and enhanced coding-scheme catalog versions 2-13 on June 21, 2023. Below are
-			the changes compared to the previous version 2-12 on March 10, 2023. 
+			new basic and enhanced coding-scheme catalog versions 2-14 published on July 28, 2023.
+			Below are the changes compared to the previous version 2-13 published on June 21, 2023. 
 		<ul class="bulleted">
 			               <li>The following coding schemes have been updated:<ul class="bulleted">
-					                     <li>assetMeasureScheme<ul class="bulleted">
-							                           <li>Added a new 'LastAvailableSpotPrice' code needed for ESMA EMIR
-								Refit regulatory reporting.</li>
+					                     <li>floatingRateIndexScheme<ul class="bulleted">
+							                           <li>Updated FROs:<ul class="bulleted">
+									                                 <li>CNY-SHIBOR-OIS Compound</li>
+									                                 <li>DKK-DESTR</li>
+									                                 <li>DKK-DESTR-OIS Compound</li>
+									                                 <li>DKK-Tom Next-OIS Compound</li>
+									                                 <li>ILS-SHIR</li>
+									                                 <li>ILS-SHIR-OIS Compound</li>
+									                                 <li>KRW-KOFR</li>
+									                                 <li>KRW-KOFR-OIS Compound</li>
+									                                 <li>MXN-TIIE</li>
+									                                 <li>PLN-WIRON</li>
+									                                 <li>PLN-WIRON-OIS Compound</li>
+									                                 <li>SEK-STIBOR-OIS Compound</li>
+									                                 <li>SEK-SWESTR</li>
+									                                 <li>SEK-SWESTR Average 1M</li>
+									                                 <li>SEK-SWESTR Average 1W</li>
+									                                 <li>SEK-SWESTR Average 2M</li>
+									                                 <li>SEK-SWESTR Average 3M</li>
+									                                 <li>SEK-SWESTR Average 6M</li>
+									                                 <li>SEK-SWESTR Compounded Index</li>
+									                                 <li>SEK-SWESTR-OIS Compound</li>
+								                              </ul>
+                           </li>
+							                           <li>New FROs added: <ul class="bulleted">
+									                                 <li>MXN-TIIE ON</li>
+									                                 <li>MXN-TIIE ON-OIS Compound</li>
+									                                 <li>ZAR-ZARONIA</li>
+									                                 <li>ZAR-ZARONIA-OIS Compound</li>
+								                              </ul>
+							                           </li>
 							                           <li>Source: FpML</li>
-							                           <li>Version changed from 5-7 to 5-8</li>
-							                           <li>Publication Date: 2023-06-21</li>
-						                        </ul>
-					                     </li>
-					                     <li>eventTypeScheme<ul class="bulleted">
-							                           <li>Added codes 'Inception:Netting', 'Clear:Netting' and
-								'Modification:Netting' needed for ESMA EMIR Refit regulatory
-								reporting.</li>
-							                           <li>Source: FpML</li>
-							                           <li>Version changed from 2-0 to 2-1</li>
-							                           <li>Publication Date: 2023-06-21</li>
-						                        </ul>
-					                     </li>
-				                  </ul>
-			               </li>
-			               <li>The following coding schemes have been added:<ul class="bulleted">
-					                     <li>regulatoryCorporateSectorScheme<ul class="bulleted">
-							                           <li>Added a new 'esma-emir-refit-regulatory-corporate-sector-1-0'
-								coding scheme needed for ESMA EMIR Refit regulatory
-								reporting.</li>
-							                           <li>Source: FpML</li>
-							                           <li>Version 1-0</li>
-							                           <li>Publication Date: 2023-06-21</li>
-						                        </ul>
-					                     </li>
-					                     <li>productTypeCryptoAssetIndicatorScheme<ul class="bulleted">
-							                           <li>Added a new 'esma-emir-refit-crypto-asset-indicator' coding
-								scheme needed for ESMA EMIR Refit regulatory reporting.</li>
-							                           <li>Source: FpML</li>
-							                           <li>Version 1-0</li>
-							                           <li>Publication Date: 2023-06-21</li>
-						                        </ul>
-					                     </li>
-					                     <li>actionTypeScheme<ul class="bulleted">
-							                           <li>Added a new 'esma-emir-refit-action-type-1-0' coding scheme
-								needed for ESMA EMIR Refit regulatory reporting.</li>
-							                           <li>Source: FpML</li>
-							                           <li>Version 1-0</li>
-							                           <li>Publication Date: 2023-06-21</li>
+							                           <li>Version 3-7</li>
+							                           <li>Publication Date: 2023-07-28</li>
 						                        </ul>
 					                     </li>
 				                  </ul>
@@ -62,8 +53,7 @@
 						support the latest changes to the 2021 ISDA Definitions, including the
 						metadata fields which provides additional information about each code in the
 						scheme. In this catalog, only the floatingRateIndexScheme has been updated. </li>
-					                     <li>More information is available at:
-						https://www.isda.org/book/enhanced-fpml-coding-scheme-catalog </li>
+					                     <li>More information is available at: https://www.isda.org/book/enhanced-fpml-coding-scheme-catalog</li>
 				                  </ul>
 			               </li>
 		            </ul>
@@ -72,10 +62,10 @@
    </Annotation>
    <Identification>
       <ShortName>FpML Set of Coding Schemes</ShortName>
-      <Version>2-13</Version>
+      <Version>2-14</Version>
       <CanonicalUri>http://www.fpml.org/coding-scheme/set-of-schemes</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-13</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-13.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-14</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-14.xml</LocationUri>
    </Identification>
    <CodeListRef>
       <Annotation>
@@ -2755,24 +2745,13 @@
    <CodeListRef>
       <Annotation>
          <Description>
-            <doc:definition/>
-            <doc:publicationDate>2023-03-15</doc:publicationDate>
-         </Description>
-      </Annotation>
-      <CanonicalUri>http://www.fpml.org/coding-scheme/commodity-reference-price</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/commodity-reference-price-3-5</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/commodity-reference-price-3-5.xml</LocationUri>
-   </CodeListRef>
-   <CodeListRef>
-      <Annotation>
-         <Description>
             <doc:definition>The FpML floating rate index codes contained in this document are based on the ISDA Floating Rate Options as published by ISDA in the 2021 ISDA Definitions, the 2006 ISDA Definitions, the Annex to the 2000 Definitions, Section 7.1. Rate Options, and other sources, including broker rates.  The codes correspond to their respective ISDA FRO only in the context of a transaction incorporating the corresponding contractual definitions.</doc:definition>
-            <doc:publicationDate>2023-03-10</doc:publicationDate>
+            <doc:publicationDate>2023-07-28</doc:publicationDate>
          </Description>
       </Annotation>
       <CanonicalUri>http://www.fpml.org/coding-scheme/floating-rate-index</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-6</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-6.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-7</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-7.xml</LocationUri>
    </CodeListRef>
    <CodeListRef>
       <Annotation>
