@@ -9,6 +9,7 @@ import com.regnosys.testing.schemaimport.SchemeEnumReader;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.util.Tuples;
 import org.genericode.xml._2004.ns.codelist._0.*;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,33 +95,48 @@ public class FpMLSchemeEnumReader implements SchemeEnumReader {
 	private RosettaEnumValue createEnumValue(List<RosettaEnumValue> result, Row r, int nameIndex, int descriptionIndex) {
 		RosettaFactory factory = RosettaFactoryImpl.eINSTANCE;
 		RosettaEnumValue ev = factory.createRosettaEnumValue();
-		String name = r.getValue().get(nameIndex).getSimpleValue().getValue();
+		String displayName = encodeDisplayName(r.getValue().get(nameIndex).getSimpleValue().getValue());
 		long duplicateCount = result.stream()
-			.filter(enumValue -> enumValue.getName().equalsIgnoreCase(encode(name)))
+			.filter(enumValue -> enumValue.getName().equalsIgnoreCase(encodeValue(displayName)))
 			.count();
 
-		String encode = encode(name) + (duplicateCount > 0 ? "_" + duplicateCount : "");
-		ev.setName(encode);
-		if (!name.equals(encode)) {
-			ev.setDisplay(name);
+		String value = encodeValue(displayName) + (duplicateCount > 0 ? "_" + duplicateCount : "");
+		ev.setName(value);
+		if (!displayName.equals(value)) {
+			ev.setDisplay(displayName);
 		}
 
-		ev.setDefinition(r.getValue().get(descriptionIndex)
-			.getSimpleValue().getValue()
-				.replace("\n", " ")
-				.replace("\t", "")
-				.replace("\"", "'")
-				.replace("“", "'")
-				.replace("”", "'"));
+		ev.setDefinition(encodeDescription(r.getValue().get(descriptionIndex).getSimpleValue().getValue()));
 		return ev;
 	}
 
-	private String encode(String name) {
-		String replaced = name.replaceAll("[-/\"&. ()#':=+]", "_");
+	String encodeDisplayName(String name) {
+		return removeNewLinesAndDuplicatedWhitespace(name);
+	}
+
+	String encodeValue(String name) {
+		String replaced = removeNewLinesAndDuplicatedWhitespace(name)
+				.replaceAll("[-/\"&. ()#':=+]", "_");
 		if (replaced.matches("^[0-9].*")) {
 			replaced = "_" + replaced;
 		}
 		return replaced;
+	}
+
+	String encodeDescription(String description) {
+		return removeNewLinesAndDuplicatedWhitespace(description)
+				.replace("\t", "")
+				.replace("\"", "'")
+				.replace("“", "'")
+				.replace("”", "'");
+	}
+
+	@NotNull
+	private static String removeNewLinesAndDuplicatedWhitespace(String name) {
+		return name
+				.trim()
+				.replaceAll("\n", " ")
+				.replaceAll("( )\\1+", "$1");
 	}
 
 	private Map<String, CodeListDocument> readSchemaFiles(URL codingSchemeUrl, String codingSchemeRelativePath) throws JAXBException, IOException, XMLStreamException {
