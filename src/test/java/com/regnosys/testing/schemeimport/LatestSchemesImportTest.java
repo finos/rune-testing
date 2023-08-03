@@ -36,7 +36,7 @@ public class LatestSchemesImportTest {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             String checksum = getZipCheckSum(Paths.get(CODE_LIST_ZIP));
             assertThat("CodeList zip has been updated, run again with write WRITE_LATEST_VERSION enabled then update expected checksum",
-                    checksum, equalTo("940834a1e5d185ffe3eccf0146596252"));
+                    checksum, equalTo("5d7f8f0d8be8c2546ac99dcb781df7a9"));
 
             if (WRITE_LATEST_VERSION) {
                 //Unzip from CodeList just being downloaded

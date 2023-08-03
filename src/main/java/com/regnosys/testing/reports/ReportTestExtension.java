@@ -23,6 +23,8 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ReportTestExtension<T extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportTestExtension.class);
     private final Module runtimeModule;
     private final ImmutableList<String> rosettaPaths;
     private final Class<T> inputType;
@@ -87,6 +90,12 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         RosettaModelObject useCaseReport = reportResult.getUseCaseReport();
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
         ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, useCaseReport);
+
+        if (useCaseReport == null && report.getExpected() == null) {
+            LOGGER.info("Empty report is expected result for {}", expectation.getFileName());
+            return;
+        }
+        assertNotNull(useCaseReport);
 
         // validation failures
         ValidationReport validationReport = typeValidator.runProcessStep(useCaseReport.getType(), useCaseReport);
