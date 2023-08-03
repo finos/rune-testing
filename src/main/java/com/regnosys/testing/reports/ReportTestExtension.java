@@ -89,7 +89,13 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, useCaseReport);
 
         // validation failures
-        ValidationReport validationReport = typeValidator.runProcessStep(useCaseReport.getType(), useCaseReport);
+        ValidationReport report = new ValidationReport(instance, new ArrayList());
+        Optional.ofNullable()
+        
+        ValidationReport validationReport = Optional.ofNullable(useCaseReport)
+            .map(r -> typeValidator.runProcessStep(r.getType(), r))
+            .orElse(new ValidationReport(null, new ArrayList<>()));
+        
         validationReport.logReport();
         int actualValidationFailures = validationReport.validationFailures().size();
         Path reportDataSetExpectationsPath = RegReportPaths.getReportExpectationsFilePath(outputPath, reportIdentifier, dataSetName);
