@@ -6,17 +6,22 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.regnosys.rosetta.common.hashing.ReferenceConfig;
+import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.reports.RegReportUseCase;
 import com.regnosys.rosetta.common.reports.ReportField;
+import com.regnosys.rosetta.common.serialisation.RosettaDataValueObjectToString;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.rosetta.model.lib.RosettaModelObject;
+import com.rosetta.model.lib.RosettaModelObjectBuilder;
+import com.rosetta.model.lib.reports.ReportFunction;
+import com.rosetta.model.lib.reports.Tabulator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -26,10 +31,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,10 +58,12 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     private Path rootExpectationsPath;
 
     private List<RegReportIdentifier> reportIdentifiers;
-    @Inject @SuppressWarnings("unused")
+    @Inject
     private RosettaTypeValidator typeValidator;
     @Inject
     private ReportUtil reportUtil;
+    @Inject
+    private ReferenceConfig referenceConfig;
 
     private Multimap<ReportIdentifierAndDataSetName, ReportTestResult> actualExpectation;
 
@@ -75,30 +85,51 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         reportIdentifiers = reportUtil.loadRegReportIdentifier(rosettaPaths);
     }
 
-    public void assertTest(RegReportIdentifier reportIdentifier, String dataSetName, ReportDataItemExpectation expectation, RegReportUseCase reportResult) throws IOException {
-        assertNotNull(reportResult);
+    public <In extends RosettaModelObject, Out extends RosettaModelObject> void assertTest(
+            RegReportIdentifier reportIdentifier,
+            String dataSetName,
+            ReportDataItemExpectation expectation,
+            ReportFunction<In, Out> reportFunction,
+            Tabulator<Out> tabulator,
+            In input) throws IOException {
 
         Path inputFileName = Paths.get(expectation.getFileName());
         Path outputPath = RegReportPaths.getDefault().getOutputRelativePath();
 
-        // key value
-        List<ReportField> results = filterEmptyReportFields(reportResult.getResults());
-        Path keyValueExpectationPath = RegReportPaths.getKeyValueExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> keyValue = getExpectedAndActual(keyValueExpectationPath, results);
-
         // report
-        RosettaModelObject useCaseReport = reportResult.getUseCaseReport();
+        Out reportOutput = reportFunction.evaluate(resolved(input));
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, useCaseReport);
+        ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, reportOutput);
 
-        if (useCaseReport == null && report.getExpected() == null) {
+        // key value
+        FieldValueFlattener flattener = new FieldValueFlattener();
+        tabulator.tabulate(reportOutput).forEach(
+                field -> field.accept(flattener, null)
+        );
+        List<ReportField> results = flattener.accumulator;
+        Path keyValueExpectationPath = RegReportPaths.getKeyValueExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
+        // For the tabulated values, we need to sort and remove duplicates.
+        ExpectedAndActual<String> keyValue = getSortedExpectedAndActual(
+                keyValueExpectationPath,
+                results.stream()
+                        .collect(Collectors.toMap(ReportField::getName, (f) -> f, (a, b) -> {
+                            // Remove duplicate fields, but throw if they don't have the same value.
+                            if (!a.getValue().equals(b.getValue())) {
+                                throw new IllegalStateException("Duplicate fields with different values.\n" + a + "\n" + b);
+                            }
+                            return a;
+                        }))
+                        .values(),
+                Comparator.comparing(ReportField::getName));
+
+        if (reportOutput == null && report.getExpected() == null) {
             LOGGER.info("Empty report is expected result for {}", expectation.getFileName());
             return;
         }
-        assertNotNull(useCaseReport);
+        assertNotNull(reportOutput);
 
         // validation failures
-        ValidationReport validationReport = typeValidator.runProcessStep(useCaseReport.getType(), useCaseReport);
+        ValidationReport validationReport = typeValidator.runProcessStep(reportOutput.getType(), reportOutput);
         validationReport.logReport();
         int actualValidationFailures = validationReport.validationFailures().size();
         Path reportDataSetExpectationsPath = RegReportPaths.getReportExpectationsFilePath(outputPath, reportIdentifier, dataSetName);
@@ -111,6 +142,11 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
         assertJsonEquals(report.getExpected(), report.getActual());
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
+    }
+    private <T extends RosettaModelObject> T resolved(T modelObject) {
+        RosettaModelObjectBuilder builder = modelObject.toBuilder();
+        new ReferenceResolverProcessStep(referenceConfig).runProcessStep(modelObject.getType(), builder);
+        return (T) builder.build();
     }
 
     @AfterAll
@@ -155,16 +191,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                 }));
     }
 
-    private List<ReportField> filterEmptyReportFields(List<ReportField> results) {
-        return results.stream()
-                .filter(r -> !isEmpty(r.getValue()))
-                .collect(Collectors.toList());
-    }
-
-    private boolean isEmpty(String s) {
-        return s == null || s.length() == 0;
-    }
-
     private static <T> T readFile(URL u, ObjectMapper mapper, Class<T> clazz) {
         try {
             return mapper.readValue(UrlUtils.openURL(u), clazz);
@@ -191,5 +217,55 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
     public List<RegReportIdentifier> getReportIdentifiers() {
         return reportIdentifiers;
+    }
+
+    private static class FieldValueFlattener implements Tabulator.FieldValueVisitor<Integer> {
+        public List<ReportField> accumulator = new ArrayList<>();
+
+        @Override
+        public void visitSingle(Tabulator.FieldValue fieldValue, Integer index) {
+            if (fieldValue.getValue().isPresent()) {
+                String value = RosettaDataValueObjectToString.toValueString(fieldValue.getValue().get());
+                if (!value.isEmpty()) {
+                    accumulator.add(new ReportField(
+                            insertIndex(fieldValue.getField().getName(), index),
+                            ((Tabulator.FieldImpl)fieldValue.getField()).getRuleId().map(id -> id.getNamespace().child("blueprint").child(id.getName() + "Rule").withDots()).orElse(null),
+                            index,
+                            value,
+                            ""
+                    ));
+                }
+            }
+        }
+        private static String insertIndex(String fieldName, Integer index) {
+            if (index == null) {
+                return fieldName;
+            }
+            if (fieldName.contains("$")) {
+                return fieldName.replace("$", index.toString());
+            }
+            return fieldName + " (" + index + ")";
+        }
+        @Override
+        public void visitNested(Tabulator.NestedFieldValue nestedFieldValue, Integer index) {
+            nestedFieldValue.getValue().ifPresent(
+                    (v) -> v.forEach(
+                            sub -> sub.accept(this, null)
+                    )
+            );
+        }
+        @Override
+        public void visitMultiNested(Tabulator.MultiNestedFieldValue multiNestedFieldValue, Integer index) {
+            multiNestedFieldValue.getValue().ifPresent(
+                    (vs) -> {
+                        for (int i=0; i<vs.size(); i++) {
+                            int repeatableIndex = i + 1;
+                            vs.get(i).forEach(
+                                    sub -> sub.accept(this, repeatableIndex)
+                            );
+                        }
+                    }
+            );
+        }
     }
 }
