@@ -41,7 +41,7 @@ public class ModelHelper {
 	}
 
 	public CompiledCode compileCode(GeneratedCode generatedCode) {
-		return inMemoryCompileToClasses(generatedCode, ClassLoader.getSystemClassLoader());
+		return inMemoryCompileToClasses(generatedCode, this.getClass().getClassLoader());
 	}
 
 	public CompiledCode generateAndCompileJava(CharSequence... models) throws Exception {
