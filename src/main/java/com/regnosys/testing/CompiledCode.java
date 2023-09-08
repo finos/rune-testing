@@ -1,13 +1,13 @@
 package com.regnosys.testing;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CompiledCode {
-	private final List<Class<?>> compiledCode;
+	private final Collection<Class<?>> compiledCode;
 
-	public CompiledCode(List<Class<?>> compiledCode) {
+	public CompiledCode(Collection<Class<?>> compiledCode) {
 		this.compiledCode = compiledCode;
 	}
 
