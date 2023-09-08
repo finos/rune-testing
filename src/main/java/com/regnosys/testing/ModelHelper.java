@@ -2,7 +2,7 @@ package com.regnosys.testing;
 
 import com.regnosys.rosetta.generator.RosettaGenerator;
 import com.regnosys.rosetta.rosetta.RosettaModel;
-import com.regnosys.rosetta.tests.util.InMemoryJavacCompiler;
+import com.regnosys.rosetta.tests.compiler.InMemoryJavacCompiler;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -48,11 +48,13 @@ public class ModelHelper {
 		return compileCode(generateCode(models));
 	}
 
-	private  CompiledCode inMemoryCompileToClasses(GeneratedCode generatedCode, ClassLoader scope) {
+	private  CompiledCode inMemoryCompileToClasses(GeneratedCode generatedCode, ClassLoader parentClassLoader) {
         InMemoryJavacCompiler inMemoryCompiler = InMemoryJavacCompiler
                 .newInstance()
-                .useParentClassLoader(scope)
-                .useOptions("--release", "8", "-Xlint:all", "-Xdiags:verbose");
+                .useParentClassLoader(parentClassLoader)
+                .useOptions(
+                        "--release", "8",
+                        "-Xlint:all", "-Xdiags:verbose");
 
         generatedCode.getGenerated().forEach(inMemoryCompiler::addSource);
 
