@@ -28,7 +28,7 @@ steps:
       - cf_export RELEASE_NAME=${{GLOBAL_RELEASE_VERSION}}.${{CF_BRANCH_TAG_NORMALIZED}}
 
   BuildTestingRelease:
-    title: Maven build rosetta-testing
+    title: Maven build rosetta-testing for a release build
     fail_fast: false
     image: regnosys-docker-registry.jfrog.io/regnosys/rosetta-products-deps:java-17
     working_directory: ./
@@ -43,7 +43,7 @@ steps:
           releaseNameNotDefined: "${{TAG_REPO}} == true"
 
   BuildTestingBranch:
-    title: Maven build rosetta-testing
+    title: Maven build rosetta-testing for a branch build
     fail_fast: false
     image: regnosys-docker-registry.jfrog.io/regnosys/rosetta-products-deps:java-17
     working_directory: ./
