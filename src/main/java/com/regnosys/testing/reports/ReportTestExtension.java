@@ -38,7 +38,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -99,7 +98,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         // report
         Out reportOutput = reportFunction.evaluate(resolved(input));
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, reportOutput);
+        ExpectedAndActual<String> report = ExpectationUtil.getExpectedAndActual(reportExpectationPath, reportOutput);
 
         // key value
         FieldValueFlattener flattener = new FieldValueFlattener();
@@ -139,8 +138,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
         actualExpectation.put(new ReportIdentifierAndDataSetName(reportIdentifier, dataSetName), testExpectation);
 
-        assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-        assertJsonEquals(report.getExpected(), report.getActual());
+        ExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
+        ExpectationUtil.assertJsonEquals(report.getExpected(), report.getActual());
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
     }
     private <T extends RosettaModelObject> T resolved(T modelObject) {
@@ -189,18 +188,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                             input,
                                             dataItemExpectation);
                                 }));
-    }
-
-    private void assertJsonEquals(String expectedJson, String resultJson) {
-        assertEquals(
-                normaliseLineEndings(expectedJson),
-                normaliseLineEndings(resultJson));
-    }
-
-    private String normaliseLineEndings(String str) {
-        return Optional.ofNullable(str)
-                .map(s -> s.replace("\r", ""))
-                .orElse(null);
     }
 
     public Module getRuntimeModule() {

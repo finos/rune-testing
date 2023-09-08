@@ -9,8 +9,7 @@ import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
-import com.regnosys.rosetta.common.util.ClassPathUtils;
-import com.regnosys.rosetta.common.util.UrlUtils;
+import com.regnosys.testing.ExpectationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,11 +35,6 @@ public class ReportExpectationUtil {
 
     private final static ObjectWriter EXPECTATIONS_WRITER =
             ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
-    private final static ObjectWriter ROSETTA_OBJECT_WRITER =
-            RosettaObjectMapper
-                    .getNewRosettaObjectMapper()
-                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-                    .writerWithDefaultPrettyPrinter();
     private final static ObjectReader ROSETTA_OBJECT_READER =
             RosettaObjectMapper
                     .getNewRosettaObjectMapper()
@@ -88,22 +82,16 @@ public class ReportExpectationUtil {
         }
     }
 
-    public static ExpectedAndActual<String> getExpectedAndActual(Path expectationPath, Object result) throws IOException {
-        String actualJson = ROSETTA_OBJECT_WRITER.writeValueAsString(result);
-        String expectedJson = readStringFromResources(expectationPath);
-        return new ExpectedAndActual<>(expectationPath, expectedJson, actualJson);
-    }
-
     public static <T> ExpectedAndActual<String> getSortedExpectedAndActual(Path expectationPath, Collection<T> results, Comparator<? super T> comparator) throws IOException {
         List<T> sorted = new ArrayList<>(results);
         sorted.sort(comparator);
-        String actualJson = ROSETTA_OBJECT_WRITER.writeValueAsString(sorted);
-        String expectedJson = Optional.ofNullable(readStringFromResources(expectationPath))
+        String actualJson = ExpectationUtil.ROSETTA_OBJECT_WRITER.writeValueAsString(sorted);
+        String expectedJson = Optional.ofNullable(ExpectationUtil.readStringFromResources(expectationPath))
                 .map(expected -> {
                     try {
                         List<ReportField> expectedFields = new ArrayList<>(List.of(ROSETTA_OBJECT_READER.readValue(expected, ReportField[].class)));
                         expectedFields.sort(Comparator.comparing(ReportField::getName));
-                        return ROSETTA_OBJECT_WRITER.writeValueAsString(expectedFields);
+                        return ExpectationUtil.ROSETTA_OBJECT_WRITER.writeValueAsString(expectedFields);
                     } catch (IOException e) {
                         LOGGER.error("Failed to read expected {}", expected, e);
                         return null;
@@ -111,22 +99,6 @@ public class ReportExpectationUtil {
                 })
                 .orElse(null);
         return new ExpectedAndActual<>(expectationPath, expectedJson, actualJson);
-    }
-
-    private static String readStringFromResources(Path resourcePath) {
-        return Optional.ofNullable(ClassPathUtils.getResource(resourcePath))
-                .map(UrlUtils::toPath)
-                .map(ReportExpectationUtil::readString)
-                .orElse(null);
-    }
-
-    private static String readString(Path fullPath) {
-        try {
-            return Files.exists(fullPath) ? Files.readString(fullPath) : null;
-        } catch (IOException e) {
-            LOGGER.error("Failed to read path {}", fullPath, e);
-            return null;
-        }
     }
 
     private static void writeFile(Path writePath, String json, boolean create) {
