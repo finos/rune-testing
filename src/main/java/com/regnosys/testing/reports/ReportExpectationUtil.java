@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
@@ -16,14 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.regnosys.rosetta.common.reports.RegReportPaths.REPORT_EXPECTATIONS_FILE_NAME;
 
 public class ReportExpectationUtil {
 
@@ -92,18 +88,6 @@ public class ReportExpectationUtil {
         }
     }
 
-    public static List<URL> readReportExpectationsFromPath(Path basePath, ClassLoader classLoader) {
-        List<URL> expectations = ClassPathUtils
-                .findPathsFromClassPath(List.of(UrlUtils.toPortableString(basePath)),
-                        REPORT_EXPECTATIONS_FILE_NAME,
-                        Optional.empty(),
-                        classLoader)
-                .stream()
-                .map(UrlUtils::toUrl)
-                .collect(Collectors.toList());
-        return ImmutableList.copyOf(expectations);
-    }
-
     public static ExpectedAndActual<String> getExpectedAndActual(Path expectationPath, Object result) throws IOException {
         String actualJson = ROSETTA_OBJECT_WRITER.writeValueAsString(result);
         String expectedJson = readStringFromResources(expectationPath);
@@ -159,26 +143,4 @@ public class ReportExpectationUtil {
         }
     }
 
-    static class ReportIdentifierAndDataSetName {
-        private final RegReportIdentifier reportIdentifier;
-        private final String dataSetName;
-
-        public ReportIdentifierAndDataSetName(RegReportIdentifier reportIdentifier, String dataSetName) {
-            this.reportIdentifier = reportIdentifier;
-            this.dataSetName = dataSetName;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ReportIdentifierAndDataSetName key = (ReportIdentifierAndDataSetName) o;
-            return Objects.equals(reportIdentifier, key.reportIdentifier) && Objects.equals(dataSetName, key.dataSetName);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(reportIdentifier, dataSetName);
-        }
-    }
 }
