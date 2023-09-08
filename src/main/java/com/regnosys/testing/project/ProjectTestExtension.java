@@ -30,12 +30,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.regnosys.rosetta.common.reports.RegReportPaths.REPORT_EXPECTATIONS_FILE_NAME;
-import static com.regnosys.testing.reports.ReportExpectationUtil.writeExpectations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
+    public static final String PROJECT_EXPECTATIONS_FILE_NAME = "project-expectations.json";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectTestExtension.class);
     private final Module runtimeModule;
     private final Class<IN> inputType;
@@ -67,7 +67,7 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
     }
 
     public Stream<Arguments> getArguments() {
-        List<URL> expectationFiles = ExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), REPORT_EXPECTATIONS_FILE_NAME);
+        List<URL> expectationFiles = ExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), PROJECT_EXPECTATIONS_FILE_NAME);
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
                 .flatMap(expectationUrl -> {

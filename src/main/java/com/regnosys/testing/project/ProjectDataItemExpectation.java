@@ -1,5 +1,8 @@
 package com.regnosys.testing.project;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Comparator;
 
 public class ProjectDataItemExpectation implements Comparable<ProjectDataItemExpectation> {
@@ -7,7 +10,10 @@ public class ProjectDataItemExpectation implements Comparable<ProjectDataItemExp
     private String outputFile;
     private int validationFailures;
 
-    public ProjectDataItemExpectation(String inputFile, String outputFile, int validationFailures) {
+    @JsonCreator
+    public ProjectDataItemExpectation(@JsonProperty("inputFile") String inputFile,
+                                      @JsonProperty("outputFile") String outputFile,
+                                      @JsonProperty("validationFailures") int validationFailures) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.validationFailures = validationFailures;
