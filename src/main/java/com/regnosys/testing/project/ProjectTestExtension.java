@@ -2,7 +2,6 @@ package com.regnosys.testing.project;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
 import com.google.inject.Guice;
@@ -21,24 +20,25 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.reports.RegReportPaths.REPORT_EXPECTATIONS_FILE_NAME;
 
-public class ProjectTestExtension<T extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
+public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectTestExtension.class);
     private final Module runtimeModule;
-    private final Class<T> inputType;
+    private final Class<IN> inputType;
 
     private Multimap<ReportNameAndDataSetName, ProjectTestResult> actualExpectation;
     private Path rootExpectationsPath;
 
-    public ProjectTestExtension(Module runtimeModule, Class<T> inputType) {
+    public ProjectTestExtension(Module runtimeModule, Class<IN> inputType) {
         this.runtimeModule = runtimeModule;
         this.inputType = inputType;
     }
 
-    public ProjectTestExtension<T> withRootExpectationsPath(Path rootExpectationsPath) {
+    public ProjectTestExtension<IN, OUT> withRootExpectationsPath(Path rootExpectationsPath) {
         this.rootExpectationsPath = rootExpectationsPath;
         return this;
     }
@@ -66,14 +66,18 @@ public class ProjectTestExtension<T extends RosettaModelObject> implements Befor
                                     String inputFile = dataItemExpectation.getInputFile();
                                     URL inputFileUrl = Resources.getResource(inputFile);
                                     // deserialise into input (e.g. ESMAEMIRMarginReport)
-                                    T input = ExpectationUtil.readFile(inputFileUrl, mapper, inputType);
-                                    String reportName = projectExpectation.getReportName();
+                                    IN input = ExpectationUtil.readFile(inputFileUrl, mapper, inputType);
+                                    String projectName = projectExpectation.getProjectName();
                                     return Arguments.of(
-                                            reportName,
+                                            projectName,
                                             projectExpectation.getDataSetName(),
                                             input,
                                             dataItemExpectation
                                     );
                                 }));
+    }
+
+    public void runMappingAndAssert(String projectName, String dataSetName, ProjectDataItemExpectation expectation, Function<IN, OUT> functionExecutionCallback, IN input) {
+
     }
 }
