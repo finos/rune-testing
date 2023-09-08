@@ -27,7 +27,7 @@ steps:
     commands:
       - cf_export RELEASE_NAME=${{GLOBAL_RELEASE_VERSION}}.${{CF_BRANCH_TAG_NORMALIZED}}
 
-  BuildTesting:
+  BuildTestingRelease:
     title: Maven build rosetta-testing
     fail_fast: false
     image: regnosys-docker-registry.jfrog.io/regnosys/rosetta-products-deps:java-17
@@ -37,15 +37,38 @@ steps:
       - mvn -s /settings.xml versions:set -DnewVersion=${{RELEASE_NAME}}
       - mvn -s /settings.xml versions:set-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}]
       - mvn -U -s /settings.xml clean deploy
+    when:
+      condition:
+        all:
+          releaseNameNotDefined: "${{TAG_REPO}} == true"
+
+  BuildTestingBranch:
+    title: Maven build rosetta-testing
+    fail_fast: false
+    image: regnosys-docker-registry.jfrog.io/regnosys/rosetta-products-deps:java-17
+    working_directory: ./
+    commands:
+      - rm -rf /codefresh/volume/.m2/com/regnosys
+      - mvn -s /settings.xml versions:set -DnewVersion=${{RELEASE_NAME}}
+      - mvn -s /settings.xml versions:update-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true
+      - mvn -U -s /settings.xml clean deploy
+    when:
+      condition:
+        all:
+          releaseNameNotDefined: "${{TAG_REPO}} == false"
 
   FailPipeline:
     title: Fail pipeline if the Maven build failed
     image: codefresh/cli
     when:
       steps:
-        - name: BuildTesting
-          on:
-            - failure
+        any:
+          - name: BuildTestingRelease
+            on:
+              - failure
+          - name: BuildTestingBranch
+            on:
+              - failure
     commands:
       - exit 1
 
