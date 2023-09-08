@@ -8,6 +8,7 @@ import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.testing.reports.ExpectedAndActual;
+import com.regnosys.testing.reports.ObjectMapperGenerator;
 import com.regnosys.testing.reports.ReportExpectationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,12 +25,20 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExpectationUtil {
+    public final static ObjectWriter EXPECTATIONS_WRITER =
+            ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpectationUtil.class);
     public final static ObjectWriter ROSETTA_OBJECT_WRITER =
             RosettaObjectMapper
                     .getNewRosettaObjectMapper()
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
                     .writerWithDefaultPrettyPrinter();
+    public static boolean WRITE_EXPECTATIONS = Optional.ofNullable(System.getenv("WRITE_EXPECTATIONS"))
+            .map(Boolean::parseBoolean).orElse(false);
+    public static boolean CREATE_EXPECTATION_FILES = Optional.ofNullable(System.getenv("CREATE_EXPECTATION_FILES"))
+            .map(Boolean::parseBoolean).orElse(false);
+    public static Optional<Path> TEST_WRITE_BASE_PATH = Optional.ofNullable(System.getenv("TEST_WRITE_BASE_PATH"))
+            .map(Paths::get);
 
     public static List<URL> readExpectationsFromPath(Path basePath, ClassLoader classLoader, String expectationsFileName) {
         List<URL> expectations = ClassPathUtils
@@ -82,5 +92,19 @@ public class ExpectationUtil {
         return Optional.ofNullable(str)
                 .map(s -> s.replace("\r", ""))
                 .orElse(null);
+    }
+
+    public static void writeFile(Path writePath, String json, boolean create) {
+        try {
+            if (create) {
+                Files.createDirectories(writePath.getParent());
+            }
+            if (create || Files.exists(writePath)) {
+                Files.write(writePath, json.getBytes());
+                LOGGER.info("Wrote output to {}", writePath);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Failed to write output to {}", writePath, e);
+        }
     }
 }

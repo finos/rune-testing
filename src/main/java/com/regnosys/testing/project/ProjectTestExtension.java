@@ -42,6 +42,7 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
 
     private Multimap<ProjectNameAndDataSetName, ProjectTestResult> actualExpectation;
     private Path rootExpectationsPath;
+    private Path outputPath;
 
     @Inject
     private RosettaTypeValidator typeValidator;
@@ -56,6 +57,11 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
         return this;
     }
 
+    public ProjectTestExtension<IN, OUT> withOutputPath(Path outputPath) {
+        this.outputPath = outputPath;
+        return this;
+    }
+
     @Override
     public void beforeAll(ExtensionContext context) {
         Guice.createInjector(runtimeModule).injectMembers(this);
@@ -63,7 +69,8 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
     }
 
     @Override
-    public void afterAll(ExtensionContext context) {
+    public void afterAll(ExtensionContext context) throws Exception{
+        ProjectExpectationUtil.writeExpectations(actualExpectation, outputPath);
     }
 
     public Stream<Arguments> getArguments() {
@@ -71,12 +78,8 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
                 .flatMap(expectationUrl -> {
-                    Path projectExpectationPath;
-                    try {
-                        projectExpectationPath = Path.of(expectationUrl.toURI());
-                    } catch (URISyntaxException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Path projectExpectationFilePath;
+                    projectExpectationFilePath = generateRelativeExpectationFilePath(outputPath, expectationUrl);
                     ProjectDataSetExpectation projectExpectation = ExpectationUtil.readFile(expectationUrl, mapper, ProjectDataSetExpectation.class);
                     return projectExpectation.getDataItemExpectations().stream()
                             .map(dataItemExpectation -> {
@@ -88,7 +91,7 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
                                 String projectName = projectExpectation.getProjectName();
                                 return Arguments.of(
                                         projectName,
-                                        projectExpectationPath,
+                                        projectExpectationFilePath,
                                         projectExpectation.getDataSetName(),
                                         input,
                                         dataItemExpectation
@@ -97,23 +100,37 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
                 });
     }
 
-    public void runProjectionAndAssert(String projectName, Path projectExpectationPath, String dataSetName, ProjectDataItemExpectation expectation, Function<IN, OUT> functionExecutionCallback, IN input) throws IOException {
+    private Path generateRelativeExpectationFilePath(Path outputPath, URL expectationUrl) {
+        try {
+            Path path = Path.of(expectationUrl.toURI());
+            String relativePath = path.toString().replaceAll("^.*?(" + outputPath + ".*)", "$1");
+            return Path.of(relativePath);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void runProjectionAndAssert(String projectName, Path projectExpectationFilePath, String dataSetName, ProjectDataItemExpectation expectation, Function<IN, OUT> functionExecutionCallback, IN input) throws IOException {
         Path outputFile = Paths.get(expectation.getOutputFile());
 
         OUT projectOutput = functionExecutionCallback.apply(input);
         ExpectedAndActual<String> project = ExpectationUtil.getExpectedAndActual(outputFile, projectOutput);
 
+        if (projectOutput == null && project.getExpected() == null) {
+            LOGGER.info("Empty project is expected result for {}", expectation.getInputFile());
+            return;
+        }
         assertNotNull(projectOutput);
 
         //validation failures
         ValidationReport validationReport = typeValidator.runProcessStep(projectOutput.getType(), projectOutput);
         validationReport.logReport();
         int actualValidationFailures = validationReport.validationFailures().size();
-        ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(projectExpectationPath, expectation.getValidationFailures(), actualValidationFailures);
+        ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(projectExpectationFilePath, expectation.getValidationFailures(), actualValidationFailures);
 
-        ProjectTestResult projectTestResult = new ProjectTestResult(expectation.getInputFile(), project, validationFailures);
+        ProjectTestResult projectTestResult = new ProjectTestResult(expectation.getInputFile(), expectation.getOutputFile(), project, validationFailures);
 
-        actualExpectation.put(new ProjectNameAndDataSetName(projectName, dataSetName), projectTestResult);
+        actualExpectation.put(new ProjectNameAndDataSetName(projectName, dataSetName, projectExpectationFilePath), projectTestResult);
 
         ExpectationUtil.assertJsonEquals(project.getExpected(), project.getActual());
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
