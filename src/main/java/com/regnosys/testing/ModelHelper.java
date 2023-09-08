@@ -1,29 +1,22 @@
 package com.regnosys.testing;
 
-import com.google.inject.Provider;
 import com.regnosys.rosetta.generator.RosettaGenerator;
 import com.regnosys.rosetta.rosetta.RosettaModel;
+import com.regnosys.rosetta.tests.util.InMemoryJavacCompiler;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.xtext.generator.GeneratorContext;
-import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.eclipse.xtext.testing.util.ResourceHelper;
 import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.util.CancelIndicator;
-import org.eclipse.xtext.util.JavaVersion;
-import org.eclipse.xtext.xbase.testing.InMemoryJavaCompiler;
-import org.eclipse.xtext.xbase.testing.JavaSource;
 import org.eclipse.xtext.xbase.testing.RegisteringFileSystemAccess;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 // TODO: this is duplicated in the DSL! See `CodeGeneratorTestHelper` and `ModelHelper` in DSL test project.
@@ -36,12 +29,6 @@ public class ModelHelper {
 
 	@Inject
 	private RosettaGenerator rosettaGenerator;
-
-	@Inject
-	private Provider<XtextResourceSet> resourceSetProvider;
-
-	@Inject
-	private ResourceHelper resourceHelper;
 
 	@Inject
 	private ParseHelper<RosettaModel> parseHelper;
@@ -62,28 +49,14 @@ public class ModelHelper {
 	}
 
 	private  CompiledCode inMemoryCompileToClasses(GeneratedCode generatedCode, ClassLoader scope) {
-		InMemoryJavaCompiler inMemoryCompiler = new InMemoryJavaCompiler(scope, JavaVersion.JAVA8);
+        InMemoryJavacCompiler inMemoryCompiler = InMemoryJavacCompiler
+                .newInstance()
+                .useParentClassLoader(scope)
+                .useOptions("--release", "8", "-Xlint:all", "-Xdiags:verbose");
 
-		List<JavaSource> javaSources = generatedCode.getJavaSource();
+        generatedCode.getGenerated().forEach(inMemoryCompiler::addSource);
 
-		InMemoryJavaCompiler.Result result = inMemoryCompiler.compile(javaSources.toArray(JavaSource[]::new));
-
-		try {
-			if (result.getCompilationProblems().stream().anyMatch(IProblem::isError)) {
-				throw new IllegalArgumentException("Java code compiled with errors: " + result
-					.getCompilationProblems());
-			}
-			var classLoader = result.getClassLoader();
-
-			var classes = new ArrayList<Class<?>>();
-			for (String source : generatedCode.getGeneratedClassNames()) {
-				classes.add(classLoader.loadClass(source));
-			}
-			return new CompiledCode(classes);
-		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException(e.getMessage() + ", " + generatedCode.getGeneratedClassNames() + ", " + result.getCompilationProblems()
-				.stream().map(Objects::toString).collect(Collectors.joining("\n")), e);
-		}
+        return new CompiledCode(inMemoryCompiler.compileAll().values());
 	}
 
 	public GeneratedCode generateCode(List<Resource> resources) {
