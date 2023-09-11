@@ -9,7 +9,6 @@ import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.testing.reports.ExpectedAndActual;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
-import com.regnosys.testing.reports.ReportExpectationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,10 +23,10 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ExpectationUtil {
+public class TestingExpectationUtil {
     public final static ObjectWriter EXPECTATIONS_WRITER =
             ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExpectationUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestingExpectationUtil.class);
     public final static ObjectWriter ROSETTA_OBJECT_WRITER =
             RosettaObjectMapper
                     .getNewRosettaObjectMapper()
@@ -63,7 +62,7 @@ public class ExpectationUtil {
     public static String readStringFromResources(Path resourcePath) {
         return Optional.ofNullable(ClassPathUtils.getResource(resourcePath))
                 .map(UrlUtils::toPath)
-                .map(ExpectationUtil::readString)
+                .map(TestingExpectationUtil::readString)
                 .orElse(null);
     }
 

@@ -2,7 +2,7 @@ package com.regnosys.testing.project;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Multimap;
-import com.regnosys.testing.ExpectationUtil;
+import com.regnosys.testing.TestingExpectationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ProjectExpectationUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectExpectationUtil.class);
     public static void writeExpectations(Multimap<ProjectNameAndDataSetName, ProjectTestResult> actualExpectation, Path outputPath) throws JsonProcessingException {
-        if (!ExpectationUtil.WRITE_EXPECTATIONS) {
+        if (!TestingExpectationUtil.WRITE_EXPECTATIONS) {
             LOGGER.info("WRITE_EXPECTATIONS is set to false, not updating expectations.");
             return;
         }
@@ -34,22 +34,22 @@ public class ProjectExpectationUtil {
                     .collect(Collectors.toList());
 
             ProjectDataSetExpectation projectDataSetExpectation = new ProjectDataSetExpectation(projectName, dataSetName, dataItemExpectations);
-            String expectationFileContent = ExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(projectDataSetExpectation);
+            String expectationFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(projectDataSetExpectation);
 
             // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
             // TEST_WRITE_BASE_PATH=/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/resources/
-            ExpectationUtil.TEST_WRITE_BASE_PATH
+            TestingExpectationUtil.TEST_WRITE_BASE_PATH
                     .filter(Files::exists)
                     .ifPresent(writeBasePath -> {
                         // 1. write new expectations file
                         Path expectationFileWritePath = writeBasePath.resolve(projectExpectationPath);
-                        ExpectationUtil.writeFile(expectationFileWritePath, expectationFileContent, ExpectationUtil.CREATE_EXPECTATION_FILES);
+                        TestingExpectationUtil.writeFile(expectationFileWritePath, expectationFileContent, TestingExpectationUtil.CREATE_EXPECTATION_FILES);
 
                         // 2. write new report json
                         projectTestResults.stream()
                                 .map(ProjectTestResult::getReport)
                                 .forEach(r -> {
-                                    ExpectationUtil.writeFile(writeBasePath.resolve(r.getExpectationPath()), r.getActual(), ExpectationUtil.CREATE_EXPECTATION_FILES);
+                                    TestingExpectationUtil.writeFile(writeBasePath.resolve(r.getExpectationPath()), r.getActual(), TestingExpectationUtil.CREATE_EXPECTATION_FILES);
                                 });
                     });
         }

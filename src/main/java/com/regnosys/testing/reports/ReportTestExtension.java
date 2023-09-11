@@ -16,7 +16,7 @@ import com.regnosys.rosetta.common.serialisation.RosettaDataValueObjectToString;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
-import com.regnosys.testing.ExpectationUtil;
+import com.regnosys.testing.TestingExpectationUtil;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.model.lib.reports.ReportFunction;
@@ -98,7 +98,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         // report
         Out reportOutput = reportFunction.evaluate(resolved(input));
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> report = ExpectationUtil.getExpectedAndActual(reportExpectationPath, reportOutput);
+        ExpectedAndActual<String> report = TestingExpectationUtil.getExpectedAndActual(reportExpectationPath, reportOutput);
 
         // key value
         FieldValueFlattener flattener = new FieldValueFlattener();
@@ -138,8 +138,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
         actualExpectation.put(new ReportIdentifierAndDataSetName(reportIdentifier, dataSetName), testExpectation);
 
-        ExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-        ExpectationUtil.assertJsonEquals(report.getExpected(), report.getActual());
+        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
+        TestingExpectationUtil.assertJsonEquals(report.getExpected(), report.getActual());
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
     }
     private <T extends RosettaModelObject> T resolved(T modelObject) {
@@ -156,7 +156,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     public Stream<Arguments> getArguments() {
         // find list of expectation files within the report path
         // - warning this will find paths in all classpath jars, so may return additional unwanted paths
-        List<URL> expectationFiles = ExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), REPORT_EXPECTATIONS_FILE_NAME);
+        List<URL> expectationFiles = TestingExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), REPORT_EXPECTATIONS_FILE_NAME);
         return getArguments(expectationFiles);
     }
 
@@ -164,7 +164,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
                 // report-data-set expectation contains all expectations for a data-set (e.g. a test pack)
-                .map(reportExpectationUrl -> ExpectationUtil.readFile(reportExpectationUrl, mapper, ReportDataSetExpectation.class))
+                .map(reportExpectationUrl -> TestingExpectationUtil.readFile(reportExpectationUrl, mapper, ReportDataSetExpectation.class))
                 .flatMap(reportExpectation ->
                         // report-data-item expectation contains expectations of a single input file
                         reportExpectation.getDataItemExpectations().stream()
@@ -173,7 +173,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                     String fileName = dataItemExpectation.getFileName();
                                     URL inputFileUrl = Resources.getResource(fileName);
                                     // deserialise into input (e.g. ReportableEvent)
-                                    T input = ExpectationUtil.readFile(inputFileUrl, mapper, inputType);
+                                    T input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
                                     // get the report identifier
                                     String reportName = reportExpectation.getReportName();
                                     RegReportIdentifier reportIdentifier = reportIdentifiers.stream()

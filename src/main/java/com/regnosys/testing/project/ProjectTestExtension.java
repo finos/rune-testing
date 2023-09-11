@@ -9,7 +9,7 @@ import com.google.inject.Module;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
-import com.regnosys.testing.ExpectationUtil;
+import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.reports.ExpectedAndActual;
 import com.regnosys.testing.reports.ReportTestExtension;
 import com.rosetta.model.lib.RosettaModelObject;
@@ -74,20 +74,20 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
     }
 
     public Stream<Arguments> getArguments() {
-        List<URL> expectationFiles = ExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), PROJECT_EXPECTATIONS_FILE_NAME);
+        List<URL> expectationFiles = TestingExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), PROJECT_EXPECTATIONS_FILE_NAME);
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
                 .flatMap(expectationUrl -> {
                     Path projectExpectationFilePath;
                     projectExpectationFilePath = generateRelativeExpectationFilePath(outputPath, expectationUrl);
-                    ProjectDataSetExpectation projectExpectation = ExpectationUtil.readFile(expectationUrl, mapper, ProjectDataSetExpectation.class);
+                    ProjectDataSetExpectation projectExpectation = TestingExpectationUtil.readFile(expectationUrl, mapper, ProjectDataSetExpectation.class);
                     return projectExpectation.getDataItemExpectations().stream()
                             .map(dataItemExpectation -> {
                                 // input file to be tested
                                 String inputFile = dataItemExpectation.getInputFile();
                                 URL inputFileUrl = Resources.getResource(inputFile);
                                 // deserialise into input (e.g. ESMAEMIRMarginReport)
-                                IN input = ExpectationUtil.readFile(inputFileUrl, mapper, inputType);
+                                IN input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
                                 String projectName = projectExpectation.getProjectName();
                                 return Arguments.of(
                                         projectName,
@@ -114,7 +114,7 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
         Path outputFile = Paths.get(expectation.getOutputFile());
 
         OUT projectOutput = functionExecutionCallback.apply(input);
-        ExpectedAndActual<String> project = ExpectationUtil.getExpectedAndActual(outputFile, projectOutput);
+        ExpectedAndActual<String> project = TestingExpectationUtil.getExpectedAndActual(outputFile, projectOutput);
 
         if (projectOutput == null && project.getExpected() == null) {
             LOGGER.info("Empty project is expected result for {}", expectation.getInputFile());
@@ -132,7 +132,7 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
 
         actualExpectation.put(new ProjectNameAndDataSetName(projectName, dataSetName, projectExpectationFilePath), projectTestResult);
 
-        ExpectationUtil.assertJsonEquals(project.getExpected(), project.getActual());
+        TestingExpectationUtil.assertJsonEquals(project.getExpected(), project.getActual());
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
     }
 
