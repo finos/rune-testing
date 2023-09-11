@@ -11,13 +11,12 @@ import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
-import com.regnosys.rosetta.common.reports.RegReportUseCase;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaDataValueObjectToString;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
-import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
+import com.regnosys.testing.TestingExpectationUtil;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.model.lib.reports.ReportFunction;
@@ -39,10 +38,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.regnosys.rosetta.common.reports.RegReportPaths.REPORT_EXPECTATIONS_FILE_NAME;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFileExtension;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFilePrefix;
 import static com.regnosys.testing.reports.ReportExpectationUtil.*;
@@ -99,7 +98,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         // report
         Out reportOutput = reportFunction.evaluate(resolved(input));
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, reportOutput);
+        ExpectedAndActual<String> report = TestingExpectationUtil.getExpectedAndActual(reportExpectationPath, reportOutput);
 
         // key value
         FieldValueFlattener flattener = new FieldValueFlattener();
@@ -139,8 +138,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
         actualExpectation.put(new ReportIdentifierAndDataSetName(reportIdentifier, dataSetName), testExpectation);
 
-        assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-        assertJsonEquals(report.getExpected(), report.getActual());
+        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
+        TestingExpectationUtil.assertJsonEquals(report.getExpected(), report.getActual());
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
     }
     private <T extends RosettaModelObject> T resolved(T modelObject) {
@@ -157,7 +156,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     public Stream<Arguments> getArguments() {
         // find list of expectation files within the report path
         // - warning this will find paths in all classpath jars, so may return additional unwanted paths
-        List<URL> expectationFiles = readReportExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader());
+        List<URL> expectationFiles = TestingExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), REPORT_EXPECTATIONS_FILE_NAME);
         return getArguments(expectationFiles);
     }
 
@@ -165,7 +164,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
                 // report-data-set expectation contains all expectations for a data-set (e.g. a test pack)
-                .map(reportExpectationUrl -> readFile(reportExpectationUrl, mapper, ReportDataSetExpectation.class))
+                .map(reportExpectationUrl -> TestingExpectationUtil.readFile(reportExpectationUrl, mapper, ReportDataSetExpectation.class))
                 .flatMap(reportExpectation ->
                         // report-data-item expectation contains expectations of a single input file
                         reportExpectation.getDataItemExpectations().stream()
@@ -174,7 +173,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                     String fileName = dataItemExpectation.getFileName();
                                     URL inputFileUrl = Resources.getResource(fileName);
                                     // deserialise into input (e.g. ReportableEvent)
-                                    T input = readFile(inputFileUrl, mapper, inputType);
+                                    T input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
                                     // get the report identifier
                                     String reportName = reportExpectation.getReportName();
                                     RegReportIdentifier reportIdentifier = reportIdentifiers.stream()
@@ -189,26 +188,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                             input,
                                             dataItemExpectation);
                                 }));
-    }
-
-    private static <T> T readFile(URL u, ObjectMapper mapper, Class<T> clazz) {
-        try {
-            return mapper.readValue(UrlUtils.openURL(u), clazz);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void assertJsonEquals(String expectedJson, String resultJson) {
-        assertEquals(
-                normaliseLineEndings(expectedJson),
-                normaliseLineEndings(resultJson));
-    }
-
-    private String normaliseLineEndings(String str) {
-        return Optional.ofNullable(str)
-                .map(s -> s.replace("\r", ""))
-                .orElse(null);
     }
 
     public Module getRuntimeModule() {

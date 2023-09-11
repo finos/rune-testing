@@ -27,6 +27,26 @@ steps:
     commands:
       - cf_export RELEASE_NAME=${{GLOBAL_RELEASE_VERSION}}.${{CF_BRANCH_TAG_NORMALIZED}}
 
+  ReleaseProperties:
+    title: Setup release build
+    image: alpine/git
+    when:
+      condition:
+        all:
+          releaseNameNotDefined: "${{TAG_REPO}} == true"
+    commands:
+      - cf_export MVN_SET_PROPERTY="versions:set-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}]"
+
+  BranchProperties:
+    title: Setup branch build
+    image: alpine/git
+    when:
+      condition:
+        all:
+          releaseNameNotDefined: "${{TAG_REPO}} == false"
+    commands:
+      - cf_export MVN_SET_PROPERTY="versions:update-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
+
   BuildTesting:
     title: Maven build rosetta-testing
     fail_fast: false
@@ -35,7 +55,7 @@ steps:
     commands:
       - rm -rf /codefresh/volume/.m2/com/regnosys
       - mvn -s /settings.xml versions:set -DnewVersion=${{RELEASE_NAME}}
-      - mvn -s /settings.xml versions:set-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}]
+      - mvn -s /settings.xml ${{MVN_SET_PROPERTY}}
       - mvn -U -s /settings.xml clean deploy
 
   FailPipeline:
