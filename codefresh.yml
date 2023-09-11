@@ -27,48 +27,45 @@ steps:
     commands:
       - cf_export RELEASE_NAME=${{GLOBAL_RELEASE_VERSION}}.${{CF_BRANCH_TAG_NORMALIZED}}
 
-  BuildTestingRelease:
-    title: Maven build rosetta-testing for a release build
-    fail_fast: false
-    image: regnosys-docker-registry.jfrog.io/regnosys/rosetta-products-deps:java-17
-    working_directory: ./
-    commands:
-      - rm -rf /codefresh/volume/.m2/com/regnosys
-      - mvn -s /settings.xml versions:set -DnewVersion=${{RELEASE_NAME}}
-      - mvn -s /settings.xml versions:set-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}]
-      - mvn -U -s /settings.xml clean deploy
+  ReleaseProperties:
+    title: Setup release build
+    image: alpine/git
     when:
       condition:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == true"
+    commands:
+      - cf_export MVN_SET_PROPERTY=versions:set-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}]
 
-  BuildTestingBranch:
-    title: Maven build rosetta-testing for a branch build
+  BranchProperties:
+    title: Setup branch build
+    image: alpine/git
+    when:
+      condition:
+        all:
+          releaseNameNotDefined: "${{TAG_REPO}} == false"
+    commands:
+      - cf_export MVN_SET_PROPERTY=versions:update-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true
+
+  BuildTesting:
+    title: Maven build rosetta-testing
     fail_fast: false
     image: regnosys-docker-registry.jfrog.io/regnosys/rosetta-products-deps:java-17
     working_directory: ./
     commands:
       - rm -rf /codefresh/volume/.m2/com/regnosys
       - mvn -s /settings.xml versions:set -DnewVersion=${{RELEASE_NAME}}
-      - mvn -s /settings.xml versions:update-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true
+      - mvn -s /settings.xml ${{MVN_SET_PROPERTY}}
       - mvn -U -s /settings.xml clean deploy
-    when:
-      condition:
-        all:
-          releaseNameNotDefined: "${{TAG_REPO}} == false"
 
   FailPipeline:
     title: Fail pipeline if the Maven build failed
     image: codefresh/cli
     when:
       steps:
-        any:
-          - name: BuildTestingRelease
-            on:
-              - failure
-          - name: BuildTestingBranch
-            on:
-              - failure
+        - name: BuildTesting
+          on:
+            - failure
     commands:
       - exit 1
 
