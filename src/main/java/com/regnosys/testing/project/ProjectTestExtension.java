@@ -103,7 +103,7 @@ public class ProjectTestExtension<IN extends RosettaModelObject, OUT extends Ros
     private Path generateRelativeExpectationFilePath(Path outputPath, URL expectationUrl) {
         try {
             Path path = Path.of(expectationUrl.toURI());
-            String relativePath = path.toString().replaceAll("^.*?(" + outputPath + ".*)", "$1");
+            String relativePath = path.toString().replaceAll("^.*?(\\Q" + outputPath + "\\E.*)", "$1");
             return Path.of(relativePath);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
