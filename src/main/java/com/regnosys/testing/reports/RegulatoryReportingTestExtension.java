@@ -7,12 +7,12 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import com.regnosys.rosetta.common.reports.RegReport;
-import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportUseCase;
 import com.regnosys.rosetta.common.serialisation.lookup.JsonLookupDataLoader;
 import com.regnosys.rosetta.common.serialisation.reportdata.*;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
+import com.rosetta.model.lib.ModelReportId;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -89,12 +89,12 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 	public void afterAll(ExtensionContext context) throws Exception {
 		if (writeOutputFiles) {
 			// expectation file -> report name -> results
-			Table<String, String, List<ExpectedResultField>> results = expectationWriter.groupByExpectationFileAndReportName(collectedExpectationResult, reportDataSetDefinitions);
+			Table<String, ModelReportId, List<ExpectedResultField>> results = expectationWriter.groupByExpectationFileAndReportName(collectedExpectationResult, reportDataSetDefinitions);
 
 			ObjectWriter objectWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
 			for (String fileName : results.rowKeySet()) {
-				Map<String, List<ExpectedResultField>> reportNameToExpectations = results.row(fileName);
-				TreeMap<String, List<ExpectedResultField>> sortedReportNameToExpectations = new TreeMap<>(reportNameToExpectations);
+				Map<ModelReportId, List<ExpectedResultField>> reportNameToExpectations = results.row(fileName);
+				TreeMap<ModelReportId, List<ExpectedResultField>> sortedReportNameToExpectations = new TreeMap<>(reportNameToExpectations);
 				Path filePath = SRC_DATA_FOLDER.resolve(fileName);
 				objectWriter.writeValue(filePath.toFile(), sortedReportNameToExpectations);
 			}
@@ -151,9 +151,9 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 	}
 
 	public List<Arguments> loadTestArgs(ImmutableList<String> rosettaFolderPathNames) {
-		List<RegReportIdentifier> regReportIdentifiers = reportUtil.loadRegReportIdentifier(rosettaFolderPathNames);
+		List<ModelReportId> reportIdentifiers = reportUtil.loadReportIdentifiers(rosettaFolderPathNames);
 		List<Arguments> args = new ArrayList<>();
-		for (RegReportIdentifier regReportIdentifier : regReportIdentifiers) {
+		for (ModelReportId reportIdentifier : reportIdentifiers) {
 			List<String> descrNames = getDataDescriptorNames();
 			for (String dataDescriptorName : descrNames) {
 				// Load descriptor files
@@ -162,24 +162,24 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 				for (ReportDataSet reportDataSet : reportDataSets) {
 					// Enrich expected result
 					JsonExpectedResultLoader jsonExpectedResultLoader = createJsonExpectedResultLoader();
-					ReportDataSet reportDataSet1 = jsonExpectedResultLoader.loadInputFiles(new ReportIdentifierDataSet(regReportIdentifier, reportDataSet)).getDataSet();
+					ReportDataSet reportDataSet1 = jsonExpectedResultLoader.loadInputFiles(new ReportIdentifierDataSet(reportIdentifier, reportDataSet)).getDataSet();
 					// Enrich input
 					JsonReportDataLoader jsonReportDataLoader = createJsonReportDataLoader(Collections.emptyList());
 					ReportDataSet reportDataSet2 = jsonReportDataLoader.loadInputFiles(reportDataSet1);
 					// Build args
-					args.add(Arguments.of(regReportIdentifier, reportDataSet2, regReportIdentifier.getName(), reportDataSet.getDataSetName()));
+					args.add(Arguments.of(reportIdentifier, reportDataSet2, reportDataSet.getDataSetName()));
 				}
 			}
 		}
 		return args;
 	}
 
-	public void assertSameFields(RegReportIdentifier identifier,
+	public void assertSameFields(ModelReportId identifier,
 								 List<ExpectedResultField> expectedReportFields,
 								 List<ExpectedResultField> actualReportFields,
-								 Multimap<String, String> exclusionList) {
+								 Multimap<ModelReportId, String> exclusionList) {
 		for (ExpectedResultField reportField : actualReportFields) {
-			if (!exclusionList.containsEntry(identifier.getName(), reportField.getName())) {
+			if (!exclusionList.containsEntry(identifier, reportField.getName())) {
 				Optional<ExpectedResultField> expectedResultFieldOptional = expectedReportFields.stream()
 						.filter(f -> f.getName().equals(reportField.getName()))
 						.findFirst();
@@ -218,9 +218,9 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 		}
 	}
 
-	public void assertRegReport(RegReportIdentifier identifier,
+	public void assertRegReport(ModelReportId identifier,
 								List<RegReport> regReports,
-								Multimap<String, String> exclusionList) {
+								Multimap<ModelReportId, String> exclusionList) {
 		collectAllExpectationsIfWritingEnabled(identifier, regReports, exclusionList);
 
 		for (RegReport regReport : regReports) {
@@ -232,7 +232,7 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 		}
 	}
 
-	private void collectAllExpectationsIfWritingEnabled(RegReportIdentifier identifier, List<RegReport> regReports, Multimap<String, String> exclusionList) {
+	private void collectAllExpectationsIfWritingEnabled(ModelReportId identifier, List<RegReport> regReports, Multimap<ModelReportId, String> exclusionList) {
 		if (isWriteOutputFiles()) {
 			for (RegReport regReport : regReports) {
 				for (RegReportUseCase useCase : regReport.getUseCases()) {
@@ -240,35 +240,34 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 					List<ExpectedResultField> expectedResultFields = expectedResultFields(actualReportFields, exclusionList, identifier);
 					String dataSetName = useCase.getDataSetName();
 					String useCase1 = useCase.getUseCase();
-					LOGGER.info("Collecting expectations for {} in {} for {}", useCase1, dataSetName, identifier.getName());
+					LOGGER.info("Collecting expectations for {} in {} for {}", useCase1, dataSetName, identifier);
 					collectedExpectationResult.add(new ExpectationResult(dataSetName, useCase1, identifier, expectedResultFields));
 				}
 			}
 		}
 	}
 
-	private void assertRegReportUseCase(RegReportIdentifier identifier,
+	private void assertRegReportUseCase(ModelReportId identifier,
 										RegReportUseCase useCase,
-										Multimap<String, String> exclusionList, List<ExpectedResultField> reportFieldsWithoutExclusions) {
+										Multimap<ModelReportId, String> exclusionList, List<ExpectedResultField> reportFieldsWithoutExclusions) {
 		List<ExpectedResultField> expectedReportFields = useCase.getExpectedResults().getExpectationsPerReport()
-				.get(identifier.getName());
+				.get(identifier);
 
 
 		if (expectedReportFields != null) {
 			List<ExpectedResultField> expectedReportFieldsWithoutExclusions = expectedResultFields(expectedReportFields, exclusionList, identifier);
-			LOGGER.info("Checking expectations found for {} in {} for {}", useCase.getUseCase(), useCase.getDataSetName(), identifier.getName());
+			LOGGER.info("Checking expectations found for {} in {} for {}", useCase.getUseCase(), useCase.getDataSetName(), identifier);
 			assertSameNumberOfFields(expectedReportFieldsWithoutExclusions, reportFieldsWithoutExclusions);
 			assertSameFields(identifier, expectedReportFieldsWithoutExclusions, reportFieldsWithoutExclusions, exclusionList);
 		} else {
-			LOGGER.warn("No expectations found for {} in {} for {}", useCase.getUseCase(), useCase.getDataSetName(), identifier.getName());
+			LOGGER.warn("No expectations found for {} in {} for {}", useCase.getUseCase(), useCase.getDataSetName(), identifier);
 		}
 	}
 
-	private List<ExpectedResultField> expectedResultFields(List<ExpectedResultField> actualReportFields, Multimap<String, String> exclusionList, RegReportIdentifier identifier) {
-		List<ExpectedResultField> reportFieldsWithoutExclusions = actualReportFields.stream()
-				.filter(reportField -> !exclusionList.containsEntry(identifier.getName(), reportField.getName()))
+	private List<ExpectedResultField> expectedResultFields(List<ExpectedResultField> actualReportFields, Multimap<ModelReportId, String> exclusionList, ModelReportId identifier) {
+        return actualReportFields.stream()
+				.filter(reportField -> !exclusionList.containsEntry(identifier, reportField.getName()))
 				.collect(Collectors.toList());
-		return reportFieldsWithoutExclusions;
 	}
 
 	private List<ExpectedResultField> actualReportFields(RegReportUseCase useCase) {

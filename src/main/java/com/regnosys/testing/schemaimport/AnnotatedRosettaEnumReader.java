@@ -36,7 +36,7 @@ public class AnnotatedRosettaEnumReader {
 		return documentReference.getDocReference() != null
 				&& documentReference.getDocReference().getBody() != null
 				&& body.equals(documentReference.getDocReference().getBody().getName())
-				&& documentReference.getDocReference().getCorpuses().stream()
+				&& documentReference.getDocReference().getCorpusList().stream()
 				.filter(Objects::nonNull)
 				.anyMatch(x -> corpus.equals(x.getName()));
 	}

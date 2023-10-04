@@ -4,15 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.Multimap;
-import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
-import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.testing.TestingExpectationUtil;
+import com.rosetta.model.lib.ModelReportId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -35,7 +33,7 @@ public class ReportExpectationUtil {
         }
         for (var entry : actualExpectation.asMap().entrySet()) {
             ReportIdentifierAndDataSetName key = entry.getKey();
-            RegReportIdentifier reportIdentifier = key.reportIdentifier;
+            ModelReportId reportIdentifier = key.reportIdentifier;
             String dataSetName = key.dataSetName;
 
             Collection<ReportTestResult> reportTestExpectations = entry.getValue();
@@ -43,7 +41,7 @@ public class ReportExpectationUtil {
                     .map(x -> new ReportDataItemExpectation(x.getInputFileName(), x.getValidationFailures().getActual()))
                     .sorted()
                     .collect(Collectors.toList());
-            ReportDataSetExpectation reportDataSetExpectation = new ReportDataSetExpectation(reportIdentifier.getName(), dataSetName, dataItemExpectations);
+            ReportDataSetExpectation reportDataSetExpectation = new ReportDataSetExpectation(reportIdentifier, dataSetName, dataItemExpectations);
             String expectationFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(reportDataSetExpectation);
 
             Path outputPath = RegReportPaths.getDefault().getOutputRelativePath();
@@ -68,24 +66,4 @@ public class ReportExpectationUtil {
                     });
         }
     }
-
-    public static <T> ExpectedAndActual<String> getSortedExpectedAndActual(Path expectationPath, Collection<T> results, Comparator<? super T> comparator) throws IOException {
-        List<T> sorted = new ArrayList<>(results);
-        sorted.sort(comparator);
-        String actualJson = TestingExpectationUtil.ROSETTA_OBJECT_WRITER.writeValueAsString(sorted);
-        String expectedJson = Optional.ofNullable(TestingExpectationUtil.readStringFromResources(expectationPath))
-                .map(expected -> {
-                    try {
-                        List<ReportField> expectedFields = new ArrayList<>(List.of(ROSETTA_OBJECT_READER.readValue(expected, ReportField[].class)));
-                        expectedFields.sort(Comparator.comparing(ReportField::getName));
-                        return TestingExpectationUtil.ROSETTA_OBJECT_WRITER.writeValueAsString(expectedFields);
-                    } catch (IOException e) {
-                        LOGGER.error("Failed to read expected {}", expected, e);
-                        return null;
-                    }
-                })
-                .orElse(null);
-        return new ExpectedAndActual<>(expectationPath, expectedJson, actualJson);
-    }
-
 }
