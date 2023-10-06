@@ -18,7 +18,6 @@
 
         <rosetta.dsl.version>8.8.2</rosetta.dsl.version>
         <rosetta.bundle.version>0.0.0.master</rosetta.bundle.version>
-        <rosetta.common.version>${rosetta.bundle.version}</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
         <unruly.version>1.6</unruly.version>
@@ -64,7 +63,7 @@
             <dependency>
                 <groupId>com.regnosys</groupId>
                 <artifactId>rosetta-common</artifactId>
-                <version>${rosetta.common.version}</version>
+                <version>${rosetta.bundle.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.xtext</groupId>
