@@ -93,10 +93,10 @@ public class RegulatoryReportingTestExtension implements BeforeAllCallback, Afte
 
 			ObjectWriter objectWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
 			for (String fileName : results.rowKeySet()) {
-				Map<ModelReportId, List<ExpectedResultField>> reportNameToExpectations = results.row(fileName);
-				TreeMap<ModelReportId, List<ExpectedResultField>> sortedReportNameToExpectations = new TreeMap<>(reportNameToExpectations);
+				Map<ModelReportId, List<ExpectedResultField>> reportIdToExpectations = results.row(fileName);
+				TreeMap<ModelReportId, List<ExpectedResultField>> sortedReportIdToExpectations = new TreeMap<>(reportIdToExpectations);
 				Path filePath = SRC_DATA_FOLDER.resolve(fileName);
-				objectWriter.writeValue(filePath.toFile(), sortedReportNameToExpectations);
+				objectWriter.writeValue(filePath.toFile(), sortedReportIdToExpectations);
 			}
 		}
 	}
