@@ -35,7 +35,7 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == true"
     commands:
-      - cf_export MVN_SET_VERSION="versions:set-property -Dproperty=rosetta.common.version -DnewVersion=${{RELEASE_NAME}}"
+      - cf_export MVN_SET_VERSION="versions:set-property -DnewVersion=${{RELEASE_NAME}}"
 
   BranchProperties:
     title: Setup branch build
@@ -45,7 +45,7 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == false"
     commands:
-      - cf_export MVN_SET_VERSION="versions:update-property -Dproperty=rosetta.common.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
+      - cf_export MVN_SET_VERSION="versions:update-property -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
 
   BuildTesting:
     title: Maven build rosetta-testing
@@ -55,7 +55,7 @@ steps:
     commands:
       - rm -rf /codefresh/volume/.m2/com/regnosys
       - mvn -s /settings.xml versions:set -DnewVersion=${{RELEASE_NAME}}
-      - mvn -s /settings.xml ${{MVN_SET_VERSION}}
+      - mvn -s /settings.xml ${{MVN_SET_VERSION}} -Dproperty=rosetta.common.version
       - mvn -U -s /settings.xml clean deploy
 
   FailPipeline:
