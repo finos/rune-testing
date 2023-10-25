@@ -1,14 +1,14 @@
 package com.regnosys.testing.reports;
 
-import com.regnosys.rosetta.common.reports.RegReportIdentifier;
+import com.rosetta.model.lib.ModelReportId;
 
 import java.util.Objects;
 
 public class ReportIdentifierAndDataSetName {
-    public final RegReportIdentifier reportIdentifier;
+    public final ModelReportId reportIdentifier;
     public final String dataSetName;
 
-    public ReportIdentifierAndDataSetName(RegReportIdentifier reportIdentifier, String dataSetName) {
+    public ReportIdentifierAndDataSetName(ModelReportId reportIdentifier, String dataSetName) {
         this.reportIdentifier = reportIdentifier;
         this.dataSetName = dataSetName;
     }

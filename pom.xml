@@ -16,9 +16,8 @@
         <java.enforced.version>[17,18)</java.enforced.version>
         <maven.compiler.release>11</maven.compiler.release>
 
-        <rosetta.dsl.version>8.9.0</rosetta.dsl.version>
-        <rosetta.bundle.version>0.0.0.master</rosetta.bundle.version>
-        <rosetta.common.version>${rosetta.bundle.version}</rosetta.common.version>
+        <rosetta.dsl.version>9.0.0</rosetta.dsl.version>
+        <rosetta.common.version>0.0.0.master</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
         <unruly.version>1.6</unruly.version>
@@ -49,11 +48,6 @@
             <dependency>
                 <groupId>com.regnosys.rosetta</groupId>
                 <artifactId>com.regnosys.rosetta</artifactId>
-                <version>${rosetta.dsl.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.regnosys.rosetta</groupId>
-                <artifactId>com.regnosys.rosetta.blueprint.lib</artifactId>
                 <version>${rosetta.dsl.version}</version>
             </dependency>
             <dependency>
@@ -174,10 +168,6 @@
         <dependency>
             <groupId>com.regnosys.rosetta</groupId>
             <artifactId>com.regnosys.rosetta</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.regnosys.rosetta</groupId>
-            <artifactId>com.regnosys.rosetta.blueprint.lib</artifactId>
         </dependency>
         <dependency>
             <groupId>com.regnosys.rosetta</groupId>

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
-import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.serialisation.reportdata.ExpectedResultField;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataSet;
+import com.rosetta.model.lib.ModelReportId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,18 +91,18 @@ public class ExpectationWriter {
         }
     }
 
-	public Table<String, String, List<ExpectedResultField>> groupByExpectationFileAndReportName(List<ExpectationResult> expectationResult, List<ReportDataSet> reportDataSetDefinitions) {
-		ImmutableTable.Builder<String, String, List<ExpectedResultField>> builder = ImmutableTable.builder();
+	public Table<String, ModelReportId, List<ExpectedResultField>> groupByExpectationFileAndReportName(List<ExpectationResult> expectationResult, List<ReportDataSet> reportDataSetDefinitions) {
+		ImmutableTable.Builder<String, ModelReportId, List<ExpectedResultField>> builder = ImmutableTable.builder();
 		expectationResult.forEach(result ->
 				expectedFileName(result.getDatasetName(), result.getUseCaseName(), result.getIdentifier(), reportDataSetDefinitions)
-						.ifPresent(s -> builder.put(s, result.getIdentifier().getName(), result.getActualReportFields())));
+						.ifPresent(s -> builder.put(s, result.getIdentifier(), result.getActualReportFields())));
 		return builder.build();
 	}
 
-	private Optional<String> expectedFileName(String datasetName, String useCaseName, RegReportIdentifier identifier, List<ReportDataSet> reportDataSetDefinitions) {
+	private Optional<String> expectedFileName(String datasetName, String useCaseName, ModelReportId identifier, List<ReportDataSet> reportDataSetDefinitions) {
 		return reportDataSetDefinitions.stream()
 				.filter(ds -> ds.getDataSetName().equals(datasetName))
-				.filter(r -> r.getApplicableReports().contains(identifier.getGeneratedJavaClassName()) || r.getApplicableReports().isEmpty())
+				.filter(r -> r.getApplicableReports().contains(identifier) || r.getApplicableReports().isEmpty())
 				.map(ReportDataSet::getData)
 				.flatMap(Collection::stream)
 				.filter(reportDataItem -> reportDataItem.getName().equals(useCaseName))

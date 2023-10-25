@@ -2,14 +2,12 @@ package com.regnosys.testing.reports;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
 import com.google.inject.Guice;
 import com.google.inject.Module;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
-import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaDataValueObjectToString;
@@ -17,6 +15,7 @@ import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.TestingExpectationUtil;
+import com.rosetta.model.lib.ModelReportId;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.model.lib.reports.ReportFunction;
@@ -36,12 +35,11 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.reports.RegReportPaths.REPORT_EXPECTATIONS_FILE_NAME;
+import static com.regnosys.testing.TestingExpectationUtil.getExpectedAndActual;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFileExtension;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFilePrefix;
 import static com.regnosys.testing.reports.ReportExpectationUtil.*;
@@ -52,23 +50,18 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportTestExtension.class);
     private final Module runtimeModule;
-    private final ImmutableList<String> rosettaPaths;
     private final Class<T> inputType;
     private Path rootExpectationsPath;
 
-    private List<RegReportIdentifier> reportIdentifiers;
     @Inject
     private RosettaTypeValidator typeValidator;
-    @Inject
-    private ReportUtil reportUtil;
     @Inject
     private ReferenceConfig referenceConfig;
 
     private Multimap<ReportIdentifierAndDataSetName, ReportTestResult> actualExpectation;
 
-    public ReportTestExtension(Module runtimeModule, ImmutableList<String> rosettaPaths, Class<T> inputType) {
+    public ReportTestExtension(Module runtimeModule, Class<T> inputType) {
         this.runtimeModule = runtimeModule;
-        this.rosettaPaths = rosettaPaths;
         this.inputType = inputType;
     }
 
@@ -81,11 +74,10 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     public void beforeAll(ExtensionContext context) {
         Guice.createInjector(runtimeModule).injectMembers(this);
         actualExpectation = ArrayListMultimap.create();
-        reportIdentifiers = reportUtil.loadRegReportIdentifier(rosettaPaths);
     }
 
-    public <In extends RosettaModelObject, Out extends RosettaModelObject> void assertTest(
-            RegReportIdentifier reportIdentifier,
+    public <In extends RosettaModelObject, Out extends RosettaModelObject> void runReportAndAssertExpected(
+            ModelReportId reportIdentifier,
             String dataSetName,
             ReportDataItemExpectation expectation,
             ReportFunction<In, Out> reportFunction,
@@ -98,28 +90,16 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         // report
         Out reportOutput = reportFunction.evaluate(resolved(input));
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> report = TestingExpectationUtil.getExpectedAndActual(reportExpectationPath, reportOutput);
+        ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, reportOutput);
 
         // key value
         FieldValueFlattener flattener = new FieldValueFlattener();
         tabulator.tabulate(reportOutput).forEach(
-                field -> field.accept(flattener, null)
+                field -> field.accept(flattener, List.of())
         );
         List<ReportField> results = flattener.accumulator;
         Path keyValueExpectationPath = RegReportPaths.getKeyValueExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        // For the tabulated values, we need to sort and remove duplicates.
-        ExpectedAndActual<String> keyValue = getSortedExpectedAndActual(
-                keyValueExpectationPath,
-                results.stream()
-                        .collect(Collectors.toMap(ReportField::getName, (f) -> f, (a, b) -> {
-                            // Remove duplicate fields, but throw if they don't have the same value.
-                            if (!a.getValue().equals(b.getValue())) {
-                                throw new IllegalStateException("Duplicate fields with different values.\n" + a + "\n" + b);
-                            }
-                            return a;
-                        }))
-                        .values(),
-                Comparator.comparing(ReportField::getName));
+        ExpectedAndActual<String> keyValue = getExpectedAndActual(keyValueExpectationPath, results);
 
         if (reportOutput == null && report.getExpected() == null) {
             LOGGER.info("Empty report is expected result for {}", expectation.getFileName());
@@ -175,14 +155,11 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                     // deserialise into input (e.g. ReportableEvent)
                                     T input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
                                     // get the report identifier
-                                    String reportName = reportExpectation.getReportName();
-                                    RegReportIdentifier reportIdentifier = reportIdentifiers.stream()
-                                            .filter(r -> r.getName().equals(reportName))
-                                            .findFirst().orElseThrow();
+                                    ModelReportId reportIdentifier = reportExpectation.getReportId();
                                     // data item name
                                     String inputName = removeFileExtension(removeFilePrefix(fileName)).replace("-", " ");
                                     return Arguments.of(
-                                            String.format("%s | %s", reportName, inputName),
+                                            String.format("%s | %s", reportIdentifier, inputName),
                                             reportIdentifier,
                                             reportExpectation.getDataSetName(),
                                             input,
@@ -194,27 +171,37 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         return runtimeModule;
     }
 
-    public List<RegReportIdentifier> getReportIdentifiers() {
-        return reportIdentifiers;
-    }
-
-    private static class FieldValueFlattener implements Tabulator.FieldValueVisitor<Integer> {
+    private static class FieldValueFlattener implements Tabulator.FieldValueVisitor<List<FieldValueFlattener.ParentAndIndex>> {
         public List<ReportField> accumulator = new ArrayList<>();
 
         @Override
-        public void visitSingle(Tabulator.FieldValue fieldValue, Integer index) {
+        public void visitSingle(Tabulator.FieldValue fieldValue, List<ParentAndIndex> parentsAndIndices) {
             if (fieldValue.getValue().isPresent()) {
                 String value = RosettaDataValueObjectToString.toValueString(fieldValue.getValue().get());
-                if (!value.isEmpty()) {
-                    accumulator.add(new ReportField(
-                            insertIndex(fieldValue.getField().getName(), index),
-                            ((Tabulator.FieldImpl)fieldValue.getField()).getRuleId().map(id -> id.getNamespace().child("blueprint").child(id.getName() + "Rule").withDots()).orElse(null),
-                            index,
-                            value,
-                            ""
-                    ));
-                }
+                accumulator.add(new ReportField(
+                        computeFieldName(fieldValue, parentsAndIndices),
+                        ((Tabulator.FieldImpl)fieldValue.getField()).getRuleId().map(Object::toString).orElse(null),
+                        parentsAndIndices.isEmpty() ? null : parentsAndIndices.get(parentsAndIndices.size()-1).index,
+                        value,
+                        ""
+                ));
             }
+        }
+        private static String computeFieldName(Tabulator.FieldValue fieldValue, List<ParentAndIndex> parentsAndIndices) {
+            if (parentsAndIndices.isEmpty()) {
+                return fieldValue.getField().getName();
+            }
+            StringBuilder result = new StringBuilder();
+            result
+                .append(parentsAndIndices.get(0).parent)
+                .append(" -> ");
+            for (int i=1; i<parentsAndIndices.size(); i++) {
+                result
+                    .append(insertIndex(parentsAndIndices.get(i).parent, parentsAndIndices.get(i-1).index))
+                    .append(" -> ");
+            }
+            result.append(insertIndex(fieldValue.getField().getName(), parentsAndIndices.get(parentsAndIndices.size()-1).index));
+            return result.toString();
         }
         private static String insertIndex(String fieldName, Integer index) {
             if (index == null) {
@@ -226,25 +213,39 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
             return fieldName + " (" + index + ")";
         }
         @Override
-        public void visitNested(Tabulator.NestedFieldValue nestedFieldValue, Integer index) {
+        public void visitNested(Tabulator.NestedFieldValue nestedFieldValue, List<ParentAndIndex> parentsAndIndices) {
+            List<ParentAndIndex> newParentsAndIndices = new ArrayList<>(parentsAndIndices);
+            newParentsAndIndices.add(new ParentAndIndex(nestedFieldValue.getField().getName(), null));
             nestedFieldValue.getValue().ifPresent(
                     (v) -> v.forEach(
-                            sub -> sub.accept(this, null)
+                            sub -> sub.accept(this, newParentsAndIndices)
                     )
             );
         }
         @Override
-        public void visitMultiNested(Tabulator.MultiNestedFieldValue multiNestedFieldValue, Integer index) {
+        public void visitMultiNested(Tabulator.MultiNestedFieldValue multiNestedFieldValue, List<ParentAndIndex> parentsAndIndices) {
             multiNestedFieldValue.getValue().ifPresent(
                     (vs) -> {
                         for (int i=0; i<vs.size(); i++) {
                             int repeatableIndex = i + 1;
+                            List<ParentAndIndex> newParentsAndIndices = new ArrayList<>(parentsAndIndices);
+                            newParentsAndIndices.add(new ParentAndIndex(multiNestedFieldValue.getField().getName(), repeatableIndex));
                             vs.get(i).forEach(
-                                    sub -> sub.accept(this, repeatableIndex)
+                                    sub -> sub.accept(this, newParentsAndIndices)
                             );
                         }
                     }
             );
+        }
+
+        private static class ParentAndIndex {
+            public final String parent;
+            public final Integer index;
+
+            public ParentAndIndex(String parent, Integer index) {
+                this.parent = parent;
+                this.index = index;
+            }
         }
     }
 }

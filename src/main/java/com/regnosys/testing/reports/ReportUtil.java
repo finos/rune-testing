@@ -1,13 +1,14 @@
 package com.regnosys.testing.reports;
 
 import com.google.common.collect.ImmutableList;
-import com.regnosys.rosetta.common.reports.RegReportIdentifier;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
-import com.regnosys.rosetta.rosetta.RosettaBlueprintReport;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.rosetta.RosettaNamed;
+import com.regnosys.rosetta.rosetta.RosettaReport;
 import com.regnosys.rosetta.transgest.ModelLoader;
+import com.rosetta.model.lib.ModelReportId;
+import com.rosetta.util.DottedPath;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ReportUtil {
     @Inject
     private ModelLoader modelLoader;
 
-    public List<RegReportIdentifier> loadRegReportIdentifier(ImmutableList<String> rosettaFolderPathNames) {
+    public List<ModelReportId> loadReportIdentifiers(ImmutableList<String> rosettaFolderPathNames) {
         List<RosettaModel> models = modelLoader.loadRosettaModels(ClassPathUtils.findPathsFromClassPath(
                         rosettaFolderPathNames,
                         ".*\\.rosetta",
@@ -27,10 +28,11 @@ public class ReportUtil {
                 .stream()
                 .map(UrlUtils::toUrl));
 
-        return modelLoader.rosettaElements(models, RosettaBlueprintReport.class).stream()
-                .map(rosettaReport -> new RegReportIdentifier(rosettaReport.getRegulatoryBody().getBody().getName(),
-                        rosettaReport.getRegulatoryBody().getCorpuses().stream().map(RosettaNamed::getName).collect(Collectors.toList()),
-                        rosettaReport.name(),
-                        String.format("%s.blueprint.%sBlueprintReport", rosettaReport.getModel().getName(), rosettaReport.name()))).collect(Collectors.toList());
+        return modelLoader.rosettaElements(models, RosettaReport.class).stream()
+                .map(rosettaReport -> new ModelReportId(
+                        DottedPath.of(rosettaReport.getModel().getName()),
+                        rosettaReport.getRegulatoryBody().getBody().getName(),
+                        rosettaReport.getRegulatoryBody().getCorpusList().stream().map(RosettaNamed::getName).toArray(String[]::new)))
+                .collect(Collectors.toList());
     }
 }

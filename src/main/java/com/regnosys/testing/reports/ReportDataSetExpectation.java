@@ -1,5 +1,7 @@
 package com.regnosys.testing.reports;
 
+import com.rosetta.model.lib.ModelReportId;
+
 import java.util.List;
 
 /**
@@ -7,12 +9,12 @@ import java.util.List;
  */
 public class ReportDataSetExpectation {
 
-    private String reportName;
+    private ModelReportId reportId;
     private String dataSetName;
     private List<ReportDataItemExpectation> dataItemExpectations;
 
-    public ReportDataSetExpectation(String reportName, String dataSetName, List<ReportDataItemExpectation> dataItemExpectations) {
-        this.reportName = reportName;
+    public ReportDataSetExpectation(ModelReportId reportId, String dataSetName, List<ReportDataItemExpectation> dataItemExpectations) {
+        this.reportId = reportId;
         this.dataSetName = dataSetName;
         this.dataItemExpectations = dataItemExpectations;
     }
@@ -20,8 +22,8 @@ public class ReportDataSetExpectation {
     private ReportDataSetExpectation() {
     }
 
-    public String getReportName() {
-        return reportName;
+    public ModelReportId getReportId() {
+        return reportId;
     }
 
     public String getDataSetName() {
