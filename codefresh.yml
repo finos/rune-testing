@@ -35,7 +35,7 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == true"
     commands:
-      - cf_export MVN_SET_VERSION="versions:set-property -Dproperty=rosetta.common.version -DnewVersion=${{RELEASE_NAME}}"
+      - cf_export MVN_SET_VERSION="versions:set-property -Dproperty=rosetta.bundle.version -DnewVersion=${{RELEASE_NAME}}"
 
   BranchProperties:
     title: Setup branch build
@@ -45,7 +45,7 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == false"
     commands:
-      - cf_export MVN_SET_VERSION="versions:update-property -Dproperty=rosetta.common.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
+      - cf_export MVN_SET_VERSION="versions:update-property -Dproperty=rosetta.bundle.version -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
 
   BuildTesting:
     title: Maven build rosetta-testing
