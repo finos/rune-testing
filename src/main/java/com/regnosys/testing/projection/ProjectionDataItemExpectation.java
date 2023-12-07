@@ -1,22 +1,25 @@
-package com.regnosys.testing.project;
+package com.regnosys.testing.projection;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Comparator;
 
-public class ProjectDataItemExpectation implements Comparable<ProjectDataItemExpectation> {
+public class ProjectionDataItemExpectation implements Comparable<ProjectionDataItemExpectation> {
     private String inputFile;
     private String outputFile;
     private int validationFailures;
+    private boolean validXml;
 
     @JsonCreator
-    public ProjectDataItemExpectation(@JsonProperty("inputFile") String inputFile,
-                                      @JsonProperty("outputFile") String outputFile,
-                                      @JsonProperty("validationFailures") int validationFailures) {
+    public ProjectionDataItemExpectation(@JsonProperty("inputFile") String inputFile,
+                                         @JsonProperty("outputFile") String outputFile,
+                                         @JsonProperty("validationFailures") int validationFailures,
+                                         @JsonProperty("validXml") boolean validXml) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.validationFailures = validationFailures;
+        this.validXml = validXml;
     }
 
     public String getInputFile() {
@@ -43,8 +46,16 @@ public class ProjectDataItemExpectation implements Comparable<ProjectDataItemExp
         this.validationFailures = validationFailures;
     }
 
+    public boolean isValidXml() {
+        return validXml;
+    }
+
+    public void setValidXml(boolean validXml) {
+        this.validXml = validXml;
+    }
+
     @Override
-    public int compareTo(ProjectDataItemExpectation o) {
-        return Comparator.comparing(ProjectDataItemExpectation::getInputFile).compare(this, o);
+    public int compareTo(ProjectionDataItemExpectation o) {
+        return Comparator.comparing(ProjectionDataItemExpectation::getInputFile).compare(this, o);
     }
 }
