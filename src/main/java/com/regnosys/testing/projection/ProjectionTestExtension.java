@@ -67,6 +67,8 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
             this.rosettaXMLObjectWriter = RosettaObjectMapperCreator.forXML(xmlConfig.openStream()).create().writerWithDefaultPrettyPrinter();
             SchemaFactory schemaFactory = SchemaFactory
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
+            schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING,false);
             Schema schema = schemaFactory.newSchema(xsdSchema);
             this.xsdValidator = schema.newValidator();
         } catch (IOException | SAXException e) {
