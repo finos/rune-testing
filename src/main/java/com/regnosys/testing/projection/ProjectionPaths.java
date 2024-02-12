@@ -19,12 +19,21 @@ public class ProjectionPaths {
         return RegReportPaths.getReportExpectationFilePath(reportOutputPath, reportIdentifier, dataSetName, reportDataItemInputPath);
     }
 
-    public static Path getProjectionDataItemOutputPath(Path projectionDataSetPath, Path projectionDataItemInputPath) {
-        String projectionDataItemOutputPath = toXmlFileExt(projectionDataItemInputPath.getFileName().toString());
+    public static Path getProjectionDataItemKeyValuePath(Path projectionDataSetPath, Path projectionDataItemInputPath) {
+        String projectionDataItemOutputPath = toKeyValueFileExt(projectionDataItemInputPath.getFileName().toString());
         return projectionDataSetPath.resolve(projectionDataItemOutputPath);
     }
 
-    private static String toXmlFileExt(String path) {
-        return path.substring(0, path.lastIndexOf(".")) + ".xml";
+    public static Path getProjectionDataItemOutputPath(Path projectionDataSetPath, Path projectionDataItemInputPath) {
+        String projectionDataItemOutputPath = toOutputFileExt(projectionDataItemInputPath.getFileName().toString());
+        return projectionDataSetPath.resolve(projectionDataItemOutputPath);
+    }
+
+    private static String toOutputFileExt(String path) {
+        return path.substring(0, path.lastIndexOf(".")) + "-output.xml";
+    }
+
+    private static String toKeyValueFileExt(String path) {
+        return path.substring(0, path.lastIndexOf(".")) + "-key-value.json";
     }
 }

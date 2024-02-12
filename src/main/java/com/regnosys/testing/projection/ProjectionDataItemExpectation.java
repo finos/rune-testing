@@ -7,19 +7,25 @@ import java.util.Comparator;
 
 public class ProjectionDataItemExpectation implements Comparable<ProjectionDataItemExpectation> {
     private String inputFile;
+    private String keyValueFile;
     private String outputFile;
     private int validationFailures;
     private boolean validXml;
+    private boolean error;
 
     @JsonCreator
     public ProjectionDataItemExpectation(@JsonProperty("inputFile") String inputFile,
+                                         @JsonProperty("keyValueFile") String keyValueFile,
                                          @JsonProperty("outputFile") String outputFile,
                                          @JsonProperty("validationFailures") int validationFailures,
-                                         @JsonProperty("validXml") boolean validXml) {
+                                         @JsonProperty("validXml") boolean validXml,
+                                         @JsonProperty("error") boolean error) {
         this.inputFile = inputFile;
+        this.keyValueFile = keyValueFile;
         this.outputFile = outputFile;
         this.validationFailures = validationFailures;
         this.validXml = validXml;
+        this.error = error;
     }
 
     public String getInputFile() {
@@ -28,6 +34,14 @@ public class ProjectionDataItemExpectation implements Comparable<ProjectionDataI
 
     public void setInputFile(String inputFile) {
         this.inputFile = inputFile;
+    }
+
+    public String getKeyValueFile() {
+        return keyValueFile;
+    }
+
+    public void setKeyValueFile(String keyValueFile) {
+        this.keyValueFile = keyValueFile;
     }
 
     public String getOutputFile() {
@@ -52,6 +66,14 @@ public class ProjectionDataItemExpectation implements Comparable<ProjectionDataI
 
     public void setValidXml(boolean validXml) {
         this.validXml = validXml;
+    }
+
+    public boolean isError() {
+        return error;
+    }
+
+    public void setError(boolean error) {
+        this.error = error;
     }
 
     @Override

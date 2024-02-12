@@ -34,12 +34,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.reports.RegReportPaths.REPORT_EXPECTATIONS_FILE_NAME;
-import static com.regnosys.testing.TestingExpectationUtil.getExpectedAndActual;
+import static com.regnosys.testing.TestingExpectationUtil.getJsonExpectedAndActual;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFileExtension;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFilePrefix;
 import static com.regnosys.testing.reports.ReportExpectationUtil.*;
@@ -90,7 +89,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         // report
         Out reportOutput = reportFunction.evaluate(resolved(input));
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> report = getExpectedAndActual(reportExpectationPath, reportOutput);
+        ExpectedAndActual<String> report = getJsonExpectedAndActual(reportExpectationPath, reportOutput);
 
         // key value
         FieldValueFlattener flattener = new FieldValueFlattener();
@@ -99,7 +98,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         );
         List<ReportField> results = flattener.accumulator;
         Path keyValueExpectationPath = RegReportPaths.getKeyValueExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> keyValue = getExpectedAndActual(keyValueExpectationPath, results);
+        ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, results);
 
         if (reportOutput == null && report.getExpected() == null) {
             LOGGER.info("Empty report is expected result for {}", expectation.getFileName());
