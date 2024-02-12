@@ -75,8 +75,8 @@ public class TestingExpectationUtil {
         }
     }
 
-    public static ExpectedAndActual<String> getExpectedAndActual(Path expectationPath, Object result) throws IOException {
-        String actualJson = ROSETTA_OBJECT_WRITER.writeValueAsString(result);
+    public static ExpectedAndActual<String> getJsonExpectedAndActual(Path expectationPath, Object jsonResult) throws IOException {
+        String actualJson = ROSETTA_OBJECT_WRITER.writeValueAsString(jsonResult);
         String expectedJson = readStringFromResources(expectationPath);
         return new ExpectedAndActual<>(expectationPath, expectedJson, actualJson);
     }

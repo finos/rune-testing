@@ -32,9 +32,11 @@ public class ProjectionExpectationUtil {
             List<ProjectionDataItemExpectation> dataItemExpectations = projectionTestResults.stream()
                     .map(testResult ->
                             new ProjectionDataItemExpectation(testResult.getInputFileName(),
+                                    testResult.getKeyValueFileName(),
                                     testResult.getOutputFileName(),
                                     testResult.getValidationFailures().getActual(),
-                                    testResult.getValidXml().getActual()))
+                                    testResult.getValidXml().getActual(),
+                                    testResult.getError().getActual()))
                     .sorted()
                     .collect(Collectors.toList());
 
@@ -57,7 +59,7 @@ public class ProjectionExpectationUtil {
 
                         // 3. write new report json
                         projectionTestResults.stream()
-                                .map(ProjectionTestResult::getReport)
+                                .map(ProjectionTestResult::getOutput)
                                 .forEach(r -> {
                                     TestingExpectationUtil.writeFile(writeBasePath.resolve(r.getExpectationPath()), r.getActual(), TestingExpectationUtil.CREATE_EXPECTATION_FILES);
                                 });
