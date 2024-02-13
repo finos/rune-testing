@@ -2,6 +2,8 @@ package com.regnosys.testing.projection;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Multimap;
+import com.regnosys.rosetta.common.projection.ProjectionDataItemExpectation;
+import com.regnosys.rosetta.common.projection.ProjectionDataSetExpectation;
 import com.regnosys.testing.TestingExpectationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 public class ProjectionExpectationUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectionExpectationUtil.class);
 
-    public static void writeExpectations(Multimap<ProjectionNameAndDataSetName, ProjectionTestResult> actualExpectation, Path outputPath) throws JsonProcessingException {
+    public static void writeExpectations(Multimap<ProjectionNameAndDataSetName, ProjectionTestResult> actualExpectation) throws JsonProcessingException {
         if (!TestingExpectationUtil.WRITE_EXPECTATIONS) {
             LOGGER.info("WRITE_EXPECTATIONS is set to false, not updating expectations.");
             return;
