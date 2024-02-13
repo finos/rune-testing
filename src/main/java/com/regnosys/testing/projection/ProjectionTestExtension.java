@@ -7,6 +7,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
 import com.google.inject.Guice;
 import com.google.inject.Module;
+import com.regnosys.rosetta.common.projection.ProjectionDataItemExpectation;
+import com.regnosys.rosetta.common.projection.ProjectionDataSetExpectation;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapperCreator;
@@ -17,7 +19,6 @@ import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.reports.ExpectedAndActual;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.reports.Tabulator;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -99,7 +100,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        ProjectionExpectationUtil.writeExpectations(actualExpectation, outputPath);
+        ProjectionExpectationUtil.writeExpectations(actualExpectation);
     }
 
     public Stream<Arguments> getArguments() {
