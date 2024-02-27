@@ -42,13 +42,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.regnosys.testing.TestingExpectationUtil.getJsonExpectedAndActual;
 import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
 import static com.regnosys.testing.projection.ProjectionPaths.PROJECTION_EXPECTATIONS_FILE_NAME;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -114,7 +114,11 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
                             .map(dataItemExpectation -> {
                                 // input file to be tested
                                 String inputFile = dataItemExpectation.getInputFile();
-                                URL inputFileUrl = Resources.getResource(inputFile);
+                                URL inputFileUrl = getInputFileUrl(inputFile);
+                                // input files can be missing if the upstream report has thrown an exception
+                                if (inputFileUrl == null) {
+                                    return null;
+                                }
                                 // deserialise into input (e.g. ESMAEMIRMarginReport)
                                 IN input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
                                 String name = expectation.getProjectionName();
@@ -127,7 +131,17 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
                                         input,
                                         dataItemExpectation);
                             });
-                });
+                })
+                .filter(Objects::nonNull);
+    }
+
+    private static URL getInputFileUrl(String inputFile) {
+        try {
+            return Resources.getResource(inputFile);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Failed to load input file " + inputFile);
+            return null;
+        }
     }
 
     private Path generateRelativeExpectationFilePath(Path outputPath, URL expectationUrl) {
