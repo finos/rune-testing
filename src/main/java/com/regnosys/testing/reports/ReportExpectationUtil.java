@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
+import com.regnosys.rosetta.common.reports.ReportDataItemExpectation;
+import com.regnosys.rosetta.common.reports.ReportDataSetExpectation;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.testing.TestingExpectationUtil;
 import com.rosetta.model.lib.ModelReportId;
