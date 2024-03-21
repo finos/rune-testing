@@ -9,6 +9,8 @@ import com.google.inject.Module;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
+import com.regnosys.rosetta.common.reports.ReportDataItemExpectation;
+import com.regnosys.rosetta.common.reports.ReportDataSetExpectation;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
