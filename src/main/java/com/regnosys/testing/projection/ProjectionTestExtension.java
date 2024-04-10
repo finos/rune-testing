@@ -159,10 +159,10 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
                                        String dataSetName,
                                        ProjectionDataItemExpectation expectation,
                                        Function<IN, OUT> functionExecutionCallback,
-                                       IN input, Tabulator<OUT> tabulator) throws IOException {
+                                       IN input) throws IOException {
 
 
-        ProjectionTestResult result = runProjection(projectExpectationFilePath, expectation, functionExecutionCallback, input, tabulator);
+        ProjectionTestResult result = runProjection(projectExpectationFilePath, expectation, functionExecutionCallback, input);
 
         actualExpectation.put(new ProjectionNameAndDataSetName(projectName, dataSetName, projectExpectationFilePath), result);
 
@@ -185,8 +185,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
     private ProjectionTestResult runProjection(Path projectExpectationFilePath,
                                                ProjectionDataItemExpectation expectation,
                                                Function<IN, OUT> functionExecutionCallback,
-                                               IN input,
-                                               Tabulator<OUT> tabulator) throws IOException {
+                                               IN input) throws IOException {
         Path outputPath = Paths.get(expectation.getOutputFile());
         Path keyValuePath = Paths.get(expectation.getKeyValueFile());
         try {
@@ -198,9 +197,6 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
 
             // Key/value results
             FieldValueFlattener flattener = new FieldValueFlattener();
-            tabulator.tabulate(projectOutput).forEach(
-                    field -> field.accept(flattener, List.of())
-            );
             List<ReportField> results = flattener.accumulator;
             ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValuePath, results);
 

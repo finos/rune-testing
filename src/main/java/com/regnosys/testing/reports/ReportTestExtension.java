@@ -82,7 +82,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
             String dataSetName,
             ReportDataItemExpectation expectation,
             ReportFunction<In, Out> reportFunction,
-            Tabulator<Out> tabulator,
             In input) throws IOException {
 
         Path inputFileName = Paths.get(expectation.getFileName());
@@ -95,9 +94,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
         // key value
         FieldValueFlattener flattener = new FieldValueFlattener();
-        tabulator.tabulate(reportOutput).forEach(
-                field -> field.accept(flattener, List.of())
-        );
         List<ReportField> results = flattener.accumulator;
         Path keyValueExpectationPath = RegReportPaths.getKeyValueExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
         ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, results);
