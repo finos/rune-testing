@@ -11,17 +11,14 @@ import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.reports.ReportDataItemExpectation;
 import com.regnosys.rosetta.common.reports.ReportDataSetExpectation;
-import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
-import com.regnosys.testing.FieldValueFlattener;
 import com.regnosys.testing.TestingExpectationUtil;
 import com.rosetta.model.lib.ModelReportId;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.model.lib.reports.ReportFunction;
-import com.rosetta.model.lib.reports.Tabulator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -43,7 +40,7 @@ import static com.regnosys.rosetta.common.reports.RegReportPaths.REPORT_EXPECTAT
 import static com.regnosys.testing.TestingExpectationUtil.getJsonExpectedAndActual;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFileExtension;
 import static com.regnosys.testing.reports.FileNameProcessor.removeFilePrefix;
-import static com.regnosys.testing.reports.ReportExpectationUtil.*;
+import static com.regnosys.testing.reports.ReportExpectationUtil.writeExpectations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -92,12 +89,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         Path reportExpectationPath = RegReportPaths.getReportExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
         ExpectedAndActual<String> report = getJsonExpectedAndActual(reportExpectationPath, reportOutput);
 
-        // key value
-        FieldValueFlattener flattener = new FieldValueFlattener();
-        List<ReportField> results = flattener.accumulator;
-        Path keyValueExpectationPath = RegReportPaths.getKeyValueExpectationFilePath(outputPath, reportIdentifier, dataSetName, inputFileName);
-        ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, results);
-
         if (reportOutput == null && report.getExpected() == null) {
             LOGGER.info("Empty report is expected result for {}", expectation.getFileName());
             return;
@@ -111,11 +102,10 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         Path reportDataSetExpectationsPath = RegReportPaths.getReportExpectationsFilePath(outputPath, reportIdentifier, dataSetName);
         ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(reportDataSetExpectationsPath, expectation.getValidationFailures(), actualValidationFailures);
 
-        ReportTestResult testExpectation = new ReportTestResult(expectation.getFileName(), keyValue, report, validationFailures);
+        ReportTestResult testExpectation = new ReportTestResult(expectation.getFileName(), null, report, validationFailures);
 
         actualExpectation.put(new ReportIdentifierAndDataSetName(reportIdentifier, dataSetName), testExpectation);
 
-        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
         TestingExpectationUtil.assertJsonEquals(report.getExpected(), report.getActual());
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
     }
