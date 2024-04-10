@@ -56,11 +56,6 @@ public class ReportExpectationUtil {
                         Path expectationFileWritePath = writeBasePath.resolve(RegReportPaths.getReportExpectationsFilePath(outputPath, reportIdentifier, dataSetName));
                         TestingExpectationUtil.writeFile(expectationFileWritePath, expectationFileContent, TestingExpectationUtil.CREATE_EXPECTATION_FILES);
 
-                        // 2. write new key-value json
-                        reportTestExpectations.stream()
-                                .map(ReportTestResult::getKeyValue)
-                                .forEach(r -> TestingExpectationUtil.writeFile(writeBasePath.resolve(r.getExpectationPath()), r.getActual(), TestingExpectationUtil.CREATE_EXPECTATION_FILES));
-
                         // 3. write new report json
                         reportTestExpectations.stream()
                                 .map(ReportTestResult::getReport)

@@ -54,11 +54,6 @@ public class ProjectionExpectationUtil {
                         Path expectationFileWritePath = writeBasePath.resolve(projectionExpectationPath);
                         TestingExpectationUtil.writeFile(expectationFileWritePath, expectationFileContent, TestingExpectationUtil.CREATE_EXPECTATION_FILES);
 
-                        // 2. write new key-value json
-                        projectionTestResults.stream()
-                                .map(ProjectionTestResult::getKeyValue)
-                                .forEach(r -> TestingExpectationUtil.writeFile(writeBasePath.resolve(r.getExpectationPath()), r.getActual(), TestingExpectationUtil.CREATE_EXPECTATION_FILES));
-
                         // 3. write new report json
                         projectionTestResults.stream()
                                 .map(ProjectionTestResult::getOutput)

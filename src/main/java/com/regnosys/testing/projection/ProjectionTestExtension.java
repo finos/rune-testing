@@ -164,9 +164,6 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         ExpectedAndActual<String> outputXml = result.getOutput();
         assertEquals(outputXml.getExpected(), outputXml.getActual());
 
-        ExpectedAndActual<String> keyValue = result.getKeyValue();
-        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getExpected());
-
         ExpectedAndActual<Integer> validationFailures = result.getValidationFailures();
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
 
