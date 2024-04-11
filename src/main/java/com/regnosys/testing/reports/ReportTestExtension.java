@@ -102,7 +102,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         Path reportDataSetExpectationsPath = RegReportPaths.getReportExpectationsFilePath(outputPath, reportIdentifier, dataSetName);
         ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(reportDataSetExpectationsPath, expectation.getValidationFailures(), actualValidationFailures);
 
-        ReportTestResult testExpectation = new ReportTestResult(expectation.getFileName(), null, report, validationFailures);
+        ReportTestResult testExpectation = new ReportTestResult(expectation.getFileName(), report, validationFailures);
 
         actualExpectation.put(new ReportIdentifierAndDataSetName(reportIdentifier, dataSetName), testExpectation);
 

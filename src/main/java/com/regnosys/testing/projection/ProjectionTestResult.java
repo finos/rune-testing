@@ -6,7 +6,6 @@ public class ProjectionTestResult {
     private final String inputFileName;
     private final String keyValueFileName;
     private final String outputFileName;
-    private final ExpectedAndActual<String> keyValue;
     private final ExpectedAndActual<String> output;
     private final ExpectedAndActual<Integer> validationFailures;
     private final ExpectedAndActual<Boolean> validXml;
@@ -16,7 +15,6 @@ public class ProjectionTestResult {
     public ProjectionTestResult(String inputFileName,
                                 String keyValueFileName,
                                 String outputFileName,
-                                ExpectedAndActual<String> keyValue,
                                 ExpectedAndActual<String> output,
                                 ExpectedAndActual<Integer> validationFailures,
                                 ExpectedAndActual<Boolean> validXml,
@@ -24,7 +22,6 @@ public class ProjectionTestResult {
         this.inputFileName = inputFileName;
         this.keyValueFileName = keyValueFileName;
         this.outputFileName = outputFileName;
-        this.keyValue = keyValue;
         this.output = output;
         this.validationFailures = validationFailures;
         this.validXml = validXml;
@@ -41,10 +38,6 @@ public class ProjectionTestResult {
 
     public String getOutputFileName() {
         return outputFileName;
-    }
-
-    public ExpectedAndActual<String> getKeyValue() {
-        return keyValue;
     }
 
     public ExpectedAndActual<String> getOutput() {
