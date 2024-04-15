@@ -34,7 +34,6 @@ public class ProjectionExpectationUtil {
             List<ProjectionDataItemExpectation> dataItemExpectations = projectionTestResults.stream()
                     .map(testResult ->
                             new ProjectionDataItemExpectation(testResult.getInputFileName(),
-                                    testResult.getKeyValueFileName(),
                                     testResult.getOutputFileName(),
                                     testResult.getValidationFailures().getActual(),
                                     testResult.getValidXml().getActual(),
@@ -46,7 +45,7 @@ public class ProjectionExpectationUtil {
             String expectationFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(projectionDataSetExpectation);
 
             // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
-            // TEST_WRITE_BASE_PATH=/Users/hugohills/dev/github/rosetta-models/digital-regulatory-reporting/rosetta-source/src/main/resources
+            // TEST_WRITE_BASE_PATH=/Users/hugohills/dev/gitHub/rosetta-models/digital-regulatory-reporting/rosetta-source/src/main/resources
             TestingExpectationUtil.TEST_WRITE_BASE_PATH
                     .filter(Files::exists)
                     .ifPresent(writeBasePath -> {
@@ -57,9 +56,7 @@ public class ProjectionExpectationUtil {
                         // 3. write new report json
                         projectionTestResults.stream()
                                 .map(ProjectionTestResult::getOutput)
-                                .forEach(r -> {
-                                    TestingExpectationUtil.writeFile(writeBasePath.resolve(r.getExpectationPath()), r.getActual(), TestingExpectationUtil.CREATE_EXPECTATION_FILES);
-                                });
+                                .forEach(r -> TestingExpectationUtil.writeFile(writeBasePath.resolve(r.getExpectationPath()), r.getActual(), TestingExpectationUtil.CREATE_EXPECTATION_FILES));
 
                     });
         }

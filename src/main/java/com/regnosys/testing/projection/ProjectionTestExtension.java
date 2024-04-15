@@ -200,14 +200,14 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
             // No exceptions
             ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(projectExpectationFilePath, expectation.isError(), false);
 
-            return new ProjectionTestResult(expectation.getInputFile(), expectation.getKeyValueFile(), expectation.getOutputFile(), outputXml, validationFailures, validXml, error);
+            return new ProjectionTestResult(expectation.getInputFile(), expectation.getOutputFile(), outputXml, validationFailures, validXml, error);
         } catch (Exception e) {
             LOGGER.error("Exception occurred running projection", e);
             ExpectedAndActual<String> outputXml = getXmlExpectedAndActual(outputPath, null);
             ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(projectExpectationFilePath, expectation.getValidationFailures(), 0);
             ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(projectExpectationFilePath, expectation.isValidXml(), false);
             ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(projectExpectationFilePath, expectation.isError(), true);
-            return new ProjectionTestResult(expectation.getInputFile(), expectation.getKeyValueFile(), expectation.getOutputFile(), outputXml, validationFailures, validXml, error);
+            return new ProjectionTestResult(expectation.getInputFile(), expectation.getOutputFile(), outputXml, validationFailures, validXml, error);
         }
     }
 

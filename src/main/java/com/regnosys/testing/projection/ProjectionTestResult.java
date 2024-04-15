@@ -4,7 +4,6 @@ import com.regnosys.testing.reports.ExpectedAndActual;
 
 public class ProjectionTestResult {
     private final String inputFileName;
-    private final String keyValueFileName;
     private final String outputFileName;
     private final ExpectedAndActual<String> output;
     private final ExpectedAndActual<Integer> validationFailures;
@@ -13,14 +12,12 @@ public class ProjectionTestResult {
 
 
     public ProjectionTestResult(String inputFileName,
-                                String keyValueFileName,
                                 String outputFileName,
                                 ExpectedAndActual<String> output,
                                 ExpectedAndActual<Integer> validationFailures,
                                 ExpectedAndActual<Boolean> validXml,
                                 ExpectedAndActual<Boolean> error) {
         this.inputFileName = inputFileName;
-        this.keyValueFileName = keyValueFileName;
         this.outputFileName = outputFileName;
         this.output = output;
         this.validationFailures = validationFailures;
@@ -30,10 +27,6 @@ public class ProjectionTestResult {
 
     public String getInputFileName() {
         return inputFileName;
-    }
-
-    public String getKeyValueFileName() {
-        return keyValueFileName;
     }
 
     public String getOutputFileName() {
