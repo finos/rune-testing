@@ -36,8 +36,8 @@ public class TestPackConfigWriter {
 		this.paths = paths;
 	}
 
-	public void writeConfigFile(Path resourcesPath, TestPackModel testPackModel) {
-		Path path = generateTestPackModelFilePath(paths.getConfigRelativePath(), testPackModel.getId());
+	public void writeConfigFile(Path resourcesPath, Path configPath, TestPackModel testPackModel) {
+		Path path = generateTestPackModelFilePath(configPath, testPackModel.getId());
 		SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
 		try {
