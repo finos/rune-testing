@@ -54,7 +54,7 @@ public class ReportExpectationUtil {
                     .filter(Files::exists)
                     .ifPresent(writeBasePath -> {
                         // 1. write new expectations file
-                        Path expectationFileWritePath = writeBasePath.resolve(configPath);
+                        Path expectationFileWritePath = writeBasePath.resolve(configPath).resolve (testPackModel.getId ()+ ".json");
                         TestingExpectationUtil.writeFile(expectationFileWritePath, expectationFileContent, TestingExpectationUtil.CREATE_EXPECTATION_FILES);
 
                         // 2. write new key-value json

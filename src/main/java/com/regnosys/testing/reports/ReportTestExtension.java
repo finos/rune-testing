@@ -55,7 +55,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     private final Module runtimeModule;
     private final Class<T> inputType;
     private Path rootExpectationsPath;
-    private Path outputPath;
 
     private String testPackFileName;
 
@@ -74,11 +73,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
     public ReportTestExtension<T> withRootExpectationsPath(Path rootExpectationsPath) {
         this.rootExpectationsPath = rootExpectationsPath;
-        return this;
-    }
-
-    public ReportTestExtension<T> withOutputPath(Path outputPath) {
-        this.outputPath = outputPath;
         return this;
     }
 
@@ -161,7 +155,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
                 .flatMap(expectationUrl -> {
-                    Path expectationFilePath = generateRelativeExpectationFilePath(outputPath, expectationUrl);
+                    Path expectationFilePath = generateRelativeExpectationFilePath(rootExpectationsPath, expectationUrl);
                     TestPackModel testPackModel = TestingExpectationUtil.readFile(expectationUrl, mapper, TestPackModel.class);
                     return testPackModel.getSamples().stream()
                             .map(sampleModel -> {
