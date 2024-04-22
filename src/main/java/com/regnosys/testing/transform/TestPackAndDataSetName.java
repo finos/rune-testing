@@ -19,12 +19,12 @@ public class TestPackAndDataSetName {
         if (this == o) return true;
         if (!(o instanceof TestPackAndDataSetName)) return false;
         TestPackAndDataSetName that = (TestPackAndDataSetName) o;
-        return Objects.equals (testPackID, that.testPackID) && Objects.equals (pipeLineId, that.pipeLineId) && Objects.equals (dataSetName, that.dataSetName);
+        return Objects.equals(testPackID, that.testPackID) && Objects.equals(pipeLineId, that.pipeLineId) && Objects.equals(dataSetName, that.dataSetName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash (testPackID, pipeLineId, dataSetName);
+        return Objects.hash(testPackID, pipeLineId, dataSetName);
     }
 
     public String getTestPackID() {
