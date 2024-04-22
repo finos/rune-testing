@@ -176,8 +176,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                 T input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
                                 return Arguments.of(
                                         testPackModel.getId(),
-                                        testPackModel.getName (),
-                                        testPackModel.getName (),
+                                        testPackModel.getPipelineId(),
+                                        testPackModel.getName(),
                                         expectationFilePath,
                                         input,
                                         sampleModel);
