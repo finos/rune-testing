@@ -94,13 +94,12 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
             String testPackId,
             String pipeLineId,
             String datasetName,
-            Path reportExpectationsPath,
             TestPackModel.SampleModel sampleModel,
             ReportFunction<In, Out> reportFunction,
             Tabulator<Out> tabulator,
             In input) throws IOException {
 
-        TransformTestResult result = getReport (reportExpectationsPath, sampleModel, reportFunction, tabulator, input);
+        TransformTestResult result = getReport (sampleModel, reportFunction, tabulator, input);
         if (result == null) return;
 
         actualExpectation.put (new TestPackAndDataSetName (testPackId, pipeLineId, datasetName), result);
@@ -120,8 +119,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     }
 
     @Nullable
-    private <In extends RosettaModelObject, Out extends RosettaModelObject> TransformTestResult getReport(Path reportExpectationsPath,
-                                                                                                          TestPackModel.SampleModel sampleModel,
+    private <In extends RosettaModelObject, Out extends RosettaModelObject> TransformTestResult getReport(TestPackModel.SampleModel sampleModel,
                                                                                                           ReportFunction<In, Out> reportFunction,
                                                                                                           Tabulator<Out> tabulator, In input) throws IOException {
 
@@ -156,7 +154,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
             int actualValidationFailures = validationReport.validationFailures ( ).size ( );
 
             ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).getModelValidationFailures ( ), actualValidationFailures);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions ( ).isRuntimeError ( ), false);
+            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).isRuntimeError ( ), false);
             TransformTestResult transformTestResult = new TransformTestResult (sampleModel, keyValue, report, validationFailures, null, error);
 
             return transformTestResult;
@@ -166,8 +164,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
             LOGGER.error ("Exception occurred running projection", e);
             ExpectedAndActual<String> keyValue = getJsonExpectedAndActual (keyValueExpectationPath, Collections.emptyList ( ));
             ExpectedAndActual<String> outputXml = getJsonExpectedAndActual (reportExpectationPath, null);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions ( ).getModelValidationFailures ( ), 0);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions ( ).isRuntimeError ( ), true);
+            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).getModelValidationFailures ( ), 0);
+            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).isRuntimeError ( ), true);
             return new TransformTestResult (sampleModel, keyValue, outputXml, validationFailures, null, error);
         }
     }
@@ -194,7 +192,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper ( );
         return expectationFiles.stream ( )
                 .flatMap (expectationUrl -> {
-                    Path expectationFilePath = generateRelativeExpectationFilePath (rootExpectationsPath, expectationUrl);
                     TestPackModel testPackModel = TestingExpectationUtil.readFile (expectationUrl, mapper, TestPackModel.class);
                     return testPackModel.getSamples ( ).stream ( )
                             .map (sampleModel -> {
@@ -211,7 +208,6 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                         testPackModel.getId ( ),
                                         testPackModel.getPipelineId ( ),
                                         testPackModel.getName ( ),
-                                        expectationFilePath,
                                         input,
                                         sampleModel);
                             });
