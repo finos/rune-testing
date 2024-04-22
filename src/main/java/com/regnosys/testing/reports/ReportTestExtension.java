@@ -125,14 +125,13 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                                                                                                           ReportFunction<In, Out> reportFunction,
                                                                                                           Tabulator<Out> tabulator, In input) throws IOException {
 
-        Path outputPath = Paths.get (sampleModel.getOutputPath ( ));
-        Path keyValuePath = Paths.get (sampleModel.getOutputTabulatedPath ( ));
+        Path reportExpectationPath = Paths.get (sampleModel.getOutputPath ( ));
+        Path keyValueExpectationPath = Paths.get (sampleModel.getOutputTabulatedPath ( ));
 
         try {
             // report
 
             Out reportOutput = reportFunction.evaluate (resolved (input));
-            Path reportExpectationPath = Paths.get (sampleModel.getOutputPath ( ));
             ExpectedAndActual<String> report = getJsonExpectedAndActual (reportExpectationPath, reportOutput);
 
             // key value
@@ -141,27 +140,32 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                     field -> field.accept (flattener, List.of ( ))
             );
             List<ReportField> results = flattener.accumulator;
-            Path keyValueExpectationPath = Paths.get (sampleModel.getOutputTabulatedPath ( ));
             ExpectedAndActual<String> keyValue = getJsonExpectedAndActual (keyValueExpectationPath, results);
 
             if (reportOutput == null && report.getExpected ( ) == null) {
                 LOGGER.info ("Empty report is expected result for {}", sampleModel.getInputPath ( ));
                 return null;
             }
+
             assertNotNull (reportOutput);
 
             // validation failures
             ValidationReport validationReport = typeValidator.runProcessStep (reportOutput.getType ( ), reportOutput);
             validationReport.logReport ( );
+
             int actualValidationFailures = validationReport.validationFailures ( ).size ( );
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions ( ).getModelValidationFailures ( ), actualValidationFailures);
+
+            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).getModelValidationFailures ( ), actualValidationFailures);
             ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions ( ).isRuntimeError ( ), false);
-            TransformTestResult testExpectation = new TransformTestResult (sampleModel, keyValue, report, validationFailures, null, error);
-            return testExpectation;
+            TransformTestResult transformTestResult = new TransformTestResult (sampleModel, keyValue, report, validationFailures, null, error);
+
+            return transformTestResult;
+
         } catch (Exception e) {
+
             LOGGER.error ("Exception occurred running projection", e);
-            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual (keyValuePath, Collections.emptyList ( ));
-            ExpectedAndActual<String> outputXml = getJsonExpectedAndActual (outputPath, null);
+            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual (keyValueExpectationPath, Collections.emptyList ( ));
+            ExpectedAndActual<String> outputXml = getJsonExpectedAndActual (reportExpectationPath, null);
             ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions ( ).getModelValidationFailures ( ), 0);
             ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions ( ).isRuntimeError ( ), true);
             return new TransformTestResult (sampleModel, keyValue, outputXml, validationFailures, null, error);
@@ -227,19 +231,5 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
     public Module getRuntimeModule() {
         return runtimeModule;
-    }
-
-    private static class Result {
-        public final ExpectedAndActual<String> report;
-        public final ExpectedAndActual<String> keyValue;
-        public final ExpectedAndActual<Integer> validationFailures;
-        public final TransformTestResult testExpectation;
-
-        public Result(ExpectedAndActual<String> report, ExpectedAndActual<String> keyValue, ExpectedAndActual<Integer> validationFailures, TransformTestResult testExpectation) {
-            this.report = report;
-            this.keyValue = keyValue;
-            this.validationFailures = validationFailures;
-            this.testExpectation = testExpectation;
-        }
     }
 }
