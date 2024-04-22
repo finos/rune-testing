@@ -1,7 +1,5 @@
 package com.regnosys.testing.transform;
 
-import com.rosetta.model.lib.ModelReportId;
-
 import java.util.Objects;
 
 public class TestPackAndDataSetName {
