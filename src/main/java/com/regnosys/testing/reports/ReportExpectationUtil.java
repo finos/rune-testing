@@ -9,6 +9,7 @@ import com.regnosys.rosetta.common.reports.ReportDataItemExpectation;
 import com.regnosys.rosetta.common.reports.ReportDataSetExpectation;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.TestPackModel;
+import com.regnosys.rosetta.common.transform.TestPackModel.SampleModel;
 import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.transform.TestPackAndDataSetName;
 import com.regnosys.testing.transform.TransformTestResult;
@@ -40,8 +41,19 @@ public class ReportExpectationUtil {
             TestPackAndDataSetName key = entry.getKey();
 
             Collection<TransformTestResult> transformTestResults = entry.getValue();
-            List<TestPackModel.SampleModel> sampleModelList = transformTestResults.stream()
-                    .map(x -> new TestPackModel.SampleModel (x.getSampleModel ().getId (),x.getSampleModel ().getName (), x.getSampleModel ().getInputPath (), x.getSampleModel ().getOutputPath (), x.getSampleModel ().getOutputTabulatedPath (), new TestPackModel.SampleModel.Assertions (x.getModelValidationFailures ().getActual (), x.getSchemaValidationFailure ().getActual (), x.getRuntimeError ().getActual ())))
+            List<SampleModel> sampleModelList = transformTestResults.stream()
+                    .map(x -> new SampleModel (x.getSampleModel ().getId (),
+                                                             x.getSampleModel ().getName (),
+                                                             x.getSampleModel ().getInputPath (),
+                                                             x.getSampleModel ().getOutputPath (),
+                                                             x.getSampleModel ().getOutputTabulatedPath (),
+                                                                new SampleModel.Assertions (
+                                                                        x.getModelValidationFailures ().getActual (),
+                                                                        null,
+                                                                        x.getRuntimeError ().getActual ()
+                                                                        )
+                                                            )
+                        )
                     .sorted()
                     .collect(Collectors.toList());
             TestPackModel testPackModel = new TestPackModel (key.getTestPackID (), key.getPipeLineId ( ), key.getDataSetName ( ), sampleModelList);

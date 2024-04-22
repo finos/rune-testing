@@ -54,38 +54,30 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     private final Module runtimeModule;
     private final Class<T> inputType;
     private Path rootExpectationsPath;
-
     private String testPackFileName;
-
-
     @Inject
     private RosettaTypeValidator typeValidator;
     @Inject
     private ReferenceConfig referenceConfig;
-
     private Multimap<TestPackAndDataSetName, TransformTestResult> actualExpectation;
 
     public ReportTestExtension(Module runtimeModule, Class<T> inputType) {
         this.runtimeModule = runtimeModule;
         this.inputType = inputType;
     }
-
     public ReportTestExtension<T> withRootExpectationsPath(Path rootExpectationsPath) {
         this.rootExpectationsPath = rootExpectationsPath;
         return this;
     }
-
     public ReportTestExtension<T> withTestPackFileName(String testPackFileName) {
         this.testPackFileName = testPackFileName;
         return this;
     }
-
     @BeforeAll
     public void beforeAll(ExtensionContext context) {
         Guice.createInjector(runtimeModule).injectMembers(this);
         actualExpectation = ArrayListMultimap.create();
     }
-
     public <In extends RosettaModelObject, Out extends RosettaModelObject> void runReportAndAssertExpected(
             String testPackId,
             String pipeLineId,
@@ -105,21 +97,15 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         assertEquals(outputXml.getExpected(), outputXml.getActual());
 
         ExpectedAndActual<String> keyValue = result.getKeyValue();
-        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
+        assertEquals(keyValue.getExpected(), keyValue.getActual());
 
         ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures ();
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
 
-        ExpectedAndActual<Boolean> validXml = result.getSchemaValidationFailure ();
-        assertEquals(validXml.getExpected(), validXml.getActual(), "XML validation");
-
         ExpectedAndActual<Boolean> error = result.getRuntimeError ();
-        assertEquals(error.getExpected(), error.getActual(), "Error");
-        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-        TestingExpectationUtil.assertJsonEquals(outputXml.getExpected(), outputXml.getActual());
-        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
-    }
+        assertEquals(error.getExpected(), error.getActual(), "Runtime Error");
 
+    }
     @Nullable
     private <In extends RosettaModelObject, Out extends RosettaModelObject> TransformTestResult getReport(Path reportExpectationsPath,
                                                                                                           TestPackModel.SampleModel sampleModel,
@@ -156,19 +142,16 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         validationReport.logReport();
         int actualValidationFailures = validationReport.validationFailures().size();
         ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(reportExpectationsPath, sampleModel.getAssertions ().getModelValidationFailures (), actualValidationFailures);
-
-        ExpectedAndActual<Boolean> SchemaValidation = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions().isSchemaValidationFailure (), sampleModel.getAssertions().isSchemaValidationFailure ());
-        ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions().isRuntimeError (), sampleModel.getAssertions().isRuntimeError ());
-        TransformTestResult testExpectation = new TransformTestResult (sampleModel, keyValue, report, validationFailures, SchemaValidation, error);
+        ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (reportExpectationsPath, sampleModel.getAssertions().isRuntimeError (), false);
+        TransformTestResult testExpectation = new TransformTestResult (sampleModel, keyValue, report, validationFailures, null, error);
         return testExpectation;
         } catch (Exception e) {
             LOGGER.error("Exception occurred running projection", e);
             ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValuePath, Collections.emptyList());
             ExpectedAndActual<String> outputXml = getJsonExpectedAndActual(outputPath, null);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(projectExpectationFilePath, sampleModel.getAssertions().getModelValidationFailures (), 0);
-            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(projectExpectationFilePath, sampleModel.getAssertions().isSchemaValidationFailure (), false);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(projectExpectationFilePath, sampleModel.getAssertions().isRuntimeError (), true);
-            return new ProjectionTestResult (sampleModel.getInputPath(), sampleModel.getOutputTabulatedPath(), sampleModel.getOutputPath(), keyValue, outputXml, validationFailures, validXml, error);
+            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(reportExpectationsPath, sampleModel.getAssertions().getModelValidationFailures (), 0);
+            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(reportExpectationsPath, sampleModel.getAssertions().isRuntimeError (), true);
+            return new TransformTestResult (sampleModel, keyValue, outputXml, validationFailures, null, error);
         }
     }
 
@@ -191,19 +174,16 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         new ReferenceResolverProcessStep(referenceConfig).runProcessStep(modelObject.getType(), builder);
         return (T) builder.build();
     }
-
     @AfterAll
     public void afterAll(ExtensionContext context) throws IOException {
        writeExpectations(actualExpectation);
     }
-
     public Stream<Arguments> getArguments() {
         // find list of expectation files within the report path
         // - warning this will find paths in all classpath jars, so may return additional unwanted paths
         List<URL> expectationFiles = TestingExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ReportTestExtension.class.getClassLoader(), testPackFileName);
         return getArguments(expectationFiles);
     }
-
     public Stream<Arguments> getArguments(List<URL> expectationFiles) {
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return expectationFiles.stream()
