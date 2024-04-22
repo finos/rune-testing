@@ -41,38 +41,19 @@ public class TestPackConfigWriter {
 		SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
 		try {
-			TestPackModel filteredTestPackModel = sortAndRemoveUningestedFiles(resourcesPath, testPackModel);
 			Path fullPath = resourcesPath.resolve(path);
 			Files.createDirectories(fullPath.getParent());
 			try (BufferedWriter writer = Files.newBufferedWriter(fullPath)) {
 				writer.write(
 						writeMapper.writer(filterProvider)
 								.withDefaultPrettyPrinter()
-								.writeValueAsString(filteredTestPackModel)
+								.writeValueAsString(testPackModel)
 				);
 				LOGGER.info("Writing descriptor file: {}", path);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private TestPackModel sortAndRemoveUningestedFiles(Path resourcesPath, TestPackModel testPackModel) {
-		List<SampleModel> sampleModels = testPackModel.getSamples()
-				.stream()
-				.filter(sampleModel -> sampleModelInputFileExists(resourcesPath, sampleModel))
-				.sorted(Comparator.comparing(SampleModel::getId))
-				.collect(Collectors.toList());
-
-		return new TestPackModel(testPackModel.getId(),
-				testPackModel.getPipelineId(),
-				testPackModel.getName(),
-				sampleModels);
-	}
-
-	private boolean sampleModelInputFileExists(Path resourcesPath, SampleModel model) {
-		String input = model.getInputPath().toString();
-		return Files.exists(resourcesPath.resolve(input));
 	}
 
 	private List<TestPackModel> readTestPackModelFile(Path file) {
