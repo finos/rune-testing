@@ -10,6 +10,8 @@ public class ProjectionPaths {
 
     public static final Path PROJECTION_PATH = Paths.get("projection");
     public static final String PROJECTION_EXPECTATIONS_FILE_NAME = "projection-expectations.json";
+    public static final String PROJECTION_TEST_PACK_FILE_NAME = "test-pack-projection-";
+
 
     /**
      * Projection input file is the reports output file (loaded from reports output directory).
