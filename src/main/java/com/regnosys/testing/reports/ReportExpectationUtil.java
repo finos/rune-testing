@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class ReportExpectationUtil {
                                     )
                             )
                     )
-                    .sorted ( )
+                    .sorted (Comparator.comparing (SampleModel::getId))
                     .collect (Collectors.toList ( ));
             TestPackModel testPackModel = new TestPackModel (key.getTestPackID ( ), key.getPipeLineId ( ), key.getDataSetName ( ), sampleModelList);
             String expectationFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString (testPackModel);
