@@ -47,7 +47,7 @@ public class TestPackConfigWriter {
                 writer.write (
                         writeMapper.writer (filterProvider)
                                 .withDefaultPrettyPrinter ( )
-								.writeValueAsString(testPackModel)
+                                .writeValueAsString (testPackModel)
                 );
                 LOGGER.info ("Writing descriptor file: {}", path);
             }

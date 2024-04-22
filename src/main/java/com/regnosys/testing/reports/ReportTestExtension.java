@@ -153,8 +153,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
             int actualValidationFailures = validationReport.validationFailures ( ).size ( );
 
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).getModelValidationFailures ( ), actualValidationFailures);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).isRuntimeError ( ), false);
+            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (Path.of (sampleModel.getInputPath ( )), sampleModel.getAssertions ( ).getModelValidationFailures ( ), actualValidationFailures);
+            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (Path.of (sampleModel.getInputPath ( )), sampleModel.getAssertions ( ).isRuntimeError ( ), false);
             TransformTestResult transformTestResult = new TransformTestResult (sampleModel, keyValue, report, validationFailures, null, error);
 
             return transformTestResult;
@@ -164,8 +164,8 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
             LOGGER.error ("Exception occurred running projection", e);
             ExpectedAndActual<String> keyValue = getJsonExpectedAndActual (keyValueExpectationPath, Collections.emptyList ( ));
             ExpectedAndActual<String> outputXml = getJsonExpectedAndActual (reportExpectationPath, null);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).getModelValidationFailures ( ), 0);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (Path.of(sampleModel.getInputPath ()), sampleModel.getAssertions ( ).isRuntimeError ( ), true);
+            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<> (Path.of (sampleModel.getInputPath ( )), sampleModel.getAssertions ( ).getModelValidationFailures ( ), 0);
+            ExpectedAndActual<Boolean> error = new ExpectedAndActual<> (Path.of (sampleModel.getInputPath ( )), sampleModel.getAssertions ( ).isRuntimeError ( ), true);
             return new TransformTestResult (sampleModel, keyValue, outputXml, validationFailures, null, error);
         }
     }
