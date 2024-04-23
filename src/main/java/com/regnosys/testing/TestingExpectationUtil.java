@@ -51,10 +51,10 @@ public class TestingExpectationUtil {
         return ImmutableList.copyOf(expectations);
     }
 
-    public static List<URL> readTestPacksFromPath(Path basePath, ClassLoader classLoader, String testPackFileName, String regBody) {
+    public static List<URL> readTestPacksFromPath(Path basePath, ClassLoader classLoader, String regBody) {
         return ClassPathUtils.findPathsFromClassPath(
                 List.of(UrlUtils.toPortableString(basePath)),
-                testPackFileName.replaceAll("--","-"+regBody+"-"),
+                getProjectionTestPackName(regBody),
                 Optional.empty(),
                 classLoader
         ).stream()
@@ -62,18 +62,23 @@ public class TestingExpectationUtil {
                 .collect(Collectors.toList());
     }
 
+    public static String getProjectionTestPackName(String regBody) {
+        return "test-pack-projection-" + regBody +"-report-to-iso20022.*\\.json";
+    }
 
-    public static URL readPipelineFromPath(Path basePath, ClassLoader classLoader, String pipelineFileName, String regBody) {
+    public static URL readPipelineFromPath(Path basePath, ClassLoader classLoader, String regBody) {
         return ClassPathUtils.findPathsFromClassPath(
                         List.of(UrlUtils.toPortableString(basePath)),
-                        pipelineFileName.replaceAll("--","-"+regBody+"-"),
+                        getProjectionPipelineName(regBody),
                         Optional.empty(),
                         classLoader
                 ).stream()
                 .map(UrlUtils::toUrl).findFirst().get();
     }
 
-
+    public static String getProjectionPipelineName(String regBody) {
+        return "pipeline-projection-" + regBody + "-report-to-iso20022.json";
+    }
 
 
     public static <T> T readFile(URL u, ObjectMapper mapper, Class<T> clazz) {
