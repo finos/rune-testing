@@ -61,7 +61,6 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
     private final Class<IN> inputType;
     private Multimap<TestPackAndDataSetName, TransformTestResult> actualExpectation;
     private Path rootExpectationsPath;
-    private Path outputPath;
     private String regBody;
 
     @Inject
@@ -94,12 +93,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         return this;
     }
 
-    public ProjectionTestExtension<IN, OUT> withOutputPath(Path outputPath) {
-        this.outputPath = outputPath;
-        return this;
-    }
-
-    public ProjectionTestExtension<IN,OUT> withRegBody(String regBody) {
+    public ProjectionTestExtension<IN, OUT> withRegBody(String regBody) {
         this.regBody = regBody;
         return this;
     }
@@ -130,12 +124,12 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         ProjectionExpectationUtil.writeExpectations(actualExpectation);
     }
 
-    public Stream<Arguments> getArguments(){
+    public Stream<Arguments> getArguments() {
         List<URL> testPacksURLs = TestingExpectationUtil.readTestPacksFromPath(rootExpectationsPath, ProjectionTestExtension.class.getClassLoader(), regBody);
         URL pipelineUrl = TestingExpectationUtil.readPipelineFromPath(rootExpectationsPath, ProjectionTestExtension.class.getClassLoader(), regBody);
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
 
-        PipelineModel pipelineModel = TestingExpectationUtil.readFile(pipelineUrl,mapper, PipelineModel.class);
+        PipelineModel pipelineModel = TestingExpectationUtil.readFile(pipelineUrl, mapper, PipelineModel.class);
         return testPacksURLs.stream().flatMap(testPacksUrl -> {
             TestPackModel testPackModel = TestingExpectationUtil.readFile(testPacksUrl, mapper, TestPackModel.class);
             return testPackModel.getSamples().stream().map(sampleModel -> {
@@ -181,11 +175,11 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
 
 
     public void runProjectionAndAssert(String testPackId,
-                                         String pipelineId,
-                                         String dataSetName,
-                                         TestPackModel.SampleModel sampleModel,
-                                         Function<IN, OUT> functionExecutionCallback,
-                                         IN input, Tabulator<OUT> tabulator) throws IOException {
+                                       String pipelineId,
+                                       String dataSetName,
+                                       TestPackModel.SampleModel sampleModel,
+                                       Function<IN, OUT> functionExecutionCallback,
+                                       IN input, Tabulator<OUT> tabulator) throws IOException {
 
 
         TransformTestResult result = runProjection(sampleModel, functionExecutionCallback, input, tabulator);
@@ -209,10 +203,10 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
     }
 
     private TransformTestResult runProjection(
-                                              TestPackModel.SampleModel sampleModel,
-                                              Function<IN, OUT> functionExecutionCallback,
-                                              IN input,
-                                              Tabulator<OUT> tabulator) throws IOException {
+            TestPackModel.SampleModel sampleModel,
+            Function<IN, OUT> functionExecutionCallback,
+            IN input,
+            Tabulator<OUT> tabulator) throws IOException {
         Path outputPath = Paths.get(sampleModel.getOutputPath());
         Path keyValuePath = Paths.get(sampleModel.getOutputTabulatedPath());
         try {
