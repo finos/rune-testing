@@ -7,16 +7,18 @@ import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
 import com.google.inject.Guice;
 import com.google.inject.Module;
-import com.regnosys.rosetta.common.projection.ProjectionDataItemExpectation;
-import com.regnosys.rosetta.common.projection.ProjectionDataSetExpectation;
 import com.regnosys.rosetta.common.reports.ReportField;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapperCreator;
+import com.regnosys.rosetta.common.transform.PipelineModel;
+import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.FieldValueFlattener;
 import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.reports.ExpectedAndActual;
+import com.regnosys.testing.transform.TestPackAndDataSetName;
+import com.regnosys.testing.transform.TransformTestResult;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.reports.Tabulator;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -42,26 +44,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.regnosys.testing.TestingExpectationUtil.getJsonExpectedAndActual;
 import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
-import static com.regnosys.testing.projection.ProjectionPaths.PROJECTION_EXPECTATIONS_FILE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectionTestExtension.class);
-    private final ObjectWriter rosettaXMLObjectWriter;
-    private final Validator xsdValidator;
+    private ObjectWriter rosettaXMLObjectWriter;
+    private Validator xsdValidator;
     private final Module runtimeModule;
     private final Class<IN> inputType;
-    private Multimap<ProjectionNameAndDataSetName, ProjectionTestResult> actualExpectation;
+    private Multimap<TestPackAndDataSetName, TransformTestResult> actualExpectation;
     private Path rootExpectationsPath;
-    private Path outputPath;
+    private String regBody;
 
     @Inject
     private RosettaTypeValidator typeValidator;
@@ -82,13 +82,34 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         }
     }
 
+
+    public ProjectionTestExtension(Module runtimeModule, Class<IN> inputType) {
+        this.runtimeModule = runtimeModule;
+        this.inputType = inputType;
+    }
+
     public ProjectionTestExtension<IN, OUT> withRootExpectationsPath(Path rootExpectationsPath) {
         this.rootExpectationsPath = rootExpectationsPath;
         return this;
     }
 
-    public ProjectionTestExtension<IN, OUT> withOutputPath(Path outputPath) {
-        this.outputPath = outputPath;
+    public ProjectionTestExtension<IN, OUT> withRegBody(String regBody) {
+        this.regBody = regBody;
+        return this;
+    }
+
+    public ProjectionTestExtension<IN, OUT> withWriterAndValidator(URL xmlConfig, URL xsdSchema) {
+        try {
+            this.rosettaXMLObjectWriter = RosettaObjectMapperCreator.forXML(xmlConfig.openStream()).create().writerWithDefaultPrettyPrinter();
+            SchemaFactory schemaFactory = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
+            schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
+            Schema schema = schemaFactory.newSchema(xsdSchema);
+            this.xsdValidator = schema.newValidator();
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
 
@@ -104,35 +125,33 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
     }
 
     public Stream<Arguments> getArguments() {
-        List<URL> expectationFiles = TestingExpectationUtil.readExpectationsFromPath(rootExpectationsPath, ProjectionTestExtension.class.getClassLoader(), PROJECTION_EXPECTATIONS_FILE_NAME);
+        List<URL> testPacksURLs = TestingExpectationUtil.readTestPacksFromPath(rootExpectationsPath, ProjectionTestExtension.class.getClassLoader(), regBody);
+        URL pipelineUrl = TestingExpectationUtil.readPipelineFromPath(rootExpectationsPath, ProjectionTestExtension.class.getClassLoader(), regBody);
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
-        return expectationFiles.stream()
-                .flatMap(expectationUrl -> {
-                    Path expectationFilePath = generateRelativeExpectationFilePath(outputPath, expectationUrl);
-                    ProjectionDataSetExpectation expectation = TestingExpectationUtil.readFile(expectationUrl, mapper, ProjectionDataSetExpectation.class);
-                    return expectation.getDataItemExpectations().stream()
-                            .map(dataItemExpectation -> {
-                                // input file to be tested
-                                String inputFile = dataItemExpectation.getInputFile();
-                                URL inputFileUrl = getInputFileUrl(inputFile);
-                                // input files can be missing if the upstream report has thrown an exception
-                                if (inputFileUrl == null) {
-                                    return null;
-                                }
-                                // deserialise into input (e.g. ESMAEMIRMarginReport)
-                                IN input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
-                                String name = expectation.getProjectionName();
 
-                                return Arguments.of(
-                                        String.format("%s | %s", expectation.getDataSetName(), Paths.get(inputFile).getFileName()),
-                                        name,
-                                        expectationFilePath,
-                                        expectation.getDataSetName(),
-                                        input,
-                                        dataItemExpectation);
-                            });
-                })
-                .filter(Objects::nonNull);
+        PipelineModel pipelineModel = TestingExpectationUtil.readFile(pipelineUrl, mapper, PipelineModel.class);
+        return testPacksURLs.stream().flatMap(testPacksUrl -> {
+            TestPackModel testPackModel = TestingExpectationUtil.readFile(testPacksUrl, mapper, TestPackModel.class);
+            return testPackModel.getSamples().stream().map(sampleModel -> {
+
+                String inputFile = sampleModel.getInputPath();
+                URL inputFileUrl = getInputFileUrl(inputFile);
+                // input files can be missing if the upstream report has thrown an exception
+                if (inputFileUrl == null) {
+                    return null;
+                }
+
+                IN input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
+
+                return Arguments.of(
+                        pipelineModel,
+                        testPackModel.getId(),
+                        testPackModel.getPipelineId(),
+                        testPackModel.getName(),
+                        input,
+                        sampleModel);
+            });
+        });
     }
 
     private static URL getInputFileUrl(String inputFile) {
@@ -154,41 +173,42 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         }
     }
 
-    public void runProjectionAndAssert(String projectName,
-                                       Path projectExpectationFilePath,
+
+    public void runProjectionAndAssert(String testPackId,
+                                       String pipelineId,
                                        String dataSetName,
-                                       ProjectionDataItemExpectation expectation,
+                                       TestPackModel.SampleModel sampleModel,
                                        Function<IN, OUT> functionExecutionCallback,
                                        IN input, Tabulator<OUT> tabulator) throws IOException {
 
 
-        ProjectionTestResult result = runProjection(projectExpectationFilePath, expectation, functionExecutionCallback, input, tabulator);
+        TransformTestResult result = runProjection(sampleModel, functionExecutionCallback, input, tabulator);
 
-        actualExpectation.put(new ProjectionNameAndDataSetName(projectName, dataSetName, projectExpectationFilePath), result);
+        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipelineId, dataSetName), result);
 
-        ExpectedAndActual<String> outputXml = result.getOutput();
+        ExpectedAndActual<String> outputXml = result.getReport();
         assertEquals(outputXml.getExpected(), outputXml.getActual());
 
         ExpectedAndActual<String> keyValue = result.getKeyValue();
         TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
 
-        ExpectedAndActual<Integer> validationFailures = result.getValidationFailures();
+        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
         assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
 
-        ExpectedAndActual<Boolean> validXml = result.getValidXml();
+        ExpectedAndActual<Boolean> validXml = result.getSchemaValidationFailure();
         assertEquals(validXml.getExpected(), validXml.getActual(), "XML validation");
 
-        ExpectedAndActual<Boolean> error = result.getError();
+        ExpectedAndActual<Boolean> error = result.getRuntimeError();
         assertEquals(error.getExpected(), error.getActual(), "Error");
     }
 
-    private ProjectionTestResult runProjection(Path projectExpectationFilePath,
-                                               ProjectionDataItemExpectation expectation,
-                                               Function<IN, OUT> functionExecutionCallback,
-                                               IN input,
-                                               Tabulator<OUT> tabulator) throws IOException {
-        Path outputPath = Paths.get(expectation.getOutputFile());
-        Path keyValuePath = Paths.get(expectation.getKeyValueFile());
+    private TransformTestResult runProjection(
+            TestPackModel.SampleModel sampleModel,
+            Function<IN, OUT> functionExecutionCallback,
+            IN input,
+            Tabulator<OUT> tabulator) throws IOException {
+        Path outputPath = Paths.get(sampleModel.getOutputPath());
+        Path keyValuePath = Paths.get(sampleModel.getOutputTabulatedPath());
         try {
             OUT projectOutput = functionExecutionCallback.apply(input);
 
@@ -208,24 +228,25 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
             ValidationReport validationReport = typeValidator.runProcessStep(projectOutput.getType(), projectOutput);
             validationReport.logReport();
             int actualValidationFailures = validationReport.validationFailures().size();
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(projectExpectationFilePath, expectation.getValidationFailures(), actualValidationFailures);
+            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
 
             // Assert XML output does not match XSD schema.
+
             boolean actualValidXml = isValidXml(outputXml.getActual());
-            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(projectExpectationFilePath, expectation.isValidXml(), actualValidXml);
+            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), actualValidXml);
 
             // No exceptions
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(projectExpectationFilePath, expectation.isError(), false);
+            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
 
-            return new ProjectionTestResult(expectation.getInputFile(), expectation.getKeyValueFile(), expectation.getOutputFile(), keyValue, outputXml, validationFailures, validXml, error);
+            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, validXml, error);
         } catch (Exception e) {
             LOGGER.error("Exception occurred running projection", e);
             ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValuePath, Collections.emptyList());
             ExpectedAndActual<String> outputXml = getXmlExpectedAndActual(outputPath, null);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(projectExpectationFilePath, expectation.getValidationFailures(), 0);
-            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(projectExpectationFilePath, expectation.isValidXml(), false);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(projectExpectationFilePath, expectation.isError(), true);
-            return new ProjectionTestResult(expectation.getInputFile(), expectation.getKeyValueFile(), expectation.getOutputFile(), keyValue, outputXml, validationFailures, validXml, error);
+            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
+            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), false);
+            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
+            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, validXml, error);
         }
     }
 

@@ -51,6 +51,36 @@ public class TestingExpectationUtil {
         return ImmutableList.copyOf(expectations);
     }
 
+    public static List<URL> readTestPacksFromPath(Path basePath, ClassLoader classLoader, String regBody) {
+        return ClassPathUtils.findPathsFromClassPath(
+                List.of(UrlUtils.toPortableString(basePath)),
+                getProjectionTestPackName(regBody),
+                Optional.empty(),
+                classLoader
+        ).stream()
+                .map(UrlUtils::toUrl)
+                .collect(Collectors.toList());
+    }
+
+    public static String getProjectionTestPackName(String regBody) {
+        return "test-pack-projection-" + regBody +"-report-to-iso20022.*\\.json";
+    }
+
+    public static URL readPipelineFromPath(Path basePath, ClassLoader classLoader, String regBody) {
+        return ClassPathUtils.findPathsFromClassPath(
+                        List.of(UrlUtils.toPortableString(basePath)),
+                        getProjectionPipelineName(regBody),
+                        Optional.empty(),
+                        classLoader
+                ).stream()
+                .map(UrlUtils::toUrl).findFirst().get();
+    }
+
+    public static String getProjectionPipelineName(String regBody) {
+        return "pipeline-projection-" + regBody + "-report-to-iso20022.json";
+    }
+
+
     public static <T> T readFile(URL u, ObjectMapper mapper, Class<T> clazz) {
         try {
             return mapper.readValue(UrlUtils.openURL(u), clazz);
