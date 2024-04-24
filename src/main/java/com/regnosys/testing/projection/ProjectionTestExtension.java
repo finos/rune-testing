@@ -103,6 +103,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         ProjectionExpectationUtil.writeExpectations(actualExpectation);
     }
 
+
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
         writeExpectations(actualExpectation);
@@ -149,22 +150,14 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
 
         TransformTestResult result = runProjection(sampleModel, functionExecutionCallback, input, tabulator);
 
-        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipelineId, dataSetName), result);
+        updateSampleAndRunTransformAssertions(testPackId, pipelineId, dataSetName, result);
+    }
 
-        ExpectedAndActual<String> outputXml = result.getReport();
-        assertEquals(outputXml.getExpected(), outputXml.getActual());
-
-        ExpectedAndActual<String> keyValue = result.getKeyValue();
-        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-
-        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
-        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
+    private void updateSampleAndRunTransformAssertions(String testPackId, String pipelineId, String dataSetName, TransformTestResult result) {
+        super.runTransformAssertions(testPackId, pipelineId, dataSetName, result);
 
         ExpectedAndActual<Boolean> validXml = result.getSchemaValidationFailure();
         assertEquals(validXml.getExpected(), validXml.getActual(), "XML validation");
-
-        ExpectedAndActual<Boolean> error = result.getRuntimeError();
-        assertEquals(error.getExpected(), error.getActual(), "Error");
     }
 
     private TransformTestResult runProjection(
@@ -227,7 +220,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         }
     }
 
-    public ExpectedAndActual<String> getXmlExpectedAndActual(Path expectationPath, Object xmlResult) throws IOException {
+    private ExpectedAndActual<String> getXmlExpectedAndActual(Path expectationPath, Object xmlResult) throws IOException {
         String actualXML = xmlResult != null ?
                 rosettaXMLObjectWriter.writeValueAsString(xmlResult) :
                 "";

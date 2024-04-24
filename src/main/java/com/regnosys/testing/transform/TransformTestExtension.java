@@ -16,8 +16,10 @@ import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.projection.ProjectionTestExtension;
+import com.regnosys.testing.reports.ExpectedAndActual;
 import com.regnosys.testing.reports.ReportTestExtension;
 import com.rosetta.model.lib.RosettaModelObject;
+import com.rosetta.model.lib.reports.Tabulator;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -35,7 +37,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class TransformTestExtension <T extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback  {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportTestExtension.class);
@@ -79,13 +84,19 @@ public abstract class TransformTestExtension <T extends RosettaModelObject> impl
         actualExpectation = ArrayListMultimap.create();
     }
 
+    protected void runTransformAssertions(String testPackId, String pipelineId, String dataSetName, TransformTestResult result) {
+        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipelineId, dataSetName), result);
 
-    private static URL getInputFileUrl(String inputFile) {
-        try {
-            return Resources.getResource(inputFile);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Failed to load input file " + inputFile);
-            return null;
-        }
+        ExpectedAndActual<String> outputXml = result.getReport();
+        assertEquals(outputXml.getExpected(), outputXml.getActual());
+
+        ExpectedAndActual<String> keyValue = result.getKeyValue();
+        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
+
+        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
+        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
+
+        ExpectedAndActual<Boolean> error = result.getRuntimeError();
+        assertEquals(error.getExpected(), error.getActual(), "Error");
     }
 }

@@ -84,20 +84,7 @@ public class ReportTestExtension<T extends RosettaModelObject> extends Transform
         TransformTestResult result = getReport(sampleModel, reportFunction, tabulator, input);
         if (result == null) return;
 
-        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipeLineId, datasetName), result);
-
-        ExpectedAndActual<String> outputXml = result.getReport();
-        assertEquals(outputXml.getExpected(), outputXml.getActual());
-
-        ExpectedAndActual<String> keyValue = result.getKeyValue();
-        assertEquals(keyValue.getExpected(), keyValue.getActual());
-
-        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
-        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
-
-        ExpectedAndActual<Boolean> error = result.getRuntimeError();
-        assertEquals(error.getExpected(), error.getActual(), "Runtime Error");
-
+        super.runTransformAssertions(testPackId, pipeLineId, datasetName, result);
     }
 
     @Nullable
