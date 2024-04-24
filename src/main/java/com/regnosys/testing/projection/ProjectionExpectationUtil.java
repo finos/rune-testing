@@ -47,7 +47,7 @@ public class ProjectionExpectationUtil {
                     )
                     .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
                     .collect(Collectors.toList());
-            TestPackModel testPackModel = new TestPackModel(key.getPipeLineId(), key.getTestPackID(), key.getDataSetName(), sampleModelList);
+            TestPackModel testPackModel = new TestPackModel(key.getTestPackID(), key.getPipeLineId(), key.getDataSetName(), sampleModelList);
             String expectationFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(testPackModel);
 
             Path configPath = RegProjectionPaths.getProjectionPath().getConfigRelativePath();
