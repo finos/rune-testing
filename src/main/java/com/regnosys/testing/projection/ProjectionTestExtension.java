@@ -55,8 +55,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectionTestExtension.class);
-    public static final String TEST_PACK_FILE_NAME = "test-pack-projection--report-to-iso20022.json";
-    public static final String PIPELINE_FILE_NAME = "pipeline-projection--report-to-iso20022.json";
     private ObjectWriter rosettaXMLObjectWriter;
     private Validator xsdValidator;
     private final Module runtimeModule;
