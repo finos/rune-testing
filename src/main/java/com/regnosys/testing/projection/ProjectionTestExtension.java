@@ -1,5 +1,6 @@
 package com.regnosys.testing.projection;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ArrayListMultimap;
@@ -18,6 +19,7 @@ import com.regnosys.testing.FieldValueFlattener;
 import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.reports.ExpectedAndActual;
 import com.regnosys.testing.transform.TestPackAndDataSetName;
+import com.regnosys.testing.transform.TransformTestExtension;
 import com.regnosys.testing.transform.TransformTestResult;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.reports.Tabulator;
@@ -52,13 +54,13 @@ import static com.regnosys.testing.TestingExpectationUtil.readStringFromResource
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
+public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends RosettaModelObject> extends TransformTestExtension<OUT>  implements BeforeAllCallback, AfterAllCallback {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectionTestExtension.class);
     private ObjectWriter rosettaXMLObjectWriter;
     private Validator xsdValidator;
-    private final Module runtimeModule;
-    private final Class<IN> inputType;
+    private Module runtimeModule;
+    private Class<IN> inputType;
     private Multimap<TestPackAndDataSetName, TransformTestResult> actualExpectation;
     private Path rootExpectationsPath;
     private String regBody;
@@ -66,37 +68,15 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
     @Inject
     private RosettaTypeValidator typeValidator;
 
-    public ProjectionTestExtension(Module runtimeModule, Class<IN> inputType, URL xsdSchema, URL xmlConfig) {
-        this.runtimeModule = runtimeModule;
-        this.inputType = inputType;
-        try {
-            this.rosettaXMLObjectWriter = RosettaObjectMapperCreator.forXML(xmlConfig.openStream()).create().writerWithDefaultPrettyPrinter();
-            SchemaFactory schemaFactory = SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
-            schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
-            Schema schema = schemaFactory.newSchema(xsdSchema);
-            this.xsdValidator = schema.newValidator();
-        } catch (IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-
-    public ProjectionTestExtension(Module runtimeModule, Class<IN> inputType) {
-        this.runtimeModule = runtimeModule;
-        this.inputType = inputType;
-    }
-
-    public ProjectionTestExtension<IN, OUT> withRootExpectationsPath(Path rootExpectationsPath) {
-        this.rootExpectationsPath = rootExpectationsPath;
-        return this;
+    public ProjectionTestExtension(Module runtimeModule, Class inputType) {
+        super(runtimeModule, inputType);
     }
 
     public ProjectionTestExtension<IN, OUT> withRegBody(String regBody) {
         this.regBody = regBody;
         return this;
-    }
+    } //Stays where it is
 
     public ProjectionTestExtension<IN, OUT> withWriterAndValidator(URL xmlConfig, URL xsdSchema) {
         try {
@@ -111,25 +91,28 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
             throw new RuntimeException(e);
         }
         return this;
-    }
+    } //Stays where it is
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        Guice.createInjector(runtimeModule).injectMembers(this);
-        actualExpectation = ArrayListMultimap.create();
+        super.beforeAll(context);
+    }
+
+    @Override
+    protected void writeExpectations(Multimap<TestPackAndDataSetName, TransformTestResult> actualExpectation) throws Exception {
+        ProjectionExpectationUtil.writeExpectations(actualExpectation);
     }
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        ProjectionExpectationUtil.writeExpectations(actualExpectation);
+        writeExpectations(actualExpectation);
     }
 
     public Stream<Arguments> getArguments() {
         List<URL> testPacksURLs = TestingExpectationUtil.readTestPacksFromPath(rootExpectationsPath, ProjectionTestExtension.class.getClassLoader(), regBody);
         URL pipelineUrl = TestingExpectationUtil.readPipelineFromPath(rootExpectationsPath, ProjectionTestExtension.class.getClassLoader(), regBody);
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
-
-        PipelineModel pipelineModel = TestingExpectationUtil.readFile(pipelineUrl, mapper, PipelineModel.class);
+//        PipelineModel pipelineModel = TestingExpectationUtil.readFile(pipelineUrl, mapper, PipelineModel.class);
         return testPacksURLs.stream().flatMap(testPacksUrl -> {
             TestPackModel testPackModel = TestingExpectationUtil.readFile(testPacksUrl, mapper, TestPackModel.class);
             return testPackModel.getSamples().stream().map(sampleModel -> {
@@ -142,7 +125,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
                 }
 
                 IN input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
-
+                PipelineModel pipelineModel = TestingExpectationUtil.readFile(pipelineUrl, mapper, PipelineModel.class);
                 return Arguments.of(
                         pipelineModel,
                         testPackModel.getId(),
@@ -154,24 +137,6 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         });
     }
 
-    private static URL getInputFileUrl(String inputFile) {
-        try {
-            return Resources.getResource(inputFile);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Failed to load input file " + inputFile);
-            return null;
-        }
-    }
-
-    private Path generateRelativeExpectationFilePath(Path outputPath, URL expectationUrl) {
-        try {
-            Path path = Path.of(expectationUrl.toURI());
-            String relativePath = path.toString().replaceAll("^.*?(\\Q" + outputPath + "\\E.*)", "$1");
-            return Path.of(relativePath);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     public void runProjectionAndAssert(String testPackId,
@@ -268,5 +233,14 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
                 "";
         String expectedXML = readStringFromResources(expectationPath);
         return new ExpectedAndActual<>(expectationPath, expectedXML, actualXML);
+    }
+
+    private static URL getInputFileUrl(String inputFile) {
+        try {
+            return Resources.getResource(inputFile);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Failed to load input file " + inputFile);
+            return null;
+        }
     }
 }

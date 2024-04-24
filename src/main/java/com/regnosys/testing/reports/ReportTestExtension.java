@@ -15,7 +15,9 @@ import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.FieldValueFlattener;
 import com.regnosys.testing.TestingExpectationUtil;
+import com.regnosys.testing.projection.ProjectionExpectationUtil;
 import com.regnosys.testing.transform.TestPackAndDataSetName;
+import com.regnosys.testing.transform.TransformTestExtension;
 import com.regnosys.testing.transform.TransformTestResult;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
@@ -47,11 +49,11 @@ import static com.regnosys.testing.reports.ReportExpectationUtil.writeExpectatio
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ReportTestExtension<T extends RosettaModelObject> implements BeforeAllCallback, AfterAllCallback {
+public class ReportTestExtension<T extends RosettaModelObject> extends TransformTestExtension<T> implements BeforeAllCallback, AfterAllCallback {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportTestExtension.class);
-    private final Module runtimeModule;
-    private final Class<T> inputType;
+    private Module runtimeModule;
+    private Class<T> inputType;
     private Path rootExpectationsPath;
     private String testPackFileName;
     @Inject
@@ -61,33 +63,13 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
     private Multimap<TestPackAndDataSetName, TransformTestResult> actualExpectation;
 
     public ReportTestExtension(Module runtimeModule, Class<T> inputType) {
-        this.runtimeModule = runtimeModule;
-        this.inputType = inputType;
+        super(runtimeModule, inputType);
     }
 
-    private static URL getInputFileUrl(String inputFile) {
-        try {
-            return Resources.getResource(inputFile);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Failed to load input file " + inputFile);
-            return null;
-        }
-    }
-
-    public ReportTestExtension<T> withRootExpectationsPath(Path rootExpectationsPath) {
-        this.rootExpectationsPath = rootExpectationsPath;
-        return this;
-    }
-
-    public ReportTestExtension<T> withTestPackFileName(String testPackFileName) {
-        this.testPackFileName = testPackFileName;
-        return this;
-    }
 
     @BeforeAll
     public void beforeAll(ExtensionContext context) {
-        Guice.createInjector(runtimeModule).injectMembers(this);
-        actualExpectation = ArrayListMultimap.create();
+        super.beforeAll(context);
     }
 
     public <In extends RosettaModelObject, Out extends RosettaModelObject> void runReportAndAssertExpected(
@@ -176,8 +158,13 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         return (T) builder.build();
     }
 
+    @Override
+    protected void writeExpectations(Multimap<TestPackAndDataSetName, TransformTestResult> actualExpectation) throws Exception {
+        ReportExpectationUtil.writeExpectations(actualExpectation);
+    }
+
     @AfterAll
-    public void afterAll(ExtensionContext context) throws IOException {
+    public void afterAll(ExtensionContext context) throws Exception {
         writeExpectations(actualExpectation);
     }
 
@@ -215,17 +202,12 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
                 .filter(Objects::nonNull);
     }
 
-    private Path generateRelativeExpectationFilePath(Path outputPath, URL expectationUrl) {
+    private static URL getInputFileUrl(String inputFile) {
         try {
-            Path path = Path.of(expectationUrl.toURI());
-            String relativePath = path.toString().replaceAll("^.*?(\\Q" + outputPath + "\\E.*)", "$1");
-            return Path.of(relativePath);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            return Resources.getResource(inputFile);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Failed to load input file " + inputFile);
+            return null;
         }
-    }
-
-    public Module getRuntimeModule() {
-        return runtimeModule;
     }
 }
