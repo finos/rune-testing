@@ -139,7 +139,6 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         return testPacksURLs.stream().flatMap(testPacksUrl -> {
             TestPackModel testPackModel = TestingExpectationUtil.readFile(testPacksUrl, mapper, TestPackModel.class);
             return testPackModel.getSamples().stream().map(sampleModel -> {
-                Path sampleFilePath = generateRelativeExpectationFilePath(outputPath, testPacksUrl);
 
                 String inputFile = sampleModel.getInputPath();
                 URL inputFileUrl = getInputFileUrl(inputFile);
@@ -149,7 +148,6 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
                 }
 
                 IN input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
-                String name = pipelineModel.getTransform().getFunction();
 
                 return Arguments.of(
                         pipelineModel,
