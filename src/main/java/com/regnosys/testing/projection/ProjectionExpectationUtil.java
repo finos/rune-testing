@@ -40,7 +40,7 @@ public class ProjectionExpectationUtil {
                                     x.getSampleModel().getOutputTabulatedPath(),
                                     new TestPackModel.SampleModel.Assertions(
                                             x.getModelValidationFailures().getActual(),
-                                            null,
+                                            x.getSchemaValidationFailure().getActual(),
                                             x.getRuntimeError().getActual()
                                     )
                             )

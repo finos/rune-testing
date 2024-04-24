@@ -155,10 +155,9 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
 
                 return Arguments.of(
                         pipelineModel,
-                        String.format("%s | %s", sampleModel.getName(), Paths.get(inputFile).getFileName()),
-                        name,
-                        sampleFilePath,
-                        sampleModel.getName(),
+                        testPackModel.getId(),
+                        testPackModel.getPipelineId(),
+                        testPackModel.getName(),
                         input,
                         sampleModel);
             });
@@ -185,7 +184,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
     }
 
 
-    public void runProjectionAndAssert(String projectName,
+    public void runProjectionAndAssert(String testPackId,
                                          String pipelineId,
                                          String dataSetName,
                                          TestPackModel.SampleModel sampleModel,
@@ -195,7 +194,7 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
 
         TransformTestResult result = runProjection(sampleModel, functionExecutionCallback, input, tabulator);
 
-        actualExpectation.put(new TestPackAndDataSetName(projectName, dataSetName, pipelineId), result);
+        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipelineId, dataSetName), result);
 
         ExpectedAndActual<String> outputXml = result.getReport();
         assertEquals(outputXml.getExpected(), outputXml.getActual());
