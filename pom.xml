@@ -12,10 +12,10 @@
 
     <name>rosetta-testing</name>
 
-    <groupId>com.regnosys</groupId>
+    <groupId>com.regnosys.rosetta</groupId>
     <artifactId>rosetta-testing</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.0.master</version>
+    <version>0.0.0.master-SNAPSHOT</version>
     <url>https://github.com/REGnosys/rosetta-testing</url>
 
     <scm>
