@@ -41,19 +41,32 @@ public class TestPackConfigWriter {
         SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
 
         try {
+            TestPackModel sortedTestPackModel = sortSamples(testPackModel);
             Path fullPath = resourcesPath.resolve(path);
             Files.createDirectories(fullPath.getParent());
             try (BufferedWriter writer = Files.newBufferedWriter(fullPath)) {
                 writer.write(
                         writeMapper.writer(filterProvider)
                                 .withDefaultPrettyPrinter()
-                                .writeValueAsString(testPackModel)
+                                .writeValueAsString(sortedTestPackModel)
                 );
                 LOGGER.info("Writing descriptor file: {}", path);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private TestPackModel sortSamples(TestPackModel testPackModel) {
+        List<SampleModel> sampleModels = testPackModel.getSamples()
+                .stream()
+                .sorted(Comparator.comparing(SampleModel::getId))
+                .collect(Collectors.toList());
+
+        return new TestPackModel(testPackModel.getId(),
+                testPackModel.getPipelineId(),
+                testPackModel.getName(),
+                sampleModels);
     }
 
     private List<TestPackModel> readTestPackModelFile(Path file) {
