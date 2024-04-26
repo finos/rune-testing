@@ -53,7 +53,7 @@ steps:
     commands:
       - bash -c "${{GPG_IMPORT_COMMAND}}"
       - mvn "${{MVN_BUILD_FLAGS}}" versions:set -DnewVersion="${{RELEASE_NAME}}" -DallowSnapshots=true
-      - mvn "${{MVN_DEPLOY_FLAGS}}" clean deploy -P "${{MAVEN_BUILD_PROFILES}}"
+      - mvn -s settings.xml clean deploy "${{MVN_DEPLOY_FLAGS}}" -P "${{MAVEN_BUILD_PROFILES}}"
 
   FailPipeline:
     title: Fail pipeline if the Maven build failed
