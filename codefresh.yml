@@ -13,13 +13,35 @@ steps:
     revision: "${{CF_REVISION}}"
 
   SetProperties:
-    title: Setup build
+      title: Setup build
+      stage: 'setup'
+      image: alpine/git
+      commands:
+        - cf_export CICD_REPO="${{CF_VOLUME_PATH}}/m2_repository"
+        - cf_export GPG_IMPORT_COMMAND="cat <(echo -e '${{GPG_PRIVATE_KEY}}') | gpg --batch --import"
+        - cf_export MAVEN_BUILD_PROFILES="gpg"
+
+  TagReleaseName:
+    title: Setup RELEASE_NAME variable with tag
     stage: 'setup'
     image: alpine/git
+    when:
+      condition:
+        all:
+          releaseNameNotDefined: "${{TAG_REPO}} == true"
     commands:
-      - cf_export CICD_REPO="${{CF_VOLUME_PATH}}/m2_repository"
-      - cf_export GPG_IMPORT_COMMAND="cat <(echo -e '${{GPG_PRIVATE_KEY}}') | gpg --batch --import"
-      - cf_export MAVEN_BUILD_PROFILES="gpg"
+      - cf_export RELEASE_NAME=${{TAG_NAME}}
+
+  BranchReleaseName:
+    title: Setup RELEASE_NAME variable with branch name
+    stage: 'setup'
+    image: alpine/git
+    when:
+      condition:
+        all:
+          releaseNameNotDefined: "${{TAG_REPO}} == false"
+    commands:
+      - cf_export RELEASE_NAME=${{GLOBAL_RELEASE_VERSION}}.${{CF_BRANCH_TAG_NORMALIZED}}-SNAPSHOT
 
   ReleaseProperties:
     title: Setup release build
@@ -30,10 +52,10 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == true"
     commands:
-      - cf_export RELEASE_NAME=${{TAG_NAME}}
+      - cf_export MVN_SET_VERSION="versions:set-property -DnewVersion=${{RELEASE_NAME}}"
 
-  SnapshotProperties:
-    title: Setup snapshot build
+  BranchProperties:
+    title: Setup branch build
     stage: 'setup'
     image: alpine/git
     when:
@@ -41,17 +63,18 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == false"
     commands:
-      - cf_export RELEASE_NAME=${{GLOBAL_RELEASE_VERSION}}.${{CF_BRANCH_TAG_NORMALIZED}}-SNAPSHOT
+      - cf_export MVN_SET_VERSION="versions:update-property -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
 
-  Build:
-    title: Maven build
+  BuildTesting:
+    title: Maven build rosetta-testing
     stage: 'build'
     fail_fast: false
     image: maven:3.8.5-openjdk-17
     working_directory: ./
     commands:
       - bash -c "${{GPG_IMPORT_COMMAND}}"
-      - mvn versions:set -DnewVersion="${{RELEASE_NAME}}" -DallowSnapshots=true
+      - mvn -s settings.xml versions:set -DnewVersion=${{RELEASE_NAME}}
+      - mvn -s settings.xml ${{MVN_SET_VERSION}} -Dproperty=rosetta.common.version
       - mvn -s settings.xml -U -B clean deploy -Denv.CI_DEPLOY_USERNAME="${{CI_DEPLOY_USERNAME}}" -Denv.CI_DEPLOY_PASSWORD="${{CI_DEPLOY_PASSWORD}}" -Denv.GPG_KEYNAME="${{GPG_KEYNAME}}" -Denv.GPG_PASSPHRASE="${{GPG_PASSPHRASE}}" -Denv.CICD_REPO="${{CICD_REPO}}" -P "${{MAVEN_BUILD_PROFILES}}"
 
   FailPipeline:
