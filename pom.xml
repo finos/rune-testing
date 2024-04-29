@@ -4,12 +4,70 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.finos</groupId>
+        <artifactId>finos</artifactId>
+        <version>5</version>
+    </parent>
+
     <name>rosetta-testing</name>
 
-    <groupId>com.regnosys</groupId>
+    <groupId>com.regnosys.rosetta</groupId>
     <artifactId>rosetta-testing</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.0.master</version>
+    <version>0.0.0.master-SNAPSHOT</version>
+    <url>https://github.com/REGnosys/rosetta-testing</url>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/REGnosys/rosetta-testing</developerConnection>
+        <connection>scm:git:git://github.com/REGnosys/rosetta-testing.git</connection>
+        <tag>HEAD</tag>
+        <url>https://github.com/REGnosys/rosetta-testing</url>
+    </scm>
+
+    <description>Rosetta Testing is a java library that is utilised by Rosetta Code Generators and models expressed in the Rosetta DSL.</description>
+
+    <organization>
+        <name>REGnosys</name>
+        <url>https://regnosys.com/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>minesh-s-patel</id>
+            <name>Minesh Patel</name>
+            <email>infra@regnosys.com</email>
+            <url>http://github.com/minesh-s-patel</url>
+            <organization>REGnosys</organization>
+            <organizationUrl>https://regnosys.com</organizationUrl>
+            <timezone>+1</timezone>
+            <roles>
+                <role>Maintainer</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>hugohills-regnosys</id>
+            <name>Hugo Hills</name>
+            <email>infra@regnosys.com</email>
+            <url>http://github.com/hugohills-regnosys</url>
+            <organization>REGnosys</organization>
+            <organizationUrl>https://regnosys.com</organizationUrl>
+            <timezone>+1</timezone>
+            <roles>
+                <role>Maintainer</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,7 +75,7 @@
         <maven.compiler.release>11</maven.compiler.release>
 
         <rosetta.dsl.version>9.8.0</rosetta.dsl.version>
-        <rosetta.common.version>0.0.0.master</rosetta.common.version>
+        <rosetta.common.version>0.0.0.master-SNAPSHOT</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
         <unruly.version>1.6</unruly.version>
@@ -25,6 +83,11 @@
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
         <guava.version>32.0.1-jre</guava.version>
+
+        <!-- Release -->
+        <gpg.keyname>configured-by-release-profile</gpg.keyname>
+        <repoServerHost>s01.oss.sonatype.org</repoServerHost>
+        <stagingTimeoutInMinutes>10</stagingTimeoutInMinutes>
 
         <!-- test -->
         <junit.version>5.9.1</junit.version>
@@ -41,8 +104,82 @@
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
     </properties>
-
+    <profiles>
+        <profile>
+            <id>gpg</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>${maven-deploy-plugin.version}</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>${maven-jar-plugin.version}</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <keyname>${gpg.keyname}</keyname>
+                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${nexus-staging-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <nexusUrl>https://${repoServerHost}</nexusUrl>
+                            <serverId>ossrh-distro</serverId>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <stagingProgressTimeoutMinutes>${stagingTimeoutInMinutes}</stagingProgressTimeoutMinutes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven-javadoc-plugin.version}</version>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <dependencyManagement>
         <dependencies>
             <dependency>
