@@ -69,7 +69,7 @@ steps:
     title: Maven build rosetta-testing
     stage: 'build'
     fail_fast: false
-    image: regnosys-docker-registry.jfrog.io/regnosys/rosetta-products-deps:java-17
+    image: maven:3.8.5-openjdk-17
     working_directory: ./
     commands:
       - bash -c "${{GPG_IMPORT_COMMAND}}"
