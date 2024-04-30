@@ -12,7 +12,7 @@
 
     <name>rosetta-testing</name>
 
-    <groupId>com.regnosys.rosetta</groupId>
+    <groupId>com.regnosys</groupId>
     <artifactId>rosetta-testing</artifactId>
     <packaging>jar</packaging>
     <version>0.0.0.master-SNAPSHOT</version>
