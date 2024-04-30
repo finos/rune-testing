@@ -46,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCallback {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension2.class);
+    public static final ObjectMapper OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final Module runtimeModule;
     private final Path resourcePath;
     private final Class<T> funcType;
@@ -102,12 +103,10 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
         Path reportExpectationPath = Paths.get(sampleModel.getOutputPath()); // TODO remove
 //        Path keyValueExpectationPath = Paths.get(sampleModel.getOutputTabulatedPath());
 
-        ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
-
         String inputFile = sampleModel.getInputPath();
         URL inputFileUrl = getInputFileUrl(inputFile);
         Class<IN> inputType = getInputType();
-        IN input = TestingExpectationUtil.readFile(inputFileUrl, mapper, inputType);
+        IN input = TestingExpectationUtil.readFile(inputFileUrl, OBJECT_MAPPER, inputType);
 
         try {
             // report
@@ -185,10 +184,9 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
 
     // TODO move to util class?
     private static PipelineModel getPipelineModel(String functionName, ClassLoader classLoader, Path resourcePath) {
-        ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         List<URL> pipelineFiles = TestingExpectationUtil.readExpectationsFromPath(resourcePath, classLoader, "pipeline-.*\\.json");
         return pipelineFiles.stream()
-                .map(url -> TestingExpectationUtil.readFile(url, mapper, PipelineModel.class))
+                .map(url -> TestingExpectationUtil.readFile(url, OBJECT_MAPPER, PipelineModel.class))
                 .filter(p -> p.getTransform().getFunction().equals(functionName))
                 .findFirst()
                 .orElseThrow();
@@ -197,9 +195,8 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
     // TODO move to util class?
     private static List<TestPackModel> getTestPackModels(String pipelineId, ClassLoader classLoader, Path resourcePath) {
         List<URL> testPackUrls = TestingExpectationUtil.readExpectationsFromPath(resourcePath, classLoader, "test-pack-.*\\.json");
-        ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return testPackUrls.stream()
-                .map(url -> TestingExpectationUtil.readFile(url, mapper, TestPackModel.class))
+                .map(url -> TestingExpectationUtil.readFile(url, OBJECT_MAPPER, TestPackModel.class))
                 .filter(testPackModel -> testPackModel.getPipelineId() != null)
                 .filter(testPackModel -> testPackModel.getPipelineId().equals(pipelineId))
                 .collect(Collectors.toList());
