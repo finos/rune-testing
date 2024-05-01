@@ -19,8 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SchemeImporterTestHelper {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SchemeImporterTestHelper.class);
 
     @Inject
@@ -28,10 +30,15 @@ public class SchemeImporterTestHelper {
     @Inject
     private ModelLoader modelLoader;
 
-
     public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput) throws IOException {
+        checkEnumsAreValid(rosettaPathRoot, null, body, codingScheme, schemeEnumReader, writeTestOutput);
+    }
+
+    public void checkEnumsAreValid(String rosettaPathRoot, String namespaceIncludeRegex, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput) throws IOException {
         URL[] rosettaPaths = getRosettaPaths(rosettaPathRoot);
-        List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths);
+        List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths).stream()
+                .filter(model -> filterNamespace(model, namespaceIncludeRegex))
+                .collect(Collectors.toList());
         Map<String, String> generatedFromScheme =
                 schemeImporter.generateRosettaEnums(
                         models,
@@ -49,7 +56,7 @@ public class SchemeImporterTestHelper {
         }
     }
 
-    private static URL[] getRosettaPaths(String rosettaPathRoot) {
+    protected URL[] getRosettaPaths(String rosettaPathRoot) {
         return ClassPathUtils.findPathsFromClassPath(
                         List.of(rosettaPathRoot),
                         ".*\\.rosetta",
@@ -60,7 +67,13 @@ public class SchemeImporterTestHelper {
                 .toArray(URL[]::new);
     }
 
-    private String getContents(URL[] rosettaPaths, String fileName) throws IOException {
+    protected boolean filterNamespace(RosettaModel model, String namespaceIncludeRegex) {
+        return Optional.ofNullable(namespaceIncludeRegex)
+                .map(regex -> model.getName().matches(regex))
+                .orElse(true);
+    }
+
+    protected String getContents(URL[] rosettaPaths, String fileName) throws IOException {
         URL rosettaPath = Arrays.stream(rosettaPaths)
                 .filter(x -> getFileName(x.getFile()).equals(fileName))
                 .findFirst().orElseThrow();
@@ -68,11 +81,11 @@ public class SchemeImporterTestHelper {
         return RosettaResourceWriter.rewriteProjectVersion(contents);
     }
 
-    private String getFileName(String path) {
-        return path.substring(path.lastIndexOf('/')+1);
+    protected String getFileName(String path) {
+        return path.substring(path.lastIndexOf('/') + 1);
     }
 
-    private void writeTestOutput(Map<String, String> rosettaExpected) throws IOException {
+    protected void writeTestOutput(Map<String, String> rosettaExpected) throws IOException {
         // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
         // TEST_WRITE_BASE_PATH=/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/rosetta/
         Path basePath = Optional.ofNullable(System.getenv("TEST_WRITE_BASE_PATH"))
@@ -86,6 +99,4 @@ public class SchemeImporterTestHelper {
             LOGGER.info("Wrote test output to {}", outputPath.toAbsolutePath());
         }
     }
-
-
 }
