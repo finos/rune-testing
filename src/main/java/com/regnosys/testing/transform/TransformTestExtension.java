@@ -1,6 +1,7 @@
 package com.regnosys.testing.transform;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
@@ -10,6 +11,7 @@ import com.google.inject.Module;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
+import com.regnosys.rosetta.common.serialisation.RosettaObjectMapperCreator;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
@@ -27,10 +29,18 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -39,13 +49,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.regnosys.testing.TestingExpectationUtil.getJsonExpectedAndActual;
+import static com.regnosys.testing.TestingExpectationUtil.getResultExpectedAndActual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCallback {
+public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCallback {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension2.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
     public static final ObjectMapper OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final Module runtimeModule;
     private final Path resourcePath;
@@ -57,9 +67,11 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
     private Multimap<String, TransformTestResult> actualExpectation;
     private PipelineModel pipelineModel;
     private Injector injector;
+    private ObjectWriter rosettaXMLObjectWriter;
+    private Validator xsdValidator;
 
 
-    public TransformTestExtension2(TransformType transformType, Module runtimeModule, Class<T> funcType) {
+    public TransformTestExtension(TransformType transformType, Module runtimeModule, Class<T> funcType) {
         this.runtimeModule = runtimeModule;
         this.resourcePath = Path.of(transformType.getResourcePath());
         this.funcType = funcType;
@@ -78,7 +90,22 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
     public void afterAll(ExtensionContext context) throws Exception {
         writeExpectations(actualExpectation);
     }
-    
+
+    public TransformTestExtension<T> withWriterAndValidator(URL xmlConfig, URL xsdSchema) {
+        try {
+            this.rosettaXMLObjectWriter = RosettaObjectMapperCreator.forXML(xmlConfig.openStream()).create().writerWithDefaultPrettyPrinter();
+            SchemaFactory schemaFactory = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
+            schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
+            Schema schema = schemaFactory.newSchema(xsdSchema);
+            this.xsdValidator = schema.newValidator();
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+        return this;
+    }
+
     public <IN extends RosettaModelObject, OUT extends RosettaModelObject> void runTransformAndAssert(
             String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) throws IOException {
         TransformTestResult result = getResult(sampleModel, transformFunc);
@@ -113,7 +140,7 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
             IN resolvedInput = resolveReferences(input);
             OUT reportOutput = function.apply(resolvedInput);
 
-            ExpectedAndActual<String> report = getJsonExpectedAndActual(reportExpectationPath, reportOutput);
+            ExpectedAndActual<String> report = getResultExpectedAndActual(reportExpectationPath, pipelineModel, reportOutput, rosettaXMLObjectWriter);
 
             assertNotNull(reportOutput);
 
@@ -123,17 +150,23 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
 
             int actualValidationFailures = validationReport.validationFailures().size();
 
+
             ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
             ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
-            TransformTestResult transformTestResult = new TransformTestResult(sampleModel, null, report, validationFailures, null, error);
 
-            return transformTestResult;
+            if (pipelineModel.getTransform().getType().equals(TransformType.PROJECTION)) {
+                boolean actualValidXml = isValidXml(report.getActual());
+                ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), actualValidXml);
+                return new TransformTestResult(sampleModel, null, report, validationFailures, validXml, error);
+            }
+
+            return new TransformTestResult(sampleModel, null, report, validationFailures, null, error);
 
         } catch (Exception e) {
 
             LOGGER.error("Exception occurred running projection", e);
 //            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, Collections.emptyList());
-            ExpectedAndActual<String> outputXml = getJsonExpectedAndActual(reportExpectationPath, null);
+            ExpectedAndActual<String> outputXml = getResultExpectedAndActual(reportExpectationPath, pipelineModel, null, rosettaXMLObjectWriter);
             ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
             ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
             return new TransformTestResult(sampleModel, null, outputXml, validationFailures, null, error);
@@ -147,11 +180,12 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
         return testPackModels.stream()
                 .flatMap(testPackModel -> testPackModel.getSamples().stream()
                         .map(sampleModel ->
-                            Arguments.of(
-                                    String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
-                                    testPackModel.getId(),
-                                    sampleModel,
-                                    func)))
+                                Arguments.of(
+                                        pipelineModel,
+                                        String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
+                                        testPackModel.getId(),
+                                        sampleModel,
+                                        func)))
                 .filter(Objects::nonNull);
     }
 
@@ -180,6 +214,7 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
 
     protected void writeExpectations(Multimap<String, TransformTestResult> actualExpectation) throws Exception {
         //ReportExpectationUtil.writeExpectations(actualExpectation);
+
     }
 
     // TODO move to util class?
@@ -200,5 +235,17 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
                 .filter(testPackModel -> testPackModel.getPipelineId() != null)
                 .filter(testPackModel -> testPackModel.getPipelineId().equals(pipelineId))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isValidXml(String actualXml) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(actualXml.getBytes(StandardCharsets.UTF_8))) {
+            xsdValidator.validate(new StreamSource(inputStream));
+            return true;
+        } catch (SAXException e) {
+            LOGGER.error("Schema validation failed: {}", e.getMessage());
+            return false;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

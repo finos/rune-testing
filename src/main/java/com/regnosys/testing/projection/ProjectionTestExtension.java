@@ -48,7 +48,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.regnosys.testing.TestingExpectationUtil.getJsonExpectedAndActual;
-import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
+import static com.regnosys.testing.TestingExpectationUtil.getXmlExpectedAndActual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -260,13 +260,5 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public ExpectedAndActual<String> getXmlExpectedAndActual(Path expectationPath, Object xmlResult) throws IOException {
-        String actualXML = xmlResult != null ?
-                rosettaXMLObjectWriter.writeValueAsString(xmlResult) :
-                "";
-        String expectedXML = readStringFromResources(expectationPath);
-        return new ExpectedAndActual<>(expectationPath, expectedXML, actualXML);
     }
 }
