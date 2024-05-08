@@ -18,7 +18,6 @@ import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.TestingExpectationUtil;
-import com.regnosys.testing.reports.ExpectedAndActual;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import org.junit.jupiter.api.AfterAll;
@@ -39,17 +38,18 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.regnosys.testing.TestingExpectationUtil.getResultExpectedAndActual;
+import static com.regnosys.testing.TestingExpectationUtil.ROSETTA_OBJECT_WRITER;
+import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -60,6 +60,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     private final Module runtimeModule;
     private final Path resourcePath;
     private final Class<T> funcType;
+    private Validator xsdValidator;
     @Inject
     private RosettaTypeValidator typeValidator;
     @Inject
@@ -67,8 +68,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     private Multimap<String, TransformTestResult> actualExpectation;
     private PipelineModel pipelineModel;
     private Injector injector;
-    private ObjectWriter rosettaXMLObjectWriter;
-    private Validator xsdValidator;
+    private ObjectWriter outputObjectWriter;
 
 
     public TransformTestExtension(TransformType transformType, Module runtimeModule, Class<T> funcType) {
@@ -77,13 +77,27 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.funcType = funcType;
     }
 
+    public TransformTestExtension<T> withSchemaValidation(URL xsdSchema) {
+        try {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
+            schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
+            Schema schema = schemaFactory.newSchema(xsdSchema);
+            this.xsdValidator = schema.newValidator();
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+        return this;
+    }
+
     @BeforeAll
     public void beforeAll(ExtensionContext context) {
-        injector = Guice.createInjector(runtimeModule);
-        injector.injectMembers(this);
+        this.injector = Guice.createInjector(runtimeModule);
+        this.injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        pipelineModel = getPipelineModel(funcType.getName(), classLoader, resourcePath);
-        actualExpectation = ArrayListMultimap.create();
+        this.pipelineModel = getPipelineModel(funcType.getName(), classLoader, resourcePath);
+        this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation());
+        this.actualExpectation = ArrayListMultimap.create();
     }
 
     @AfterAll
@@ -91,87 +105,59 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         writeExpectations(actualExpectation);
     }
 
-    public TransformTestExtension<T> withWriterAndValidator(URL xmlConfig, URL xsdSchema) {
-        try {
-            this.rosettaXMLObjectWriter = RosettaObjectMapperCreator.forXML(xmlConfig.openStream()).create().writerWithDefaultPrettyPrinter();
-            SchemaFactory schemaFactory = SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
-            schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
-            Schema schema = schemaFactory.newSchema(xsdSchema);
-            this.xsdValidator = schema.newValidator();
-        } catch (IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-        return this;
+    public <IN extends RosettaModelObject, OUT extends RosettaModelObject> void runTransformAndAssert(
+            String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) {
+
+        TransformTestResult result = getResult(sampleModel, transformFunc);
+
+        actualExpectation.put(testPackId, result);
+
+        Path outputPath = Path.of(sampleModel.getOutputPath());
+        String expectedOutput = readStringFromResources(outputPath);
+        String actualOutput = result.getOutput();
+        assertEquals(expectedOutput, actualOutput);
+
+        TestPackModel.SampleModel.Assertions actualAssertions = result.getSampleModel().getAssertions();
+        TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
+        assertEquals(expectedAssertions, actualAssertions);
     }
 
-//    public <IN extends RosettaModelObject, OUT extends RosettaModelObject> void runTransformAndAssert(
-//            String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) throws IOException {
-//        TransformTestResult result = getResult(sampleModel, transformFunc);
-//
-//        actualExpectation.put(testPackId, result);
-//
-//        ExpectedAndActual<String> outputXml = result.getReport();
-//        assertEquals(outputXml.getExpected(), outputXml.getActual());
-//
-////        ExpectedAndActual<String> keyValue = result.getKeyValue();
-////        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-//
-//        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
-//        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
-//
-//        ExpectedAndActual<Boolean> error = result.getRuntimeError();
-//        assertEquals(error.getExpected(), error.getActual(), "Error");
-//    }
+    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) {
+        String inputFile = sampleModel.getInputPath();
+        URL inputFileUrl = getInputFileUrl(inputFile);
+        Class<IN> inputType = getInputType();
+        IN input = TestingExpectationUtil.readFile(inputFileUrl, OBJECT_MAPPER, inputType);
 
-//    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) throws IOException {
-//
-//        Path reportExpectationPath = Paths.get(sampleModel.getOutputPath()); // TODO remove
-////        Path keyValueExpectationPath = Paths.get(sampleModel.getOutputTabulatedPath());
-//
-//        String inputFile = sampleModel.getInputPath();
-//        URL inputFileUrl = getInputFileUrl(inputFile);
-//        Class<IN> inputType = getInputType();
-//        IN input = TestingExpectationUtil.readFile(inputFileUrl, OBJECT_MAPPER, inputType);
-//
-//        try {
-//            // report
-//            IN resolvedInput = resolveReferences(input);
-//            OUT reportOutput = function.apply(resolvedInput);
-//
-//            ExpectedAndActual<String> report = getResultExpectedAndActual(reportExpectationPath, pipelineModel, reportOutput, rosettaXMLObjectWriter);
-//
-//            assertNotNull(reportOutput);
-//
-//            // validation failures
-//            ValidationReport validationReport = typeValidator.runProcessStep(reportOutput.getType(), reportOutput);
-//            validationReport.logReport();
-//
-//            int actualValidationFailures = validationReport.validationFailures().size();
-//
-//
-//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
-//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
-//
-//            if (pipelineModel.getTransform().getType().equals(TransformType.PROJECTION)) {
-//                boolean actualValidXml = isValidXml(report.getActual());
-//                ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), actualValidXml);
-//                return new TransformTestResult(sampleModel, null, report, validationFailures, validXml, error);
-//            }
-//
-//            return new TransformTestResult(sampleModel, null, report, validationFailures, null, error);
-//
-//        } catch (Exception e) {
-//
-//            LOGGER.error("Exception occurred running projection", e);
-////            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, Collections.emptyList());
-//            ExpectedAndActual<String> outputXml = getResultExpectedAndActual(reportExpectationPath, pipelineModel, null, rosettaXMLObjectWriter);
-//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
-//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
-//            return new TransformTestResult(sampleModel, null, outputXml, validationFailures, null, error);
-//        }
-//    }
+        try {
+            IN resolvedInput = resolveReferences(input);
+            OUT output = function.apply(resolvedInput);
+
+            assertNotNull(output);
+
+            // serialised output
+            String serialisedOutput = outputObjectWriter.writeValueAsString(output);
+
+            // validation failures
+            ValidationReport validationReport = typeValidator.runProcessStep(output.getType(), output);
+            validationReport.logReport();
+            int actualValidationFailures = validationReport.validationFailures().size();
+
+            // schema validation
+            Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
+
+            TestPackModel.SampleModel.Assertions assertions =
+                    new TestPackModel.SampleModel.Assertions(actualValidationFailures, schemaValidationFailure, false);
+            return new TransformTestResult(serialisedOutput, updateSampleModel(sampleModel, assertions));
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred running projection", e);
+            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, true);
+            return new TransformTestResult(null, updateSampleModel(sampleModel, assertions));
+        }
+    }
+
+    private TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
+        return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), sampleModel.getOutputTabulatedPath(), assertions);
+    }
 
     public Stream<Arguments> getArguments() {
         T func = injector.getInstance(funcType);
@@ -181,7 +167,6 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                 .flatMap(testPackModel -> testPackModel.getSamples().stream()
                         .map(sampleModel ->
                                 Arguments.of(
-                                        pipelineModel,
                                         String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
                                         testPackModel.getId(),
                                         sampleModel,
@@ -213,13 +198,27 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     protected void writeExpectations(Multimap<String, TransformTestResult> actualExpectation) throws Exception {
-        //ReportExpectationUtil.writeExpectations(actualExpectation);
+        TransformExpectationUtil.writeExpectations(actualExpectation, resourcePath);
+    }
 
+    private Boolean isSchemaValidationFailure(String actualXml) {
+        if (xsdValidator == null) {
+            return null;
+        }
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(actualXml.getBytes(StandardCharsets.UTF_8))) {
+            xsdValidator.validate(new StreamSource(inputStream));
+            return true;
+        } catch (SAXException e) {
+            LOGGER.error("Schema validation failed: {}", e.getMessage());
+            return false;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     // TODO move to util class?
     private static PipelineModel getPipelineModel(String functionName, ClassLoader classLoader, Path resourcePath) {
-        List<URL> pipelineFiles = TestingExpectationUtil.readExpectationsFromPath(resourcePath, classLoader, "pipeline-.*\\.json");
+        List<URL> pipelineFiles = TestingExpectationUtil.findPaths(resourcePath, classLoader, "pipeline-.*\\.json");
         return pipelineFiles.stream()
                 .map(url -> TestingExpectationUtil.readFile(url, OBJECT_MAPPER, PipelineModel.class))
                 .filter(p -> p.getTransform().getFunction().equals(functionName))
@@ -229,7 +228,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     // TODO move to util class?
     private static List<TestPackModel> getTestPackModels(String pipelineId, ClassLoader classLoader, Path resourcePath) {
-        List<URL> testPackUrls = TestingExpectationUtil.readExpectationsFromPath(resourcePath, classLoader, "test-pack-.*\\.json");
+        List<URL> testPackUrls = TestingExpectationUtil.findPaths(resourcePath, classLoader, "test-pack-.*\\.json");
         return testPackUrls.stream()
                 .map(url -> TestingExpectationUtil.readFile(url, OBJECT_MAPPER, TestPackModel.class))
                 .filter(testPackModel -> testPackModel.getPipelineId() != null)
@@ -237,15 +236,17 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                 .collect(Collectors.toList());
     }
 
-    private boolean isValidXml(String actualXml) {
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(actualXml.getBytes(StandardCharsets.UTF_8))) {
-            xsdValidator.validate(new StreamSource(inputStream));
-            return true;
-        } catch (SAXException e) {
-            LOGGER.error("Schema validation failed: {}", e.getMessage());
-            return false;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    // TODO move to util class?
+    private static ObjectWriter getObjectWriter(PipelineModel.Serialisation outputSerialisation) {
+        if (outputSerialisation != null && outputSerialisation.getFormat() == PipelineModel.Serialisation.Format.XML) {
+            URL xmlConfigPath = Resources.getResource(outputSerialisation.getConfigPath());
+            try {
+                return RosettaObjectMapperCreator.forXML(xmlConfigPath.openStream()).create().writerWithDefaultPrettyPrinter();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        } else {
+            return ROSETTA_OBJECT_WRITER;
         }
     }
 }

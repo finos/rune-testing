@@ -1,17 +1,14 @@
-package com.regnosys.testing.reports;
+package com.regnosys.testing.transform;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.Multimap;
-import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TestPackModel.SampleModel;
 import com.regnosys.testing.TestingExpectationUtil;
-import com.regnosys.testing.transform.TestPackAndDataSetName;
-import com.regnosys.testing.transform.TransformTestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +20,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReportExpectationUtil {
+public class TransformExpectationUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportExpectationUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransformExpectationUtil.class);
 
     private final static ObjectReader ROSETTA_OBJECT_READER =
             RosettaObjectMapper
@@ -40,7 +37,7 @@ public class ReportExpectationUtil {
         }
         for (var entry : actualExpectation.asMap().entrySet()) {
             String testPackId = entry.getKey();
-            TestPackModel model = getTestPackModel(testPackId, ReportExpectationUtil.class.getClassLoader(), testPackConfigPath);
+            TestPackModel model = getTestPackModel(testPackId, TransformExpectationUtil.class.getClassLoader(), testPackConfigPath);
 
             Collection<TransformTestResult> transformTestResults = entry.getValue();
             List<SampleModel> sampleModelList = transformTestResults.stream()
@@ -67,7 +64,7 @@ public class ReportExpectationUtil {
     }
 
     private static TestPackModel getTestPackModel(String testPackId, ClassLoader classLoader, Path resourcePath) {
-        List<URL> testPackUrls = TestingExpectationUtil.readExpectationsFromPath(resourcePath, classLoader, "test-pack-.*\\.json");
+        List<URL> testPackUrls = TestingExpectationUtil.findPaths(resourcePath, classLoader, "test-pack-.*\\.json");
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return testPackUrls.stream()
                 .map(url -> TestingExpectationUtil.readFile(url, mapper, TestPackModel.class))

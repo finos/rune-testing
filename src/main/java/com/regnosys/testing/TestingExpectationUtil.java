@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ImmutableList;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
-import com.regnosys.rosetta.common.serialisation.RosettaObjectMapperCreator;
-import com.regnosys.rosetta.common.transform.PipelineModel;
-import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.testing.reports.ExpectedAndActual;
@@ -42,10 +39,10 @@ public class TestingExpectationUtil {
     public static Optional<Path> TEST_WRITE_BASE_PATH = Optional.ofNullable(System.getenv("TEST_WRITE_BASE_PATH"))
             .map(Paths::get);
 
-    public static List<URL> readExpectationsFromPath(Path basePath, ClassLoader classLoader, String expectationsFileName) {
+    public static List<URL> findPaths(Path basePath, ClassLoader classLoader, String fileName) {
         List<URL> expectations = ClassPathUtils
                 .findPathsFromClassPath(List.of(UrlUtils.toPortableString(basePath)),
-                        expectationsFileName,
+                        fileName,
                         Optional.empty(),
                         classLoader)
                 .stream()
@@ -53,36 +50,6 @@ public class TestingExpectationUtil {
                 .collect(Collectors.toList());
         return ImmutableList.copyOf(expectations);
     }
-
-    public static List<URL> readTestPacksFromPath(Path basePath, ClassLoader classLoader, String regBody) {
-        return ClassPathUtils.findPathsFromClassPath(
-                        List.of(UrlUtils.toPortableString(basePath)),
-                        getProjectionTestPackName(regBody),
-                        Optional.empty(),
-                        classLoader
-                ).stream()
-                .map(UrlUtils::toUrl)
-                .collect(Collectors.toList());
-    }
-
-    public static String getProjectionTestPackName(String regBody) {
-        return "test-pack-projection-" + regBody + "-report-to-iso20022.*\\.json";
-    }
-
-    public static URL readPipelineFromPath(Path basePath, ClassLoader classLoader, String regBody) {
-        return ClassPathUtils.findPathsFromClassPath(
-                        List.of(UrlUtils.toPortableString(basePath)),
-                        getProjectionPipelineName(regBody),
-                        Optional.empty(),
-                        classLoader
-                ).stream()
-                .map(UrlUtils::toUrl).findFirst().get();
-    }
-
-    public static String getProjectionPipelineName(String regBody) {
-        return "pipeline-projection-" + regBody + "-report-to-iso20022.json";
-    }
-
 
     public static <T> T readFile(URL u, ObjectMapper mapper, Class<T> clazz) {
         try {
@@ -112,44 +79,6 @@ public class TestingExpectationUtil {
         String actualJson = ROSETTA_OBJECT_WRITER.writeValueAsString(jsonResult);
         String expectedJson = readStringFromResources(expectationPath);
         return new ExpectedAndActual<>(expectationPath, expectedJson, actualJson);
-    }
-
-    public static ExpectedAndActual<String> getXmlExpectedAndActual(Path expectationPath, Object xmlResult) throws IOException {
-        String actualXML = xmlResult != null ?
-                ROSETTA_OBJECT_WRITER.writeValueAsString(xmlResult) :
-                "";
-        String expectedXML = readStringFromResources(expectationPath);
-        return new ExpectedAndActual<>(expectationPath, expectedXML, actualXML);
-    }
-
-    //This handles both JSON and XMl outputs
-    public static ExpectedAndActual<String> getResultExpectedAndActual(Path expectationPath, PipelineModel pipelineModel, Object result, ObjectWriter objectWriter) throws IOException {
-        ObjectWriter rosettaObjectWriter = getObjectWriter(pipelineModel, objectWriter); //This returns the correct objectWriter
-        String actualResult = result != null ? rosettaObjectWriter.writeValueAsString(result) :
-                "";
-        String expectedResult = readStringFromResources(expectationPath);
-        return new ExpectedAndActual<>(expectationPath, expectedResult, actualResult);
-    }
-
-    private static ObjectWriter getObjectWriter(PipelineModel pipelineModel, ObjectWriter objectWriter) throws IOException {
-        ObjectMapper mapper;
-        if (pipelineModel.getTransform().getType().equals(TransformType.PROJECTION)) {
-            //create a new object writer if the initialised one in TTM is null:
-            if (objectWriter == null && pipelineModel.getOutputSerialisation() != null) {
-                mapper = RosettaObjectMapperCreator.forXML().create();
-                if (pipelineModel.getOutputSerialisation().getConfigPath() != null) {
-                    String configPath = pipelineModel.getOutputSerialisation().getConfigPath();
-                    URL resource = ClassPathUtils.getResource(Path.of(configPath));
-                    mapper = RosettaObjectMapperCreator.forXML(resource.openStream()).create();
-                }
-            } else {
-                return objectWriter;
-            }
-        } else {
-            mapper = RosettaObjectMapperCreator.forJSON().create(); // we always create this for reports
-        }
-        return mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-                .writerWithDefaultPrettyPrinter();
     }
 
     public static void assertJsonEquals(String expectedJson, String resultJson) {
