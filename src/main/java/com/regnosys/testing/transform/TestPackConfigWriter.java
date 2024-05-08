@@ -27,6 +27,7 @@ public class TestPackConfigWriter {
     private final ObjectMapper writeMapper;
     private final RegReportPaths paths;
 
+    private final SimpleFilterProvider filterProvider;
     public TestPackConfigWriter(ObjectMapper writeMapper) {
         this(writeMapper, RegReportPaths.getDefault());
     }
@@ -34,21 +35,27 @@ public class TestPackConfigWriter {
     public TestPackConfigWriter(ObjectMapper writeMapper, RegReportPaths paths) {
         this.writeMapper = writeMapper;
         this.paths = paths;
+        filterProvider = FilterProvider.getExpectedTypeFilter();
+
     }
 
-    public void writeConfigFile(Path resourcesPath, Path configPath, TestPackModel testPackModel) {
-        Path path = generateTestPackModelFilePath(configPath, testPackModel.getId());
-        SimpleFilterProvider filterProvider = FilterProvider.getExpectedTypeFilter();
+    public void sortAndWriteConfigFile(Path resourcesPath, Path configPath, TestPackModel testPackModel) {
+        TestPackModel sortedTestPackModel = sortSamples(testPackModel);
+
+        writeConfigFile(resourcesPath, configPath, testPackModel.getId(), sortedTestPackModel);
+    }
+
+    public void writeConfigFile(Path resourcesPath, Path configPath, String id, Object object) {
+        Path path = generateTestPackModelFilePath(configPath, id);
 
         try {
-            TestPackModel sortedTestPackModel = sortSamples(testPackModel);
             Path fullPath = resourcesPath.resolve(path);
             Files.createDirectories(fullPath.getParent());
             try (BufferedWriter writer = Files.newBufferedWriter(fullPath)) {
                 writer.write(
                         writeMapper.writer(filterProvider)
                                 .withDefaultPrettyPrinter()
-                                .writeValueAsString(sortedTestPackModel)
+                                .writeValueAsString(object)
                 );
                 LOGGER.info("Writing descriptor file: {}", path);
             }
