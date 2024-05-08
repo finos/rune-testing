@@ -90,85 +90,85 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
         actualExpectation = ArrayListMultimap.create();
     }
 
-    public <In extends RosettaModelObject, Out extends RosettaModelObject> void runReportAndAssertExpected(
-            String testPackId,
-            String pipeLineId,
-            String datasetName,
-            TestPackModel.SampleModel sampleModel,
-            ReportFunction<In, Out> reportFunction,
-            Tabulator<Out> tabulator,
-            In input) throws IOException {
+//    public <In extends RosettaModelObject, Out extends RosettaModelObject> void runReportAndAssertExpected(
+//            String testPackId,
+//            String pipeLineId,
+//            String datasetName,
+//            TestPackModel.SampleModel sampleModel,
+//            ReportFunction<In, Out> reportFunction,
+//            Tabulator<Out> tabulator,
+//            In input) throws IOException {
+//
+//        TransformTestResult result = getReport(sampleModel, reportFunction, tabulator, input);
+//        if (result == null) return;
+//
+//        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipeLineId, datasetName), result);
+//
+//        ExpectedAndActual<String> outputXml = result.getReport();
+//        assertEquals(outputXml.getExpected(), outputXml.getActual());
+//
+//        ExpectedAndActual<String> keyValue = result.getKeyValue();
+//        assertEquals(keyValue.getExpected(), keyValue.getActual());
+//
+//        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
+//        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
+//
+//        ExpectedAndActual<Boolean> error = result.getRuntimeError();
+//        assertEquals(error.getExpected(), error.getActual(), "Runtime Error");
+//
+//    }
 
-        TransformTestResult result = getReport(sampleModel, reportFunction, tabulator, input);
-        if (result == null) return;
-
-        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipeLineId, datasetName), result);
-
-        ExpectedAndActual<String> outputXml = result.getReport();
-        assertEquals(outputXml.getExpected(), outputXml.getActual());
-
-        ExpectedAndActual<String> keyValue = result.getKeyValue();
-        assertEquals(keyValue.getExpected(), keyValue.getActual());
-
-        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
-        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
-
-        ExpectedAndActual<Boolean> error = result.getRuntimeError();
-        assertEquals(error.getExpected(), error.getActual(), "Runtime Error");
-
-    }
-
-    @Nullable
-    private <In extends RosettaModelObject, Out extends RosettaModelObject> TransformTestResult getReport(TestPackModel.SampleModel sampleModel,
-                                                                                                          ReportFunction<In, Out> reportFunction,
-                                                                                                          Tabulator<Out> tabulator, In input) throws IOException {
-
-        Path reportExpectationPath = Paths.get(sampleModel.getOutputPath());
-        Path keyValueExpectationPath = Paths.get(sampleModel.getOutputTabulatedPath());
-
-        try {
-            // report
-
-            Out reportOutput = reportFunction.evaluate(resolved(input));
-            ExpectedAndActual<String> report = getJsonExpectedAndActual(reportExpectationPath, reportOutput);
-
-            // key value
-            FieldValueFlattener flattener = new FieldValueFlattener();
-            tabulator.tabulate(reportOutput).forEach(
-                    field -> field.accept(flattener, List.of())
-            );
-            List<ReportField> results = flattener.accumulator;
-            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, results);
-
-            if (reportOutput == null && report.getExpected() == null) {
-                LOGGER.info("Empty report is expected result for {}", sampleModel.getInputPath());
-                return null;
-            }
-
-            assertNotNull(reportOutput);
-
-            // validation failures
-            ValidationReport validationReport = typeValidator.runProcessStep(reportOutput.getType(), reportOutput);
-            validationReport.logReport();
-
-            int actualValidationFailures = validationReport.validationFailures().size();
-
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
-            TransformTestResult transformTestResult = new TransformTestResult(sampleModel, keyValue, report, validationFailures, null, error);
-
-            return transformTestResult;
-
-        } catch (Exception e) {
-
-            LOGGER.error("Exception occurred running projection", e);
-            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, Collections.emptyList());
-            ExpectedAndActual<String> outputXml = getJsonExpectedAndActual(reportExpectationPath, null);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
-            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, null, error);
-        }
-    }
+//    @Nullable
+//    private <In extends RosettaModelObject, Out extends RosettaModelObject> TransformTestResult getReport(TestPackModel.SampleModel sampleModel,
+//                                                                                                          ReportFunction<In, Out> reportFunction,
+//                                                                                                          Tabulator<Out> tabulator, In input) throws IOException {
+//
+//        Path reportExpectationPath = Paths.get(sampleModel.getOutputPath());
+//        Path keyValueExpectationPath = Paths.get(sampleModel.getOutputTabulatedPath());
+//
+//        try {
+//            // report
+//
+//            Out reportOutput = reportFunction.evaluate(resolved(input));
+//            ExpectedAndActual<String> report = getJsonExpectedAndActual(reportExpectationPath, reportOutput);
+//
+//            // key value
+//            FieldValueFlattener flattener = new FieldValueFlattener();
+//            tabulator.tabulate(reportOutput).forEach(
+//                    field -> field.accept(flattener, List.of())
+//            );
+//            List<ReportField> results = flattener.accumulator;
+//            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, results);
+//
+//            if (reportOutput == null && report.getExpected() == null) {
+//                LOGGER.info("Empty report is expected result for {}", sampleModel.getInputPath());
+//                return null;
+//            }
+//
+//            assertNotNull(reportOutput);
+//
+//            // validation failures
+//            ValidationReport validationReport = typeValidator.runProcessStep(reportOutput.getType(), reportOutput);
+//            validationReport.logReport();
+//
+//            int actualValidationFailures = validationReport.validationFailures().size();
+//
+//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
+//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
+//            TransformTestResult transformTestResult = new TransformTestResult(sampleModel, keyValue, report, validationFailures, null, error);
+//
+//            return transformTestResult;
+//
+//        } catch (Exception e) {
+//
+//            LOGGER.error("Exception occurred running projection", e);
+//            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, Collections.emptyList());
+//            ExpectedAndActual<String> outputXml = getJsonExpectedAndActual(reportExpectationPath, null);
+//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
+//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
+//            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, null, error);
+//        }
+//    }
 
     private <T extends RosettaModelObject> T resolved(T modelObject) {
         RosettaModelObjectBuilder builder = modelObject.toBuilder();
@@ -178,7 +178,7 @@ public class ReportTestExtension<T extends RosettaModelObject> implements Before
 
     @AfterAll
     public void afterAll(ExtensionContext context) throws IOException {
-        writeExpectations(actualExpectation);
+//        writeExpectations(actualExpectation);
     }
 
     public Stream<Arguments> getArguments() {

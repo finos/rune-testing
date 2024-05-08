@@ -16,7 +16,7 @@ import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.TestingExpectationUtil;
-import com.regnosys.testing.reports.ExpectedAndActual;
+import com.regnosys.testing.reports.ReportExpectationUtil;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import org.junit.jupiter.api.AfterAll;
@@ -32,14 +32,13 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.regnosys.testing.TestingExpectationUtil.getJsonExpectedAndActual;
+import static com.regnosys.testing.TestingExpectationUtil.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -79,29 +78,23 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
     }
     
     public <IN extends RosettaModelObject, OUT extends RosettaModelObject> void runTransformAndAssert(
-            String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) throws IOException {
+            String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) {
+
         TransformTestResult result = getResult(sampleModel, transformFunc);
 
         actualExpectation.put(testPackId, result);
 
-        ExpectedAndActual<String> outputXml = result.getReport();
-        assertEquals(outputXml.getExpected(), outputXml.getActual());
+        Path outputPath = Path.of(sampleModel.getOutputPath());
+        String expectedOutput = readStringFromResources(outputPath);
+        String actualOutput = result.getOutput();
+        assertEquals(expectedOutput, actualOutput);
 
-//        ExpectedAndActual<String> keyValue = result.getKeyValue();
-//        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-
-        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
-        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
-
-        ExpectedAndActual<Boolean> error = result.getRuntimeError();
-        assertEquals(error.getExpected(), error.getActual(), "Error");
+        TestPackModel.SampleModel.Assertions actualAssertions = result.getSampleModel().getAssertions();
+        TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
+        assertEquals(expectedAssertions, actualAssertions);
     }
 
-    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) throws IOException {
-
-        Path reportExpectationPath = Paths.get(sampleModel.getOutputPath()); // TODO remove
-//        Path keyValueExpectationPath = Paths.get(sampleModel.getOutputTabulatedPath());
-
+    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) {
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
 
         String inputFile = sampleModel.getInputPath();
@@ -112,33 +105,27 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
         try {
             // report
             IN resolvedInput = resolveReferences(input);
-            OUT reportOutput = function.apply(resolvedInput);
+            OUT output = function.apply(resolvedInput);
 
-            ExpectedAndActual<String> report = getJsonExpectedAndActual(reportExpectationPath, reportOutput);
-
-            assertNotNull(reportOutput);
+            assertNotNull(output);
 
             // validation failures
-            ValidationReport validationReport = typeValidator.runProcessStep(reportOutput.getType(), reportOutput);
+            ValidationReport validationReport = typeValidator.runProcessStep(output.getType(), output);
             validationReport.logReport();
-
             int actualValidationFailures = validationReport.validationFailures().size();
 
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
-            TransformTestResult transformTestResult = new TransformTestResult(sampleModel, null, report, validationFailures, null, error);
-
-            return transformTestResult;
+            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(actualValidationFailures, null, false);
+            return new TransformTestResult(ROSETTA_OBJECT_WRITER.writeValueAsString(output), updateSampleModel(sampleModel, assertions));
 
         } catch (Exception e) {
-
             LOGGER.error("Exception occurred running projection", e);
-//            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, Collections.emptyList());
-            ExpectedAndActual<String> outputXml = getJsonExpectedAndActual(reportExpectationPath, null);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
-            return new TransformTestResult(sampleModel, null, outputXml, validationFailures, null, error);
+            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, true);
+            return new TransformTestResult(null, updateSampleModel(sampleModel, assertions));
         }
+    }
+
+    private TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
+        return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), sampleModel.getOutputTabulatedPath(), assertions);
     }
 
     public Stream<Arguments> getArguments() {
@@ -180,7 +167,7 @@ public class TransformTestExtension2<T> implements BeforeAllCallback, AfterAllCa
     }
 
     protected void writeExpectations(Multimap<String, TransformTestResult> actualExpectation) throws Exception {
-        //ReportExpectationUtil.writeExpectations(actualExpectation);
+        ReportExpectationUtil.writeExpectations(actualExpectation, resourcePath);
     }
 
     // TODO move to util class?

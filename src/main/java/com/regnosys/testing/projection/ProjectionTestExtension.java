@@ -174,81 +174,81 @@ public class ProjectionTestExtension<IN extends RosettaModelObject, OUT extends 
     }
 
 
-    public void runProjectionAndAssert(String testPackId,
-                                       String pipelineId,
-                                       String dataSetName,
-                                       TestPackModel.SampleModel sampleModel,
-                                       Function<IN, OUT> functionExecutionCallback,
-                                       IN input, Tabulator<OUT> tabulator) throws IOException {
+//    public void runProjectionAndAssert(String testPackId,
+//                                       String pipelineId,
+//                                       String dataSetName,
+//                                       TestPackModel.SampleModel sampleModel,
+//                                       Function<IN, OUT> functionExecutionCallback,
+//                                       IN input, Tabulator<OUT> tabulator) throws IOException {
+//
+//
+//        TransformTestResult result = runProjection(sampleModel, functionExecutionCallback, input, tabulator);
+//
+//        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipelineId, dataSetName), result);
+//
+//        ExpectedAndActual<String> outputXml = result.getReport();
+//        assertEquals(outputXml.getExpected(), outputXml.getActual());
+//
+//        ExpectedAndActual<String> keyValue = result.getKeyValue();
+//        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
+//
+//        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
+//        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
+//
+//        ExpectedAndActual<Boolean> validXml = result.getSchemaValidationFailure();
+//        assertEquals(validXml.getExpected(), validXml.getActual(), "XML validation");
+//
+//        ExpectedAndActual<Boolean> error = result.getRuntimeError();
+//        assertEquals(error.getExpected(), error.getActual(), "Error");
+//    }
 
-
-        TransformTestResult result = runProjection(sampleModel, functionExecutionCallback, input, tabulator);
-
-        actualExpectation.put(new TestPackAndDataSetName(testPackId, pipelineId, dataSetName), result);
-
-        ExpectedAndActual<String> outputXml = result.getReport();
-        assertEquals(outputXml.getExpected(), outputXml.getActual());
-
-        ExpectedAndActual<String> keyValue = result.getKeyValue();
-        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-
-        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
-        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
-
-        ExpectedAndActual<Boolean> validXml = result.getSchemaValidationFailure();
-        assertEquals(validXml.getExpected(), validXml.getActual(), "XML validation");
-
-        ExpectedAndActual<Boolean> error = result.getRuntimeError();
-        assertEquals(error.getExpected(), error.getActual(), "Error");
-    }
-
-    private TransformTestResult runProjection(
-            TestPackModel.SampleModel sampleModel,
-            Function<IN, OUT> functionExecutionCallback,
-            IN input,
-            Tabulator<OUT> tabulator) throws IOException {
-        Path outputPath = Paths.get(sampleModel.getOutputPath());
-        Path keyValuePath = Paths.get(sampleModel.getOutputTabulatedPath());
-        try {
-            OUT projectOutput = functionExecutionCallback.apply(input);
-
-            // XML result
-            ExpectedAndActual<String> outputXml = getXmlExpectedAndActual(outputPath, projectOutput);
-            assertNotNull(projectOutput);
-
-            // Key/value results
-            FieldValueFlattener flattener = new FieldValueFlattener();
-            tabulator.tabulate(projectOutput).forEach(
-                    field -> field.accept(flattener, List.of())
-            );
-            List<ReportField> results = flattener.accumulator;
-            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValuePath, results);
-
-            // Validation failures
-            ValidationReport validationReport = typeValidator.runProcessStep(projectOutput.getType(), projectOutput);
-            validationReport.logReport();
-            int actualValidationFailures = validationReport.validationFailures().size();
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
-
-            // Assert XML output does not match XSD schema.
-
-            boolean actualValidXml = isValidXml(outputXml.getActual());
-            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), actualValidXml);
-
-            // No exceptions
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
-
-            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, validXml, error);
-        } catch (Exception e) {
-            LOGGER.error("Exception occurred running projection", e);
-            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValuePath, Collections.emptyList());
-            ExpectedAndActual<String> outputXml = getXmlExpectedAndActual(outputPath, null);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
-            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), false);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
-            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, validXml, error);
-        }
-    }
+//    private TransformTestResult runProjection(
+//            TestPackModel.SampleModel sampleModel,
+//            Function<IN, OUT> functionExecutionCallback,
+//            IN input,
+//            Tabulator<OUT> tabulator) throws IOException {
+//        Path outputPath = Paths.get(sampleModel.getOutputPath());
+//        Path keyValuePath = Paths.get(sampleModel.getOutputTabulatedPath());
+//        try {
+//            OUT projectOutput = functionExecutionCallback.apply(input);
+//
+//            // XML result
+//            ExpectedAndActual<String> outputXml = getXmlExpectedAndActual(outputPath, projectOutput);
+//            assertNotNull(projectOutput);
+//
+//            // Key/value results
+//            FieldValueFlattener flattener = new FieldValueFlattener();
+//            tabulator.tabulate(projectOutput).forEach(
+//                    field -> field.accept(flattener, List.of())
+//            );
+//            List<ReportField> results = flattener.accumulator;
+//            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValuePath, results);
+//
+//            // Validation failures
+//            ValidationReport validationReport = typeValidator.runProcessStep(projectOutput.getType(), projectOutput);
+//            validationReport.logReport();
+//            int actualValidationFailures = validationReport.validationFailures().size();
+//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
+//
+//            // Assert XML output does not match XSD schema.
+//
+//            boolean actualValidXml = isValidXml(outputXml.getActual());
+//            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), actualValidXml);
+//
+//            // No exceptions
+//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
+//
+//            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, validXml, error);
+//        } catch (Exception e) {
+//            LOGGER.error("Exception occurred running projection", e);
+//            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValuePath, Collections.emptyList());
+//            ExpectedAndActual<String> outputXml = getXmlExpectedAndActual(outputPath, null);
+//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
+//            ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), false);
+//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
+//            return new TransformTestResult(sampleModel, keyValue, outputXml, validationFailures, validXml, error);
+//        }
+//    }
 
     private boolean isValidXml(String actualXml) {
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(actualXml.getBytes(StandardCharsets.UTF_8))) {

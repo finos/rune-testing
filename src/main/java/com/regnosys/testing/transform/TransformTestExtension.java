@@ -106,72 +106,72 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         return this;
     }
 
-    public <IN extends RosettaModelObject, OUT extends RosettaModelObject> void runTransformAndAssert(
-            String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) throws IOException {
-        TransformTestResult result = getResult(sampleModel, transformFunc);
+//    public <IN extends RosettaModelObject, OUT extends RosettaModelObject> void runTransformAndAssert(
+//            String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) throws IOException {
+//        TransformTestResult result = getResult(sampleModel, transformFunc);
+//
+//        actualExpectation.put(testPackId, result);
+//
+//        ExpectedAndActual<String> outputXml = result.getReport();
+//        assertEquals(outputXml.getExpected(), outputXml.getActual());
+//
+////        ExpectedAndActual<String> keyValue = result.getKeyValue();
+////        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
+//
+//        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
+//        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
+//
+//        ExpectedAndActual<Boolean> error = result.getRuntimeError();
+//        assertEquals(error.getExpected(), error.getActual(), "Error");
+//    }
 
-        actualExpectation.put(testPackId, result);
-
-        ExpectedAndActual<String> outputXml = result.getReport();
-        assertEquals(outputXml.getExpected(), outputXml.getActual());
-
-//        ExpectedAndActual<String> keyValue = result.getKeyValue();
-//        TestingExpectationUtil.assertJsonEquals(keyValue.getExpected(), keyValue.getActual());
-
-        ExpectedAndActual<Integer> validationFailures = result.getModelValidationFailures();
-        assertEquals(validationFailures.getExpected(), validationFailures.getActual(), "Validation failures");
-
-        ExpectedAndActual<Boolean> error = result.getRuntimeError();
-        assertEquals(error.getExpected(), error.getActual(), "Error");
-    }
-
-    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) throws IOException {
-
-        Path reportExpectationPath = Paths.get(sampleModel.getOutputPath()); // TODO remove
-//        Path keyValueExpectationPath = Paths.get(sampleModel.getOutputTabulatedPath());
-
-        String inputFile = sampleModel.getInputPath();
-        URL inputFileUrl = getInputFileUrl(inputFile);
-        Class<IN> inputType = getInputType();
-        IN input = TestingExpectationUtil.readFile(inputFileUrl, OBJECT_MAPPER, inputType);
-
-        try {
-            // report
-            IN resolvedInput = resolveReferences(input);
-            OUT reportOutput = function.apply(resolvedInput);
-
-            ExpectedAndActual<String> report = getResultExpectedAndActual(reportExpectationPath, pipelineModel, reportOutput, rosettaXMLObjectWriter);
-
-            assertNotNull(reportOutput);
-
-            // validation failures
-            ValidationReport validationReport = typeValidator.runProcessStep(reportOutput.getType(), reportOutput);
-            validationReport.logReport();
-
-            int actualValidationFailures = validationReport.validationFailures().size();
-
-
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
-
-            if (pipelineModel.getTransform().getType().equals(TransformType.PROJECTION)) {
-                boolean actualValidXml = isValidXml(report.getActual());
-                ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), actualValidXml);
-                return new TransformTestResult(sampleModel, null, report, validationFailures, validXml, error);
-            }
-
-            return new TransformTestResult(sampleModel, null, report, validationFailures, null, error);
-
-        } catch (Exception e) {
-
-            LOGGER.error("Exception occurred running projection", e);
-//            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, Collections.emptyList());
-            ExpectedAndActual<String> outputXml = getResultExpectedAndActual(reportExpectationPath, pipelineModel, null, rosettaXMLObjectWriter);
-            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
-            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
-            return new TransformTestResult(sampleModel, null, outputXml, validationFailures, null, error);
-        }
-    }
+//    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) throws IOException {
+//
+//        Path reportExpectationPath = Paths.get(sampleModel.getOutputPath()); // TODO remove
+////        Path keyValueExpectationPath = Paths.get(sampleModel.getOutputTabulatedPath());
+//
+//        String inputFile = sampleModel.getInputPath();
+//        URL inputFileUrl = getInputFileUrl(inputFile);
+//        Class<IN> inputType = getInputType();
+//        IN input = TestingExpectationUtil.readFile(inputFileUrl, OBJECT_MAPPER, inputType);
+//
+//        try {
+//            // report
+//            IN resolvedInput = resolveReferences(input);
+//            OUT reportOutput = function.apply(resolvedInput);
+//
+//            ExpectedAndActual<String> report = getResultExpectedAndActual(reportExpectationPath, pipelineModel, reportOutput, rosettaXMLObjectWriter);
+//
+//            assertNotNull(reportOutput);
+//
+//            // validation failures
+//            ValidationReport validationReport = typeValidator.runProcessStep(reportOutput.getType(), reportOutput);
+//            validationReport.logReport();
+//
+//            int actualValidationFailures = validationReport.validationFailures().size();
+//
+//
+//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), actualValidationFailures);
+//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), false);
+//
+//            if (pipelineModel.getTransform().getType().equals(TransformType.PROJECTION)) {
+//                boolean actualValidXml = isValidXml(report.getActual());
+//                ExpectedAndActual<Boolean> validXml = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isSchemaValidationFailure(), actualValidXml);
+//                return new TransformTestResult(sampleModel, null, report, validationFailures, validXml, error);
+//            }
+//
+//            return new TransformTestResult(sampleModel, null, report, validationFailures, null, error);
+//
+//        } catch (Exception e) {
+//
+//            LOGGER.error("Exception occurred running projection", e);
+////            ExpectedAndActual<String> keyValue = getJsonExpectedAndActual(keyValueExpectationPath, Collections.emptyList());
+//            ExpectedAndActual<String> outputXml = getResultExpectedAndActual(reportExpectationPath, pipelineModel, null, rosettaXMLObjectWriter);
+//            ExpectedAndActual<Integer> validationFailures = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().getModelValidationFailures(), 0);
+//            ExpectedAndActual<Boolean> error = new ExpectedAndActual<>(Path.of(sampleModel.getInputPath()), sampleModel.getAssertions().isRuntimeError(), true);
+//            return new TransformTestResult(sampleModel, null, outputXml, validationFailures, null, error);
+//        }
+//    }
 
     public Stream<Arguments> getArguments() {
         T func = injector.getInstance(funcType);
