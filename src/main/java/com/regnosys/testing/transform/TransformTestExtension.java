@@ -56,24 +56,27 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCallback {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
-    public static final ObjectMapper OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
+
+    // Default config paths
+    public static final Path PROJECTION_CONFIG_PATH = Path.of(TransformType.PROJECTION.getResourcePath()).resolve("iso20022").resolve("config");
+    public static final Path REPORT_CONFIG_PATH = Path.of(TransformType.REPORT.getResourcePath()).resolve("config");
+
+    private static final ObjectMapper OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final Module runtimeModule;
-    private final Path resourcePath;
+    private final Path configPath;
     private final Class<T> funcType;
     private Validator xsdValidator;
-    @Inject
-    private RosettaTypeValidator typeValidator;
-    @Inject
-    private ReferenceConfig referenceConfig;
+    @Inject RosettaTypeValidator typeValidator;
+    @Inject ReferenceConfig referenceConfig;
     private Multimap<String, TransformTestResult> actualExpectation;
     private PipelineModel pipelineModel;
     private Injector injector;
     private ObjectWriter outputObjectWriter;
 
 
-    public TransformTestExtension(TransformType transformType, Module runtimeModule, Class<T> funcType) {
+    public TransformTestExtension(Module runtimeModule, Path configPath, Class<T> funcType) {
         this.runtimeModule = runtimeModule;
-        this.resourcePath = Path.of(transformType.getResourcePath());
+        this.configPath = configPath;
         this.funcType = funcType;
     }
 
@@ -95,7 +98,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.injector = Guice.createInjector(runtimeModule);
         this.injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        this.pipelineModel = getPipelineModel(funcType.getName(), classLoader, resourcePath);
+        this.pipelineModel = getPipelineModel(funcType.getName(), classLoader, configPath);
         this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation());
         this.actualExpectation = ArrayListMultimap.create();
     }
@@ -122,7 +125,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         assertEquals(expectedAssertions, actualAssertions);
     }
 
-    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) {
+    protected <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) {
         String inputFile = sampleModel.getInputPath();
         URL inputFileUrl = getInputFileUrl(inputFile);
         Class<IN> inputType = getInputType();
@@ -155,14 +158,10 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
     }
 
-    private TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
-        return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), sampleModel.getOutputTabulatedPath(), assertions);
-    }
-
     public Stream<Arguments> getArguments() {
         T func = injector.getInstance(funcType);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        List<TestPackModel> testPackModels = getTestPackModels(pipelineModel.getId(), classLoader, resourcePath);
+        List<TestPackModel> testPackModels = getTestPackModels(pipelineModel.getId(), classLoader, configPath);
         return testPackModels.stream()
                 .flatMap(testPackModel -> testPackModel.getSamples().stream()
                         .map(sampleModel ->
@@ -183,7 +182,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
     }
 
-    private <IN extends RosettaModelObject> Class<IN> getInputType() {
+    protected <IN extends RosettaModelObject> Class<IN> getInputType() {
         try {
             return (Class<IN>) Class.forName(pipelineModel.getTransform().getInputType());
         } catch (ClassNotFoundException e) {
@@ -191,17 +190,17 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
     }
 
-    private <T extends RosettaModelObject> T resolveReferences(T modelObject) {
+    protected <T extends RosettaModelObject> T resolveReferences(T modelObject) {
         RosettaModelObjectBuilder builder = modelObject.toBuilder();
         new ReferenceResolverProcessStep(referenceConfig).runProcessStep(modelObject.getType(), builder);
         return (T) builder.build();
     }
 
     protected void writeExpectations(Multimap<String, TransformTestResult> actualExpectation) throws Exception {
-        TransformExpectationUtil.writeExpectations(actualExpectation, resourcePath);
+        TransformExpectationUtil.writeExpectations(actualExpectation, configPath);
     }
 
-    private Boolean isSchemaValidationFailure(String actualXml) {
+    protected Boolean isSchemaValidationFailure(String actualXml) {
         if (xsdValidator == null) {
             return null;
         }
@@ -214,6 +213,10 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    protected TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
+        return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), sampleModel.getOutputTabulatedPath(), assertions);
     }
 
     // TODO move to util class?
