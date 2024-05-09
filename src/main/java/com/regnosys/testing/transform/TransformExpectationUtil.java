@@ -45,18 +45,18 @@ public class TransformExpectationUtil {
                     .sorted(Comparator.comparing(SampleModel::getId))
                     .collect(Collectors.toList());
             TestPackModel testPackModel = new TestPackModel(model.getId(), model.getPipelineId(), model.getName(), sampleModelList);
-            String expectationFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(testPackModel);
+            String configFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(testPackModel);
 
             // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
             // TEST_WRITE_BASE_PATH=/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/resources/
             TestingExpectationUtil.TEST_WRITE_BASE_PATH
                     .filter(Files::exists)
                     .ifPresent(writeBasePath -> {
-                        // 1. write new expectations file
-                        Path expectationFileWritePath = writeBasePath.resolve(testPackConfigPath).resolve(testPackModel.getId() + ".json");
-                        TestingExpectationUtil.writeFile(expectationFileWritePath, expectationFileContent, TestingExpectationUtil.CREATE_EXPECTATION_FILES);
+                        // 1. write new test pack config file
+                        Path configFileWritePath = writeBasePath.resolve(testPackConfigPath).resolve(testPackModel.getId() + ".json");
+                        TestingExpectationUtil.writeFile(configFileWritePath, configFileContent, TestingExpectationUtil.CREATE_EXPECTATION_FILES);
 
-                        // 3. write new report json
+                        // 2. write new output json/xml
                         transformTestResults.stream()
                                 .forEach(r -> TestingExpectationUtil.writeFile(writeBasePath.resolve(r.getSampleModel().getOutputPath()), r.getOutput(), TestingExpectationUtil.CREATE_EXPECTATION_FILES));
                     });
@@ -73,6 +73,4 @@ public class TransformExpectationUtil {
                 .findFirst()
                 .orElseThrow();
     }
-
-
 }

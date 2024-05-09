@@ -27,7 +27,7 @@ public class TestingExpectationUtil {
     public final static ObjectWriter EXPECTATIONS_WRITER =
             ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
     private static final Logger LOGGER = LoggerFactory.getLogger(TestingExpectationUtil.class);
-    public final static ObjectWriter ROSETTA_OBJECT_WRITER =
+    public final static ObjectWriter ROSETTA_JSON_OBJECT_WRITER =
             RosettaObjectMapper
                     .getNewRosettaObjectMapper()
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
@@ -76,7 +76,7 @@ public class TestingExpectationUtil {
     }
 
     public static ExpectedAndActual<String> getJsonExpectedAndActual(Path expectationPath, Object jsonResult) throws IOException {
-        String actualJson = ROSETTA_OBJECT_WRITER.writeValueAsString(jsonResult);
+        String actualJson = ROSETTA_JSON_OBJECT_WRITER.writeValueAsString(jsonResult);
         String expectedJson = readStringFromResources(expectationPath);
         return new ExpectedAndActual<>(expectationPath, expectedJson, actualJson);
     }

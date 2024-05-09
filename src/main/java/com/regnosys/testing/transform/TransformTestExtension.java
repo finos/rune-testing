@@ -48,7 +48,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.regnosys.testing.TestingExpectationUtil.ROSETTA_OBJECT_WRITER;
+import static com.regnosys.testing.TestingExpectationUtil.ROSETTA_JSON_OBJECT_WRITER;
 import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -115,9 +115,9 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
         actualExpectation.put(testPackId, result);
 
+        String actualOutput = result.getOutput();
         Path outputPath = Path.of(sampleModel.getOutputPath());
         String expectedOutput = readStringFromResources(outputPath);
-        String actualOutput = result.getOutput();
         assertEquals(expectedOutput, actualOutput);
 
         TestPackModel.SampleModel.Assertions actualAssertions = result.getSampleModel().getAssertions();
@@ -152,7 +152,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                     new TestPackModel.SampleModel.Assertions(actualValidationFailures, schemaValidationFailure, false);
             return new TransformTestResult(serialisedOutput, updateSampleModel(sampleModel, assertions));
         } catch (Exception e) {
-            LOGGER.error("Exception occurred running projection", e);
+            LOGGER.error("Exception occurred running transform", e);
             TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, true);
             return new TransformTestResult(null, updateSampleModel(sampleModel, assertions));
         }
@@ -240,16 +240,16 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     // TODO move to util class?
-    private static ObjectWriter getObjectWriter(PipelineModel.Serialisation outputSerialisation) {
-        if (outputSerialisation != null && outputSerialisation.getFormat() == PipelineModel.Serialisation.Format.XML) {
-            URL xmlConfigPath = Resources.getResource(outputSerialisation.getConfigPath());
+    private static ObjectWriter getObjectWriter(PipelineModel.Serialisation serialisation) {
+        if (serialisation != null && serialisation.getFormat() == PipelineModel.Serialisation.Format.XML) {
+            URL xmlConfigPath = Resources.getResource(serialisation.getConfigPath());
             try {
                 return RosettaObjectMapperCreator.forXML(xmlConfigPath.openStream()).create().writerWithDefaultPrettyPrinter();
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
         } else {
-            return ROSETTA_OBJECT_WRITER;
+            return ROSETTA_JSON_OBJECT_WRITER;
         }
     }
 }
