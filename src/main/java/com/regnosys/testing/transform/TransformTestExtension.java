@@ -16,7 +16,6 @@ import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
-import com.regnosys.testing.TestingExpectationUtil;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import org.junit.jupiter.api.AfterAll;
@@ -127,7 +126,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         String inputFile = sampleModel.getInputPath();
         URL inputFileUrl = getInputFileUrl(inputFile);
         Class<IN> inputType = getInputType();
-        IN input = TestingExpectationUtil.readFile(inputFileUrl, OBJECT_MAPPER, inputType);
+        IN input = readFile(inputFileUrl, OBJECT_MAPPER, inputType);
 
         try {
             IN resolvedInput = resolveReferences(input);

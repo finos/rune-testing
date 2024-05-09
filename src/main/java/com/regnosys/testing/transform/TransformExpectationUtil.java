@@ -2,11 +2,13 @@ package com.regnosys.testing.transform;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TestPackModel.SampleModel;
 import com.regnosys.testing.TestingExpectationUtil;
+import com.regnosys.testing.reports.ObjectMapperGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +20,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.regnosys.rosetta.common.transform.TestPackUtils.findPaths;
+import static com.regnosys.rosetta.common.transform.TestPackUtils.readFile;
+
 public class TransformExpectationUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformExpectationUtil.class);
+
+    private final static ObjectWriter CONFIG_WRITER =
+            ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
 
     public static void writeExpectations(Multimap<String, TransformTestResult> actualExpectation, Path testPackConfigPath) throws JsonProcessingException {
         if (!TestingExpectationUtil.WRITE_EXPECTATIONS) {
@@ -37,7 +45,7 @@ public class TransformExpectationUtil {
                     .sorted(Comparator.comparing(SampleModel::getId))
                     .collect(Collectors.toList());
             TestPackModel testPackModel = new TestPackModel(model.getId(), model.getPipelineId(), model.getName(), sampleModelList);
-            String configFileContent = TestingExpectationUtil.EXPECTATIONS_WRITER.writeValueAsString(testPackModel);
+            String configFileContent = CONFIG_WRITER.writeValueAsString(testPackModel);
 
             // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
             // TEST_WRITE_BASE_PATH=/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/resources/
@@ -56,10 +64,10 @@ public class TransformExpectationUtil {
     }
 
     private static TestPackModel getTestPackModel(String testPackId, ClassLoader classLoader, Path resourcePath) {
-        List<URL> testPackUrls = TestingExpectationUtil.findPaths(resourcePath, classLoader, "test-pack-.*\\.json");
+        List<URL> testPackUrls = findPaths(resourcePath, classLoader, "test-pack-.*\\.json");
         ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         return testPackUrls.stream()
-                .map(url -> TestingExpectationUtil.readFile(url, mapper, TestPackModel.class))
+                .map(url -> readFile(url, mapper, TestPackModel.class))
                 .filter(testPackModel -> testPackModel.getId() != null)
                 .filter(testPackModel -> testPackModel.getId().equals(testPackId))
                 .findFirst()
