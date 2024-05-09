@@ -24,40 +24,14 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestingExpectationUtil {
-    public final static ObjectWriter EXPECTATIONS_WRITER =
-            ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
     private static final Logger LOGGER = LoggerFactory.getLogger(TestingExpectationUtil.class);
-    public final static ObjectWriter ROSETTA_JSON_OBJECT_WRITER =
-            RosettaObjectMapper
-                    .getNewRosettaObjectMapper()
-                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-                    .writerWithDefaultPrettyPrinter();
+
     public static boolean WRITE_EXPECTATIONS = Optional.ofNullable(System.getenv("WRITE_EXPECTATIONS"))
             .map(Boolean::parseBoolean).orElse(false);
     public static boolean CREATE_EXPECTATION_FILES = Optional.ofNullable(System.getenv("CREATE_EXPECTATION_FILES"))
             .map(Boolean::parseBoolean).orElse(false);
     public static Optional<Path> TEST_WRITE_BASE_PATH = Optional.ofNullable(System.getenv("TEST_WRITE_BASE_PATH"))
             .map(Paths::get);
-
-    public static List<URL> findPaths(Path basePath, ClassLoader classLoader, String fileName) {
-        List<URL> expectations = ClassPathUtils
-                .findPathsFromClassPath(List.of(UrlUtils.toPortableString(basePath)),
-                        fileName,
-                        Optional.empty(),
-                        classLoader)
-                .stream()
-                .map(UrlUtils::toUrl)
-                .collect(Collectors.toList());
-        return ImmutableList.copyOf(expectations);
-    }
-
-    public static <T> T readFile(URL u, ObjectMapper mapper, Class<T> clazz) {
-        try {
-            return mapper.readValue(UrlUtils.openURL(u), clazz);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static String readStringFromResources(Path resourcePath) {
         return Optional.ofNullable(ClassPathUtils.getResource(resourcePath))
@@ -73,12 +47,6 @@ public class TestingExpectationUtil {
             LOGGER.error("Failed to read path {}", fullPath, e);
             return null;
         }
-    }
-
-    public static ExpectedAndActual<String> getJsonExpectedAndActual(Path expectationPath, Object jsonResult) throws IOException {
-        String actualJson = ROSETTA_JSON_OBJECT_WRITER.writeValueAsString(jsonResult);
-        String expectedJson = readStringFromResources(expectationPath);
-        return new ExpectedAndActual<>(expectationPath, expectedJson, actualJson);
     }
 
     public static void assertJsonEquals(String expectedJson, String resultJson) {
