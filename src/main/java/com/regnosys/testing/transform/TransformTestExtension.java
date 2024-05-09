@@ -11,7 +11,6 @@ import com.google.inject.Module;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
-import com.regnosys.rosetta.common.serialisation.RosettaObjectMapperCreator;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
@@ -45,10 +44,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.regnosys.testing.TestingExpectationUtil.ROSETTA_JSON_OBJECT_WRITER;
+import static com.regnosys.rosetta.common.transform.TestPackUtils.*;
 import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -217,39 +215,5 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     protected TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
         return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), sampleModel.getOutputTabulatedPath(), assertions);
-    }
-
-    // TODO move to util class?
-    private static PipelineModel getPipelineModel(String functionName, ClassLoader classLoader, Path resourcePath) {
-        List<URL> pipelineFiles = TestingExpectationUtil.findPaths(resourcePath, classLoader, "pipeline-.*\\.json");
-        return pipelineFiles.stream()
-                .map(url -> TestingExpectationUtil.readFile(url, OBJECT_MAPPER, PipelineModel.class))
-                .filter(p -> p.getTransform().getFunction().equals(functionName))
-                .findFirst()
-                .orElseThrow();
-    }
-
-    // TODO move to util class?
-    private static List<TestPackModel> getTestPackModels(String pipelineId, ClassLoader classLoader, Path resourcePath) {
-        List<URL> testPackUrls = TestingExpectationUtil.findPaths(resourcePath, classLoader, "test-pack-.*\\.json");
-        return testPackUrls.stream()
-                .map(url -> TestingExpectationUtil.readFile(url, OBJECT_MAPPER, TestPackModel.class))
-                .filter(testPackModel -> testPackModel.getPipelineId() != null)
-                .filter(testPackModel -> testPackModel.getPipelineId().equals(pipelineId))
-                .collect(Collectors.toList());
-    }
-
-    // TODO move to util class?
-    private static ObjectWriter getObjectWriter(PipelineModel.Serialisation serialisation) {
-        if (serialisation != null && serialisation.getFormat() == PipelineModel.Serialisation.Format.XML) {
-            URL xmlConfigPath = Resources.getResource(serialisation.getConfigPath());
-            try {
-                return RosettaObjectMapperCreator.forXML(xmlConfigPath.openStream()).create().writerWithDefaultPrettyPrinter();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        } else {
-            return ROSETTA_JSON_OBJECT_WRITER;
-        }
     }
 }

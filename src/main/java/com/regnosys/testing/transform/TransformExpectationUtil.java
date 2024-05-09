@@ -1,9 +1,7 @@
 package com.regnosys.testing.transform;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.TestPackModel;
@@ -23,12 +21,6 @@ import java.util.stream.Collectors;
 public class TransformExpectationUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformExpectationUtil.class);
-
-    private final static ObjectReader ROSETTA_OBJECT_READER =
-            RosettaObjectMapper
-                    .getNewRosettaObjectMapper()
-                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-                    .reader();
 
     public static void writeExpectations(Multimap<String, TransformTestResult> actualExpectation, Path testPackConfigPath) throws JsonProcessingException {
         if (!TestingExpectationUtil.WRITE_EXPECTATIONS) {
