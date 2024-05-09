@@ -2,6 +2,7 @@ package com.regnosys.testing.transform;
 
 import java.util.Objects;
 
+@Deprecated
 public class TestPackAndDataSetName {
     public final String testPackID;
     public final String pipeLineId;
