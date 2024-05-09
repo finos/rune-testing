@@ -54,10 +54,6 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
 
-    // Default config paths
-    public static final Path PROJECTION_CONFIG_PATH = Path.of(TransformType.PROJECTION.getResourcePath()).resolve("iso20022").resolve("config");
-    public static final Path REPORT_CONFIG_PATH = Path.of(TransformType.REPORT.getResourcePath()).resolve("config");
-
     private static final ObjectMapper OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final Module runtimeModule;
     private final Path configPath;
