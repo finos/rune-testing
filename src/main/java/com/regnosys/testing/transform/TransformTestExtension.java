@@ -1,5 +1,6 @@
 package com.regnosys.testing.transform;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ArrayListMultimap;
@@ -13,7 +14,7 @@ import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
-import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.rosetta.model.lib.RosettaModelObject;
@@ -54,7 +55,13 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
+    private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
+
+    private final static ObjectWriter JSON_OBJECT_WRITER =
+            JSON_OBJECT_MAPPER
+                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+                    .writerWithDefaultPrettyPrinter();
+
     private final Module runtimeModule;
     private final Path configPath;
     private final Class<T> funcType;
@@ -91,8 +98,8 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.injector = Guice.createInjector(runtimeModule);
         this.injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        this.pipelineModel = getPipelineModel(funcType.getName(), classLoader, configPath);
-        this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation());
+        this.pipelineModel = getPipelineModel(getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER), funcType.getName());
+        this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(JSON_OBJECT_WRITER);
         this.actualExpectation = ArrayListMultimap.create();
     }
 
@@ -122,7 +129,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         String inputFile = sampleModel.getInputPath();
         URL inputFileUrl = getInputFileUrl(inputFile);
         Class<IN> inputType = getInputType();
-        IN input = readFile(inputFileUrl, OBJECT_MAPPER, inputType);
+        IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
 
         try {
             IN resolvedInput = resolveReferences(input);
@@ -154,7 +161,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     public Stream<Arguments> getArguments() {
         T func = injector.getInstance(funcType);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        List<TestPackModel> testPackModels = getTestPackModels(pipelineModel.getId(), classLoader, configPath);
+        List<TestPackModel> testPackModels = getTestPackModels(TestPackUtils.getTestPackModels(configPath, classLoader, JSON_OBJECT_MAPPER), pipelineModel.getId());
         return testPackModels.stream()
                 .flatMap(testPackModel -> testPackModel.getSamples().stream()
                         .map(sampleModel ->
