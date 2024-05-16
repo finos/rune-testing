@@ -216,6 +216,6 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     protected TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
-        return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), sampleModel.getOutputTabulatedPath(), assertions);
+        return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), assertions);
     }
 }
