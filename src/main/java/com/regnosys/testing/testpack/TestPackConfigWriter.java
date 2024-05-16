@@ -1,4 +1,4 @@
-package com.regnosys.testing.transform;
+package com.regnosys.testing.testpack;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
