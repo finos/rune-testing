@@ -1,37 +1,31 @@
 package com.regnosys.testing.testpack;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.inject.ImplementedBy;
-import com.regnosys.rosetta.common.transform.PipelineModel;
-import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.rosetta.RosettaReport;
+import com.regnosys.rosetta.rosetta.RosettaType;
 import com.regnosys.rosetta.rosetta.simple.Function;
 
+import java.util.Collection;
 import java.util.List;
 
 @ImplementedBy(TestPackModelHelperImpl.class)
 public interface TestPackModelHelper {
 
-    List<RosettaModel> loadRosettaModels(ImmutableList<String> rosettaFolderPathNames);
+    List<RosettaModel> loadRosettaModels(ImmutableList<String> rosettaPaths);
 
-    // Reports
+    List<RosettaReport> getReports(List<RosettaModel> models, String namespaceRegex, Collection<Class<?>> excludedReports);
 
-    List<RosettaReport> getReports(List<RosettaModel> models, String namespaceRegex);
+    List<Function> getFunctionsWithAnnotation(List<RosettaModel> models, String namespaceRegex, String annotation);
 
-    PipelineModel createReportPipelineModel(RosettaReport report);
+    RosettaType getInputType(Function func);
 
-    List<TestPackModel> createReportTestPacks(List<RosettaReport> reports, TestPackDef testPackDef, ImmutableMultimap<Class<?>, String> reportIncludedTestPack, ImmutableMultimap<String, Class<?>> testPackIncludedReports);
+    RosettaReport getUpstreamReport(List<RosettaModel> models, Function func, Collection<Class<?>> excluded);
 
+    String toJavaClass(Function function);
 
-    // Projections
+    String toJavaClass(RosettaReport report);
 
-    List<Function> getProjectionFunctions(List<RosettaModel> models, String namespaceRegex);
-
-    PipelineModel createProjectionPipelineModel(List<RosettaModel> models, Function func);
-
-    List<TestPackModel> createProjectionTestPacks(List<PipelineModel> projectionPipelines, List<RosettaReport> reports, List<TestPackModel> reportTestPacks);
-
-
+    String toJavaClass(RosettaType rosettaType);
 }

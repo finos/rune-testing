@@ -48,7 +48,7 @@ public class TestPackConfigWriter {
                                 .withDefaultPrettyPrinter()
                                 .writeValueAsString(object)
                 );
-                LOGGER.info("Writing descriptor file: {}", path);
+                LOGGER.info("Writing config file: {}", path);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -75,7 +75,7 @@ public class TestPackConfigWriter {
         }
     }
 
-    public Map<Path, List<TestPackModel>> readAllDescriptorFiles(Path testPackModelParentDirectory) {
+    public Map<Path, List<TestPackModel>> readAllTestPackConfigFiles(Path testPackModelParentDirectory) {
         try {
             return Files.walk(testPackModelParentDirectory)
                     .filter(p -> p.getFileName().toString().startsWith("test-pack-"))
