@@ -6,6 +6,7 @@ import com.rosetta.model.lib.ModelReportId;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Deprecated
 public class ProjectionPaths {
 
     public static final Path PROJECTION_PATH = Paths.get("projection");
