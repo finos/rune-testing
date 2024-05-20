@@ -43,10 +43,10 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
      *
      * @param rosettaPaths - list of folders that contain rosetta model files, e.g. "drr/rosetta"
      * @param filter       - provides filters to include or exclude
-     * @param testPackDef  - provides test-pack information such as list of test pack names, input types and sample input paths
+     * @param testPackDefs  - provides test-pack information such as list of test pack names, input types and sample input paths
      */
     @Override
-    public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, TestPackDef testPackDef) {
+    public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, List<TestPackDef> testPackDefs) {
         if (TEST_WRITE_BASE_PATH.isEmpty()) {
             LOGGER.error("TEST_WRITE_BASE_PATH not set");
             return;
@@ -66,7 +66,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         reportPipelines.forEach(p -> testPackConfigWriter.writeConfigFile(writePath, REPORT_CONFIG_PATH, p.getId(), p));
 
         LOGGER.info("Report test pack config");
-        List<TestPackModel> reportTestPacks = createReportTestPacks(reports, testPackDef, filter.getReportTestPackMap(), filter.getTestPackReportMap());
+        List<TestPackModel> reportTestPacks = createReportTestPacks(reports, testPackDefs, filter.getReportTestPackMap(), filter.getTestPackReportMap());
         reportTestPacks.forEach(testPackModel -> testPackConfigWriter.sortAndWriteConfigFile(writePath, REPORT_CONFIG_PATH, testPackModel));
 
         LOGGER.info("Projection pipeline config");
@@ -169,13 +169,13 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 rosettaReport.getRegulatoryBody().getCorpusList().stream().map(RosettaNamed::getName).toArray(String[]::new));
     }
 
-    protected List<TestPackModel> createReportTestPacks(List<RosettaReport> reports, TestPackDef testPackDef, ImmutableMultimap<Class<?>, String> reportIncludedTestPack, ImmutableMultimap<String, Class<?>> testPackIncludedReports) {
-        return testPackDef.getTestPacks().stream()
+    protected List<TestPackModel> createReportTestPacks(List<RosettaReport> reports, List<TestPackDef> testPackDefs, ImmutableMultimap<Class<?>, String> reportIncludedTestPack, ImmutableMultimap<String, Class<?>> testPackIncludedReports) {
+        return testPackDefs.stream()
                 .map(testPack -> {
                     List<RosettaReport> applicableReports = getApplicableReports(reports, testPack.getName(), testPack.getInputType(), reportIncludedTestPack, testPackIncludedReports);
                     return applicableReports.stream()
                             .map(report -> {
-                                List<String> targetLocations = testPackDef.getTestPackInputPaths(testPack.getName());
+                                List<String> targetLocations = testPack.getInputPaths();
                                 return createTestPack(testPack.getName(), targetLocations, report);
                             }).collect(Collectors.toList());
                 }).flatMap(List::stream)
