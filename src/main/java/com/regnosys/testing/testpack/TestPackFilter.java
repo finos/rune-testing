@@ -63,7 +63,7 @@ public class TestPackFilter {
      */
     private final ImmutableMultimap<Class<?>, String> reportTestPackMap;
 
-    public TestPackFilter(String modelNamespaceRegex,
+    private TestPackFilter(String modelNamespaceRegex,
                           List<Class<?>> excluded,
                           Multimap<String, Class<?>> testPackReportMap,
                           Multimap<Class<?>, String> reportTestPackMap) {
