@@ -26,6 +26,17 @@ import static org.junit.Assert.assertTrue;
 
 
 public class SchemeImporterTestHelper {
+
+    public enum EnumComparison {
+        /**
+         * Model and coding scheme enum values exactly match
+         */
+        ExactMatch,
+        /**
+         * Model contains all coding scheme enum values, however additional values are allowed
+         */
+        AdditiveMatch
+    }
     private static final Logger LOGGER = LoggerFactory.getLogger(SchemeImporterTestHelper.class);
     @Inject
     private SchemeImporter schemeImporter;
@@ -34,26 +45,26 @@ public class SchemeImporterTestHelper {
     private static final Comparator<RosettaEnumValue> enumValueComparator = Comparator.comparing(RosettaEnumValue::getName)
             .thenComparing(RosettaEnumValue::getDefinition);
 
-    public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput, boolean devMode) throws IOException {
+    public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
         URL[] rosettaPaths = getRosettaPaths(rosettaPathRoot);
 
         List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths);
         List<RosettaEnumeration> rosettaEnumsFromModel = schemeImporter.getRosettaEnumsFromModel(models, body, codingScheme);
 
-        validateEnumValues(rosettaEnumsFromModel, body, codingScheme, schemeEnumReader, devMode);
+        validateEnumValues(rosettaEnumsFromModel, schemeEnumReader, enumComparison);
     }
 
-    private void validateEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean devMode) {
+    private void validateEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) {
         for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
             List<RosettaEnumValue> modelEnumValues = rosettaEnumeration.getEnumValues();
-            List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, body, codingScheme, schemeEnumReader);
-            assertTrue("Enum values for " + rosettaEnumeration.getName() + " do not match ", compareEnumValues(modelEnumValues, codingSchemeEnumValues, devMode));
+            List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
+            assertTrue("Enum values for " + rosettaEnumeration.getName() + " do not match ", compareEnumValues(modelEnumValues, codingSchemeEnumValues, enumComparison));
         }
     }
 
     @VisibleForTesting
-    boolean compareEnumValues(List<RosettaEnumValue> modelEnumValues, List<RosettaEnumValue> codingSchemeEnumValues, boolean devMode) {
-        if (devMode) {
+    boolean compareEnumValues(List<RosettaEnumValue> modelEnumValues, List<RosettaEnumValue> codingSchemeEnumValues, EnumComparison enumComparison) {
+        if (enumComparison.equals(EnumComparison.ExactMatch)) {
             return CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         } else {
             return CollectionUtils.collectionContains(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);

@@ -22,7 +22,7 @@ public class SchemeImporter {
 	public Map<String, String> generateRosettaEnums(List<RosettaModel> models, String body, String corpus, SchemeEnumReader schemeEnumReader) throws MalformedURLException {
 		List<RosettaEnumeration> annotatedEnums = enumReader.getAnnotatedEnum(models, body, corpus);
 		for (RosettaEnumeration annotatedEnum : annotatedEnums) {
-			Optional<String> schemaLocationForEnumMaybe = enumReader.getSchemaLocationForEnum(annotatedEnum, body, corpus);
+			Optional<String> schemaLocationForEnumMaybe = enumReader.getSchemaLocationForEnum(annotatedEnum);
 			if (schemaLocationForEnumMaybe.isEmpty()) {
 				continue;
 			}
@@ -38,8 +38,8 @@ public class SchemeImporter {
 		return rosettaResourceWriter.generateRosettaFiles(enumsGroupedByRosettaResource.keySet());
 	}
 
-	public List<RosettaEnumValue> getEnumValuesFromCodingScheme(RosettaEnumeration annotatedEnum, String body, String corpus, SchemeEnumReader schemeEnumReader){
-		return enumReader.getSchemaLocationForEnum(annotatedEnum, body, corpus)
+	public List<RosettaEnumValue> getEnumValuesFromCodingScheme(RosettaEnumeration annotatedEnum, SchemeEnumReader schemeEnumReader){
+		return enumReader.getSchemaLocationForEnum(annotatedEnum)
 				.map(schemaLocationForEnum -> {
 					try {
 						return schemeEnumReader.generateEnumFromScheme(new URL(schemaLocationForEnum));

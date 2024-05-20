@@ -41,7 +41,7 @@ public class AnnotatedRosettaEnumReader {
 				.anyMatch(x -> corpus.equals(x.getName()));
 	}
 
-	public Optional<String> getSchemaLocationForEnum(RosettaEnumeration rosettaEnumeration, String body, String corpus) {
+	public Optional<String> getSchemaLocationForEnum(RosettaEnumeration rosettaEnumeration) {
 	 	return rosettaEnumeration
 			.getReferences()
 			.stream()
