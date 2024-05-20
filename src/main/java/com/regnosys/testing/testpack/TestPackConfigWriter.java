@@ -51,7 +51,7 @@ public class TestPackConfigWriter {
                 LOGGER.info("Writing config file: {}", path);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -71,10 +71,11 @@ public class TestPackConfigWriter {
         try {
             return writeMapper.readValue(file.toFile(), new TypeReference<>() {});
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
+    @Deprecated // is this used?
     public Map<Path, List<TestPackModel>> readAllTestPackConfigFiles(Path testPackModelParentDirectory) {
         try {
             return Files.walk(testPackModelParentDirectory)

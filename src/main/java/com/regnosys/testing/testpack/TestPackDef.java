@@ -1,10 +1,11 @@
 package com.regnosys.testing.testpack;
 
 import java.util.List;
-import java.util.Set;
 
+/**
+ * Basic test pack definition.
+ */
 public class TestPackDef {
-
     private final String name;
     private final String inputType;
     private final List<String> inputPaths;

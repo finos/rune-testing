@@ -43,7 +43,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
      *
      * @param rosettaPaths - list of folders that contain rosetta model files, e.g. "drr/rosetta"
      * @param filter       - provides filters to include or exclude
-     * @param testPackDefs  - provides test-pack information such as list of test pack names, input types and sample input paths
+     * @param testPackDefs - provides list of test-pack information such as test pack name, input type and sample input paths
      */
     @Override
     public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, List<TestPackDef> testPackDefs) {
