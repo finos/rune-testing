@@ -30,17 +30,31 @@ class SchemeImporterTestHelperTest {
     }
 
     @Test
-    void compareExtraEnumValuesExactMatch() {
+    void compareExtraModelEnumValuesExactMatch() {
         List<RosettaEnumValue> modelEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"), createRosettaEnumValue("value4"));
         List<RosettaEnumValue> codingSchemeEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"));
         assertFalse(schemeImporterTestHelper.compareEnumValues(modelEnums, codingSchemeEnums, SchemeImporterTestHelper.EnumComparison.ExactMatch));
     }
 
     @Test
-    void compareExtraEnumValuesAdditiveMatch() {
+    void compareExtraModelEnumValuesAdditiveMatch() {
         List<RosettaEnumValue> modelEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"), createRosettaEnumValue("value4"));
         List<RosettaEnumValue> codingSchemeEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"));
         assertTrue(schemeImporterTestHelper.compareEnumValues(modelEnums, codingSchemeEnums, SchemeImporterTestHelper.EnumComparison.AdditiveMatch));
+    }
+
+    @Test
+    void compareExtraCodingSchemeEnumValuesExactMatch() {
+        List<RosettaEnumValue> modelEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"));
+        List<RosettaEnumValue> codingSchemeEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"), createRosettaEnumValue("value4"));
+        assertFalse(schemeImporterTestHelper.compareEnumValues(modelEnums, codingSchemeEnums, SchemeImporterTestHelper.EnumComparison.ExactMatch));
+    }
+
+    @Test
+    void compareExtraCodingSchemeEnumValuesAdditiveMatch() {
+        List<RosettaEnumValue> modelEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"));
+        List<RosettaEnumValue> codingSchemeEnums = List.of(createRosettaEnumValue("value1"), createRosettaEnumValue("value2"), createRosettaEnumValue("value3"), createRosettaEnumValue("value4"));
+        assertFalse(schemeImporterTestHelper.compareEnumValues(modelEnums, codingSchemeEnums, SchemeImporterTestHelper.EnumComparison.AdditiveMatch));
     }
 
     private RosettaEnumValue createRosettaEnumValue(String name) {
