@@ -13,7 +13,7 @@ import java.util.List;
 @ImplementedBy(TestPackModelHelperImpl.class)
 public interface TestPackModelHelper {
 
-    List<RosettaModel> loadRosettaModels(ImmutableList<String> rosettaPaths);
+    List<RosettaModel> loadRosettaModels(ImmutableList<String> rosettaPaths, ClassLoader classLoader);
 
     List<RosettaReport> getReports(List<RosettaModel> models, String namespaceRegex, Collection<Class<?>> excludedReports);
 

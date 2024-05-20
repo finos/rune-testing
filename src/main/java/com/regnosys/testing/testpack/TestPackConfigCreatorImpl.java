@@ -56,7 +56,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         TestPackConfigWriter testPackConfigWriter = new TestPackConfigWriter(ObjectMapperGenerator.createWriterMapper());
 
         LOGGER.info("Loading models");
-        List<RosettaModel> rosettaModels = modelHelper.loadRosettaModels(rosettaPaths);
+        List<RosettaModel> rosettaModels = modelHelper.loadRosettaModels(rosettaPaths, this.getClass().getClassLoader());
 
         LOGGER.info("Report pipeline config");
         List<RosettaReport> reports = modelHelper.getReports(rosettaModels, filter.getModelNamespaceRegex(), filter.getExcluded());

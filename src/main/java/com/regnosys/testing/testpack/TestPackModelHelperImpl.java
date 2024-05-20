@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.rosetta.util.CollectionUtils.emptyIfNull;
@@ -37,22 +38,23 @@ public class TestPackModelHelperImpl implements TestPackModelHelper {
     }
 
     @Override
-    public List<RosettaModel> loadRosettaModels(ImmutableList<String> rosettaPaths) {
+    public List<RosettaModel> loadRosettaModels(ImmutableList<String> rosettaPaths, ClassLoader classLoader) {
         return modelLoader.loadRosettaModels(ClassPathUtils.findPathsFromClassPath(
                         rosettaPaths,
                         ".*\\.rosetta",
                         Optional.empty(),
-                        ClassPathUtils.class.getClassLoader())
+                        classLoader)
                 .stream()
                 .map(UrlUtils::toUrl));
     }
 
     @Override
     public List<RosettaReport> getReports(List<RosettaModel> models, String namespaceRegex, Collection<Class<?>> excluded) {
+        Set<String> excludedClassNames = excluded.stream().map(Class::getName).collect(Collectors.toSet());
         return modelLoader.rosettaElements(models, RosettaReport.class)
                 .stream()
                 .filter(r -> filterNamespace(r.getModel(), namespaceRegex))
-                .filter(r -> !excluded.contains(toJavaClass(r)))
+                .filter(r -> !excludedClassNames.contains(toJavaClass(r)))
                 .collect(Collectors.toList());
     }
 
