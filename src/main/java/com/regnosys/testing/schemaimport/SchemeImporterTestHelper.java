@@ -1,28 +1,32 @@
 package com.regnosys.testing.schemaimport;
 
 import com.regnosys.rosetta.common.util.ClassPathUtils;
+import com.regnosys.rosetta.common.util.CollectionUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
+import com.regnosys.rosetta.rosetta.RosettaEnumValue;
+import com.regnosys.rosetta.rosetta.RosettaEnumeration;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.transgest.ModelLoader;
-import com.regnosys.testing.WhitespaceAgnosticAssert;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
+
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
+
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 
 public class SchemeImporterTestHelper {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SchemeImporterTestHelper.class);
 
     @Inject
@@ -30,30 +34,32 @@ public class SchemeImporterTestHelper {
     @Inject
     private ModelLoader modelLoader;
 
-    public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput) throws IOException {
-        checkEnumsAreValid(rosettaPathRoot, null, body, codingScheme, schemeEnumReader, writeTestOutput);
+
+    public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput, boolean devMode) throws IOException {
+        URL[] rosettaPaths = getRosettaPaths(rosettaPathRoot);
+
+        List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths);
+        List<RosettaEnumeration> rosettaEnumsFromModel = schemeImporter.getRosettaEnumsFromModel(models, body, codingScheme);
+        Comparator<RosettaEnumValue> enumValueComparator = Comparator.comparing(RosettaEnumValue::getName)
+                .thenComparing(RosettaEnumValue::getDefinition);
+
+        validateEnumValues(rosettaEnumsFromModel, body, codingScheme, schemeEnumReader, enumValueComparator, devMode);
+
     }
 
-    public void checkEnumsAreValid(String rosettaPathRoot, String namespaceIncludeRegex, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput) throws IOException {
-        URL[] rosettaPaths = getRosettaPaths(rosettaPathRoot);
-        List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths).stream()
-                .filter(model -> filterNamespace(model, namespaceIncludeRegex))
-                .collect(Collectors.toList());
-        Map<String, String> generatedFromScheme =
-                schemeImporter.generateRosettaEnums(
-                        models,
-                        body,
-                        codingScheme,
-                        schemeEnumReader);
+    private void validateEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, String body, String codingScheme, SchemeEnumReader schemeEnumReader, Comparator<RosettaEnumValue> enumValueComparator, boolean dev_mode) {
+        for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
+            List<RosettaEnumValue> modelEnumValues = rosettaEnumeration.getEnumValues();
+            List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, body, codingScheme, schemeEnumReader);
 
-        if (writeTestOutput) {
-            writeTestOutput(generatedFromScheme);
-        }
-
-        for (String fileName : generatedFromScheme.keySet()) {
-            String contents = getContents(rosettaPaths, fileName);
-            WhitespaceAgnosticAssert.assertEquals(contents, generatedFromScheme.get(fileName));
-        }
+            if(dev_mode){
+                assertThat("Number of enum values for " + rosettaEnumeration.getName() + " do not match", modelEnumValues.size(), equalTo(codingSchemeEnumValues.size()));
+                assertThat("Enum values for " + rosettaEnumeration.getName() + " do not match " , CollectionUtils.listMatch(modelEnumValues, codingSchemeEnumValues, (a,b) ->  enumValueComparator.compare(a,b) == 0), is(true));
+            }
+            else {
+                assertThat("Enum values for " + rosettaEnumeration.getName() + " do not match " ,CollectionUtils.collectionMatch(modelEnumValues, codingSchemeEnumValues, (a,b) ->  enumValueComparator.compare(a,b) == 0), is(true));
+            }
+      }
     }
 
     protected URL[] getRosettaPaths(String rosettaPathRoot) {
@@ -82,7 +88,7 @@ public class SchemeImporterTestHelper {
     }
 
     protected String getFileName(String path) {
-        return path.substring(path.lastIndexOf('/') + 1);
+        return path.substring(path.lastIndexOf('/')+1);
     }
 
     protected void writeTestOutput(Map<String, String> rosettaExpected) throws IOException {

@@ -38,9 +38,27 @@ public class SchemeImporter {
 		return rosettaResourceWriter.generateRosettaFiles(enumsGroupedByRosettaResource.keySet());
 	}
 
+	public List<RosettaEnumValue> getEnumValuesFromCodingScheme(RosettaEnumeration annotatedEnum, String body, String corpus, SchemeEnumReader schemeEnumReader){
+		return enumReader.getSchemaLocationForEnum(annotatedEnum, body, corpus)
+				.map(schemaLocationForEnum -> {
+					try {
+						return schemeEnumReader.generateEnumFromScheme(new URL(schemaLocationForEnum));
+					} catch (MalformedURLException e) {
+						throw new RuntimeException(e);
+					}
+				})
+				.orElse(List.of());
+	}
+
+
+	public List<RosettaEnumeration> getRosettaEnumsFromModel(List<RosettaModel> models, String body, String corpus) {
+		return  enumReader.getAnnotatedEnum(models, body, corpus);
+	}
 
 	private void overwriteEnums(RosettaEnumeration rosettaEnumeration, List<RosettaEnumValue> newEnumValues) {
 		rosettaEnumeration.getEnumValues().clear();
 		rosettaEnumeration.getEnumValues().addAll(newEnumValues);
 	}
+
+
 }
