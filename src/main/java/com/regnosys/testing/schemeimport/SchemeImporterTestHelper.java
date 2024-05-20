@@ -56,15 +56,12 @@ public class SchemeImporterTestHelper {
 
     @VisibleForTesting
     boolean compareEnumValues(List<RosettaEnumValue> modelEnumValues, List<RosettaEnumValue> codingSchemeEnumValues, boolean devMode) {
-        boolean result;
         if (devMode) {
-            result = CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
+            return CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         } else {
-            result = CollectionUtils.collectionMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
+            return CollectionUtils.collectionMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         }
-        return result;
     }
-
 
     protected URL[] getRosettaPaths(String rosettaPathRoot) {
         return ClassPathUtils.findPathsFromClassPath(
