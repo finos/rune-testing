@@ -1,4 +1,4 @@
-package com.regnosys.testing.schemaimport;
+package com.regnosys.testing.schemeimport;
 
 import org.eclipse.emf.ecore.resource.Resource;
 

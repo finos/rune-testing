@@ -1,5 +1,7 @@
-package com.regnosys.testing.schemaimport.fpml;
+package com.regnosys.testing.schemeimport.fpml;
 
+import com.regnosys.testing.schemeimport.fpml.FpMLSchemeEnumReader;
+import com.regnosys.testing.schemeimport.fpml.FpMLSchemeHelper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

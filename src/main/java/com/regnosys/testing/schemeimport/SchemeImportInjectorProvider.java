@@ -1,4 +1,4 @@
-package com.regnosys.testing.schemaimport;
+package com.regnosys.testing.schemeimport;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

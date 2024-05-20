@@ -1,4 +1,4 @@
-package com.regnosys.testing.schemaimport.fpml;
+package com.regnosys.testing.schemeimport.fpml;
 
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;

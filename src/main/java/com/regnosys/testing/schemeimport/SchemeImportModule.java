@@ -1,9 +1,9 @@
-package com.regnosys.testing.schemaimport;
+package com.regnosys.testing.schemeimport;
 
 import com.regnosys.testing.RosettaTestingModule;
-import com.regnosys.testing.schemaimport.fpml.FpMLSchemeEnumReader;
-import com.regnosys.testing.schemaimport.fpml.FpMLSchemeHelper;
-import com.regnosys.testing.schemaimport.iso.currency.IsoCurrencySchemeEnumReader;
+import com.regnosys.testing.schemeimport.fpml.FpMLSchemeEnumReader;
+import com.regnosys.testing.schemeimport.fpml.FpMLSchemeHelper;
+import com.regnosys.testing.schemeimport.iso.currency.IsoCurrencySchemeEnumReader;
 
 public class SchemeImportModule extends RosettaTestingModule {
     public Class<? extends AnnotatedRosettaEnumReader> bindAnnotatedRosettaEnumReader() {

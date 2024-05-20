@@ -1,5 +1,6 @@
-package com.regnosys.testing.schemaimport;
+package com.regnosys.testing.schemeimport;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.CollectionUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
@@ -24,6 +25,7 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertTrue;
 
 
 public class SchemeImporterTestHelper {
@@ -33,34 +35,40 @@ public class SchemeImporterTestHelper {
     private SchemeImporter schemeImporter;
     @Inject
     private ModelLoader modelLoader;
+    private static final Comparator<RosettaEnumValue> enumValueComparator = Comparator.comparing(RosettaEnumValue::getName)
+            .thenComparing(RosettaEnumValue::getDefinition);
 
+    //contains in any order
+    //matches in any order
 
     public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput, boolean devMode) throws IOException {
         URL[] rosettaPaths = getRosettaPaths(rosettaPathRoot);
 
         List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths);
         List<RosettaEnumeration> rosettaEnumsFromModel = schemeImporter.getRosettaEnumsFromModel(models, body, codingScheme);
-        Comparator<RosettaEnumValue> enumValueComparator = Comparator.comparing(RosettaEnumValue::getName)
-                .thenComparing(RosettaEnumValue::getDefinition);
 
-        validateEnumValues(rosettaEnumsFromModel, body, codingScheme, schemeEnumReader, enumValueComparator, devMode);
-
+        validateEnumValues(rosettaEnumsFromModel, body, codingScheme, schemeEnumReader, devMode);
     }
 
-    private void validateEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, String body, String codingScheme, SchemeEnumReader schemeEnumReader, Comparator<RosettaEnumValue> enumValueComparator, boolean dev_mode) {
+    private void validateEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean devMode) {
         for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
             List<RosettaEnumValue> modelEnumValues = rosettaEnumeration.getEnumValues();
             List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, body, codingScheme, schemeEnumReader);
-
-            if(dev_mode){
-                assertThat("Number of enum values for " + rosettaEnumeration.getName() + " do not match", modelEnumValues.size(), equalTo(codingSchemeEnumValues.size()));
-                assertThat("Enum values for " + rosettaEnumeration.getName() + " do not match " , CollectionUtils.listMatch(modelEnumValues, codingSchemeEnumValues, (a,b) ->  enumValueComparator.compare(a,b) == 0), is(true));
-            }
-            else {
-                assertThat("Enum values for " + rosettaEnumeration.getName() + " do not match " ,CollectionUtils.collectionMatch(modelEnumValues, codingSchemeEnumValues, (a,b) ->  enumValueComparator.compare(a,b) == 0), is(true));
-            }
-      }
+            assertTrue("Enum values for " + rosettaEnumeration.getName() + " do not match ", compareEnumValues(modelEnumValues, codingSchemeEnumValues, devMode));
+        }
     }
+
+    @VisibleForTesting
+    boolean compareEnumValues(List<RosettaEnumValue> modelEnumValues, List<RosettaEnumValue> codingSchemeEnumValues, boolean devMode) {
+        boolean result;
+        if (devMode) {
+            result = CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
+        } else {
+            result = CollectionUtils.collectionMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
+        }
+        return result;
+    }
+
 
     protected URL[] getRosettaPaths(String rosettaPathRoot) {
         return ClassPathUtils.findPathsFromClassPath(
@@ -88,7 +96,7 @@ public class SchemeImporterTestHelper {
     }
 
     protected String getFileName(String path) {
-        return path.substring(path.lastIndexOf('/')+1);
+        return path.substring(path.lastIndexOf('/') + 1);
     }
 
     protected void writeTestOutput(Map<String, String> rosettaExpected) throws IOException {

@@ -1,10 +1,10 @@
-package com.regnosys.testing.schemaimport.iso.currency;
+package com.regnosys.testing.schemeimport.iso.currency;
 
 import com.regnosys.rosetta.rosetta.RosettaEnumValue;
 import com.regnosys.rosetta.rosetta.RosettaFactory;
 import com.regnosys.rosetta.rosetta.RosettaNamed;
 import com.regnosys.rosetta.rosetta.impl.RosettaFactoryImpl;
-import com.regnosys.testing.schemaimport.SchemeEnumReader;
+import com.regnosys.testing.schemeimport.SchemeEnumReader;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.iso.currency.ISO4217;
 
