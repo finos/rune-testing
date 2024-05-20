@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Deprecated // is this used?
 public class ReportUtil {
     @Inject
     private ModelLoader modelLoader;

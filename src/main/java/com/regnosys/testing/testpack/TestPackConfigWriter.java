@@ -1,4 +1,4 @@
-package com.regnosys.testing.transform;
+package com.regnosys.testing.testpack;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,10 +48,10 @@ public class TestPackConfigWriter {
                                 .withDefaultPrettyPrinter()
                                 .writeValueAsString(object)
                 );
-                LOGGER.info("Writing descriptor file: {}", path);
+                LOGGER.info("Writing config file: {}", path);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -71,11 +71,12 @@ public class TestPackConfigWriter {
         try {
             return writeMapper.readValue(file.toFile(), new TypeReference<>() {});
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
-    public Map<Path, List<TestPackModel>> readAllDescriptorFiles(Path testPackModelParentDirectory) {
+    @Deprecated // is this used?
+    public Map<Path, List<TestPackModel>> readAllTestPackConfigFiles(Path testPackModelParentDirectory) {
         try {
             return Files.walk(testPackModelParentDirectory)
                     .filter(p -> p.getFileName().toString().startsWith("test-pack-"))

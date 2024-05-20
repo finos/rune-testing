@@ -2,6 +2,7 @@ package com.regnosys.testing.projection;
 
 import com.regnosys.testing.reports.ExpectedAndActual;
 
+@Deprecated // is this used?
 public class ProjectionTestResult {
     private final String inputFileName;
     private final String outputFileName;
