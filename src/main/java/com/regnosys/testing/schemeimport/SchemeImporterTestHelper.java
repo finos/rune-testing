@@ -22,9 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertTrue;
 
 
@@ -59,7 +56,7 @@ public class SchemeImporterTestHelper {
         if (devMode) {
             return CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         } else {
-            return CollectionUtils.collectionMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
+            return CollectionUtils.collectionContains(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         }
     }
 
