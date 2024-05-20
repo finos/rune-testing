@@ -30,16 +30,12 @@ import static org.junit.Assert.assertTrue;
 
 public class SchemeImporterTestHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(SchemeImporterTestHelper.class);
-
     @Inject
     private SchemeImporter schemeImporter;
     @Inject
     private ModelLoader modelLoader;
     private static final Comparator<RosettaEnumValue> enumValueComparator = Comparator.comparing(RosettaEnumValue::getName)
             .thenComparing(RosettaEnumValue::getDefinition);
-
-    //contains in any order
-    //matches in any order
 
     public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput, boolean devMode) throws IOException {
         URL[] rosettaPaths = getRosettaPaths(rosettaPathRoot);
