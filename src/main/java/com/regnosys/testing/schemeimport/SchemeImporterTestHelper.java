@@ -66,9 +66,10 @@ public class SchemeImporterTestHelper {
     boolean compareEnumValues(List<RosettaEnumValue> modelEnumValues, List<RosettaEnumValue> codingSchemeEnumValues, EnumComparison enumComparison) {
         if (enumComparison.equals(EnumComparison.ExactMatch)) {
             return CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
-        } else {
+        } else if(enumComparison.equals(EnumComparison.AdditiveMatch)){
             return CollectionUtils.collectionContains(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         }
+        return false;
     }
 
     protected URL[] getRosettaPaths(String rosettaPathRoot) {
