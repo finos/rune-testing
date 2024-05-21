@@ -2,6 +2,7 @@ package com.regnosys.testing.reports;
 
 import java.nio.file.Path;
 
+@Deprecated // is this used?
 public class ExpectedAndActual<T> {
 
     private final Path expectationPath;
