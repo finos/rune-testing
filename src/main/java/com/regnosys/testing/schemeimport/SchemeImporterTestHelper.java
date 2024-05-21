@@ -1,6 +1,7 @@
 package com.regnosys.testing.schemeimport;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.CollectionUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
@@ -8,19 +9,18 @@ import com.regnosys.rosetta.rosetta.RosettaEnumValue;
 import com.regnosys.rosetta.rosetta.RosettaEnumeration;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.transgest.ModelLoader;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
-
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
@@ -56,17 +56,6 @@ public class SchemeImporterTestHelper {
         }
 
         validateEnumValues(rosettaEnumsFromModel, schemeEnumReader, enumComparison);
-
-
-
-        //persist enum values
-        //if it is exact match
-            //Blat the stuff for Exact match and replace from schema enums
-        //if it is additive match
-            //if coding scheme has extra values, add them alone
-        //Build a list of rosetta enum values combinig but removing duplicates
-
-        //loop through coding schme and remove it from model based on the name - there will be a pure list and then we can add the extra ones from coding schmes at the bottom
     }
 
     private void persistEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
@@ -79,8 +68,11 @@ public class SchemeImporterTestHelper {
             generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
         }
         else if (enumComparison.equals(EnumComparison.AdditiveMatch)){
-
-
+            for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
+                List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
+                addNewEnums(rosettaEnumeration, codingSchemeEnumValues);
+            }
+            generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
         }
         assert generatedFromScheme != null;
         writeTestOutput(generatedFromScheme);
@@ -149,6 +141,18 @@ public class SchemeImporterTestHelper {
     }
 
     private void overwriteEnums(RosettaEnumeration rosettaEnumeration, List<RosettaEnumValue> newEnumValues) {
+        rosettaEnumeration.getEnumValues().clear();
+        rosettaEnumeration.getEnumValues().addAll(newEnumValues);
+    }
+
+    private void addNewEnums(RosettaEnumeration rosettaEnumeration, List<RosettaEnumValue> newEnumValues) {
+        List<String> newEnumNamesList = newEnumValues.stream().map(n -> n.getName()).collect(Collectors.toList());
+        List<RosettaEnumValue> removedEnums = rosettaEnumeration.getEnumValues().stream()
+                .filter(e-> !newEnumNamesList.contains(e.getName()))
+                        .collect(Collectors.toList());
+
+        //add any items removed in the latest Coding Scheme at the end
+        newEnumValues.addAll(removedEnums);
         rosettaEnumeration.getEnumValues().clear();
         rosettaEnumeration.getEnumValues().addAll(newEnumValues);
     }
