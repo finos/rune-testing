@@ -60,20 +60,24 @@ public class SchemeImporterTestHelper {
 
     private void persistEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
         Map<String, String> generatedFromScheme = null;
-
-        if(enumComparison == EnumComparison.ExactMatch){
-            for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
-                List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
-                overwriteEnums(rosettaEnumeration, codingSchemeEnumValues);
+        switch (enumComparison){
+            case AdditiveMatch: {
+                for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
+                    List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
+                    overwriteEnums(rosettaEnumeration, codingSchemeEnumValues);
+                }
+                generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
+                break;
             }
-            generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
-        }
-        else if (enumComparison == EnumComparison.AdditiveMatch){
-            for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
-                List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
-                addNewEnums(rosettaEnumeration, codingSchemeEnumValues);
+            case ExactMatch: {
+                for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
+                    List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
+                    addNewEnums(rosettaEnumeration, codingSchemeEnumValues);
+                }
+                generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
+                break;
             }
-            generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
+            default: throw new IllegalArgumentException("Unknown enum value " + enumComparison);
         }
         assert generatedFromScheme != null;
         writeTestOutput(generatedFromScheme);
