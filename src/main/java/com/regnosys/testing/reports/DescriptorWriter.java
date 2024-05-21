@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Deprecated // is this used?
 public class DescriptorWriter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DescriptorWriter.class);
 
