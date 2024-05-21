@@ -60,14 +60,15 @@ public class SchemeImporterTestHelper {
 
     private void persistEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
         Map<String, String> generatedFromScheme = null;
-        if(enumComparison.equals(EnumComparison.ExactMatch)){
+
+        if(enumComparison == EnumComparison.ExactMatch){
             for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
                 List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
                 overwriteEnums(rosettaEnumeration, codingSchemeEnumValues);
             }
             generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
         }
-        else if (enumComparison.equals(EnumComparison.AdditiveMatch)){
+        else if (enumComparison == EnumComparison.AdditiveMatch){
             for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
                 List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
                 addNewEnums(rosettaEnumeration, codingSchemeEnumValues);
@@ -80,9 +81,9 @@ public class SchemeImporterTestHelper {
 
     @VisibleForTesting
     boolean compareEnumValues(List<RosettaEnumValue> modelEnumValues, List<RosettaEnumValue> codingSchemeEnumValues, EnumComparison enumComparison) {
-        if (enumComparison.equals(EnumComparison.ExactMatch)) {
+        if (enumComparison == EnumComparison.ExactMatch) {
             return CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
-        } else if(enumComparison.equals(EnumComparison.AdditiveMatch)){
+        } else if(enumComparison == EnumComparison.AdditiveMatch){
             return CollectionUtils.collectionContains(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         }
         return false;
