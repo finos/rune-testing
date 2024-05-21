@@ -19,22 +19,9 @@ public class SchemeImporter {
     @Inject
 	private RosettaResourceWriter rosettaResourceWriter;
 
-	public Map<String, String> generateRosettaEnums(List<RosettaModel> models, String body, String corpus, SchemeEnumReader schemeEnumReader) throws MalformedURLException {
-		List<RosettaEnumeration> annotatedEnums = enumReader.getAnnotatedEnum(models, body, corpus);
-		for (RosettaEnumeration annotatedEnum : annotatedEnums) {
-			Optional<String> schemaLocationForEnumMaybe = enumReader.getSchemaLocationForEnum(annotatedEnum);
-			if (schemaLocationForEnumMaybe.isEmpty()) {
-				continue;
-			}
-			String schemaLocationForEnum = schemaLocationForEnumMaybe.get();
-			List<RosettaEnumValue> newEnumValues = schemeEnumReader.generateEnumFromScheme(new URL(schemaLocationForEnum));
-
-			overwriteEnums(annotatedEnum, newEnumValues);
-		}
-
-		Map<Resource, List<RosettaEnumeration>> enumsGroupedByRosettaResource = annotatedEnums.stream()
+	public Map<String, String> generateRosettaEnums(List<RosettaEnumeration> enums) {
+		Map<Resource, List<RosettaEnumeration>> enumsGroupedByRosettaResource = enums.stream()
 			.collect(Collectors.groupingBy(x -> x.eContainer().eResource()));
-
 		return rosettaResourceWriter.generateRosettaFiles(enumsGroupedByRosettaResource.keySet());
 	}
 
@@ -50,15 +37,11 @@ public class SchemeImporter {
 				.orElse(List.of());
 	}
 
-
 	public List<RosettaEnumeration> getRosettaEnumsFromModel(List<RosettaModel> models, String body, String corpus) {
 		return  enumReader.getAnnotatedEnum(models, body, corpus);
 	}
 
-	private void overwriteEnums(RosettaEnumeration rosettaEnumeration, List<RosettaEnumValue> newEnumValues) {
-		rosettaEnumeration.getEnumValues().clear();
-		rosettaEnumeration.getEnumValues().addAll(newEnumValues);
-	}
+
 
 
 }

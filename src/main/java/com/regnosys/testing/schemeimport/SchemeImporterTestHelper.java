@@ -45,21 +45,45 @@ public class SchemeImporterTestHelper {
     private static final Comparator<RosettaEnumValue> enumValueComparator = Comparator.comparing(RosettaEnumValue::getName)
             .thenComparing(RosettaEnumValue::getDefinition);
 
-    public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
+    public void checkEnumsAreValid(String rosettaPathRoot, String body, String codingScheme, SchemeEnumReader schemeEnumReader, boolean writeTestOutput, EnumComparison enumComparison) throws IOException {
         URL[] rosettaPaths = getRosettaPaths(rosettaPathRoot);
 
         List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths);
         List<RosettaEnumeration> rosettaEnumsFromModel = schemeImporter.getRosettaEnumsFromModel(models, body, codingScheme);
 
+        if(writeTestOutput) {
+            persistEnumValues(rosettaEnumsFromModel, schemeEnumReader, enumComparison);
+        }
+
         validateEnumValues(rosettaEnumsFromModel, schemeEnumReader, enumComparison);
+
+
+
+        //persist enum values
+        //if it is exact match
+            //Blat the stuff for Exact match and replace from schema enums
+        //if it is additive match
+            //if coding scheme has extra values, add them alone
+        //Build a list of rosetta enum values combinig but removing duplicates
+
+        //loop through coding schme and remove it from model based on the name - there will be a pure list and then we can add the extra ones from coding schmes at the bottom
     }
 
-    private void validateEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) {
-        for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
-            List<RosettaEnumValue> modelEnumValues = rosettaEnumeration.getEnumValues();
-            List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
-            assertTrue("Enum values for " + rosettaEnumeration.getName() + " do not match ", compareEnumValues(modelEnumValues, codingSchemeEnumValues, enumComparison));
+    private void persistEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
+        Map<String, String> generatedFromScheme = null;
+        if(enumComparison.equals(EnumComparison.ExactMatch)){
+            for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
+                List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
+                overwriteEnums(rosettaEnumeration, codingSchemeEnumValues);
+            }
+            generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
         }
+        else if (enumComparison.equals(EnumComparison.AdditiveMatch)){
+
+
+        }
+        assert generatedFromScheme != null;
+        writeTestOutput(generatedFromScheme);
     }
 
     @VisibleForTesting
@@ -114,5 +138,18 @@ public class SchemeImporterTestHelper {
             Files.writeString(outputPath, rosettaExpected.get(fileName), StandardCharsets.UTF_8);
             LOGGER.info("Wrote test output to {}", outputPath.toAbsolutePath());
         }
+    }
+
+    private void validateEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) {
+        for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
+            List<RosettaEnumValue> modelEnumValues = rosettaEnumeration.getEnumValues();
+            List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
+            assertTrue("Enum values for " + rosettaEnumeration.getName() + " do not match ", compareEnumValues(modelEnumValues, codingSchemeEnumValues, enumComparison));
+        }
+    }
+
+    private void overwriteEnums(RosettaEnumeration rosettaEnumeration, List<RosettaEnumValue> newEnumValues) {
+        rosettaEnumeration.getEnumValues().clear();
+        rosettaEnumeration.getEnumValues().addAll(newEnumValues);
     }
 }
