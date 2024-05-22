@@ -62,7 +62,7 @@ public class SchemeImporterTestHelper {
     private void persistEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
         Map<String, String> generatedFromScheme = null;
         switch (enumComparison){
-            case AdditiveMatch: {
+            case ExactMatch: {
                 for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
                     List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
                     overwriteEnums(rosettaEnumeration, codingSchemeEnumValues);
@@ -70,7 +70,7 @@ public class SchemeImporterTestHelper {
                 generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
                 break;
             }
-            case ExactMatch: {
+            case AdditiveMatch: {
                 for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
                     List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
                     addNewEnums(rosettaEnumeration, codingSchemeEnumValues);
