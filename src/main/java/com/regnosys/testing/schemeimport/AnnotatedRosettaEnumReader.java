@@ -1,4 +1,4 @@
-package com.regnosys.testing.schemaimport;
+package com.regnosys.testing.schemeimport;
 
 import com.google.inject.Inject;
 import com.regnosys.rosetta.rosetta.RosettaDocReference;
@@ -41,7 +41,7 @@ public class AnnotatedRosettaEnumReader {
 				.anyMatch(x -> corpus.equals(x.getName()));
 	}
 
-	public Optional<String> getSchemaLocationForEnum(RosettaEnumeration rosettaEnumeration, String body, String corpus) {
+	public Optional<String> getSchemaLocationForEnum(RosettaEnumeration rosettaEnumeration) {
 	 	return rosettaEnumeration
 			.getReferences()
 			.stream()

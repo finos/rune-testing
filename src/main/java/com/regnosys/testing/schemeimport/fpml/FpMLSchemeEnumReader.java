@@ -1,11 +1,11 @@
-package com.regnosys.testing.schemaimport.fpml;
+package com.regnosys.testing.schemeimport.fpml;
 
 import com.google.common.collect.Lists;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.rosetta.RosettaEnumValue;
 import com.regnosys.rosetta.rosetta.RosettaFactory;
 import com.regnosys.rosetta.rosetta.impl.RosettaFactoryImpl;
-import com.regnosys.testing.schemaimport.SchemeEnumReader;
+import com.regnosys.testing.schemeimport.SchemeEnumReader;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.util.Tuples;
 import org.genericode.xml._2004.ns.codelist._0.*;
