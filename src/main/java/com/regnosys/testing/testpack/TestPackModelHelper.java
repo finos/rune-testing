@@ -17,7 +17,7 @@ public interface TestPackModelHelper {
 
     List<RosettaReport> getReports(List<RosettaModel> models, String namespaceRegex, Collection<Class<?>> excludedReports);
 
-    List<Function> getFunctionsWithAnnotation(List<RosettaModel> models, String namespaceRegex, String annotation);
+    List<Function> getFunctionsWithAnnotation(List<RosettaModel> models, String namespaceRegex, String annotation, Collection<Class<?>> excluded);
 
     RosettaType getInputType(Function func);
 
