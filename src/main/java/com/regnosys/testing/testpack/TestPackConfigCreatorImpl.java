@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -70,7 +71,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         reportTestPacks.forEach(testPackModel -> testPackConfigWriter.sortAndWriteConfigFile(writePath, REPORT_CONFIG_PATH, testPackModel));
 
         LOGGER.info("Projection pipeline config");
-        List<Function> projections = getProjectionFunctions(rosettaModels, filter.getModelNamespaceRegex());
+        List<Function> projections = getProjectionFunctions(rosettaModels, filter.getModelNamespaceRegex(), filter.getExcluded());
         List<PipelineModel> projectionPipelines = projections.stream()
                 .map(f -> createProjectionPipelineModel(rosettaModels, f, filter.getExcluded()))
                 .collect(Collectors.toList());
@@ -100,9 +101,8 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         );
     }
 
-    protected List<Function> getProjectionFunctions(List<RosettaModel> models, String namespaceRegex) {
-        return modelHelper.getFunctionsWithAnnotation(models, namespaceRegex, "projection").stream()
-                .collect(Collectors.toList());
+    protected List<Function> getProjectionFunctions(List<RosettaModel> models, String namespaceRegex, Collection<Class<?>> excluded) {
+        return new ArrayList<>(modelHelper.getFunctionsWithAnnotation(models, namespaceRegex, "projection", excluded));
     }
 
     protected PipelineModel createProjectionPipelineModel(List<RosettaModel> models, Function func, Collection<Class<?>> excluded) {

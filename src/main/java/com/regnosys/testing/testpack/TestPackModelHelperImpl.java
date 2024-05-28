@@ -59,12 +59,14 @@ public class TestPackModelHelperImpl implements TestPackModelHelper {
     }
 
     @Override
-    public List<Function> getFunctionsWithAnnotation(List<RosettaModel> models, String namespaceRegex, String annotation) {
+    public List<Function> getFunctionsWithAnnotation(List<RosettaModel> models, String namespaceRegex, String annotation, Collection<Class<?>> excluded) {
+        Set<String> excludedClassNames = excluded.stream().map(Class::getName).collect(Collectors.toSet());
         return modelLoader.rosettaElements(models, Function.class).stream()
                 .filter(r -> filterNamespace(r.getModel(), namespaceRegex))
                 .filter(f -> f.getAnnotations().stream()
                         .map(AnnotationRef::getAnnotation)
                         .anyMatch(a -> annotation.equals(a.getName())))
+                .filter(r -> !excludedClassNames.contains(toJavaClass(r)))
                 .collect(Collectors.toList());
     }
 
