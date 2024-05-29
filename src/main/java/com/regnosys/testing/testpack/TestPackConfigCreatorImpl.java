@@ -1,27 +1,51 @@
 package com.regnosys.testing.testpack;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.io.Resources;
+import com.google.inject.Injector;
+import com.regnosys.rosetta.common.hashing.ReferenceConfig;
+import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
+import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
+import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.rosetta.RosettaNamed;
 import com.regnosys.rosetta.rosetta.RosettaReport;
 import com.regnosys.rosetta.rosetta.RosettaType;
 import com.regnosys.rosetta.rosetta.simple.Function;
+import com.regnosys.testing.RosettaTestingInjectorProvider;
 import com.regnosys.testing.reports.FileNameProcessor;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
 import com.rosetta.model.lib.ModelReportId;
+import com.rosetta.model.lib.RosettaModelObject;
+import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.util.DottedPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +62,10 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
 
     @Inject
     private TestPackModelHelper modelHelper;
+    @Inject
+    RosettaTypeValidator typeValidator;
+    @Inject
+    ReferenceConfig referenceConfig;
 
     /**
      * Generates pipeline and test-pack config files.
@@ -119,10 +147,9 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
 
     protected String createIdSuffix(String functionName) {
         String functionSimpleName = formatFunctionName(functionName);
-        String formattedId = CaseFormat.UPPER_CAMEL
+        return CaseFormat.UPPER_CAMEL
                 .converterTo(CaseFormat.LOWER_HYPHEN)
                 .convert(functionSimpleName.replace("Project_", ""));
-        return formattedId;
     }
 
     protected String formatFunctionName(String functionName) {
@@ -170,13 +197,16 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     }
 
     protected List<TestPackModel> createReportTestPacks(List<RosettaReport> reports, List<TestPackDef> testPackDefs, ImmutableMultimap<Class<?>, String> reportIncludedTestPack, ImmutableMultimap<String, Class<?>> testPackIncludedReports) {
+        ObjectMapper jsonObjectMapper = RosettaObjectMapper.getNewRosettaObjectMapper();
+        Injector injector = new RosettaTestingInjectorProvider().getInjector();
+
         return testPackDefs.stream()
                 .map(testPack -> {
                     List<RosettaReport> applicableReports = getApplicableReports(reports, testPack.getName(), testPack.getInputType(), reportIncludedTestPack, testPackIncludedReports);
                     return applicableReports.stream()
                             .map(report -> {
                                 List<String> targetLocations = testPack.getInputPaths();
-                                return createTestPack(testPack.getName(), targetLocations, report);
+                                return createTestPack(testPack.getName(), targetLocations, report, jsonObjectMapper, injector);
                             }).collect(Collectors.toList());
                 }).flatMap(List::stream)
                 .collect(Collectors.toList());
@@ -195,9 +225,9 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .collect(Collectors.toList());
     }
 
-    protected Class<?> getClass(String name) {
+    protected Class<? extends RosettaModelObject> getClass(String name) {
         try {
-            return Class.forName(name);
+            return (Class<? extends RosettaModelObject>) Class.forName(name);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -213,8 +243,15 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         return applicableReportsForTestPack.isEmpty() || applicableReportsForTestPack.contains(clazz);
     }
 
-    protected TestPackModel createTestPack(String testPackName, List<String> targetLocations, RosettaReport report) {
+    protected TestPackModel createTestPack(String testPackName, List<String> targetLocations, RosettaReport report,
+                                           ObjectMapper jsonObjectMapper,
+                                           Injector injector) {
         ModelReportId reportId = toModelReportId(report);
+        PipelineModel.Transform transform = getTransform(report);
+        Class<? extends RosettaModelObject> inputType = getClass(transform.getInputType());
+        Class<? extends RosettaModelObject> outputType = getClass(transform.getOutputType());
+        Class<?> functionClass = getClass(transform.getFunction());
+
         List<TestPackModel.SampleModel> sampleModelLists = targetLocations.stream()
                 .map(targetLocation -> {
                     String fileName = FileNameProcessor.removeFilePrefix(targetLocation);
@@ -223,7 +260,16 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     Path outputPath = RegReportPaths.getReportExpectationFilePath(outputRelativePath, reportId, testPackName, inputPath);
                     String baseFileName = getBaseFileName(inputPath);
                     String displayName = baseFileName.replace("-", " ");
-                    return new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputPath.toString(), outputPath.toString(), new TestPackModel.SampleModel.Assertions(0, null, false));
+                    return returnCorrectedTestPackSample(
+                            baseFileName.toLowerCase(),
+                            displayName,
+                            inputPath.toString(),
+                            outputPath.toString(),
+                            inputType,
+                            outputType,
+                            functionClass,
+                            jsonObjectMapper,
+                            injector);
                 })
                 .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
                 .collect(Collectors.toList());
@@ -232,7 +278,88 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         return TestPackUtils.createTestPack(testPackName, TransformType.REPORT, formattedFunctionName, sampleModelLists);
     }
 
-    protected String getBaseFileName(Path inputPath) {
+    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TestPackModel.SampleModel returnCorrectedTestPackSample(
+            String baseFileName,
+            String displayName,
+            String inputPath,
+            String outputPath,
+            Class<IN> inputType,
+            Class<OUT> outputType,
+            Class<?> functionClass,
+            ObjectMapper objectMapper,
+            Injector injector) {
+
+        URL inputFileUrl = getInputFileUrl(inputPath);
+        assert inputFileUrl != null;
+        IN input = readFile(inputFileUrl, objectMapper, inputType);
+        IN resolvedInput = resolveReferences(input);
+
+        Object functionInstance = injector.getInstance(functionClass);
+        try {
+            Method evaluateMethod = functionClass.getMethod("evaluate", inputType);
+
+            OUT output = (OUT) evaluateMethod.invoke(functionInstance, resolvedInput);
+
+            //Serialised Output: //TODO: To be used for projection
+//            String serializedOutput = objectMapper.writeValueAsString(output);
+
+            // validation failures
+            ValidationReport validationReport = typeValidator.runProcessStep(output.getType(), output);
+            validationReport.logReport();
+            int actualValidationFailures = validationReport.validationFailures().size();
+
+            TestPackModel.SampleModel.Assertions assertions =
+                    new TestPackModel.SampleModel.Assertions(actualValidationFailures, null, false);
+
+            return new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputPath, outputPath, assertions);
+
+        } catch (NoSuchMethodException e) {
+            LOGGER.error("Evaluate method unsuccessfully invoked. Method not  found. ");
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred running sample creation", e);
+            return new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputPath, outputPath, new TestPackModel.SampleModel.Assertions(0, null, true));
+        }
+    }
+
+    //TODO: to be used for projection
+    private Boolean isSchemaValidationFailure(URL xsdSchema, String actualXml) throws SAXException {
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
+        schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
+        Schema schema = schemaFactory.newSchema(xsdSchema);
+        Validator xsdValidator = schema.newValidator();
+        if (xsdValidator == null) {
+            return null;
+        }
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(actualXml.getBytes(StandardCharsets.UTF_8))) {
+            xsdValidator.validate(new StreamSource(inputStream));
+            return true;
+        } catch (SAXException e) {
+            LOGGER.error("Schema validation failed: {}", e.getMessage());
+            return false;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private static URL getInputFileUrl(String inputFile) {
+        try {
+            return Resources.getResource(inputFile);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private <T extends RosettaModelObject> T resolveReferences(T modelObject) {
+        RosettaModelObjectBuilder builder = modelObject.toBuilder();
+        new ReferenceResolverProcessStep(referenceConfig).runProcessStep(modelObject.getType(), builder);
+        return (T) builder.build();
+    }
+
+    private String getBaseFileName(Path inputPath) {
         return inputPath.getFileName().toString()
                 .replace(".json", "")
                 .replace("-report", "");
