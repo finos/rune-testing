@@ -10,13 +10,14 @@
         <version>5</version>
     </parent>
 
-    <name>rosetta-testing</name>
+    <name>Rune Testing</name>
 
     <groupId>com.regnosys</groupId>
     <artifactId>rosetta-testing</artifactId>
     <packaging>jar</packaging>
     <version>0.0.0.master-SNAPSHOT</version>
     <url>https://github.com/REGnosys/rosetta-testing</url>
+    <inceptionYear>2024</inceptionYear>
 
     <scm>
         <developerConnection>scm:git:https://github.com/REGnosys/rosetta-testing</developerConnection>
@@ -492,6 +493,33 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.4.0</version>
+                <configuration>
+                    <verbose>false</verbose>
+                    <addSvnKeyWords>true</addSvnKeyWords>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <licenseName>apache_v2</licenseName>
+                            <organizationName>REGnosys</organizationName>
+                            <projectName>Rune Common</projectName>
+                            <roots>
+                                <root>src/main/java</root>
+                                <root>src/test</root>
+                            </roots>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
