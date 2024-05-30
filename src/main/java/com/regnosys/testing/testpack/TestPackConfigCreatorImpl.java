@@ -1,6 +1,8 @@
 package com.regnosys.testing.testpack;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
@@ -65,6 +67,12 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     @Inject
     ReferenceConfig referenceConfig;
 
+    private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
+
+    private final static ObjectWriter JSON_OBJECT_WRITER =
+            JSON_OBJECT_MAPPER
+                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+                    .writerWithDefaultPrettyPrinter();
 
     /**
      * Generates pipeline and test-pack config files.
@@ -196,7 +204,6 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     }
 
     protected List<TestPackModel> createReportTestPacks(List<RosettaReport> reports, List<TestPackDef> testPackDefs, ImmutableMultimap<Class<?>, String> reportIncludedTestPack, ImmutableMultimap<String, Class<?>> testPackIncludedReports) {
-        ObjectMapper jsonObjectMapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         Injector injector = new RosettaTestingInjectorProvider().getInjector();
 
         return testPackDefs.stream()
@@ -205,7 +212,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     return applicableReports.stream()
                             .map(report -> {
                                 List<String> targetLocations = testPack.getInputPaths();
-                                return createTestPack(testPack.getName(), targetLocations, report, jsonObjectMapper, injector);
+                                return createTestPack(testPack.getName(), targetLocations, report, injector);
                             }).collect(Collectors.toList());
                 }).flatMap(List::stream)
                 .collect(Collectors.toList());
@@ -243,7 +250,6 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     }
 
     protected TestPackModel createTestPack(String testPackName, List<String> targetLocations, RosettaReport report,
-                                           ObjectMapper jsonObjectMapper,
                                            Injector injector) {
         ModelReportId reportId = toModelReportId(report);
         PipelineModel.Transform transform = getTransform(report);
@@ -266,9 +272,9 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                             outputPath.toString(),
                             inputType,
                             functionClass,
-                            jsonObjectMapper,
                             injector,
                             transform,
+                            null,
                             null);
                 })
                 .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
@@ -285,14 +291,14 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
             String outputPath,
             Class<IN> inputType,
             Class<?> functionClass,
-            ObjectMapper objectMapper,
             Injector injector,
             PipelineModel.Transform transform,
+            PipelineModel pipelineModel,
             ImmutableMap<String, String> functionSchemaMap) {
 
         URL inputFileUrl = getInputFileUrl(inputPath);
         assert inputFileUrl != null;
-        IN input = readFile(inputFileUrl, objectMapper, inputType);
+        IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
         IN resolvedInput = resolveReferences(input);
 
         Object functionInstance = injector.getInstance(functionClass);
@@ -310,7 +316,8 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
             if (transform.getType().equals(TransformType.PROJECTION)) {
                 //it is projection so we look up the function class, and find the relevant schema
                 URL schemaUrl = Resources.getResource(Objects.requireNonNull(functionSchemaMap.get(transform.getFunction())));
-                String serializedOutput = objectMapper.writeValueAsString(output);
+                ObjectWriter objectWriter = TestPackUtils.getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(JSON_OBJECT_WRITER);
+                String serializedOutput = objectWriter.writeValueAsString(output);
                 Boolean schemaValidationFailure = isSchemaValidationFailure(schemaUrl, serializedOutput);
                 assertions = new TestPackModel.SampleModel.Assertions(actualValidationFailures, schemaValidationFailure, false);
             } else {
@@ -371,7 +378,6 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     }
 
     protected List<TestPackModel> createProjectionTestPacks(List<PipelineModel> projectionPipelines, List<RosettaReport> reports, List<TestPackModel> reportTestPacks, ImmutableMap<String, String> functionSchemaMap) {
-        ObjectMapper jsonObjectMapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         Injector injector = new RosettaTestingInjectorProvider().getInjector();
         return projectionPipelines.stream()
                 .map(p ->
@@ -382,7 +388,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                                                 TransformType.PROJECTION,
                                                 createIdSuffix(p.getTransform().getFunction()),
                                                 upstreamReportTestPack.getSamples().stream()
-                                                        .map(s -> toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, p.getTransform(), jsonObjectMapper, injector, functionSchemaMap))
+                                                        .map(s -> toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, p, injector, functionSchemaMap))
                                                         .collect(Collectors.toList()))
                                 )
                                 .collect(Collectors.toList()))
@@ -398,13 +404,13 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .orElseThrow();
     }
 
-    protected TestPackModel.SampleModel toProjectionSample(String testPackName, ModelReportId reportId, TestPackModel.SampleModel reportSample, PipelineModel.Transform transform, ObjectMapper jsonObjectMapper, Injector injector, ImmutableMap<String, String> functionSchemaMap) {
+    protected TestPackModel.SampleModel toProjectionSample(String testPackName, ModelReportId reportId, TestPackModel.SampleModel reportSample, PipelineModel pipelineModel, Injector injector, ImmutableMap<String, String> functionSchemaMap) {
         String projectionInputPath = reportSample.getOutputPath();
         Path projectionTestPackPath = RegReportPaths.getOutputDataSetPath(PROJECTION_OUTPUT_PATH, reportId, testPackName);
         String outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, Path.of(projectionInputPath)).toString();
-        Class<? extends RosettaModelObject> inputType = getClass(transform.getInputType());
+        Class<? extends RosettaModelObject> inputType = getClass(pipelineModel.getTransform().getInputType());
 //        Class<? extends RosettaModelObject> outputType = getClass(transform.getOutputType());
-        Class<?> functionClass = getClass(transform.getFunction());
+        Class<?> functionClass = getClass(pipelineModel.getTransform().getFunction());
 //        return new TestPackModel.SampleModel(reportSample.getId(), reportSample.getName(), projectionInputPath, outputPath, new TestPackModel.SampleModel.Assertions(0, false, false));
         return generateReportTestPackSample(
                 reportSample.getId(),
@@ -413,9 +419,9 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 outputPath,
                 inputType,
                 functionClass,
-                jsonObjectMapper,
                 injector,
-                transform,
+                pipelineModel.getTransform(),
+                pipelineModel,
                 functionSchemaMap);
     }
 
