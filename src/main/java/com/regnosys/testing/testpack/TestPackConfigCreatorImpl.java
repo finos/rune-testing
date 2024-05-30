@@ -57,7 +57,11 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
      * @param injector          - model runtime guice injector
      */
     @Override
-    public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, List<TestPackDef> testPackDefs, ImmutableMap<Class<?>, String> functionSchemaMap, Injector injector) {
+    public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths,
+                                                TestPackFilter filter,
+                                                List<TestPackDef> testPackDefs,
+                                                ImmutableMap<Class<?>, String> functionSchemaMap,
+                                                Injector injector) {
         if (TEST_WRITE_BASE_PATH.isEmpty()) {
             LOGGER.error("TEST_WRITE_BASE_PATH not set");
             return;
@@ -234,11 +238,11 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     Path outputPath = RegReportPaths.getReportExpectationFilePath(outputRelativePath, reportId, testPackName, inputPath);
                     String baseFileName = getBaseFileName(inputPath);
                     String displayName = baseFileName.replace("-", " ");
-                    
+
                     Pair<String, Assertions> result = functionRunner.run(inputPath);
                     String serialisedOutput = result.left(); // TODO write file
                     Assertions assertions = result.right();
-                    
+
                     return new SampleModel(baseFileName.toLowerCase(), displayName, inputPath.toString(), outputPath.toString(), assertions);
                 })
                 .sorted(Comparator.comparing(SampleModel::getId))
@@ -269,7 +273,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                                                     .collect(Collectors.toList()))
                             )
                             .collect(Collectors.toList());
-                        })
+                })
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
@@ -286,11 +290,11 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         Path projectionInputPath = Path.of(reportSample.getOutputPath());
         Path projectionTestPackPath = RegReportPaths.getOutputDataSetPath(PROJECTION_OUTPUT_PATH, reportId, testPackName);
         Path outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, projectionInputPath);
-        
+
         Pair<String, Assertions> result = functionRunner.run(projectionInputPath);
         String serialisedOutput = result.left(); // TODO write file
         Assertions assertions = result.right();
-        
+
         return new SampleModel(reportSample.getId(), reportSample.getName(), projectionInputPath.toString(), outputPath.toString(), assertions);
     }
 
