@@ -17,7 +17,6 @@
     <packaging>jar</packaging>
     <version>0.0.0.master-SNAPSHOT</version>
     <url>https://github.com/REGnosys/rosetta-testing</url>
-    <inceptionYear>2024</inceptionYear>
 
     <scm>
         <developerConnection>scm:git:https://github.com/REGnosys/rosetta-testing</developerConnection>
@@ -502,7 +501,18 @@
                 <version>2.4.0</version>
                 <configuration>
                     <verbose>false</verbose>
-                    <addSvnKeyWords>true</addSvnKeyWords>
+                    <licenseName>apache_v2</licenseName>
+                    <organizationName>REGnosys</organizationName>
+                    <projectName>Rune Testing</projectName>
+                    <inceptionYear>2022</inceptionYear>
+                    <roots>
+                        <root>src/main/java</root>
+                        <root>src/test</root>
+                    </roots>
+                    <includes>
+                        <include>**/*.java</include>
+                        <include>**/*.xml</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>
@@ -511,15 +521,6 @@
                             <goal>update-file-header</goal>
                         </goals>
                         <phase>process-sources</phase>
-                        <configuration>
-                            <licenseName>apache_v2</licenseName>
-                            <organizationName>REGnosys</organizationName>
-                            <projectName>Rune Common</projectName>
-                            <roots>
-                                <root>src/main/java</root>
-                                <root>src/test</root>
-                            </roots>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
