@@ -1,5 +1,6 @@
 package com.regnosys.testing.testpack;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -32,6 +33,7 @@ import com.rosetta.model.lib.ModelReportId;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.util.DottedPath;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -295,7 +297,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
             PipelineModel.Transform transform,
             PipelineModel pipelineModel,
             ImmutableMap<String, String> functionSchemaMap) {
-
+        ObjectWriter objectWriter = TestPackUtils.getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(JSON_OBJECT_WRITER);
         URL inputFileUrl = getInputFileUrl(inputPath);
         assert inputFileUrl != null;
         IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
@@ -314,12 +316,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
 
             TestPackModel.SampleModel.Assertions assertions;
             if (transform.getType().equals(TransformType.PROJECTION)) {
-                //it is projection so we look up the function class, and find the relevant schema
-                URL schemaUrl = Resources.getResource(Objects.requireNonNull(functionSchemaMap.get(transform.getFunction())));
-                ObjectWriter objectWriter = TestPackUtils.getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(JSON_OBJECT_WRITER);
-                String serializedOutput = objectWriter.writeValueAsString(output);
-                Boolean schemaValidationFailure = isSchemaValidationFailure(schemaUrl, serializedOutput);
-                assertions = new TestPackModel.SampleModel.Assertions(actualValidationFailures, schemaValidationFailure, false);
+                assertions = processProjectionSchemaValidationFailures(transform, functionSchemaMap, objectWriter, output, actualValidationFailures);
             } else {
                 assertions = new TestPackModel.SampleModel.Assertions(actualValidationFailures, null, false);
             }
@@ -334,6 +331,16 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
             LOGGER.error("Exception occurred running sample creation", e);
             return new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputPath, outputPath, new TestPackModel.SampleModel.Assertions(0, null, true));
         }
+    }
+
+    private <OUT extends RosettaModelObject> TestPackModel.SampleModel.@NotNull Assertions processProjectionSchemaValidationFailures(PipelineModel.Transform transform, ImmutableMap<String, String> functionSchemaMap, ObjectWriter objectWriter, OUT output, int actualValidationFailures) throws JsonProcessingException, SAXException {
+        TestPackModel.SampleModel.Assertions assertions;
+        //it is projection so we look up the function class, and find the relevant schema
+        URL schemaUrl = Resources.getResource(Objects.requireNonNull(functionSchemaMap.get(transform.getFunction())));
+        String serializedOutput = objectWriter.writeValueAsString(output);
+        Boolean schemaValidationFailure = isSchemaValidationFailure(schemaUrl, serializedOutput);
+        assertions = new TestPackModel.SampleModel.Assertions(actualValidationFailures, schemaValidationFailure, false);
+        return assertions;
     }
 
     //TODO: to be used for projection
