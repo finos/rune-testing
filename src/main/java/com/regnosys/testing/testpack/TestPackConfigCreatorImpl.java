@@ -415,9 +415,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         Path projectionTestPackPath = RegReportPaths.getOutputDataSetPath(PROJECTION_OUTPUT_PATH, reportId, testPackName);
         String outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, Path.of(projectionInputPath)).toString();
         Class<? extends RosettaModelObject> inputType = getClass(pipelineModel.getTransform().getInputType());
-//        Class<? extends RosettaModelObject> outputType = getClass(transform.getOutputType());
         Class<?> functionClass = getClass(pipelineModel.getTransform().getFunction());
-//        return new TestPackModel.SampleModel(reportSample.getId(), reportSample.getName(), projectionInputPath, outputPath, new TestPackModel.SampleModel.Assertions(0, false, false));
         return generateReportTestPackSample(
                 reportSample.getId(),
                 reportSample.getName(),
