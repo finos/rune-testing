@@ -33,7 +33,6 @@ import com.rosetta.model.lib.ModelReportId;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.util.DottedPath;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -333,7 +332,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         }
     }
 
-    private <OUT extends RosettaModelObject> TestPackModel.SampleModel.@NotNull Assertions processProjectionSchemaValidationFailures(PipelineModel.Transform transform, ImmutableMap<String, String> functionSchemaMap, ObjectWriter objectWriter, OUT output, int actualValidationFailures) throws JsonProcessingException, SAXException {
+    private <OUT extends RosettaModelObject> TestPackModel.SampleModel.Assertions processProjectionSchemaValidationFailures(PipelineModel.Transform transform, ImmutableMap<String, String> functionSchemaMap, ObjectWriter objectWriter, OUT output, int actualValidationFailures) throws JsonProcessingException, SAXException {
         TestPackModel.SampleModel.Assertions assertions;
         //it is projection so we look up the function class, and find the relevant schema
         URL schemaUrl = Resources.getResource(Objects.requireNonNull(functionSchemaMap.get(transform.getFunction())));
