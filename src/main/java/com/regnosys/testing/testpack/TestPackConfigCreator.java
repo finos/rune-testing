@@ -2,6 +2,7 @@ package com.regnosys.testing.testpack;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.ImplementedBy;
+import com.google.inject.Injector;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public interface TestPackConfigCreator {
      * @param rosettaPaths - list of folders that contain rosetta model files, e.g. "drr/rosetta"
      * @param filter       - provides filters to include or exclude
      * @param testPackDefs - provides list of test-pack information such as test pack name, input type and sample input paths
+     * @param injector     - model runtime guice injector
      */
-    void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, List<TestPackDef> testPackDefs);
+    void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, List<TestPackDef> testPackDefs, Injector injector);
 }

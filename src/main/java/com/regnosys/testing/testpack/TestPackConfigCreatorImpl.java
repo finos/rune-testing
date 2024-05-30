@@ -5,47 +5,28 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.io.Resources;
 import com.google.inject.Injector;
-import com.regnosys.rosetta.common.hashing.ReferenceConfig;
-import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.reports.RegReportPaths;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.transform.TransformType;
-import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
-import com.regnosys.rosetta.common.validation.ValidationReport;
+import com.regnosys.rosetta.common.util.Pair;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.rosetta.RosettaNamed;
 import com.regnosys.rosetta.rosetta.RosettaReport;
 import com.regnosys.rosetta.rosetta.RosettaType;
 import com.regnosys.rosetta.rosetta.simple.Function;
-import com.regnosys.testing.RosettaTestingInjectorProvider;
 import com.regnosys.testing.reports.FileNameProcessor;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
 import com.rosetta.model.lib.ModelReportId;
 import com.rosetta.model.lib.RosettaModelObject;
-import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.util.DottedPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
-import javax.xml.XMLConstants;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,6 +34,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel;
+import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.Assertions;
 import static com.regnosys.rosetta.common.transform.TestPackUtils.*;
 import static com.regnosys.testing.TestingExpectationUtil.TEST_WRITE_BASE_PATH;
 import static com.regnosys.testing.projection.ProjectionPaths.getProjectionDataItemOutputPath;
@@ -60,12 +43,12 @@ import static com.regnosys.testing.projection.ProjectionPaths.getProjectionDataI
 public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     private final Logger LOGGER = LoggerFactory.getLogger(TestPackConfigCreatorImpl.class);
 
+    protected static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
+
     @Inject
-    private TestPackModelHelper modelHelper;
+    TestPackModelHelper modelHelper;
     @Inject
-    RosettaTypeValidator typeValidator;
-    @Inject
-    ReferenceConfig referenceConfig;
+    TestPackFunctionRunnerProvider functionRunnerProvider;
 
     /**
      * Generates pipeline and test-pack config files.
@@ -73,9 +56,10 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
      * @param rosettaPaths - list of folders that contain rosetta model files, e.g. "drr/rosetta"
      * @param filter       - provides filters to include or exclude
      * @param testPackDefs - provides list of test-pack information such as test pack name, input type and sample input paths
+     * @param injector     - model runtime guice injector
      */
     @Override
-    public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, List<TestPackDef> testPackDefs) {
+    public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, TestPackFilter filter, List<TestPackDef> testPackDefs, Injector injector) {
         if (TEST_WRITE_BASE_PATH.isEmpty()) {
             LOGGER.error("TEST_WRITE_BASE_PATH not set");
             return;
@@ -95,7 +79,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         reportPipelines.forEach(p -> testPackConfigWriter.writeConfigFile(writePath, REPORT_CONFIG_PATH, p.getId(), p));
 
         LOGGER.info("Report test pack config");
-        List<TestPackModel> reportTestPacks = createReportTestPacks(reports, testPackDefs, filter.getReportTestPackMap(), filter.getTestPackReportMap());
+        List<TestPackModel> reportTestPacks = createReportTestPacks(reports, testPackDefs, filter, injector);
         reportTestPacks.forEach(testPackModel -> testPackConfigWriter.sortAndWriteConfigFile(writePath, REPORT_CONFIG_PATH, testPackModel));
 
         LOGGER.info("Projection pipeline config");
@@ -106,7 +90,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         projectionPipelines.forEach(p -> testPackConfigWriter.writeConfigFile(writePath, PROJECTION_CONFIG_PATH, p.getId(), p));
 
         LOGGER.info("Projection test pack config");
-        List<TestPackModel> projectionTestPacks = createProjectionTestPacks(projectionPipelines, reports, reportTestPacks);
+        List<TestPackModel> projectionTestPacks = createProjectionTestPacks(projectionPipelines, reports, reportTestPacks, injector);
         projectionTestPacks.forEach(testPackModel -> testPackConfigWriter.sortAndWriteConfigFile(writePath, PROJECTION_CONFIG_PATH, testPackModel));
     }
 
@@ -196,18 +180,12 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 rosettaReport.getRegulatoryBody().getCorpusList().stream().map(RosettaNamed::getName).toArray(String[]::new));
     }
 
-    protected List<TestPackModel> createReportTestPacks(List<RosettaReport> reports, List<TestPackDef> testPackDefs, ImmutableMultimap<Class<?>, String> reportIncludedTestPack, ImmutableMultimap<String, Class<?>> testPackIncludedReports) {
-        ObjectMapper jsonObjectMapper = RosettaObjectMapper.getNewRosettaObjectMapper();
-        Injector injector = new RosettaTestingInjectorProvider().getInjector();
-
+    protected List<TestPackModel> createReportTestPacks(List<RosettaReport> reports, List<TestPackDef> testPackDefs, TestPackFilter filter, Injector injector) {
         return testPackDefs.stream()
                 .map(testPack -> {
-                    List<RosettaReport> applicableReports = getApplicableReports(reports, testPack.getName(), testPack.getInputType(), reportIncludedTestPack, testPackIncludedReports);
+                    List<RosettaReport> applicableReports = getApplicableReports(reports, testPack.getName(), testPack.getInputType(), filter.getReportTestPackMap(), filter.getTestPackReportMap());
                     return applicableReports.stream()
-                            .map(report -> {
-                                List<String> targetLocations = testPack.getInputPaths();
-                                return createTestPack(testPack.getName(), targetLocations, report, jsonObjectMapper, injector);
-                            }).collect(Collectors.toList());
+                            .map(report -> createReportTestPack(testPack, report, injector)).collect(Collectors.toList());
                 }).flatMap(List::stream)
                 .collect(Collectors.toList());
     }
@@ -225,6 +203,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unchecked")
     protected Class<? extends RosettaModelObject> getClass(String name) {
         try {
             return (Class<? extends RosettaModelObject>) Class.forName(name);
@@ -243,16 +222,13 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         return applicableReportsForTestPack.isEmpty() || applicableReportsForTestPack.contains(clazz);
     }
 
-    protected TestPackModel createTestPack(String testPackName, List<String> targetLocations, RosettaReport report,
-                                           ObjectMapper jsonObjectMapper,
-                                           Injector injector) {
+    protected TestPackModel createReportTestPack(TestPackDef testPack, RosettaReport report, Injector injector) {
         ModelReportId reportId = toModelReportId(report);
         PipelineModel.Transform transform = getTransform(report);
-        Class<? extends RosettaModelObject> inputType = getClass(transform.getInputType());
-        Class<? extends RosettaModelObject> outputType = getClass(transform.getOutputType());
-        Class<?> functionClass = getClass(transform.getFunction());
+        TestPackFunctionRunner functionRunner = functionRunnerProvider.create(transform, injector);
 
-        List<TestPackModel.SampleModel> sampleModelLists = targetLocations.stream()
+        String testPackName = testPack.getName();
+        List<SampleModel> sampleModelLists = testPack.getInputPaths().stream()
                 .map(targetLocation -> {
                     String fileName = FileNameProcessor.removeFilePrefix(targetLocation);
                     Path outputRelativePath = RegReportPaths.getDefault().getOutputRelativePath();
@@ -260,103 +236,16 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     Path outputPath = RegReportPaths.getReportExpectationFilePath(outputRelativePath, reportId, testPackName, inputPath);
                     String baseFileName = getBaseFileName(inputPath);
                     String displayName = baseFileName.replace("-", " ");
-                    return returnCorrectedTestPackSample(
-                            baseFileName.toLowerCase(),
-                            displayName,
-                            inputPath.toString(),
-                            outputPath.toString(),
-                            inputType,
-                            outputType,
-                            functionClass,
-                            jsonObjectMapper,
-                            injector);
+                    Pair<String, Assertions> result = functionRunner.run(inputPath);
+                    String serialisedOutput = result.left(); // TODO write file
+                    Assertions assertions = result.right();
+                    return new SampleModel(baseFileName.toLowerCase(), displayName, inputPath.toString(), outputPath.toString(), assertions);
                 })
-                .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
+                .sorted(Comparator.comparing(SampleModel::getId))
                 .collect(Collectors.toList());
 
         String formattedFunctionName = reportId.joinRegulatoryReference("-").toLowerCase();
         return TestPackUtils.createTestPack(testPackName, TransformType.REPORT, formattedFunctionName, sampleModelLists);
-    }
-
-    private <IN extends RosettaModelObject, OUT extends RosettaModelObject> TestPackModel.SampleModel returnCorrectedTestPackSample(
-            String baseFileName,
-            String displayName,
-            String inputPath,
-            String outputPath,
-            Class<IN> inputType,
-            Class<OUT> outputType,
-            Class<?> functionClass,
-            ObjectMapper objectMapper,
-            Injector injector) {
-
-        URL inputFileUrl = getInputFileUrl(inputPath);
-        assert inputFileUrl != null;
-        IN input = readFile(inputFileUrl, objectMapper, inputType);
-        IN resolvedInput = resolveReferences(input);
-
-        Object functionInstance = injector.getInstance(functionClass);
-        try {
-            Method evaluateMethod = functionClass.getMethod("evaluate", inputType);
-
-            OUT output = (OUT) evaluateMethod.invoke(functionInstance, resolvedInput);
-
-            //Serialised Output: //TODO: To be used for projection
-//            String serializedOutput = objectMapper.writeValueAsString(output);
-
-            // validation failures
-            ValidationReport validationReport = typeValidator.runProcessStep(output.getType(), output);
-            validationReport.logReport();
-            int actualValidationFailures = validationReport.validationFailures().size();
-
-            TestPackModel.SampleModel.Assertions assertions =
-                    new TestPackModel.SampleModel.Assertions(actualValidationFailures, null, false);
-
-            return new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputPath, outputPath, assertions);
-
-        } catch (NoSuchMethodException e) {
-            LOGGER.error("Evaluate method unsuccessfully invoked. Method not  found. ");
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            LOGGER.error("Exception occurred running sample creation", e);
-            return new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputPath, outputPath, new TestPackModel.SampleModel.Assertions(0, null, true));
-        }
-    }
-
-    //TODO: to be used for projection
-    private Boolean isSchemaValidationFailure(URL xsdSchema, String actualXml) throws SAXException {
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
-        schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
-        Schema schema = schemaFactory.newSchema(xsdSchema);
-        Validator xsdValidator = schema.newValidator();
-        if (xsdValidator == null) {
-            return null;
-        }
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(actualXml.getBytes(StandardCharsets.UTF_8))) {
-            xsdValidator.validate(new StreamSource(inputStream));
-            return true;
-        } catch (SAXException e) {
-            LOGGER.error("Schema validation failed: {}", e.getMessage());
-            return false;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private static URL getInputFileUrl(String inputFile) {
-        try {
-            return Resources.getResource(inputFile);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    }
-
-    private <T extends RosettaModelObject> T resolveReferences(T modelObject) {
-        RosettaModelObjectBuilder builder = modelObject.toBuilder();
-        new ReferenceResolverProcessStep(referenceConfig).runProcessStep(modelObject.getType(), builder);
-        return (T) builder.build();
     }
 
     private String getBaseFileName(Path inputPath) {
@@ -365,20 +254,23 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .replace("-report", "");
     }
 
-    protected List<TestPackModel> createProjectionTestPacks(List<PipelineModel> projectionPipelines, List<RosettaReport> reports, List<TestPackModel> reportTestPacks) {
+    protected List<TestPackModel> createProjectionTestPacks(List<PipelineModel> projectionPipelines, List<RosettaReport> reports, List<TestPackModel> reportTestPacks, Injector injector) {
         return projectionPipelines.stream()
-                .map(p ->
-                        reportTestPacks.stream()
-                                .filter(rtp -> rtp.getPipelineId().equals(p.getUpstreamPipelineId()))
-                                .map(upstreamReportTestPack ->
-                                        TestPackUtils.createTestPack(upstreamReportTestPack.getName(),
-                                                TransformType.PROJECTION,
-                                                createIdSuffix(p.getTransform().getFunction()),
-                                                upstreamReportTestPack.getSamples().stream()
-                                                        .map(s -> toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s))
-                                                        .collect(Collectors.toList()))
-                                )
-                                .collect(Collectors.toList()))
+                .map(p -> {
+                    PipelineModel.Serialisation outputSerialisation = p.getOutputSerialisation();
+                    TestPackFunctionRunner functionRunner = functionRunnerProvider.create(p.getTransform(), outputSerialisation, injector);
+                    return reportTestPacks.stream()
+                            .filter(rtp -> rtp.getPipelineId().equals(p.getUpstreamPipelineId()))
+                            .map(upstreamReportTestPack ->
+                                    TestPackUtils.createTestPack(upstreamReportTestPack.getName(),
+                                            TransformType.PROJECTION,
+                                            createIdSuffix(p.getTransform().getFunction()),
+                                            upstreamReportTestPack.getSamples().stream()
+                                                    .map(s -> toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, functionRunner))
+                                                    .collect(Collectors.toList()))
+                            )
+                            .collect(Collectors.toList());
+                        })
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
@@ -391,11 +283,14 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .orElseThrow();
     }
 
-    protected TestPackModel.SampleModel toProjectionSample(String testPackName, ModelReportId reportId, TestPackModel.SampleModel reportSample) {
-        String projectionInputPath = reportSample.getOutputPath();
+    protected SampleModel toProjectionSample(String testPackName, ModelReportId reportId, SampleModel reportSample, TestPackFunctionRunner functionRunner) {
+        Path projectionInputPath = Path.of(reportSample.getOutputPath());
         Path projectionTestPackPath = RegReportPaths.getOutputDataSetPath(PROJECTION_OUTPUT_PATH, reportId, testPackName);
-        String outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, Path.of(projectionInputPath)).toString();
-        return new TestPackModel.SampleModel(reportSample.getId(), reportSample.getName(), projectionInputPath, outputPath, new TestPackModel.SampleModel.Assertions(0, false, false));
+        Path outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, projectionInputPath);
+        Pair<String, Assertions> result = functionRunner.run(projectionInputPath);
+        String serialisedOutput = result.left(); // TODO write file
+        Assertions assertions = result.right();
+        return new SampleModel(reportSample.getId(), reportSample.getName(), projectionInputPath.toString(), outputPath.toString(), assertions);
     }
 
     protected String directoryName(String name) {
