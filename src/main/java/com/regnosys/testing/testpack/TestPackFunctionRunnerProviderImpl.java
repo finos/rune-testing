@@ -47,18 +47,18 @@ class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvid
     }
 
     @Override
-    public TestPackFunctionRunner create(PipelineModel.Transform transform, PipelineModel.Serialisation outputSerialisation, ImmutableMap<Class<?>, String> functionSchemaMap, Injector injector) {
+    public TestPackFunctionRunner create(PipelineModel.Transform transform, PipelineModel.Serialisation outputSerialisation, ImmutableMap<Class<?>, String> outputSchemaMap, Injector injector) {
         Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
-        Class<?> functionType = toClass(transform.getOutputType());
+        Class<?> outputType = toClass(transform.getOutputType());
         // Output serialisation
         ObjectWriter outputObjectWriter = getObjectWriter(outputSerialisation).orElse(JSON_OBJECT_WRITER);
         // XSD validation
-        Validator xsdValidator = getXsdValidator(functionType, functionSchemaMap);
-        return createTestPackFunctionRunner(functionType, inputType, injector, outputObjectWriter, xsdValidator);
+        Validator xsdValidator = getXsdValidator(outputType, outputSchemaMap);
+        return createTestPackFunctionRunner(outputType, inputType, injector, outputObjectWriter, xsdValidator);
     }
-    
-    private <IN extends RosettaModelObject> TestPackFunctionRunner createTestPackFunctionRunner(Class<?> functionType, Class<IN> inputType, Injector injector, ObjectWriter outputObjectWriter, Validator xsdValidator) {
-        Function<IN, RosettaModelObject> transformFunction = getTransformFunction(functionType, inputType, injector);
+
+    private <IN extends RosettaModelObject> TestPackFunctionRunner createTestPackFunctionRunner(Class<?> outputType, Class<IN> inputType, Injector injector, ObjectWriter outputObjectWriter, Validator xsdValidator) {
+        Function<IN, RosettaModelObject> transformFunction = getTransformFunction(outputType, inputType, injector);
         return new TestPackFunctionRunnerImpl<>(transformFunction, inputType, typeValidator, referenceConfig, outputObjectWriter, xsdValidator);
     }
 

@@ -12,5 +12,5 @@ public interface TestPackFunctionRunnerProvider {
     
     TestPackFunctionRunner create(Transform transform, Injector injector);
 
-    TestPackFunctionRunner create(Transform transform, Serialisation outputSerialisation, ImmutableMap<Class<?>, String> functionSchemaMap, Injector injector);
+    TestPackFunctionRunner create(Transform transform, Serialisation outputSerialisation, ImmutableMap<Class<?>, String> outputSchemaMap, Injector injector);
 }

@@ -54,14 +54,14 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
      * @param rosettaPaths      - list of folders that contain rosetta model files, e.g. "drr/rosetta"
      * @param filter            - provides filters to include or exclude
      * @param testPackDefs      - provides list of test-pack information such as test pack name, input type and sample input paths
-     * @param functionSchemaMap - function / xsd look up map
+     * @param outputSchemaMap - function / xsd look up map
      * @param injector          - model runtime guice injector
      */
     @Override
     public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths,
                                                 TestPackFilter filter,
                                                 List<TestPackDef> testPackDefs,
-                                                ImmutableMap<Class<?>, String> functionSchemaMap,
+                                                ImmutableMap<Class<?>, String> outputSchemaMap,
                                                 Injector injector) {
         if (TEST_WRITE_BASE_PATH.isEmpty()) {
             LOGGER.error("TEST_WRITE_BASE_PATH not set");
@@ -93,7 +93,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         projectionPipelines.forEach(p -> testPackConfigWriter.writeConfigFile(writePath, PROJECTION_CONFIG_PATH, p.getId(), p));
 
         LOGGER.info("Projection test pack config");
-        List<TestPackModel> projectionTestPacks = createProjectionTestPacks(projectionPipelines, reports, reportTestPacks, functionSchemaMap, injector);
+        List<TestPackModel> projectionTestPacks = createProjectionTestPacks(projectionPipelines, reports, reportTestPacks, outputSchemaMap, injector);
         projectionTestPacks.forEach(testPackModel -> testPackConfigWriter.sortAndWriteConfigFile(writePath, PROJECTION_CONFIG_PATH, testPackModel));
     }
 
@@ -259,10 +259,10 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .replace("-report", "");
     }
 
-    protected List<TestPackModel> createProjectionTestPacks(List<PipelineModel> projectionPipelines, List<RosettaReport> reports, List<TestPackModel> reportTestPacks, ImmutableMap<Class<?>, String> functionSchemaMap, Injector injector) {
+    protected List<TestPackModel> createProjectionTestPacks(List<PipelineModel> projectionPipelines, List<RosettaReport> reports, List<TestPackModel> reportTestPacks, ImmutableMap<Class<?>, String> outputSchemaMap, Injector injector) {
         return projectionPipelines.stream()
                 .map(p -> {
-                    TestPackFunctionRunner functionRunner = functionRunnerProvider.create(p.getTransform(), p.getOutputSerialisation(), functionSchemaMap, injector);
+                    TestPackFunctionRunner functionRunner = functionRunnerProvider.create(p.getTransform(), p.getOutputSerialisation(), outputSchemaMap, injector);
                     return reportTestPacks.stream()
                             .filter(rtp -> rtp.getPipelineId().equals(p.getUpstreamPipelineId()))
                             .map(upstreamReportTestPack ->
