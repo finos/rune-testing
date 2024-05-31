@@ -87,8 +87,8 @@ class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvid
         };
     }
 
-    private Validator getXsdValidator(Class<?> functionType, ImmutableMap<Class<?>, String> functionSchemaMap) {
-        URL schemaUrl = Optional.ofNullable(functionSchemaMap.get(functionType))
+    private Validator getXsdValidator(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
+        URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
                 .map(r -> Resources.getResource(r))
                 .orElse(null);
         if (schemaUrl == null) {

@@ -54,7 +54,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
      * @param rosettaPaths      - list of folders that contain rosetta model files, e.g. "drr/rosetta"
      * @param filter            - provides filters to include or exclude
      * @param testPackDefs      - provides list of test-pack information such as test pack name, input type and sample input paths
-     * @param outputSchemaMap - function / xsd look up map
+     * @param outputSchemaMap   - output Document type / xsd look up map
      * @param injector          - model runtime guice injector
      */
     @Override

@@ -13,15 +13,15 @@ public interface TestPackConfigCreator {
     /**
      * Generates pipeline and test-pack config files.
      *
-     * @param rosettaPaths      - list of folders that contain rosetta model files, e.g. "drr/rosetta"
-     * @param filter            - provides filters to include or exclude
-     * @param testPackDefs      - provides list of test-pack information such as test pack name, input type and sample input paths
-     * @param functionSchemaMap - function / xsd look up map
-     * @param injector          - model runtime guice injector
+     * @param rosettaPaths    - list of folders that contain rosetta model files, e.g. "drr/rosetta"
+     * @param filter          - provides filters to include or exclude
+     * @param testPackDefs    - provides list of test-pack information such as test pack name, input type and sample input paths
+     * @param outputSchemaMap - output Document type / xsd look up map
+     * @param injector        - model runtime guice injector
      */
-    void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths, 
-                                         TestPackFilter filter, 
-                                         List<TestPackDef> testPackDefs, 
-                                         ImmutableMap<Class<?>, String> functionSchemaMap, 
+    void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths,
+                                         TestPackFilter filter,
+                                         List<TestPackDef> testPackDefs,
+                                         ImmutableMap<Class<?>, String> outputSchemaMap,
                                          Injector injector);
 }
