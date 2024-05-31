@@ -56,7 +56,6 @@ class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestP
     @Override
     public Pair<String, Assertions> run(Path inputPath) {
         URL inputFileUrl = Resources.getResource(inputPath.toString());
-        //assert inputFileUrl != null; // TODO handle nulls (without assert)
         IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
         RosettaModelObject output;
         try {

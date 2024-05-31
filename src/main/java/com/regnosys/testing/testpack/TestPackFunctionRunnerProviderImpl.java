@@ -49,7 +49,7 @@ class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvid
     @Override
     public TestPackFunctionRunner create(PipelineModel.Transform transform, PipelineModel.Serialisation outputSerialisation, ImmutableMap<Class<?>, String> functionSchemaMap, Injector injector) {
         Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
-        Class<?> functionType = toClass(transform.getFunction());
+        Class<?> functionType = toClass(transform.getOutputType());
         // Output serialisation
         ObjectWriter outputObjectWriter = getObjectWriter(outputSerialisation).orElse(JSON_OBJECT_WRITER);
         // XSD validation

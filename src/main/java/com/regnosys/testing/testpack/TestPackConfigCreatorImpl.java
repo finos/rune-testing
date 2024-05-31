@@ -37,6 +37,7 @@ import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel;
 import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.Assertions;
 import static com.regnosys.rosetta.common.transform.TestPackUtils.*;
 import static com.regnosys.testing.TestingExpectationUtil.TEST_WRITE_BASE_PATH;
+import static com.regnosys.testing.TestingExpectationUtil.writeFile;
 import static com.regnosys.testing.projection.ProjectionPaths.getProjectionDataItemOutputPath;
 
 public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
@@ -240,7 +241,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     String displayName = baseFileName.replace("-", " ");
 
                     Pair<String, Assertions> result = functionRunner.run(inputPath);
-                    String serialisedOutput = result.left(); // TODO write file
+                    writeOutputFile(outputPath, result.left());
                     Assertions assertions = result.right();
 
                     return new SampleModel(baseFileName.toLowerCase(), displayName, inputPath.toString(), outputPath.toString(), assertions);
@@ -292,7 +293,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
         Path outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, projectionInputPath);
 
         Pair<String, Assertions> result = functionRunner.run(projectionInputPath);
-        String serialisedOutput = result.left(); // TODO write file
+        writeOutputFile(outputPath, result.left());
         Assertions assertions = result.right();
 
         return new SampleModel(reportSample.getId(), reportSample.getName(), projectionInputPath.toString(), outputPath.toString(), assertions);
@@ -303,5 +304,9 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .replace(" ", "-")
                 .replace("_", "-")
                 .trim().toLowerCase();
+    }
+
+    private void writeOutputFile(Path outputPath, String serialisedOutput) {
+        writeFile(TEST_WRITE_BASE_PATH.get().resolve(outputPath), serialisedOutput, true);
     }
 }
