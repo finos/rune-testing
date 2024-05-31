@@ -2,7 +2,7 @@
 
 <!--
   #%L
-  Rune Testing
+  Rosetta Testing
   %%
   Copyright (C) 2022 - 2024 REGnosys
   %%
@@ -30,7 +30,7 @@
         <version>5</version>
     </parent>
 
-    <name>Rune Testing</name>
+    <name>Rosetta Testing</name>
 
     <groupId>com.regnosys</groupId>
     <artifactId>rosetta-testing</artifactId>
@@ -523,7 +523,7 @@
                     <verbose>false</verbose>
                     <licenseName>apache_v2</licenseName>
                     <organizationName>REGnosys</organizationName>
-                    <projectName>Rune Testing</projectName>
+                    <projectName>Rosetta Testing</projectName>
                     <inceptionYear>2022</inceptionYear>
                     <roots>
                         <root>src/main/java</root>

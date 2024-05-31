@@ -2,7 +2,7 @@ package com.regnosys.testing.schemeimport.iso.currency;
 
 /*-
  * #%L
- * Rune Testing
+ * Rosetta Testing
  * %%
  * Copyright (C) 2022 - 2024 REGnosys
  * %%
