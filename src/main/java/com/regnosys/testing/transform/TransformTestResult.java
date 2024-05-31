@@ -1,7 +1,7 @@
 package com.regnosys.testing.transform;
 
 /*-
- * ==============
+ * ===============
  * Rosetta Testing
  * ===============
  * Copyright (C) 2022 - 2024 REGnosys
@@ -17,7 +17,7 @@ package com.regnosys.testing.transform;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * ==============
+ * ===============
  */
 
 import com.regnosys.rosetta.common.transform.TestPackModel;
