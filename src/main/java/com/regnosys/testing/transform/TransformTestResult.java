@@ -2,7 +2,7 @@ package com.regnosys.testing.transform;
 
 /*-
  * ===============
- * Rosetta Testing
+ * Rune Testing
  * ===============
  * Copyright (C) 2022 - 2024 REGnosys
  * ===============
