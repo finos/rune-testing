@@ -1,5 +1,25 @@
 package com.regnosys.testing.testpack;
 
+/*-
+ * ===============
+ * Rosetta Testing
+ * ===============
+ * Copyright (C) 2022 - 2024 REGnosys
+ * ===============
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ===============
+ */
+
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -54,11 +74,11 @@ class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvid
         ObjectWriter outputObjectWriter = getObjectWriter(outputSerialisation).orElse(JSON_OBJECT_WRITER);
         // XSD validation
         Validator xsdValidator = getXsdValidator(outputType, outputSchemaMap);
-        return createTestPackFunctionRunner(outputType, inputType, injector, outputObjectWriter, xsdValidator);
+        return createTestPackFunctionRunner(toClass(transform.getFunction()), inputType, injector, outputObjectWriter, xsdValidator);
     }
 
-    private <IN extends RosettaModelObject> TestPackFunctionRunner createTestPackFunctionRunner(Class<?> outputType, Class<IN> inputType, Injector injector, ObjectWriter outputObjectWriter, Validator xsdValidator) {
-        Function<IN, RosettaModelObject> transformFunction = getTransformFunction(outputType, inputType, injector);
+    private <IN extends RosettaModelObject> TestPackFunctionRunner createTestPackFunctionRunner(Class<?> function, Class<IN> inputType, Injector injector, ObjectWriter outputObjectWriter, Validator xsdValidator) {
+        Function<IN, RosettaModelObject> transformFunction = getTransformFunction(function, inputType, injector);
         return new TestPackFunctionRunnerImpl<>(transformFunction, inputType, typeValidator, referenceConfig, outputObjectWriter, xsdValidator);
     }
 
