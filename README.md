@@ -31,11 +31,11 @@ Add the library to your project using as a maven dependency as shown below:
 ```
 
 ## Contributing
-For any questions, bugs or feature requests please open an [issue](https://github.com/REGnosys/rosetta-testing/issues)
+For any questions, bugs or feature requests please open an [issue](https://github.com/REGnosys/Rune Testing/issues)
 For anything else please send an email to {project mailing list}.
 
 To submit a contribution:
-1. Fork it (<https://github.com/REGnosys/rosetta-testing/fork>)
+1. Fork it (<https://github.com/REGnosys/Rune Testing/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Read our [contribution guidelines](.github/CONTRIBUTING.md) and [Community Code of Conduct](https://www.finos.org/code-of-conduct)
 4. Commit your changes (`git commit -am 'Add some fooBar'`)
