@@ -2,7 +2,7 @@ package util;
 
 /*-
  * ===============
- * Rosetta Testing
+ * Rune Testing
  * ===============
  * Copyright (C) 2022 - 2024 REGnosys
  * ===============

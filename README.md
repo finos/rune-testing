@@ -1,8 +1,8 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/incubating)
 
-# Rosetta Testing
+# Rune Testing
 
-Rosetta Testing is a java library that is utilised by [Rosetta Code Generators](https://github.com/REGnosys/rosetta-code-generators) and models expressed in the [Rosetta DSL](https://github.com/REGnosys/rosetta-dsl).
+Rune Testing is a java library that is utilised by [Rosetta Code Generators](https://github.com/REGnosys/rosetta-code-generators) and models expressed in the [Rosetta DSL](https://github.com/REGnosys/rosetta-dsl).
 
 ## Installation
 
@@ -47,9 +47,9 @@ _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted fr
 * Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org)*
 
 
-## Get in touch with the Rosetta Testing Team
+## Get in touch with the Rune Testing Team
 
-Get in touch with the Rosetta Testing team by creating a [GitHub issue](https://github.com/REGnosys/rosetta-testing/issues/new) and labelling it with "help wanted".
+Get in touch with the Rune Testing team by creating a [GitHub issue](https://github.com/REGnosys/rosetta-testing/issues/new) and labelling it with "help wanted".
 
 We encourage the community to get in touch via the [FINOS Slack](https://www.finos.org/blog/finos-announces-new-community-slack).
 

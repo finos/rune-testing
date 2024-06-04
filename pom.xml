@@ -2,7 +2,7 @@
 
 <!--
   ===============
-  Rosetta Testing
+  Rune Testing
   ===============
   Copyright (C) 2022 - 2024 REGnosys
   ===============
@@ -45,7 +45,7 @@
         <url>https://github.com/REGnosys/rosetta-testing</url>
     </scm>
 
-    <description>Rosetta Testing is a java library that is utilised by Rosetta Code Generators and models expressed in the Rosetta DSL.</description>
+    <description>Rune Testing is a java library that is utilised by Rosetta Code Generators and models expressed in the Rosetta DSL.</description>
 
     <organization>
         <name>REGnosys</name>
@@ -523,7 +523,7 @@
                     <verbose>false</verbose>
                     <licenseName>apache_v2</licenseName>
                     <organizationName>REGnosys</organizationName>
-                    <projectName>Rosetta Testing</projectName>
+                    <projectName>Rune Testing</projectName>
                     <inceptionYear>2022</inceptionYear>
                     <roots>
                         <root>src/main/java</root>
