@@ -68,7 +68,7 @@ public class TransformExpectationUtil {
             String configFileContent = CONFIG_WRITER.writeValueAsString(testPackModel);
 
             // Add environment variable TEST_WRITE_BASE_PATH to override the base write path, e.g.
-            // TEST_WRITE_BASE_PATH=/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/resources/
+            // TEST_WRITE_BASE_PATH=/Users/user/code/src/github.com/REGnosys/rosetta-cdm/src/main/resources/
             TestingExpectationUtil.TEST_WRITE_BASE_PATH
                     .filter(Files::exists)
                     .ifPresent(writeBasePath -> {
