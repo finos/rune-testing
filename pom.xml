@@ -113,6 +113,7 @@
         <junit.version>5.9.1</junit.version>
         <junit-platform-commons.version>1.9.1</junit-platform-commons.version>
         <mockito.version>5.1.1</mockito.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <logback.version>1.4.7</logback.version>
 
         <!-- plugins -->
@@ -259,6 +260,11 @@
                 <version>${junit-platform-commons.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-bom</artifactId>
                 <version>${mockito.version}</version>
@@ -294,6 +300,11 @@
                         <groupId>com.google.code.findbugs</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-reflect</artifactId>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -347,12 +358,20 @@
             <artifactId>java-8-matchers</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
