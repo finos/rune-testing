@@ -234,11 +234,6 @@
                 <version>${jaxb.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-runtime</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
@@ -281,21 +276,6 @@
                 <version>${kotlin.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jmock</groupId>
-                <artifactId>jmock</artifactId>
-                <version>${jmock.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>asm</artifactId>
-                        <groupId>org.ow2.asm</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>jsr305</artifactId>
-                        <groupId>com.google.code.findbugs</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
@@ -325,10 +305,7 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-        </dependency>
+
         <!-- add junit in non-test scope -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -349,10 +326,6 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jmock</groupId>
-            <artifactId>jmock</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
