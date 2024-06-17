@@ -36,8 +36,7 @@ import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LatestSchemesImportTest {
 
@@ -45,7 +44,7 @@ public class LatestSchemesImportTest {
     private static final String CODE_LIST_ZIP = "src/main/resources/coding-schemes/fpml/codelist.zip";
     private static final String CODE_LIST = "src/main/resources/coding-schemes/fpml/codelist";
     private static final boolean WRITE_LATEST_VERSION = Optional.ofNullable(System.getenv("WRITE_EXPECTATIONS"))
-                    .map(Boolean::parseBoolean).orElse(false);
+            .map(Boolean::parseBoolean).orElse(false);
 
     @Test
     public void downloadLatestVersions() throws IOException, NoSuchAlgorithmException {
@@ -55,8 +54,9 @@ public class LatestSchemesImportTest {
         try (FileOutputStream fos = new FileOutputStream(LatestSchemesImportTest.CODE_LIST_ZIP)) {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             String checksum = getZipCheckSum(Paths.get(CODE_LIST_ZIP));
-            assertThat("CodeList zip has been updated, run again with WRITE_LATEST_VERSION enabled then update expected checksum",
-                    checksum, equalTo("f4e20644ca711aaa443c03980cb8b785"));
+
+            //CodeList zip has been updated, run again with WRITE_LATEST_VERSION enabled then update expected checksum
+            assertEquals(checksum.toString(), "f4e20644ca711aaa443c03980cb8b785");
 
             if (WRITE_LATEST_VERSION) {
                 //Unzip from CodeList just being downloaded
