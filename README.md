@@ -2,7 +2,7 @@
 
 # Rune Testing
 
-Rune Testing is a java library that is utilised by [Rosetta Code Generators](https://github.com/REGnosys/rosetta-code-generators) and models expressed in the [Rosetta DSL](https://github.com/REGnosys/rosetta-dsl).
+Rune Testing is a java library that is part of `Finos Rune` utilised by [Rune Code Generators](https://github.com/REGnosys/rosetta-code-generators) and models expressed in [Rune DSL](https://github.com/finos/rune-dsl) the main `Rune` project.
 
 ## Installation
 
