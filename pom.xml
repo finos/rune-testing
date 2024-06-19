@@ -110,8 +110,7 @@
         <stagingTimeoutInMinutes>10</stagingTimeoutInMinutes>
 
         <!-- test -->
-        <junit.version>5.10.2</junit.version>
-        <junit-platform-commons.version>1.9.1</junit-platform-commons.version>
+        <junit.version>5.9.1</junit.version>
         <mockito.version>5.12.0</mockito.version>
         <logback.version>1.5.6</logback.version>
 
@@ -247,11 +246,6 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-commons</artifactId>
-                <version>${junit-platform-commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
