@@ -94,7 +94,7 @@
         <java.enforced.version>[17,18)</java.enforced.version>
         <maven.compiler.release>11</maven.compiler.release>
 
-        <rosetta.dsl.version>9.11.2</rosetta.dsl.version>
+        <rosetta.dsl.version>9.12.0</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.main-SNAPSHOT</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
@@ -111,9 +111,8 @@
 
         <!-- test -->
         <junit.version>5.9.1</junit.version>
-        <junit-platform-commons.version>1.9.1</junit-platform-commons.version>
-        <mockito.version>5.1.1</mockito.version>
-        <logback.version>1.4.7</logback.version>
+        <mockito.version>5.12.0</mockito.version>
+        <logback.version>1.5.6</logback.version>
 
         <!-- plugins -->
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
@@ -247,11 +246,6 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-commons</artifactId>
-                <version>${junit-platform-commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
