@@ -70,9 +70,8 @@ steps:
     image: maven:3.8.5-openjdk-17
     working_directory: ./
     commands:
-      - rm -rf /codefresh/volume/.m2/com/regnosys
       - bash -c "${{GPG_IMPORT_COMMAND}}"
-      - mvn versions:set -DnewVersion=${{RELEASE_NAME}}
+      - mvn versions:set -DnewVersion=${{RELEASE_NAME}} -DallowSnapshots=true
       - mvn ${{MVN_SET_VERSION}} -Dproperty=rosetta.common.version
       - export CI_DEPLOY_USERNAME="${{CI_DEPLOY_USERNAME}}"
       - export CI_DEPLOY_PASSWORD="${{CI_DEPLOY_PASSWORD}}"
