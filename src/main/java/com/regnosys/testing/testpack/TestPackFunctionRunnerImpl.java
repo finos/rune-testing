@@ -9,9 +9,9 @@ package com.regnosys.testing.testpack;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,6 @@ package com.regnosys.testing.testpack;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.google.common.io.Resources;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.util.Pair;
@@ -39,6 +38,7 @@ import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -50,7 +50,8 @@ import static com.regnosys.testing.testpack.TestPackFunctionRunnerProviderImpl.J
 
 class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestPackFunctionRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestPackFunctionRunnerImpl.class);
-    
+    public static final Path ROSETTA_SOURCE_PATH = Path.of("rosetta-source/src/main/resources/");
+
     private final Function<IN, RosettaModelObject> function;
     private final Class<IN> inputType;
     private final RosettaTypeValidator typeValidator;
@@ -75,11 +76,15 @@ class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestP
 
     @Override
     public Pair<String, Assertions> run(Path inputPath) {
-        URL inputFileUrl = Resources.getResource(inputPath.toString());
-        IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
         RosettaModelObject output;
         try {
+            Path inputPathFromRepositoryRoot = ROSETTA_SOURCE_PATH.resolve(inputPath);
+            URL inputFileUrl = inputPathFromRepositoryRoot.toUri().toURL();
+            IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
             output = function.apply(resolveReferences(input));
+        } catch (MalformedURLException e) {
+            LOGGER.error("Failed to load input path {}", inputPath, e);
+            return Pair.of(null, new Assertions(null, null, true));
         } catch (Exception e) {
             LOGGER.error("Exception occurred running sample creation", e);
             return Pair.of(null, new Assertions(null, null, true));
@@ -97,11 +102,11 @@ class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestP
         int actualValidationFailures = validationReport.validationFailures().size();
 
         Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
-        
+
         Assertions assertions = new Assertions(actualValidationFailures, schemaValidationFailure, false);
         return Pair.of(serialisedOutput, assertions);
     }
-    
+
     private <T extends RosettaModelObject> T resolveReferences(T o) {
         RosettaModelObjectBuilder builder = o.toBuilder();
         new ReferenceResolverProcessStep(referenceConfig).runProcessStep(o.getType(), builder);
