@@ -48,7 +48,7 @@ public class RosettaResourceWriter {
 		return results;
 	}
 
-	// This is required because the branch gets generated as the version, so you would get 'version "0.0.0.master"'
+	// This is required because the branch gets generated as the version, so you would get 'version "0.0.0.main-SNAPSHOT"'
 	public static String rewriteProjectVersion(String out) {
 		return out.replaceAll("version \".*?\"", "version \"\\${project.version}\"");
 	}
