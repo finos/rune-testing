@@ -260,8 +260,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     String baseFileName = getBaseFileName(inputPath);
                     String displayName = baseFileName.replace("-", " ");
 
-                    Pair<String, Assertions> result = null;
-                    result = functionRunner.run(inputPath);
+                    Pair<String, Assertions> result = functionRunner.run(inputPath);
 
                     writeOutputFile(outputPath, result.left());
                     Assertions assertions = result.right();
