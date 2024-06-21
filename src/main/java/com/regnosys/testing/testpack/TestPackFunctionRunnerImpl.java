@@ -9,9 +9,9 @@ package com.regnosys.testing.testpack;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -75,13 +75,15 @@ class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestP
     }
 
     @Override
-    public Pair<String, Assertions> run(Path inputPath) throws MalformedURLException {
-        inputPath = ROSETTA_SOURCE_PATH.resolve(inputPath);
-        URL inputFileUrl = inputPath.toUri().toURL();
-        IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
+    public Pair<String, Assertions> run(Path inputPath) {
         RosettaModelObject output;
         try {
+            Path inputPathFromRepositoryRoot = ROSETTA_SOURCE_PATH.resolve(inputPath);
+            URL inputFileUrl = inputPathFromRepositoryRoot.toUri().toURL();
+            IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
             output = function.apply(resolveReferences(input));
+        } catch (MalformedURLException e) {
+            throw new UncheckedIOException("Unable to read input path", e);
         } catch (Exception e) {
             LOGGER.error("Exception occurred running sample creation", e);
             return Pair.of(null, new Assertions(null, null, true));
@@ -99,11 +101,11 @@ class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestP
         int actualValidationFailures = validationReport.validationFailures().size();
 
         Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
-        
+
         Assertions assertions = new Assertions(actualValidationFailures, schemaValidationFailure, false);
         return Pair.of(serialisedOutput, assertions);
     }
-    
+
     private <T extends RosettaModelObject> T resolveReferences(T o) {
         RosettaModelObjectBuilder builder = o.toBuilder();
         new ReferenceResolverProcessStep(referenceConfig).runProcessStep(o.getType(), builder);

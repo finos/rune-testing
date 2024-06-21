@@ -46,7 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.net.MalformedURLException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -264,7 +264,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     Pair<String, Assertions> result = null;
                     try {
                         result = functionRunner.run(inputPath);
-                    } catch (MalformedURLException e) {
+                    } catch (UncheckedIOException e) {
                         throw new RuntimeException("Unable to apply report function. Invalid input path", e);
                     }
                     writeOutputFile(outputPath, result.left());
@@ -299,7 +299,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                                                     .map(s -> {
                                                         try {
                                                             return toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, functionRunner);
-                                                        } catch (MalformedURLException e) {
+                                                        } catch (UncheckedIOException e) {
                                                             throw new RuntimeException("Unable to apply projection function. Invalid input path", e);
                                                         }
                                                     })
@@ -319,7 +319,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .orElseThrow();
     }
 
-    protected SampleModel toProjectionSample(String testPackName, ModelReportId reportId, SampleModel reportSample, TestPackFunctionRunner functionRunner) throws MalformedURLException {
+    protected SampleModel toProjectionSample(String testPackName, ModelReportId reportId, SampleModel reportSample, TestPackFunctionRunner functionRunner) {
         Path projectionInputPath = Path.of(reportSample.getOutputPath());
         Path projectionTestPackPath = RegReportPaths.getOutputDataSetPath(PROJECTION_OUTPUT_PATH, reportId, testPackName);
         Path outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, projectionInputPath);
