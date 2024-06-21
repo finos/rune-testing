@@ -22,7 +22,6 @@ package com.regnosys.testing.testpack;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.google.common.io.Resources;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.util.Pair;
@@ -39,6 +38,7 @@ import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -50,7 +50,8 @@ import static com.regnosys.testing.testpack.TestPackFunctionRunnerProviderImpl.J
 
 class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestPackFunctionRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestPackFunctionRunnerImpl.class);
-    
+    public static final Path ROSETTA_SOURCE_PATH = Path.of("rosetta-source/src/main/resources/");
+
     private final Function<IN, RosettaModelObject> function;
     private final Class<IN> inputType;
     private final RosettaTypeValidator typeValidator;
@@ -74,8 +75,9 @@ class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestP
     }
 
     @Override
-    public Pair<String, Assertions> run(Path inputPath) {
-        URL inputFileUrl = Resources.getResource(inputPath.toString());
+    public Pair<String, Assertions> run(Path inputPath) throws MalformedURLException {
+        inputPath = ROSETTA_SOURCE_PATH.resolve(inputPath);
+        URL inputFileUrl = inputPath.toUri().toURL();
         IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
         RosettaModelObject output;
         try {

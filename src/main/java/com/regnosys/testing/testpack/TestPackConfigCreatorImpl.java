@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -260,7 +261,12 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     String baseFileName = getBaseFileName(inputPath);
                     String displayName = baseFileName.replace("-", " ");
 
-                    Pair<String, Assertions> result = functionRunner.run(inputPath);
+                    Pair<String, Assertions> result = null;
+                    try {
+                        result = functionRunner.run(inputPath);
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException("Unable to apply report function. Invalid input path", e);
+                    }
                     writeOutputFile(outputPath, result.left());
                     Assertions assertions = result.right();
 
@@ -290,7 +296,13 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                                             TransformType.PROJECTION,
                                             createIdSuffix(p.getTransform().getFunction()),
                                             upstreamReportTestPack.getSamples().stream()
-                                                    .map(s -> toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, functionRunner))
+                                                    .map(s -> {
+                                                        try {
+                                                            return toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, functionRunner);
+                                                        } catch (MalformedURLException e) {
+                                                            throw new RuntimeException("Unable to apply projection function. Invalid input path", e);
+                                                        }
+                                                    })
                                                     .collect(Collectors.toList()))
                             )
                             .collect(Collectors.toList());
@@ -307,7 +319,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                 .orElseThrow();
     }
 
-    protected SampleModel toProjectionSample(String testPackName, ModelReportId reportId, SampleModel reportSample, TestPackFunctionRunner functionRunner) {
+    protected SampleModel toProjectionSample(String testPackName, ModelReportId reportId, SampleModel reportSample, TestPackFunctionRunner functionRunner) throws MalformedURLException {
         Path projectionInputPath = Path.of(reportSample.getOutputPath());
         Path projectionTestPackPath = RegReportPaths.getOutputDataSetPath(PROJECTION_OUTPUT_PATH, reportId, testPackName);
         Path outputPath = getProjectionDataItemOutputPath(projectionTestPackPath, projectionInputPath);
