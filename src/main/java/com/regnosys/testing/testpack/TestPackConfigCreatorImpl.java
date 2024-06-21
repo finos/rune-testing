@@ -9,9 +9,9 @@ package com.regnosys.testing.testpack;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,11 +71,11 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     /**
      * Generates pipeline and test-pack config files.
      *
-     * @param rosettaPaths      - list of folders that contain rosetta model files, e.g. "drr/rosetta"
-     * @param filter            - provides filters to include or exclude
-     * @param testPackDefs      - provides list of test-pack information such as test pack name, input type and sample input paths
-     * @param outputSchemaMap   - output Document type / xsd look up map
-     * @param injector          - model runtime guice injector
+     * @param rosettaPaths    - list of folders that contain rosetta model files, e.g. "drr/rosetta"
+     * @param filter          - provides filters to include or exclude
+     * @param testPackDefs    - provides list of test-pack information such as test pack name, input type and sample input paths
+     * @param outputSchemaMap - output Document type / xsd look up map
+     * @param injector        - model runtime guice injector
      */
     @Override
     public void createPipelineAndTestPackConfig(ImmutableList<String> rosettaPaths,
@@ -262,11 +261,8 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                     String displayName = baseFileName.replace("-", " ");
 
                     Pair<String, Assertions> result = null;
-                    try {
-                        result = functionRunner.run(inputPath);
-                    } catch (UncheckedIOException e) {
-                        throw new RuntimeException("Unable to apply report function. Invalid input path", e);
-                    }
+                    result = functionRunner.run(inputPath);
+
                     writeOutputFile(outputPath, result.left());
                     Assertions assertions = result.right();
 
@@ -296,13 +292,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
                                             TransformType.PROJECTION,
                                             createIdSuffix(p.getTransform().getFunction()),
                                             upstreamReportTestPack.getSamples().stream()
-                                                    .map(s -> {
-                                                        try {
-                                                            return toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, functionRunner);
-                                                        } catch (UncheckedIOException e) {
-                                                            throw new RuntimeException("Unable to apply projection function. Invalid input path", e);
-                                                        }
-                                                    })
+                                                    .map(s -> toProjectionSample(upstreamReportTestPack.getName(), getModelReportId(reports, upstreamReportTestPack.getPipelineId()), s, functionRunner))
                                                     .collect(Collectors.toList()))
                             )
                             .collect(Collectors.toList());

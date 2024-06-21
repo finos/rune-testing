@@ -38,7 +38,6 @@ import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -82,8 +81,6 @@ class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestP
             URL inputFileUrl = inputPathFromRepositoryRoot.toUri().toURL();
             IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
             output = function.apply(resolveReferences(input));
-        } catch (MalformedURLException e) {
-            throw new UncheckedIOException("Unable to read input path", e);
         } catch (Exception e) {
             LOGGER.error("Exception occurred running sample creation", e);
             return Pair.of(null, new Assertions(null, null, true));
