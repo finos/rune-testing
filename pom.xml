@@ -112,6 +112,7 @@
         <!-- test -->
         <junit.version>5.9.1</junit.version>
         <mockito.version>5.12.0</mockito.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <logback.version>1.5.6</logback.version>
 
         <!-- plugins -->
@@ -128,8 +129,8 @@
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
-
     </properties>
+
     <profiles>
         <profile>
             <id>gpg</id>
@@ -233,6 +234,11 @@
                 <version>${jaxb.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
@@ -253,6 +259,11 @@
                 <version>${mockito.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
             </dependency>
             <dependency>
                 <groupId>co.unruly</groupId>
@@ -299,7 +310,10 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
         <!-- add junit in non-test scope -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -316,6 +330,10 @@
         <dependency>
             <groupId>co.unruly</groupId>
             <artifactId>java-8-matchers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
