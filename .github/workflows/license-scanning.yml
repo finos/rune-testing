@@ -58,6 +58,14 @@ env:
     licenses/license/name!='CDDL 1.1' and
     not(contains(licenses/license/url, '://oss.oracle.com/licenses/CDDL+GPL-1.1')) and
     
+    licenses/license/name!='GPL2 w/ CPE' and
+    not(contains(licenses/license/url, '://glassfish.java.net/public/CDDL+GPL_1_1')) and
+    
+    licenses/license/name!='CDDL+GPL License' and
+    not(contains(licenses/license/url, '://glassfish.java.net/public/CDDL+GPL_1_1')) and
+    licenses/license/name!='Dual license consisting of the CDDL v1.1 and GPL v2' and
+    not(contains(licenses/license/url, '://glassfish.dev.java.net/public/CDDL+GPL_1_1')) and
+    
     licenses/license/name!='Public Domain'
     "
   REPORT_PATH: "target/generated-resources"
