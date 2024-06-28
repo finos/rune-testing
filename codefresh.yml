@@ -64,7 +64,7 @@ steps:
       - cf_export MVN_SET_VERSION="versions:update-property -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
 
   BuildTesting:
-    title: Maven build rosetta-testing
+    title: Maven build rune-testing
     stage: 'build'
     fail_fast: false
     image: maven:3.8.5-openjdk-17
