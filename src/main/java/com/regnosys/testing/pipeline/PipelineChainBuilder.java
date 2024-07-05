@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.regnosys.testing.TestingExpectationUtil.TEST_WRITE_BASE_PATH;
 
@@ -29,6 +29,22 @@ public class PipelineChainBuilder {
     public PipelineChainBuilder(FunctionNameHelper helper) {
         this.helper = helper;
     }
+
+    void writeTestPacks(PipelineFunctionChain pipelineChainFunction) throws IOException {
+        // WIP
+        List<PipelineModelBuilder> builders = createBuilders(pipelineChainFunction);
+        String currentInputPath = null;
+        String currentOutputPath = null;
+        for (PipelineModelBuilder builder : builders) {
+            String inputPath = builder.getInputPath();
+            if (currentInputPath == null) {
+                currentInputPath = inputPath;
+            }
+            System.out.println(builder.getInputPath() + "  --> " + builder.getOutputPath());
+        }
+        System.out.printf("");
+    }
+
 
     void writePipelines(PipelineFunctionChain pipelineChainFunction) throws IOException {
         if (TEST_WRITE_BASE_PATH.isEmpty()) {
@@ -47,34 +63,41 @@ public class PipelineChainBuilder {
         }
     }
 
+    private List<PipelineModelBuilder> createBuilders(PipelineFunctionChain pipelineChainFunction) {
+
+        List<PipelineFunctionChain.TransformFunction> starting = pipelineChainFunction.getStarting();
+
+        return starting.stream()
+                .map(t -> downstreamPipelines(pipelineChainFunction, new PipelineModelBuilder(t.getTransformType()).withFunction(t.getFunction())))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+    }
+
     public List<PipelineModel> createAllPipelines(PipelineFunctionChain pipelineChainFunction) {
-        Class<? extends RosettaFunction> startingFunction = pipelineChainFunction.getStartingFunction();
-        TransformType startingTransformType = pipelineChainFunction.getStartingTransformType();
-
-        PipelineModelBuilder startingPipeline = new PipelineModelBuilder(startingTransformType)
-                .withFunction(startingFunction);
-
-        List<PipelineModelBuilder> pipelineModelBuilders = downstreamPipelines(pipelineChainFunction, startingPipeline);
-        return Stream.concat(Stream.of(startingPipeline), pipelineModelBuilders.stream())
+        return createBuilders(pipelineChainFunction).stream()
                 .map(modelBuilder -> build(modelBuilder, pipelineChainFunction.getXmlConfigMap(), pipelineChainFunction.isStrictUniqueIds()))
                 .collect(Collectors.toList());
     }
 
     private List<PipelineModelBuilder> downstreamPipelines(PipelineFunctionChain pipelineChainFunction, PipelineModelBuilder currentPipeline) {
+        List<PipelineModelBuilder> pipelineModelBuilders = new ArrayList<>();
+        pipelineModelBuilders.add(currentPipeline);
+
         TransformType downstreamTransformType = pipelineChainFunction.getDownstreamTransformType(currentPipeline.getFunction());
         if (downstreamTransformType == null) {
-            return List.of();
+            return pipelineModelBuilders;
         }
-        List<PipelineModelBuilder> downstreamPipelines = createDownstreamPipelineAndLinkUpstream(pipelineChainFunction, currentPipeline, downstreamTransformType);
-        List<PipelineModelBuilder> pipelineModelBuilders = new ArrayList<>(downstreamPipelines);
-        for (PipelineModelBuilder downstreamPipeline : downstreamPipelines) {
-            List<PipelineModelBuilder> recurse = downstreamPipelines(pipelineChainFunction, downstreamPipeline);
-            pipelineModelBuilders.addAll(recurse);
-        }
+        List<PipelineModelBuilder> pipelines = createPipelineAndLinkUpstream(pipelineChainFunction, currentPipeline, downstreamTransformType);
+        List<PipelineModelBuilder> downstreamPipelines = pipelines.stream()
+                .map(dp -> downstreamPipelines(pipelineChainFunction, dp))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        pipelineModelBuilders.addAll(downstreamPipelines);
         return pipelineModelBuilders;
     }
 
-    private List<PipelineModelBuilder> createDownstreamPipelineAndLinkUpstream(PipelineFunctionChain pipelineChainFunction, PipelineModelBuilder currentPipeline, TransformType transformType) {
+    private List<PipelineModelBuilder> createPipelineAndLinkUpstream(PipelineFunctionChain pipelineChainFunction, PipelineModelBuilder currentPipeline, TransformType transformType) {
         List<Class<? extends RosettaFunction>> downstreamFunctions = pipelineChainFunction.getDownstreamFunctions(currentPipeline.getFunction());
         return new PipelineModelBuilder(transformType)
                 .linkWithUpstream(currentPipeline)
@@ -86,7 +109,7 @@ public class PipelineChainBuilder {
         String inputType = helper.getInputType(modelBuilder.getFunction());
         String outputType = helper.getOutputType(modelBuilder.getFunction());
         String outputSerialisationConfigPath = xmlConfigMap.get(helper.getFuncMethod(modelBuilder.getFunction()).getReturnType());
-        String name = helper.getName(modelBuilder.getTransformType(), modelBuilder.getFunction());
+        String name = helper.getName(modelBuilder.getFunction());
 
         // assume XML for now.
         PipelineModel.Serialisation outputSerialisation = outputSerialisationConfigPath == null ? null :
@@ -180,6 +203,9 @@ public class PipelineChainBuilder {
             return helper.readableId(getFunction());
         }
 
-
+        @Override
+        public String toString() {
+            return id(true);
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.rosetta.model.lib.functions.RosettaFunction;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -14,15 +15,14 @@ import java.util.stream.Collectors;
 public class PipelineFunctionChain {
 
     private ImmutableMap<Class<?>, String> xmlConfigMap;
-    private TransformFunction starting;
+    private final List<TransformFunction> starting = new ArrayList<>();
 
     private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
     private boolean strictUniqueIds;
 
-    public static PipelineFunctionChain starting(TransformType transformType, Class<? extends RosettaFunction> function) {
-        PipelineFunctionChain pipelineFunctionChain = new PipelineFunctionChain();
-        pipelineFunctionChain.starting = new TransformFunction(function, transformType);
-        return pipelineFunctionChain;
+    public PipelineFunctionChain starting(TransformType transformType, Class<? extends RosettaFunction> function) {
+        starting.add(new TransformFunction(function, transformType));
+        return this;
     }
 
     public PipelineFunctionChain strictUniqueIds() {
@@ -49,13 +49,10 @@ public class PipelineFunctionChain {
         return strictUniqueIds;
     }
 
-    public Class<? extends RosettaFunction> getStartingFunction() {
-        return starting.getFunction();
+    List<TransformFunction> getStarting() {
+        return starting;
     }
 
-    public TransformType getStartingTransformType() {
-        return starting.getTransformType();
-    }
 
     public List<Class<? extends RosettaFunction>> getDownstreamFunctions(Class<? extends RosettaFunction> function) {
         Collection<TransformFunction> transformFunctions = conf.get(function);
@@ -67,7 +64,7 @@ public class PipelineFunctionChain {
         return transformFunctions.stream().map(TransformFunction::getTransformType).findFirst().orElse(null);
     }
 
-    private static class TransformFunction {
+    static class TransformFunction {
 
         private final Class<? extends RosettaFunction> function;
         private final TransformType transformType;

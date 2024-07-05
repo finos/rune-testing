@@ -2,7 +2,7 @@ package com.regnosys.testing.pipeline;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Iterables;
-import com.regnosys.rosetta.common.transform.TransformType;
+import com.rosetta.model.lib.annotations.RosettaReport;
 import com.rosetta.model.lib.functions.RosettaFunction;
 
 import java.lang.reflect.Method;
@@ -30,14 +30,10 @@ public class FunctionNameHelper {
         return Iterables.getLast(evaluateMethods);
     }
 
-    public String getName(TransformType transformType, Class<? extends RosettaFunction> function) {
-        if (transformType == TransformType.REPORT) {
-            return Optional.ofNullable(function.getAnnotation(com.rosetta.model.lib.annotations.RosettaReport.class))
-                    .map(a -> String.format("%s / %s", a.body(), String.join(" ", a.corpusList())))
-                    .orElse(readableFunctionName(function));
-        }
-
-        return readableFunctionName(function);
+    public String getName(Class<? extends RosettaFunction> function) {
+        return Optional.ofNullable(function.getAnnotation(com.rosetta.model.lib.annotations.RosettaReport.class))
+                .map(a -> String.format("%s / %s", a.body(), String.join(" ", a.corpusList())))
+                .orElse(readableFunctionName(function));
     }
 
     private String readableFunctionName(Class<? extends RosettaFunction> function) {
@@ -49,7 +45,9 @@ public class FunctionNameHelper {
     }
 
     protected String readableId(Class<? extends RosettaFunction> function) {
-        String simpleName = function.getSimpleName();
+        String simpleName = Optional.ofNullable(function.getAnnotation(RosettaReport.class))
+                .map(a -> String.format("%s-%s", a.body(), String.join("-", a.corpusList())))
+                .orElse(function.getSimpleName());
 
         String sanitise = simpleName
                 .replace("Report", "")

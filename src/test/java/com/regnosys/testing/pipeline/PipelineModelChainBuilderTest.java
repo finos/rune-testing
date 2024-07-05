@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ class PipelineModelChainBuilderTest {
     }
 
     private static PipelineFunctionChain createSimpleChain() {
-        return PipelineFunctionChain
+        return new PipelineFunctionChain()
                 .starting(TransformType.ENRICH, Start.class)
                 .add(Start.class, TransformType.REPORT, Middle.class)
                 .add(Middle.class, TransformType.PROJECTION, End.class);
@@ -89,8 +90,13 @@ class PipelineModelChainBuilderTest {
         assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, EndB.class, "pipeline-projection-start-middle-b-end-b", "pipeline-report-start-middle-b");
     }
 
+    @Test
+    void name() throws IOException {
+        pipelineChainBuilder.writeTestPacks(createTreeChain().strictUniqueIds());
+    }
+
     private static PipelineFunctionChain createTreeChain() {
-        return PipelineFunctionChain
+        return new PipelineFunctionChain()
                 .starting(TransformType.ENRICH, Start.class)
                 .add(Start.class, TransformType.REPORT, MiddleA.class)
                 .add(Start.class, TransformType.REPORT, MiddleB.class)
