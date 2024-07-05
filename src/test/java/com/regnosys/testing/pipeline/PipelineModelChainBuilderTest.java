@@ -24,13 +24,27 @@ class PipelineModelChainBuilderTest {
         pipelineChainBuilder = new PipelineChainBuilder(new FunctionNameHelper());
     }
 
+
     @Test
     void buildChain() {
         List<PipelineModel> allPipelines = pipelineChainBuilder
-                .createAllPipelines(PipelineFunctionChain
-                        .starting(TransformType.ENRICH, Start.class)
-                        .add(Start.class, TransformType.REPORT, Middle.class)
-                        .add(Middle.class, TransformType.PROJECTION, End.class));
+                .createAllPipelines(createSimpleChain());
+
+        Map<TransformType, List<PipelineModel>> byTransformType = allPipelines.stream().collect(Collectors.groupingBy(x -> x.getTransform().getType()));
+
+        PipelineModel startPipeline = getOnlyElement(byTransformType.get(TransformType.ENRICH));
+        PipelineModel middlePipeline = getOnlyElement(byTransformType.get(TransformType.REPORT));
+        PipelineModel endPipeline = getOnlyElement(byTransformType.get(TransformType.PROJECTION));
+
+        assertPipelineModel(startPipeline, TransformType.ENRICH, Start.class, "pipeline-enrich-start", null);
+        assertPipelineModel(middlePipeline, TransformType.REPORT, Middle.class, "pipeline-report-middle", "pipeline-enrich-start");
+        assertPipelineModel(endPipeline, TransformType.PROJECTION, End.class, "pipeline-projection-end", "pipeline-report-middle");
+    }
+
+    @Test
+    void buildChainWithUniqueIds() {
+        List<PipelineModel> allPipelines = pipelineChainBuilder
+                .createAllPipelines(createSimpleChain().strictUniqueIds());
 
         Map<TransformType, List<PipelineModel>> byTransformType = allPipelines.stream().collect(Collectors.groupingBy(x -> x.getTransform().getType()));
 
@@ -43,17 +57,17 @@ class PipelineModelChainBuilderTest {
         assertPipelineModel(endPipeline, TransformType.PROJECTION, End.class, "pipeline-projection-start-middle-end", "pipeline-report-start-middle");
     }
 
+    private static PipelineFunctionChain createSimpleChain() {
+        return PipelineFunctionChain
+                .starting(TransformType.ENRICH, Start.class)
+                .add(Start.class, TransformType.REPORT, Middle.class)
+                .add(Middle.class, TransformType.PROJECTION, End.class);
+    }
+
     @Test
-    void buildTreeChain() {
+    void buildTreeChainWithUniqueIds() {
         List<PipelineModel> allPipelines = pipelineChainBuilder
-                .createAllPipelines(PipelineFunctionChain
-                        .starting(TransformType.ENRICH, Start.class)
-                        .add(Start.class, TransformType.REPORT, MiddleA.class)
-                        .add(Start.class, TransformType.REPORT, MiddleB.class)
-                        .add(MiddleA.class, TransformType.PROJECTION, EndA.class)
-                        .add(MiddleA.class, TransformType.PROJECTION, EndB.class)
-                        .add(MiddleB.class, TransformType.PROJECTION, EndA.class)
-                        .add(MiddleB.class, TransformType.PROJECTION, EndB.class));
+                .createAllPipelines(createTreeChain().strictUniqueIds());
 
         Map<TransformType, List<PipelineModel>> byTransformType = allPipelines.stream().collect(Collectors.groupingBy(x -> x.getTransform().getType()));
 
@@ -73,6 +87,17 @@ class PipelineModelChainBuilderTest {
         assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, EndB.class, "pipeline-projection-start-middle-a-end-b", "pipeline-report-start-middle-a");
         assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, EndA.class, "pipeline-projection-start-middle-b-end-a", "pipeline-report-start-middle-b");
         assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, EndB.class, "pipeline-projection-start-middle-b-end-b", "pipeline-report-start-middle-b");
+    }
+
+    private static PipelineFunctionChain createTreeChain() {
+        return PipelineFunctionChain
+                .starting(TransformType.ENRICH, Start.class)
+                .add(Start.class, TransformType.REPORT, MiddleA.class)
+                .add(Start.class, TransformType.REPORT, MiddleB.class)
+                .add(MiddleA.class, TransformType.PROJECTION, EndA.class)
+                .add(MiddleA.class, TransformType.PROJECTION, EndB.class)
+                .add(MiddleB.class, TransformType.PROJECTION, EndA.class)
+                .add(MiddleB.class, TransformType.PROJECTION, EndB.class);
     }
 
     private static void assertPipelineModel(PipelineModel pipelineModel, TransformType transformType, Class<? extends RosettaFunction> function, String pipelineId, String upstreamPipelineId) {

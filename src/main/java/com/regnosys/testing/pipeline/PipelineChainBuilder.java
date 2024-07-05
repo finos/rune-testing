@@ -56,7 +56,7 @@ public class PipelineChainBuilder {
 
         List<PipelineModelBuilder> pipelineModelBuilders = downstreamPipelines(pipelineChainFunction, startingPipeline);
         return Stream.concat(Stream.of(startingPipeline), pipelineModelBuilders.stream())
-                .map(modelBuilder -> build(modelBuilder, pipelineChainFunction.getXmlConfigMap()))
+                .map(modelBuilder -> build(modelBuilder, pipelineChainFunction.getXmlConfigMap(), pipelineChainFunction.isStrictUniqueIds()))
                 .collect(Collectors.toList());
     }
 
@@ -81,8 +81,7 @@ public class PipelineChainBuilder {
                 .withFunctions(downstreamFunctions);
     }
 
-    private PipelineModel build(PipelineModelBuilder modelBuilder, ImmutableMap<Class<?>, String> xmlConfigMap) {
-        String upstreamPipelineId = modelBuilder.upstreamId();
+    private PipelineModel build(PipelineModelBuilder modelBuilder, ImmutableMap<Class<?>, String> xmlConfigMap, boolean strictUniqueIds) {
 
         String inputType = helper.getInputType(modelBuilder.getFunction());
         String outputType = helper.getOutputType(modelBuilder.getFunction());
@@ -93,7 +92,10 @@ public class PipelineChainBuilder {
         PipelineModel.Serialisation outputSerialisation = outputSerialisationConfigPath == null ? null :
                 new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.XML, outputSerialisationConfigPath);
 
-        return new PipelineModel(modelBuilder.id(),
+        String pipelineId = modelBuilder.id(strictUniqueIds);
+        String upstreamPipelineId = modelBuilder.upstreamId(strictUniqueIds);
+
+        return new PipelineModel(pipelineId,
                 name,
                 new PipelineModel.Transform(modelBuilder.getTransformType(), modelBuilder.getFunction().getName(), inputType, outputType),
                 upstreamPipelineId, outputSerialisation);
@@ -103,22 +105,22 @@ public class PipelineChainBuilder {
 
         private final TransformType transformType;
         private Class<? extends RosettaFunction> function;
-        private PipelineModelBuilder upstreamPipelineModelBuilder;
+        private PipelineModelBuilder upstream;
 
         private PipelineModelBuilder(TransformType transformType) {
             this.transformType = transformType;
         }
 
-        private PipelineModelBuilder(TransformType transformType, Class<? extends RosettaFunction> function, PipelineModelBuilder upstreamPipelineModelBuilder) {
+        private PipelineModelBuilder(TransformType transformType, Class<? extends RosettaFunction> function, PipelineModelBuilder upstream) {
             this.transformType = transformType;
             this.function = function;
-            this.upstreamPipelineModelBuilder = upstreamPipelineModelBuilder;
+            this.upstream = upstream;
         }
 
         // To be used
         private String getInputPath() {
-            if (upstreamPipelineModelBuilder != null) {
-                return String.format("%s/output/%s", upstreamPipelineModelBuilder.getTransformType().getResourcePath(), upstreamPipelineModelBuilder.getFunction().getSimpleName().toLowerCase());
+            if (upstream != null) {
+                return String.format("%s/output/%s", upstream.getTransformType().getResourcePath(), upstream.getFunction().getSimpleName().toLowerCase());
             }
             return String.format("%s/input/%s", transformType.getResourcePath(), function.getSimpleName().toLowerCase());
         }
@@ -130,7 +132,7 @@ public class PipelineChainBuilder {
 
         private List<PipelineModelBuilder> withFunctions(List<Class<? extends RosettaFunction>> function) {
             return function.stream()
-                    .map(f -> new PipelineModelBuilder(transformType, f, upstreamPipelineModelBuilder))
+                    .map(f -> new PipelineModelBuilder(transformType, f, upstream))
                     .collect(Collectors.toList());
         }
 
@@ -140,7 +142,7 @@ public class PipelineChainBuilder {
         }
 
         private PipelineModelBuilder linkWithUpstream(PipelineModelBuilder upstreamPipelineModelBuilder) {
-            this.upstreamPipelineModelBuilder = upstreamPipelineModelBuilder;
+            this.upstream = upstreamPipelineModelBuilder;
             return this;
         }
 
@@ -152,31 +154,32 @@ public class PipelineChainBuilder {
             return transformType;
         }
 
-        private String nameXXX() {
-            String name = function.getSimpleName().toLowerCase();
-            return (upstreamPipelineModelBuilder == null) ?
-                    String.format("%s", name) :
-                    String.format("%s-%s", upstreamPipelineModelBuilder.nameXXX(), name);
+        private String id(boolean strictUniqueIds) {
+            return String.format("pipeline-%s-%s", getTransformType().name().toLowerCase(), idSuffix(strictUniqueIds));
         }
 
-        private String id() {
-            return String.format("pipeline-%s-%s", getTransformType().name().toLowerCase(), idSuffix());
+        private String upstreamId(boolean strictUniqueIds) {
+            if (strictUniqueIds) {
+                return (upstream == null) ? null :
+                        String.format("pipeline-%s-%s", upstream.getTransformType().name().toLowerCase(), upstream.upstreamIdSuffix(strictUniqueIds));
+            }
+            return (upstream == null) ? null :
+                    String.format("pipeline-%s-%s", upstream.getTransformType().name().toLowerCase(), upstream.idSuffix(strictUniqueIds));
+        }
+
+        private String upstreamIdSuffix(boolean strictUniqueIds) {
+            return (upstream == null) ? idSuffix(strictUniqueIds) :
+                    String.format("%s-%s", upstream.upstreamIdSuffix(strictUniqueIds), helper.readableId(getFunction()));
+        }
+
+        private String idSuffix(boolean strictUniqueIds) {
+            if (strictUniqueIds) {
+                return (upstream == null) ? helper.readableId(getFunction()) :
+                        String.format("%s-%s", upstream.idSuffix(strictUniqueIds), helper.readableId(getFunction()));
+            }
+            return helper.readableId(getFunction());
         }
 
 
-        private String upstreamId() {
-            return (upstreamPipelineModelBuilder == null) ? null :
-                    String.format("pipeline-%s-%s", upstreamPipelineModelBuilder.getTransformType().name().toLowerCase(), upstreamPipelineModelBuilder.upstreamIdSuffix());
-        }
-
-        private String upstreamIdSuffix() {
-            return (upstreamPipelineModelBuilder == null) ? idSuffix() :
-                    String.format("%s-%s", upstreamPipelineModelBuilder.upstreamIdSuffix(), helper.readableId(getFunction()));
-        }
-
-        private String idSuffix() {
-            return (upstreamPipelineModelBuilder == null) ? helper.readableId(getFunction()) :
-                    String.format("%s-%s", upstreamPipelineModelBuilder.idSuffix(), helper.readableId(getFunction()));
-        }
     }
 }

@@ -17,11 +17,17 @@ public class PipelineFunctionChain {
     private TransformFunction starting;
 
     private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
+    private boolean strictUniqueIds;
 
     public static PipelineFunctionChain starting(TransformType transformType, Class<? extends RosettaFunction> function) {
         PipelineFunctionChain pipelineFunctionChain = new PipelineFunctionChain();
         pipelineFunctionChain.starting = new TransformFunction(function, transformType);
         return pipelineFunctionChain;
+    }
+
+    public PipelineFunctionChain strictUniqueIds() {
+        strictUniqueIds = true;
+        return this;
     }
 
     public PipelineFunctionChain add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function) {
@@ -37,6 +43,10 @@ public class PipelineFunctionChain {
 
     public ImmutableMap<Class<?>, String> getXmlConfigMap() {
         return Optional.ofNullable(xmlConfigMap).orElse(ImmutableMap.of());
+    }
+
+    public boolean isStrictUniqueIds() {
+        return strictUniqueIds;
     }
 
     public Class<? extends RosettaFunction> getStartingFunction() {
