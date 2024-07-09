@@ -84,6 +84,10 @@ class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvid
 
     private Class<? extends RosettaModelObject> toClass(String name) {
         try {
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            if (contextClassLoader != null) {
+                return (Class<? extends RosettaModelObject>) contextClassLoader.loadClass(name);
+            }
             return (Class<? extends RosettaModelObject>) Class.forName(name);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

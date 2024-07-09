@@ -6,43 +6,64 @@ import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.rosetta.model.lib.functions.RosettaFunction;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PipelineFunctionChain {
+public class PipelineTreeConfig {
 
     private ImmutableMap<Class<?>, String> xmlConfigMap;
+    private ImmutableMap<Class<?>, String> xmlSchemaMap;
     private final List<TransformFunction> starting = new ArrayList<>();
 
     private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
     private boolean strictUniqueIds;
+    private Path writePath;
 
-    public PipelineFunctionChain starting(TransformType transformType, Class<? extends RosettaFunction> function) {
+    public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function) {
         starting.add(new TransformFunction(function, transformType));
         return this;
     }
 
-    public PipelineFunctionChain strictUniqueIds() {
+    public PipelineTreeConfig strictUniqueIds() {
         strictUniqueIds = true;
         return this;
     }
 
-    public PipelineFunctionChain add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function) {
+    public PipelineTreeConfig add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function) {
         TransformFunction current = new TransformFunction(function, transformType);
         conf.put(upstreamFunction, current);
         return this;
     }
 
-    public PipelineFunctionChain withXmlConfigMap(ImmutableMap<Class<?>, String> xmlConfigMap) {
+    public PipelineTreeConfig withXmlConfigMap(ImmutableMap<Class<?>, String> xmlConfigMap) {
         this.xmlConfigMap = xmlConfigMap;
+        return this;
+    }
+
+    public PipelineTreeConfig withXmlSchemaMap(ImmutableMap<Class<?>, String> xmlSchemaMap) {
+        this.xmlSchemaMap = xmlSchemaMap;
         return this;
     }
 
     public ImmutableMap<Class<?>, String> getXmlConfigMap() {
         return Optional.ofNullable(xmlConfigMap).orElse(ImmutableMap.of());
+    }
+
+    public ImmutableMap<Class<?>, String> getXmlSchemaMap() {
+        return xmlSchemaMap;
+    }
+
+    public PipelineTreeConfig withWritePath(Path writePath) {
+        this.writePath = writePath;
+        return this;
+    }
+
+    public Path getWritePath() {
+        return writePath;
     }
 
     public boolean isStrictUniqueIds() {
@@ -52,7 +73,6 @@ public class PipelineFunctionChain {
     List<TransformFunction> getStarting() {
         return starting;
     }
-
 
     public List<Class<? extends RosettaFunction>> getDownstreamFunctions(Class<? extends RosettaFunction> function) {
         Collection<TransformFunction> transformFunctions = conf.get(function);

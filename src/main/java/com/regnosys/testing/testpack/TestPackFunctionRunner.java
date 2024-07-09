@@ -26,6 +26,6 @@ import java.nio.file.Path;
 
 import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.Assertions;
 
-interface TestPackFunctionRunner {
+public interface TestPackFunctionRunner {
     Pair<String, Assertions> run(Path inputPath);
 }

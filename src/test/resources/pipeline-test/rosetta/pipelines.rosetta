@@ -1,0 +1,62 @@
+namespace pipeline.chain.test
+
+type SomeType:
+  name string (1..1)
+
+func Start:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "START:" + someType -> name
+
+func Middle:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "MIDDLE:" + someType -> name
+
+func MiddleA:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "MIDDLE A:" + someType -> name
+
+func MiddleB:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "MIDDLE B:" + someType -> name
+
+
+func End:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "END:" + someType -> name
+
+
+func EndA:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "END A:" + someType -> name
+
+func EndB:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "END B:" + someType -> name
