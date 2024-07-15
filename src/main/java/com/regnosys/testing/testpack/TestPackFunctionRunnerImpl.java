@@ -48,7 +48,7 @@ import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.As
 import static com.regnosys.rosetta.common.transform.TestPackUtils.readFile;
 import static com.regnosys.testing.testpack.TestPackFunctionRunnerProviderImpl.JSON_OBJECT_MAPPER;
 
-class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestPackFunctionRunner {
+public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestPackFunctionRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestPackFunctionRunnerImpl.class);
     public static final Path ROSETTA_SOURCE_PATH = Path.of("rosetta-source/src/main/resources/");
 
