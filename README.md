@@ -1,8 +1,10 @@
+[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/regnosysops/FINOS%2Frune-common?type=cf-1)]( https://g.codefresh.io/public/accounts/regnosysops/pipelines/new/667e8e2a5151928589be94bf)
+
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/incubating)
 
 # Rune Testing
 
-Rune Testing is a java library that is utilised by [Rosetta Code Generators](https://github.com/REGnosys/rosetta-code-generators) and models expressed in the [Rosetta DSL](https://github.com/REGnosys/rosetta-dsl).
+Rune Testing is a java library that is part of `Finos Rune` utilised by [Rune Code Generators](https://github.com/REGnosys/rosetta-code-generators) and models expressed in [Rune DSL](https://github.com/finos/rune-dsl) the main `Rune` project.
 
 ## Installation
 

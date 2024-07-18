@@ -35,7 +35,7 @@
     <groupId>com.regnosys</groupId>
     <artifactId>rosetta-testing</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.0.master-SNAPSHOT</version>
+    <version>0.0.0.main-SNAPSHOT</version>
     <url>https://github.com/REGnosys/rosetta-testing</url>
 
     <scm>
@@ -95,7 +95,7 @@
         <maven.compiler.release>11</maven.compiler.release>
 
         <rosetta.dsl.version>0.0.0.translate-syntax-SNAPSHOT</rosetta.dsl.version>
-        <rosetta.common.version>0.0.0.master-SNAPSHOT</rosetta.common.version>
+        <rosetta.common.version>0.0.0.main-SNAPSHOT</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
         <unruly.version>1.6</unruly.version>
@@ -111,10 +111,9 @@
 
         <!-- test -->
         <junit.version>5.9.1</junit.version>
-        <junit-platform-commons.version>1.9.1</junit-platform-commons.version>
-        <mockito.version>5.1.1</mockito.version>
+        <mockito.version>5.12.0</mockito.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <logback.version>1.4.7</logback.version>
+        <logback.version>1.5.6</logback.version>
 
         <!-- plugins -->
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
@@ -130,8 +129,8 @@
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
-
     </properties>
+
     <profiles>
         <profile>
             <id>gpg</id>
@@ -255,21 +254,16 @@
                 <version>${junit.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-commons</artifactId>
-                <version>${junit-platform-commons.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest</artifactId>
-                <version>${hamcrest.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-bom</artifactId>
                 <version>${mockito.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
             </dependency>
             <dependency>
                 <groupId>co.unruly</groupId>
@@ -284,26 +278,6 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-test-junit</artifactId>
-                <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jmock</groupId>
-                <artifactId>jmock</artifactId>
-                <version>${jmock.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>asm</artifactId>
-                        <groupId>org.ow2.asm</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>jsr305</artifactId>
-                        <groupId>com.google.code.findbugs</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-reflect</artifactId>
                 <version>${kotlin.version}</version>
             </dependency>
             <dependency>
@@ -364,14 +338,6 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jmock</groupId>
-            <artifactId>jmock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-reflect</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
