@@ -46,7 +46,7 @@ import java.util.function.Function;
 
 import static com.regnosys.rosetta.common.transform.TestPackUtils.getObjectWriter;
 
-class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvider {
+public class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvider {
 
     protected static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     protected final static ObjectWriter JSON_OBJECT_WRITER =
