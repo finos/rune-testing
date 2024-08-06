@@ -120,6 +120,23 @@ public class PipelineTestHelper {
                 .add(middleClass(), TransformType.PROJECTION, endClass());
     }
 
+    PipelineTreeConfig createNestedTreeConfigMultipleStartingNodes() {
+        return new PipelineTreeConfig()
+                .starting(TransformType.REPORT, middleAClass())
+                .add(middleAClass(), TransformType.PROJECTION, endAClass())
+                .add(middleAClass(), TransformType.PROJECTION, endBClass())
+
+                .starting(TransformType.REPORT, middleBClass())
+                .add(middleBClass(), TransformType.PROJECTION, endAClass())
+                .add(middleBClass(), TransformType.PROJECTION, endBClass());
+    }
+
+    PipelineTreeConfig createTreeConfigWithoutStarting() {
+        return new PipelineTreeConfig()
+                .add(startClass(), TransformType.REPORT, middleClass())
+                .add(middleClass(), TransformType.PROJECTION, endClass());
+    }
+
     private CompiledCode compileCode() throws Exception {
         CompiledCode compiledCode = modelHelper.generateAndCompileJava(Files.readString(testPath.resolve("rosetta/pipelines.rosetta")));
 

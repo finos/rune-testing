@@ -9,9 +9,9 @@ package com.regnosys.testing.pipeline;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,8 @@ package com.regnosys.testing.pipeline;
 import com.rosetta.model.lib.functions.RosettaFunction;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FunctionNameHelperTest {
@@ -30,20 +32,47 @@ class FunctionNameHelperTest {
     private final FunctionNameHelper functionNameHelper = new FunctionNameHelper();
 
     @Test
-    void readableId() {
-        assertEquals("asic-trade-to-iso20022", functionNameHelper.readableId(Project_ASICTradeReportToIso20022.class));
+    void getInputType() {
+        assertEquals("com.rosetta.model.lib.RosettaModelObject", functionNameHelper.getInputType(PipelineTestUtils.Enrich_Type_1ToType_2.class));
+    }
+
+    @Test
+    void getOutputType() {
+        assertEquals("java.lang.String", functionNameHelper.getOutputType(PipelineTestUtils.Enrich_Type_1ToType_2.class));
+    }
+
+    @Test
+    void getFuncMethod() {
+        assertEquals("evaluate", functionNameHelper.getFuncMethod(PipelineTestUtils.Enrich_Type_1ToType_2.class).getName());
+    }
+
+    @Test
+    void getInputTypeNoEvaluate() {
+        assertThrows(EvaluateFunctionNotFoundException.class,  () -> functionNameHelper.getInputType(PipelineTestUtils.Report_Type_2ToType_3.class));
+    }
+
+    @Test
+    void getOutputTypeNoEvaluate() {
+        assertThrows(EvaluateFunctionNotFoundException.class,  () -> functionNameHelper.getOutputType(PipelineTestUtils.Report_Type_2ToType_3.class));
+    }
+
+    @Test
+    void getFuncMethodNoEvaluate() {
+        assertThrows(EvaluateFunctionNotFoundException.class,  () -> functionNameHelper.getFuncMethod(PipelineTestUtils.Report_Type_2ToType_3.class));
     }
 
     @Test
     void readableIdEnrich() {
-        assertEquals("asic-trade-to-iso20022", functionNameHelper.readableId(Enrich_ReportableEventToTransactionReportInstruction.class));
+        assertEquals("type1-to-type2", functionNameHelper.readableId(PipelineTestUtils.Enrich_Type_1ToType_2.class));
     }
 
-    static class Project_ASICTradeReportToIso20022 implements RosettaFunction {
-
+    @Test
+    void readableIdReport() {
+        assertEquals("type2-to-type3", functionNameHelper.readableId(PipelineTestUtils.Report_Type_2ToType_3.class));
     }
 
-    static class Enrich_ReportableEventToTransactionReportInstruction implements RosettaFunction {
-
+    @Test
+    void readableIdProjection() {
+        assertEquals("projection-type3-to-type4", functionNameHelper.readableId(PipelineTestUtils.Projection_Type_3ToType_4.class));
     }
 }

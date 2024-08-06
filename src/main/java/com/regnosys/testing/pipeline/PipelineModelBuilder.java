@@ -20,7 +20,6 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
-import com.google.common.collect.ImmutableMap;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 
 import javax.inject.Inject;
@@ -42,7 +41,7 @@ public class PipelineModelBuilder {
                 .collect(Collectors.toList());
     }
 
-    public PipelineModel build(PipelineNode modelBuilder, PipelineTreeConfig config) {
+    protected PipelineModel build(PipelineNode modelBuilder, PipelineTreeConfig config) {
 
         String inputType = helper.getInputType(modelBuilder.getFunction());
         String outputType = helper.getOutputType(modelBuilder.getFunction());

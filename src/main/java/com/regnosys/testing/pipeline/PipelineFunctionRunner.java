@@ -41,7 +41,7 @@ public class PipelineFunctionRunner {
 
     public Result run(PipelineModel pipelineModel, ImmutableMap<Class<?>, String> outputSchemaMap, Path inputPath) {
         TestPackFunctionRunner functionRunner = getFunctionRunner(pipelineModel, outputSchemaMap);
-        Pair<String, TestPackModel.SampleModel.Assertions> run = functionRunner.run(inputPath.toAbsolutePath());
+        Pair<String, TestPackModel.SampleModel.Assertions> run = functionRunner.run(inputPath);
         return new Result(run.left(), run.right());
     }
 

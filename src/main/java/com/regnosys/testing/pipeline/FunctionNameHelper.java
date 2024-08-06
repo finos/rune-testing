@@ -44,24 +44,22 @@ public class FunctionNameHelper {
     }
 
     public Method getFuncMethod(Class<? extends RosettaFunction> function) {
-        List<Method> evaluateMethods = Arrays.stream(function.getMethods())
-                .filter(x -> x.getName().equals("evaluate"))
-                .collect(Collectors.toList());
-        return Iterables.getLast(evaluateMethods);
+        try{
+            List<Method> evaluateMethods = Arrays.stream(function.getMethods())
+                    .filter(x -> x.getName().equals("evaluate"))
+                    .collect(Collectors.toList());
+            return Iterables.getLast(evaluateMethods);
+        }
+        catch(Exception ex) {
+            throw new EvaluateFunctionNotFoundException("evaluate method not found in " + function.getName(), ex);
+        }
+
     }
 
     public String getName(Class<? extends RosettaFunction> function) {
         return Optional.ofNullable(function.getAnnotation(com.rosetta.model.lib.annotations.RosettaReport.class))
                 .map(a -> String.format("%s / %s", a.body(), String.join(" ", a.corpusList())))
                 .orElse(readableFunctionName(function));
-    }
-
-    private String readableFunctionName(Class<? extends RosettaFunction> function) {
-        String readableId = readableId(function);
-
-        return Arrays.stream(readableId.split("-"))
-                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
-                .collect(Collectors.joining(" "));
     }
 
     protected String readableId(Class<? extends RosettaFunction> function) {
@@ -83,6 +81,14 @@ public class FunctionNameHelper {
         return CaseFormat.UPPER_CAMEL
                 .converterTo(CaseFormat.LOWER_HYPHEN)
                 .convert(functionName);
+    }
+
+    private String readableFunctionName(Class<? extends RosettaFunction> function) {
+        String readableId = readableId(function);
+
+        return Arrays.stream(readableId.split("-"))
+                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1))
+                .collect(Collectors.joining(" "));
     }
 
     private String lowercaseConsecutiveUppercase(String input) {

@@ -46,7 +46,7 @@ public class PipelineTestPackWriterTest {
     }
 
     @Test
-    void writeTestPacks(@TempDir Path tempDir) throws Exception {
+    void writeTestPacksForNestedTreeConfig(@TempDir Path tempDir) throws Exception {
         Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.ENRICH.getResourcePath()).resolve("input"));
 
         Path testPack1Path = Files.createDirectories(inputPath.resolve("test-pack-1"));
@@ -102,6 +102,113 @@ public class PipelineTestPackWriterTest {
         assertFileExists(tempDir, "projection/output/start/middle-a/end-b/test-pack-2/sample-2-1.json");
         assertFileExists(tempDir, "projection/output/start/middle-a/end-b/test-pack-1/sample-1-1.json");
         assertFileExists(tempDir, "projection/output/start/middle-a/end-b/test-pack-1/sample-1-2.json");
+    }
+
+    @Test
+    void writeTestPacksForTreeConfig(@TempDir Path tempDir) throws Exception {
+        Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.ENRICH.getResourcePath()).resolve("input"));
+
+        Path testPack1Path = Files.createDirectories(inputPath.resolve("test-pack-1"));
+        Path testPack2Path = Files.createDirectories(inputPath.resolve("test-pack-2"));
+
+        Files.write(testPack1Path.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+        Files.write(testPack1Path.resolve("sample-1-2.json"), "{\"name\": \"1-2\"}".getBytes());
+        Files.write(testPack2Path.resolve("sample-2-1.json"), "{\"name\": \"2-1\"}".getBytes());
+        Files.write(testPack2Path.resolve("sample-2-2.json"), "{\"name\": \"2-2\"}".getBytes());
+
+        PipelineTreeConfig chain = helper.createTreeConfig().strictUniqueIds().withWritePath(tempDir);
+        pipelineTestPackWriter.writeTestPacks(chain);
+
+
+        assertFileExists(tempDir, "enrich/config/test-pack-enrich-start-test-pack-1.json");
+        assertFileExists(tempDir, "enrich/config/test-pack-enrich-start-test-pack-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-start-middle-test-pack-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-start-middle-test-pack-2.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-start-middle-end-test-pack-1.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-start-middle-end-test-pack-2.json");
+
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-1/sample-1-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/start/middle/test-pack-1/sample-1-2.json");
+        assertFileExists(tempDir, "enrich/output/start/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "enrich/output/start/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "enrich/output/start/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "enrich/output/start/test-pack-1/sample-1-2.json");
+
+        assertFileExists(tempDir, "projection/output/start/middle/end/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "projection/output/start/middle/end/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "projection/output/start/middle/end/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "projection/output/start/middle/end/test-pack-1/sample-1-2.json");
+
+    }
+
+    @Test
+    void writeTestPacksForTreeConfigWithMultipleStartNodes(@TempDir Path tempDir) throws Exception {
+        Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.REPORT.getResourcePath()).resolve("input"));
+
+        Path testPack1Path = Files.createDirectories(inputPath.resolve("test-pack-1"));
+        Path testPack2Path = Files.createDirectories(inputPath.resolve("test-pack-2"));
+
+        Files.write(testPack1Path.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+        Files.write(testPack1Path.resolve("sample-1-2.json"), "{\"name\": \"1-2\"}".getBytes());
+        Files.write(testPack2Path.resolve("sample-2-1.json"), "{\"name\": \"2-1\"}".getBytes());
+        Files.write(testPack2Path.resolve("sample-2-2.json"), "{\"name\": \"2-2\"}".getBytes());
+
+        PipelineTreeConfig chain = helper.createNestedTreeConfigMultipleStartingNodes().strictUniqueIds().withWritePath(tempDir);
+        pipelineTestPackWriter.writeTestPacks(chain);
+
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-2.json");
+
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-a-end-a-test-pack-1.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-b-end-b-test-pack-2.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-a-end-b-test-pack-2.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-b-end-a-test-pack-1.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-b-end-a-test-pack-2.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-a-end-b-test-pack-1.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-b-end-b-test-pack-1.json");
+        assertFileExists(tempDir, "projection/config/test-pack-projection-middle-a-end-a-test-pack-2.json");
+
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-a/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-a/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-a/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-a/test-pack-1/sample-1-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-a/test-pack-2/sample-2-2.json");
+
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-b/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-b/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-b/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-b/test-pack-1/sample-1-2.json");
+        assertFileExists(tempDir, "regulatory-reporting/output/middle-b/test-pack-2/sample-2-2.json");
+
+
+        assertFileExists(tempDir, "projection/output/middle-a/end-a/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "projection/output/middle-a/end-a/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "projection/output/middle-a/end-a/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "projection/output/middle-a/end-a/test-pack-1/sample-1-2.json");
+
+        assertFileExists(tempDir, "projection/output/middle-a/end-b/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "projection/output/middle-a/end-b/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "projection/output/middle-a/end-b/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "projection/output/middle-a/end-b/test-pack-1/sample-1-2.json");
+
+        assertFileExists(tempDir, "projection/output/middle-b/end-a/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "projection/output/middle-b/end-a/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "projection/output/middle-b/end-a/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "projection/output/middle-b/end-a/test-pack-1/sample-1-2.json");
+
+        assertFileExists(tempDir, "projection/output/middle-b/end-b/test-pack-2/sample-2-2.json");
+        assertFileExists(tempDir, "projection/output/middle-b/end-b/test-pack-2/sample-2-1.json");
+        assertFileExists(tempDir, "projection/output/middle-b/end-b/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "projection/output/middle-b/end-b/test-pack-1/sample-1-2.json");
+
     }
 
     private static void assertFileExists(Path tempDir, String fileName) {

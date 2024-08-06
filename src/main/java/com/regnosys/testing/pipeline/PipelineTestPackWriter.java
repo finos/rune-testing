@@ -9,9 +9,9 @@ package com.regnosys.testing.pipeline;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,15 +46,12 @@ public class PipelineTestPackWriter {
     private final PipelineModelBuilder pipelineModelBuilder;
     private final PipelineFunctionRunner pipelineFunctionRunner;
 
-    private final FunctionNameHelper helper;
-
 
     @Inject
-    public PipelineTestPackWriter(PipelineTreeBuilder pipelineTreeBuilder, PipelineFunctionRunner pipelineFunctionRunner, PipelineModelBuilder pipelineModelBuilder, FunctionNameHelper helper) {
+    public PipelineTestPackWriter(PipelineTreeBuilder pipelineTreeBuilder, PipelineFunctionRunner pipelineFunctionRunner, PipelineModelBuilder pipelineModelBuilder) {
         this.pipelineTreeBuilder = pipelineTreeBuilder;
         this.pipelineFunctionRunner = pipelineFunctionRunner;
         this.pipelineModelBuilder = pipelineModelBuilder;
-        this.helper = helper;
     }
 
     public void writeTestPacks(PipelineTreeConfig config) throws IOException {
@@ -70,7 +67,7 @@ public class PipelineTestPackWriter {
         PipelineTree pipelineTree = pipelineTreeBuilder.createPipelineTree(config);
 
         for (PipelineNode pipelineNode : pipelineTree.getNodeList()) {
-            LOGGER.info("Generating {} test packs for {} ", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
+            LOGGER.info("Generating {} Test Packs for {} ", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
 
             Path inputPath = resourcesPath.resolve(pipelineNode.getInputPath(config.isStrictUniqueIds()));
             LOGGER.info("Input path {} ", inputPath);
@@ -81,7 +78,7 @@ public class PipelineTestPackWriter {
             List<Path> inputSamples = inputSamples(inputPath);
 
             Map<String, List<Path>> testPackToSamples = groupingByTestPackId(resourcesPath, inputPath, inputSamples);
-            LOGGER.info("{} Test packs will be generated", testPackToSamples.keySet().size());
+            LOGGER.info("{} Test Packs will be generated", testPackToSamples.keySet().size());
 
             for (String testPackId : testPackToSamples.keySet()) {
                 List<Path> inputSamplesForTestPack = testPackToSamples.get(testPackId);
@@ -105,8 +102,8 @@ public class PipelineTestPackWriter {
     }
 
     private TestPackModel writeTestPackSamples(Path resourcesPath, Path inputPath, Path outputDir, String testPackId, List<Path> inputSamplesForTestPack, PipelineNode pipelineNode, PipelineTreeConfig config) throws IOException {
-        LOGGER.info("Test pack sample generation started for {}",  testPackId);
-        LOGGER.info("{} samples to be generated",  inputSamplesForTestPack.size());
+        LOGGER.info("Test pack sample generation started for {}", testPackId);
+        LOGGER.info("{} samples to be generated", inputSamplesForTestPack.size());
         List<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
         String pipelineId = pipelineNode.id(config.isStrictUniqueIds());
         String pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
@@ -125,7 +122,7 @@ public class PipelineTestPackWriter {
             Files.createDirectories(resourcesPath.resolve(outputSample).getParent());
             Files.write(resourcesPath.resolve(outputSample), run.getSerialisedOutput().getBytes());
         }
-        LOGGER.info("Test pack sample generation complete for {} ", testPackId);
+        LOGGER.info("Test Pack sample generation complete for {} ", testPackId);
         String testPackName = testPackId.replace("-", " ");
         return new TestPackModel(String.format("test-pack-%s-%s-%s", pipelineNode.getTransformType().name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sampleModels);
     }

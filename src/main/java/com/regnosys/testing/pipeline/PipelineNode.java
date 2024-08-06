@@ -38,7 +38,7 @@ public class PipelineNode {
         this.transformType = transformType;
     }
 
-    private PipelineNode(FunctionNameHelper functionNameHelper, TransformType transformType, Class<? extends RosettaFunction> function, PipelineNode upstream) {
+    PipelineNode(FunctionNameHelper functionNameHelper, TransformType transformType, Class<? extends RosettaFunction> function, PipelineNode upstream) {
         this.functionNameHelper = functionNameHelper;
         this.transformType = transformType;
         this.function = function;
@@ -101,7 +101,7 @@ public class PipelineNode {
     public String idSuffix(boolean strictUniqueIds, String separator) {
         if (strictUniqueIds) {
             return (upstream == null) ? functionNameHelper.readableId(getFunction()) :
-                    String.format("%s%s%s", upstream.idSuffix(strictUniqueIds, separator), separator, functionNameHelper.readableId(getFunction()));
+                    String.format("%s%s%s", upstream.idSuffix(true, separator), separator, functionNameHelper.readableId(getFunction()));
         }
         return functionNameHelper.readableId(getFunction());
     }
