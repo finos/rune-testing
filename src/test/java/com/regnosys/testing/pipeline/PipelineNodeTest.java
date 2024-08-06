@@ -1,8 +1,6 @@
 package com.regnosys.testing.pipeline;
 
 import com.regnosys.rosetta.common.transform.TransformType;
-import com.rosetta.model.lib.RosettaModelObject;
-import com.rosetta.model.lib.functions.RosettaFunction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +28,7 @@ class PipelineNodeTest {
         PipelineTestHelper.setupInjector(this);
         ENRICH_NODE = new PipelineNode(functionNameHelper, TransformType.ENRICH, PipelineTestUtils.Enrich_Type_1ToType_2.class, null);
         REPORT_NODE = new PipelineNode(functionNameHelper, TransformType.REPORT, PipelineTestUtils.Report_Type_2ToType_3.class, ENRICH_NODE);
-        PROJECTION_NODE = new PipelineNode(functionNameHelper, TransformType.PROJECTION, PipelineTestUtils.Projection_Type_3ToType_4.class, REPORT_NODE);
+        PROJECTION_NODE = new PipelineNode(functionNameHelper, TransformType.PROJECTION, PipelineTestUtils.Project_Type_3ToType_4.class, REPORT_NODE);
     }
 
     @Test

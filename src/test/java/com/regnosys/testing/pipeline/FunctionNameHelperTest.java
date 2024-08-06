@@ -20,10 +20,7 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
-import com.rosetta.model.lib.functions.RosettaFunction;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,6 +59,21 @@ class FunctionNameHelperTest {
     }
 
     @Test
+    void getNameEnrich() {
+        assertEquals("Type1 To Type2", functionNameHelper.getName(PipelineTestUtils.Enrich_Type_1ToType_2.class));
+    }
+
+    @Test
+    void getNameReport() {
+        assertEquals("Type2 To Type3", functionNameHelper.getName(PipelineTestUtils.Report_Type_2ToType_3.class));
+    }
+
+    @Test
+    void getNameProjection() {
+        assertEquals("Type3 To Type4", functionNameHelper.getName(PipelineTestUtils.Project_Type_3ToType_4.class));
+    }
+
+    @Test
     void readableIdEnrich() {
         assertEquals("type1-to-type2", functionNameHelper.readableId(PipelineTestUtils.Enrich_Type_1ToType_2.class));
     }
@@ -73,6 +85,16 @@ class FunctionNameHelperTest {
 
     @Test
     void readableIdProjection() {
-        assertEquals("projection-type3-to-type4", functionNameHelper.readableId(PipelineTestUtils.Projection_Type_3ToType_4.class));
+        assertEquals("type3-to-type4", functionNameHelper.readableId(PipelineTestUtils.Project_Type_3ToType_4.class));
+    }
+
+    @Test
+    void readableIdAllUpperCase() {
+        assertEquals("type2-to-type3", functionNameHelper.readableId(PipelineTestUtils.Report_TYPE_2_TO_TYPE_3.class));
+    }
+
+    @Test
+    void nameAllUpperCase() {
+        assertEquals("Type2 To Type3", functionNameHelper.getName(PipelineTestUtils.Report_TYPE_2_TO_TYPE_3.class));
     }
 }
