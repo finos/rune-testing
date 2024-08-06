@@ -1,5 +1,25 @@
 package com.regnosys.testing.pipeline;
 
+/*-
+ * ===============
+ * Rune Testing
+ * ===============
+ * Copyright (C) 2022 - 2024 REGnosys
+ * ===============
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ===============
+ */
+
 import com.regnosys.rosetta.common.transform.TransformType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,11 +88,11 @@ class PipelineNodeTest {
 
     @Test
     void idSuffixChildNode() {
-        assertEquals("type1-to-type2-type2-to-type3-projection-type3-to-type4", PROJECTION_NODE.idSuffix(STRICT_IDS, "-"));
+        assertEquals("type1-to-type2-type2-to-type3-type3-to-type4", PROJECTION_NODE.idSuffix(STRICT_IDS, "-"));
     }
 
     @Test
     void idSuffixWithoutStrictIdsChildNode() {
-        assertEquals("projection-type3-to-type4", PROJECTION_NODE.idSuffix(NO_STRICT_IDs, "-"));
+        assertEquals("type3-to-type4", PROJECTION_NODE.idSuffix(NO_STRICT_IDs, "-"));
     }
 }
