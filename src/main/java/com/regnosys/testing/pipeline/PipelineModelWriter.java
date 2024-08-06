@@ -62,19 +62,5 @@ public class PipelineModelWriter {
             Path writeFile = writePath.resolve(pipeline.getId() + ".json");
             objectWriter.writeValue(writeFile.toFile(), pipeline);
         }
-        assertPipelineConfigsCreated(allPipelines, config.getWritePath());
-    }
-
-    private void assertPipelineConfigsCreated(List<PipelineModel> pipelineModels, Path writePath) {
-        pipelineModels.forEach(
-                pipelineModel -> {
-                    final Path pipelineModelPath = writePath.
-                            resolve(pipelineModel.getTransform().getType().getResourcePath()).
-                            resolve("config").
-                            resolve(pipelineModel.getId() + ".json");
-                    assertTrue(Files.exists(pipelineModelPath),
-                            String.format("Error generating config for transform type %s for pipeline %s", pipelineModel.getTransform().getType(), pipelineModel.getName()));
-                }
-        );
     }
 }

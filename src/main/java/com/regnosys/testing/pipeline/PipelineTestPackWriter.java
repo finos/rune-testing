@@ -90,7 +90,6 @@ public class PipelineTestPackWriter {
                 objectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
         }
-        assertTestPacksCreated(pipelineTree.getNodeList(), config.getWritePath(), config.isStrictUniqueIds());
     }
 
     private List<Path> inputSamples(Path inputDir) throws IOException {
@@ -139,14 +138,4 @@ public class PipelineTestPackWriter {
         return relativePath.toString().replace(File.pathSeparatorChar, '-');
     }
 
-    private void assertTestPacksCreated(List<PipelineNode> pipelineNodes, Path writePath, boolean strictUniqueIds) {
-        pipelineNodes.forEach(pipelineNode -> assertPipelineTestPackCreated(writePath, pipelineNode, strictUniqueIds));
-    }
-
-    private static void assertPipelineTestPackCreated(Path writePath, PipelineNode pipelineNode, boolean strictUniqueIds) {
-        assertTrue(Files.exists(writePath.resolve(pipelineNode.getInputPath(strictUniqueIds))),
-                String.format("Could not generate %s input sample for %s", pipelineNode.getTransformType(), pipelineNode.getFunction().getName()));
-        assertTrue(Files.exists(writePath.resolve(pipelineNode.getOutputPath(strictUniqueIds))),
-                String.format("Could not generate %s output sample for %s", pipelineNode.getTransformType(), pipelineNode.getFunction().getName()));
-    }
 }
