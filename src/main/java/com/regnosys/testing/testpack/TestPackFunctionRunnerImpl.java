@@ -78,8 +78,7 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
     public Pair<String, Assertions> run(Path inputPath) {
         RosettaModelObject output;
         try {
-            Path inputPathFromRepositoryRoot = ROSETTA_SOURCE_PATH.resolve(inputPath);
-            URL inputFileUrl = inputPathFromRepositoryRoot.toUri().toURL();
+            URL inputFileUrl = inputPath.toUri().toURL();
             IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
             output = function.apply(resolveReferences(input));
         } catch (MalformedURLException e) {
