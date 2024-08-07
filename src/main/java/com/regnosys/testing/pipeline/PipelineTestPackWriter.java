@@ -32,11 +32,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.regnosys.rosetta.common.util.UrlUtils.getBaseFileName;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PipelineTestPackWriter {
@@ -45,13 +47,16 @@ public class PipelineTestPackWriter {
     private final PipelineTreeBuilder pipelineTreeBuilder;
     private final PipelineModelBuilder pipelineModelBuilder;
     private final PipelineFunctionRunner pipelineFunctionRunner;
+    private final FunctionNameHelper helper;
+
 
 
     @Inject
-    public PipelineTestPackWriter(PipelineTreeBuilder pipelineTreeBuilder, PipelineFunctionRunner pipelineFunctionRunner, PipelineModelBuilder pipelineModelBuilder) {
+    public PipelineTestPackWriter(PipelineTreeBuilder pipelineTreeBuilder, PipelineFunctionRunner pipelineFunctionRunner, PipelineModelBuilder pipelineModelBuilder, FunctionNameHelper helper) {
         this.pipelineTreeBuilder = pipelineTreeBuilder;
         this.pipelineFunctionRunner = pipelineFunctionRunner;
         this.pipelineModelBuilder = pipelineModelBuilder;
+        this.helper = helper;
     }
 
     public void writeTestPacks(PipelineTreeConfig config) throws IOException {
@@ -114,16 +119,26 @@ public class PipelineTestPackWriter {
             PipelineFunctionRunner.Result run = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
             TestPackModel.SampleModel.Assertions assertions = run.getAssertions();
 
-            String sampleId = inputSample.getFileName().toString().toLowerCase();
-            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(sampleId, inputSample.getFileName().toString(), inputSample.toString(), outputSample.toString(), assertions);
+            //TODO Tidy this up
+            String baseFileName = getBaseFileName(inputSample.toUri().toURL());
+            String displayName = baseFileName.replace("-", " ");
+
+            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputSample.toString(), outputSample.toString(), assertions);
             sampleModels.add(sampleModel);
 
             Files.createDirectories(resourcesPath.resolve(outputSample).getParent());
             Files.write(resourcesPath.resolve(outputSample), run.getSerialisedOutput().getBytes());
         }
+
+        List<TestPackModel.SampleModel> sortedSamples = sampleModels
+                .stream()
+                .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
+                .collect(Collectors.toList());
+
         LOGGER.info("Test Pack sample generation complete for {} ", testPackId);
-        String testPackName = testPackId.replace("-", " ");
-        return new TestPackModel(String.format("test-pack-%s-%s-%s", pipelineNode.getTransformType().name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sampleModels);
+        //The "-" needs to be replaced by spaces as we add them when populating the id
+        String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
+        return new TestPackModel(String.format("test-pack-%s-%s-%s", pipelineNode.getTransformType().name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
     }
 
     private Map<String, List<Path>> groupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples) {

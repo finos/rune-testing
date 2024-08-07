@@ -62,6 +62,14 @@ public class FunctionNameHelper {
                 .orElse(readableFunctionName(function));
     }
 
+    public String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        // Capitalize the first letter and concatenate with the rest of the string
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
+
     protected String readableId(Class<? extends RosettaFunction> function) {
         String simpleName = Optional.ofNullable(function.getAnnotation(RosettaReport.class))
                 .map(a -> String.format("%s-%s", a.body(), String.join("-", a.corpusList())))

@@ -97,4 +97,19 @@ class FunctionNameHelperTest {
     void nameAllUpperCase() {
         assertEquals("Type2 To Type3", functionNameHelper.getName(PipelineTestUtils.Report_TYPE_2_TO_TYPE_3.class));
     }
+
+    @Test
+    void getNameFromId() {
+        assertEquals("Test Pack id", functionNameHelper.capitalizeFirstLetter("test Pack id"));
+    }
+
+    @Test
+    void getNameFromIdAllCaps() {
+        assertEquals("TESTPACKID", functionNameHelper.capitalizeFirstLetter("TESTPACKID"));
+    }
+
+    @Test
+    void getNameFromIdAllLowerCase() {
+        assertEquals("Test-pack-id", functionNameHelper.capitalizeFirstLetter("test-pack-id"));
+    }
 }
