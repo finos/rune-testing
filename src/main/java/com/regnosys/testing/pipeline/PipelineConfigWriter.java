@@ -30,10 +30,6 @@ import java.nio.file.Path;
 import static com.regnosys.testing.TestingExpectationUtil.TEST_WRITE_BASE_PATH;
 
 public class PipelineConfigWriter {
-    public PipelineConfigWriter(PipelineModelWriter pipelineModelWriter, PipelineTestPackWriter pipelineTestPackWriter) {
-        this.pipelineModelWriter = pipelineModelWriter;
-        this.pipelineTestPackWriter = pipelineTestPackWriter;
-    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PipelineConfigWriter.class);
 
@@ -42,6 +38,12 @@ public class PipelineConfigWriter {
 
     @Inject
     private PipelineTestPackWriter pipelineTestPackWriter;
+
+    @Inject
+    public PipelineConfigWriter(PipelineModelWriter pipelineModelWriter, PipelineTestPackWriter pipelineTestPackWriter) {
+        this.pipelineModelWriter = pipelineModelWriter;
+        this.pipelineTestPackWriter = pipelineTestPackWriter;
+    }
 
     public void writePipelinesAndTestPacks(PipelineTreeConfig config) throws IOException {
         if (config.getWritePath() == null) {
