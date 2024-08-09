@@ -35,6 +35,29 @@ func MiddleB:
 
     set out -> name: "MIDDLE B:" + someType -> name
 
+func MiddleC:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "MIDDLE C:" + someType -> name
+
+func MiddleD:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "MIDDLE D:" + someType -> name
+
+func MiddleE:
+    inputs:
+        someType SomeType (1..1)
+    output:
+        out SomeType (1..1)
+
+    set out -> name: "MIDDLE E:" + someType -> name
 
 func End:
     inputs:

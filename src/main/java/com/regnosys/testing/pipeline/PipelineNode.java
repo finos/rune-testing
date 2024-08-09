@@ -110,4 +110,8 @@ public class PipelineNode {
     public String toString() {
         return id(true);
     }
+
+    public PipelineNode getUpstream() {
+        return upstream;
+    }
 }
