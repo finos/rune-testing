@@ -51,7 +51,7 @@ public class ReportUtil {
 
         return modelLoader.rosettaElements(models, RosettaReport.class).stream()
                 .map(rosettaReport -> new ModelReportId(
-                        DottedPath.of(rosettaReport.getModel().getName()),
+                        DottedPath.of(rosettaReport.getNamespace().getName()),
                         rosettaReport.getRegulatoryBody().getBody().getName(),
                         rosettaReport.getRegulatoryBody().getCorpusList().stream().map(RosettaNamed::getName).toArray(String[]::new)))
                 .collect(Collectors.toList());

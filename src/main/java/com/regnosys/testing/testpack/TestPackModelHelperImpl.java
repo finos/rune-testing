@@ -25,6 +25,7 @@ import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.generator.java.types.JavaTypeTranslator;
 import com.regnosys.rosetta.rosetta.RosettaModel;
+import com.regnosys.rosetta.rosetta.RosettaNamespace;
 import com.regnosys.rosetta.rosetta.RosettaReport;
 import com.regnosys.rosetta.rosetta.RosettaType;
 import com.regnosys.rosetta.rosetta.simple.AnnotationRef;
@@ -73,7 +74,7 @@ public class TestPackModelHelperImpl implements TestPackModelHelper {
         Set<String> excludedClassNames = excluded.stream().map(Class::getName).collect(Collectors.toSet());
         return modelLoader.rosettaElements(models, RosettaReport.class)
                 .stream()
-                .filter(r -> filterNamespace(r.getModel(), namespaceRegex))
+                .filter(r -> filterNamespace(r.getNamespace(), namespaceRegex))
                 .filter(r -> !excludedClassNames.contains(toJavaClass(r)))
                 .collect(Collectors.toList());
     }
@@ -82,7 +83,7 @@ public class TestPackModelHelperImpl implements TestPackModelHelper {
     public List<Function> getFunctionsWithAnnotation(List<RosettaModel> models, String namespaceRegex, String annotation, Collection<Class<?>> excluded) {
         Set<String> excludedClassNames = excluded.stream().map(Class::getName).collect(Collectors.toSet());
         return modelLoader.rosettaElements(models, Function.class).stream()
-                .filter(r -> filterNamespace(r.getModel(), namespaceRegex))
+                .filter(r -> filterNamespace(r.getNamespace(), namespaceRegex))
                 .filter(f -> f.getAnnotations().stream()
                         .map(AnnotationRef::getAnnotation)
                         .anyMatch(a -> annotation.equals(a.getName())))
@@ -122,14 +123,14 @@ public class TestPackModelHelperImpl implements TestPackModelHelper {
         return generatedJavaClassService.toJavaType(toModelSymbolId(rosettaType)).getCanonicalName().withDots();
     }
 
-    private boolean filterNamespace(RosettaModel rosettaModel, String namespaceIncludeRegex) {
+    private boolean filterNamespace(RosettaNamespace rosettaNamespace, String namespaceIncludeRegex) {
         return Optional.ofNullable(namespaceIncludeRegex)
-                .map(regex -> rosettaModel.getName().matches(regex))
+                .map(regex -> rosettaNamespace.getName().matches(regex))
                 .orElse(true);
     }
 
     private ModelSymbolId toModelSymbolId(RosettaType type) {
-        DottedPath namespace = DottedPath.splitOnDots(type.getModel().getName());
+        DottedPath namespace = DottedPath.splitOnDots(type.getNamespace().getName());
         return new ModelSymbolId(namespace, type.getName());
     }
 }
