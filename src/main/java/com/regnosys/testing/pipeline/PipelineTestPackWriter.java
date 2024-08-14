@@ -123,8 +123,11 @@ public class PipelineTestPackWriter {
 
         for (Path inputSample : inputSamplesForTestPack) {
             LOGGER.info("Generating sample {}", inputSample.getFileName());
-            Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
+
             PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
+            Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
+            outputSample = outputSample.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, outputSample.toFile().getName())));
+
             PipelineFunctionRunner.Result run = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
             TestPackModel.SampleModel.Assertions assertions = run.getAssertions();
 
@@ -147,6 +150,14 @@ public class PipelineTestPackWriter {
 
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
         return new TestPackModel(String.format("test-pack-%s-%s-%s", pipelineNode.getTransformType().name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
+    }
+
+    private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName){
+        if(pipelineModel.getOutputSerialisation() != null) {
+            String outputFormat = pipelineModel.getOutputSerialisation().getFormat().toString().toLowerCase();
+            return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
+        }
+        return fileName;
     }
 
     private Map<String, List<Path>> groupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples) {
