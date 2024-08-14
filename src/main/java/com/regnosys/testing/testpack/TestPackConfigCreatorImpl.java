@@ -189,7 +189,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
     }
 
     protected String formatIso20022XmlConfigPath(RosettaType type) {
-        String namespace = type.getModel().getName();
+        String namespace = type.getNamespace().getName();
         String xmlConfigPath = namespace
                 .replace("iso20022.", "")
                 .replace(".", "-");
@@ -198,7 +198,7 @@ public class TestPackConfigCreatorImpl implements TestPackConfigCreator {
 
     protected ModelReportId toModelReportId(RosettaReport rosettaReport) {
         return new ModelReportId(
-                DottedPath.of(rosettaReport.getModel().getName()),
+                DottedPath.of(rosettaReport.getNamespace().getName()),
                 rosettaReport.getRegulatoryBody().getBody().getName(),
                 rosettaReport.getRegulatoryBody().getCorpusList().stream().map(RosettaNamed::getName).toArray(String[]::new));
     }

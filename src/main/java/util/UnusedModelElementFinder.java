@@ -80,7 +80,7 @@ public class UnusedModelElementFinder {
     }
 
     private String getQualifiedName(RosettaType type) {
-        return type.getModel().getName() + "." + type.getName();
+        return type.getNamespace().getName() + "." + type.getName();
     }
 
     private void generateTypesList() {
@@ -114,7 +114,7 @@ public class UnusedModelElementFinder {
                     .filter(Function.class::isInstance)
                     .map(Function.class::cast)
                     .forEach(function -> {
-                        LOGGER.trace(" Processing function types {}.{}", function.getModel().getName(), function.getName());
+                        LOGGER.trace(" Processing function types {}.{}", function.getNamespace().getName(), function.getName());
                         // listOfTypes.add((function.getModel().getName().concat(".")).concat(function.getName()));
 
                         TreeIterator<EObject> eObjectTreeIterator = function.eAllContents();
