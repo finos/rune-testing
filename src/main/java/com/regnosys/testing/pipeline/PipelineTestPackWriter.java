@@ -21,9 +21,13 @@ package com.regnosys.testing.pipeline;
  */
 
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -31,15 +35,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.util.UrlUtils.getBaseFileName;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PipelineTestPackWriter {
 
@@ -48,7 +48,6 @@ public class PipelineTestPackWriter {
     private final PipelineModelBuilder pipelineModelBuilder;
     private final PipelineFunctionRunner pipelineFunctionRunner;
     private final FunctionNameHelper helper;
-
 
 
     @Inject
@@ -74,6 +73,12 @@ public class PipelineTestPackWriter {
         for (PipelineNode pipelineNode : pipelineTree.getNodeList()) {
             LOGGER.info("Generating {} Test Packs for {} ", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
 
+            final PipelineTestPackFilter pipelineTestPackFilter = config.getTestPackFilter();
+            if (pipelineTestPackFilter != null && pipelineTestPackFilter.getExcludedFunctionsFromTestPackGeneration().contains(pipelineNode.getFunction())) {
+                LOGGER.info("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
+                continue;
+            }
+
             Path inputPath = resourcesPath.resolve(pipelineNode.getInputPath(config.isStrictUniqueIds()));
             LOGGER.info("Input path {} ", inputPath);
 
@@ -82,12 +87,16 @@ public class PipelineTestPackWriter {
 
             List<Path> inputSamples = inputSamples(inputPath);
 
-            Map<String, List<Path>> testPackToSamples = groupingByTestPackId(resourcesPath, inputPath, inputSamples);
-            LOGGER.info("{} Test Packs will be generated", testPackToSamples.keySet().size());
+            Map<String, List<Path>> testPackToSamples =
+                    groupingByTestPackId(resourcesPath, inputPath, inputSamples);
 
-            for (String testPackId : testPackToSamples.keySet()) {
-                List<Path> inputSamplesForTestPack = testPackToSamples.get(testPackId);
+            Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
+                    .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
 
+            LOGGER.info("{} Test Packs will be generated", filteredTestPackToSamples.keySet().size());
+
+            for (String testPackId : filteredTestPackToSamples.keySet()) {
+                List<Path> inputSamplesForTestPack = filteredTestPackToSamples.get(testPackId);
                 TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config);
 
                 Path writePath = Files.createDirectories(resourcesPath.resolve(pipelineNode.getTransformType().getResourcePath()).resolve("config"));
@@ -114,12 +123,14 @@ public class PipelineTestPackWriter {
 
         for (Path inputSample : inputSamplesForTestPack) {
             LOGGER.info("Generating sample {}", inputSample.getFileName());
-            Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
+
             PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
+            Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
+            outputSample = outputSample.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, outputSample.toFile().getName())));
+
             PipelineFunctionRunner.Result run = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
             TestPackModel.SampleModel.Assertions assertions = run.getAssertions();
 
-            //TODO Tidy this up
             String baseFileName = getBaseFileName(inputSample.toUri().toURL());
             String displayName = baseFileName.replace("-", " ");
 
@@ -136,9 +147,17 @@ public class PipelineTestPackWriter {
                 .collect(Collectors.toList());
 
         LOGGER.info("Test Pack sample generation complete for {} ", testPackId);
-        //The "-" needs to be replaced by spaces as we add them when populating the id
+
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
         return new TestPackModel(String.format("test-pack-%s-%s-%s", pipelineNode.getTransformType().name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
+    }
+
+    private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName){
+        if(pipelineModel.getOutputSerialisation() != null) {
+            String outputFormat = pipelineModel.getOutputSerialisation().getFormat().toString().toLowerCase();
+            return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
+        }
+        return fileName;
     }
 
     private Map<String, List<Path>> groupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples) {
@@ -153,4 +172,49 @@ public class PipelineTestPackWriter {
         return relativePath.toString().replace(File.pathSeparatorChar, '-');
     }
 
+    private @NotNull Map<String, List<Path>> filterTestPacks(PipelineNode pipelineNode, PipelineTestPackFilter pipelineTestPackFilter, Map<String, List<Path>> testPackToSamples) {
+        Map<String, List<Path>> filteredTestPackToSamples = testPackToSamples;
+        final ImmutableCollection<Class<?>> testPackSpecificFunctions = pipelineTestPackFilter.getTestPacksSpecificToFunctions().values();
+        if (testPackSpecificFunctions.contains(pipelineNode.getFunction())) {
+            // Filter to include only the test packs specifically included for this function
+            filteredTestPackToSamples = testPackToSamples.entrySet().stream()
+                    .filter(entry -> pipelineTestPackFilter.getTestPacksSpecificToFunctions().containsKey(entry.getKey()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        } else {
+            final ImmutableCollection<String> testPacksToRemove = pipelineTestPackFilter.getTestPacksSpecificToFunctions().keys();
+            // Filter out the test packs that are not valid for this function
+            filteredTestPackToSamples = filteredTestPackToSamples.entrySet().stream()
+                    .filter(entry -> !testPacksToRemove.contains(entry.getKey()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+
+        // Check if the function has specific test packs
+        if (pipelineTestPackFilter.getFunctionsSpecificToTestPacks().containsKey(pipelineNode.getFunction())) {
+            // Filter to include only the specific test packs for the function
+            filteredTestPackToSamples = filteredTestPackToSamples.entrySet().stream()
+                    .filter(entry -> pipelineTestPackFilter.getFunctionsSpecificToTestPacks()
+                            .get(pipelineNode.getFunction())
+                            .contains(entry.getKey()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+
+        if (pipelineTestPackFilter.getTestPacksRestrictedForFunctions().values().contains(pipelineNode.getFunction())) {
+            // Filter to include only applicable test packs for this function
+            filteredTestPackToSamples = filteredTestPackToSamples.entrySet().stream()
+                    .filter(entry -> filterApplicableFunctionsForTestPack(entry.getKey(), pipelineNode, pipelineTestPackFilter.getTestPacksRestrictedForFunctions()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        } else {
+            final ImmutableSet<String> testPacksRestrictedForFunctions = pipelineTestPackFilter.getTestPacksRestrictedForFunctions().keySet();
+            // Filter out the test packs if not needed for this function
+            filteredTestPackToSamples = filteredTestPackToSamples.entrySet().stream()
+                    .filter(entry -> !testPacksRestrictedForFunctions.contains(entry.getKey()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+        return filteredTestPackToSamples;
+    }
+
+    protected boolean filterApplicableFunctionsForTestPack(String testPackName, PipelineNode pipelineNode, ImmutableMultimap<String, Class<?>> testPackIncludedReportIds) {
+        ImmutableCollection<Class<?>> applicableReportsForTestPack = testPackIncludedReportIds.get(testPackName);
+        return applicableReportsForTestPack.isEmpty() || applicableReportsForTestPack.contains(pipelineNode.getFunction());
+    }
 }

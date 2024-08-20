@@ -38,6 +38,7 @@ public class PipelineTreeConfig {
     private ImmutableMap<Class<?>, String> xmlConfigMap;
     private ImmutableMap<Class<?>, String> xmlSchemaMap;
     private final List<TransformFunction> starting = new ArrayList<>();
+    private PipelineTestPackFilter pipelineTestPackFilter;
 
     private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
     private boolean strictUniqueIds;
@@ -92,6 +93,15 @@ public class PipelineTreeConfig {
 
     List<TransformFunction> getStarting() {
         return starting;
+    }
+
+    public PipelineTreeConfig withTestPackFilter(PipelineTestPackFilter pipelineTestPackFilter) {
+        this.pipelineTestPackFilter = pipelineTestPackFilter;
+        return this;
+    }
+
+    PipelineTestPackFilter getTestPackFilter() {
+        return pipelineTestPackFilter;
     }
 
     public List<Class<? extends RosettaFunction>> getDownstreamFunctions(Class<? extends RosettaFunction> function) {
