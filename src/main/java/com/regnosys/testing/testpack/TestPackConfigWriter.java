@@ -95,6 +95,20 @@ public class TestPackConfigWriter {
         }
     }
 
+    @Deprecated // is this used?
+    public Map<Path, List<TestPackModel>> readAllTestPackConfigFiles(Path testPackModelParentDirectory) {
+        try {
+            return Files.walk(testPackModelParentDirectory)
+                    .filter(p -> p.getFileName().toString().startsWith("test-pack-"))
+                    .collect(Collectors.toMap(
+                            path -> path,
+                            this::readTestPackModelFile
+                    ));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     private Path generateTestPackModelFilePath(Path outFolder, String Filename) {
         return outFolder.resolve(FileNameProcessor.sanitizeFileName(Filename + ".json"));
     }
