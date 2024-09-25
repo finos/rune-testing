@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
+import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -116,13 +117,14 @@ public class PipelineTestPackWriter {
 
     private TestPackModel writeTestPackSamples(Path resourcesPath, Path inputPath, Path outputDir, String testPackId, List<Path> inputSamplesForTestPack, PipelineNode pipelineNode, PipelineTreeConfig config) throws IOException {
         LOGGER.info("Test pack sample generation started for {}", testPackId);
-        LOGGER.info("{} samples to be generated", inputSamplesForTestPack.size());
+        TransformType transformType = pipelineNode.getTransformType();
+        LOGGER.info("{} {} samples to be generated", inputSamplesForTestPack.size(), transformType);
         List<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
         String pipelineId = pipelineNode.id(config.isStrictUniqueIds());
         String pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
 
         for (Path inputSample : inputSamplesForTestPack) {
-            LOGGER.info("Generating sample {}", inputSample.getFileName());
+            LOGGER.info("Generating {} sample {}", transformType, inputSample.getFileName());
 
             PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
             Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
@@ -149,7 +151,7 @@ public class PipelineTestPackWriter {
         LOGGER.info("Test Pack sample generation complete for {} ", testPackId);
 
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
-        return new TestPackModel(String.format("test-pack-%s-%s-%s", pipelineNode.getTransformType().name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
+        return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
     }
 
     private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName){
