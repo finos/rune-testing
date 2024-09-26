@@ -174,11 +174,13 @@ public class PipelineTestPackWriter {
 
     private @NotNull Map<String, List<Path>> filterTestPacks(PipelineNode pipelineNode, PipelineTestPackFilter pipelineTestPackFilter, Map<String, List<Path>> testPackToSamples) {
         Map<String, List<Path>> filteredTestPackToSamples = testPackToSamples;
-        final ImmutableCollection<Class<?>> testPackSpecificFunctions = pipelineTestPackFilter.getTestPacksSpecificToFunctions().values();
-        if (testPackSpecificFunctions.contains(pipelineNode.getFunction())) {
-            // Filter to include only the test packs specifically included for this function
+        final Set<String> testPackSpecificFunctions  = pipelineTestPackFilter.getTestPacksSpecificToFunctions().entries()
+                .stream().filter(entry -> entry.getValue() == pipelineNode.getFunction()) .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+
+        if (pipelineTestPackFilter.getTestPacksSpecificToFunctions().containsValue(pipelineNode.getFunction())) {
             filteredTestPackToSamples = testPackToSamples.entrySet().stream()
-                    .filter(entry -> pipelineTestPackFilter.getTestPacksSpecificToFunctions().containsKey(entry.getKey()))
+                    .filter(entry -> testPackSpecificFunctions.contains(entry.getKey()))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         } else {
             final ImmutableCollection<String> testPacksToRemove = pipelineTestPackFilter.getTestPacksSpecificToFunctions().keys();
