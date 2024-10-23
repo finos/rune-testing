@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -86,10 +87,10 @@ public class PipelineTestPackWriter {
             Path outputPath = resourcesPath.resolve(pipelineNode.getOutputPath(config.isStrictUniqueIds()));
             LOGGER.info("Output path {} ", outputPath);
 
-            List<Path> inputSamples = inputSamples(inputPath);
+            List<Path> inputSamples = findAllJsonSamples(inputPath);
 
             Map<String, List<Path>> testPackToSamples =
-                    groupingByTestPackId(resourcesPath, inputPath, inputSamples);
+                    filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdInclusionFilter());
 
             Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
                     .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
@@ -107,10 +108,14 @@ public class PipelineTestPackWriter {
         }
     }
 
-    private List<Path> inputSamples(Path inputDir) throws IOException {
+    private List<Path> findAllJsonSamples(Path inputDir) throws IOException {
+        if (!Files.exists(inputDir)) {
+            return List.of();
+        }
         try (Stream<Path> paths = Files.walk(inputDir)) {
             return paths.filter(Files::isRegularFile)
                     .filter(Files::exists)
+                    .filter(x -> x.getFileName().toString().endsWith(".json"))
                     .collect(Collectors.toList());
         }
     }
@@ -154,30 +159,31 @@ public class PipelineTestPackWriter {
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
     }
 
-    private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName){
-        if(pipelineModel.getOutputSerialisation() != null) {
+    private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
+        if (pipelineModel.getOutputSerialisation() != null) {
             String outputFormat = pipelineModel.getOutputSerialisation().getFormat().toString().toLowerCase();
             return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
         }
         return fileName;
     }
 
-    private Map<String, List<Path>> groupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples) {
+    private Map<String, List<Path>> filterAndGroupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples, Predicate<String> testPackSampleInclusionFilter) {
         return inputSamples.stream()
                 .map(resourcesPath::relativize)
+                .filter(path -> testPackSampleInclusionFilter.test(testPackId(resourcesPath, inputPath, path)))
                 .collect(Collectors.groupingBy(p -> testPackId(resourcesPath, inputPath, p)));
     }
 
     private String testPackId(Path resourcesPath, Path inputPath, Path samplePath) {
         Path parent = samplePath.getParent();
         Path relativePath = resourcesPath.relativize(inputPath).relativize(parent);
-        return relativePath.toString().replace(File.pathSeparatorChar, '-');
+        return relativePath.toString().replace(File.separatorChar, '-');
     }
 
     private @NotNull Map<String, List<Path>> filterTestPacks(PipelineNode pipelineNode, PipelineTestPackFilter pipelineTestPackFilter, Map<String, List<Path>> testPackToSamples) {
         Map<String, List<Path>> filteredTestPackToSamples = testPackToSamples;
-        final Set<String> testPackSpecificFunctions  = pipelineTestPackFilter.getTestPacksSpecificToFunctions().entries()
-                .stream().filter(entry -> entry.getValue() == pipelineNode.getFunction()) .map(Map.Entry::getKey)
+        final Set<String> testPackSpecificFunctions = pipelineTestPackFilter.getTestPacksSpecificToFunctions().entries()
+                .stream().filter(entry -> entry.getValue() == pipelineNode.getFunction()).map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
 
         if (pipelineTestPackFilter.getTestPacksSpecificToFunctions().containsValue(pipelineNode.getFunction())) {
