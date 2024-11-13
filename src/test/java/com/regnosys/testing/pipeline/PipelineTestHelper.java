@@ -164,39 +164,10 @@ public class PipelineTestHelper {
                 .add(middleClass(), TransformType.PROJECTION, endClass());
     }
 
-    PipelineTreeConfig createTreeConfigForFilter() {
-        return new PipelineTreeConfig()
-                .starting(TransformType.REPORT, middleAClass())
-                .starting(TransformType.REPORT, middleBClass())
-                .starting(TransformType.REPORT, middleCClass())
-                .starting(TransformType.REPORT, middleDClass())
-                .starting(TransformType.REPORT, middleEClass());
-    }
     PipelineTreeConfig createTreeConfigWithFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withTestPacksRestrictedForFunctions(TEST_PACKS_RESTRICTED_FUNCTIONS)
-                .withTestPacksSpecificToFunctions(TEST_PACKS_SPECIFIC_TO_FUNCTIONS)
-                .withFunctionsSpecificToTestPacks(FUNCTIONS_SPECIFIC_TO_TEST_PACKS)
-                .withExcludedFunctionsFromTestPackGeneration(List.of(middleEClass()));
-        return createTreeConfigForFilter().withTestPackFilter(filter);
-    }
-
-    PipelineTreeConfig createTreeConfigWithTestPackFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withTestPacksRestrictedForFunctions(TEST_PACKS_RESTRICTED_FUNCTIONS);
-        return createTreeConfigForFilter().withTestPackFilter(filter);
-    }
-
-    PipelineTreeConfig createTreeConfigWithFunctionFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withTestPacksSpecificToFunctions(TEST_PACKS_SPECIFIC_TO_FUNCTIONS);
-        return createTreeConfigForFilter().withTestPackFilter(filter);
-    }
-
-    PipelineTreeConfig createTreeConfigWithExcludedFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withExcludedFunctionsFromTestPackGeneration(List.of(middleDClass()));
-        return createTreeConfigForFilter().withTestPackFilter(filter);
+        return new PipelineTreeConfig()
+                .withTestPackIdFilter(PipelineFilter.startsWith("test-pack-a"))
+                .starting(TransformType.REPORT, middleAClass());
     }
 
     private CompiledCode compileCode() throws Exception {

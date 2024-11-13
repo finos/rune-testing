@@ -44,7 +44,7 @@ public class PipelineTreeConfig {
     private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
     private boolean strictUniqueIds;
     private Path writePath;
-    private Predicate<String> testPackIdInclusionFilter = testPackId -> true;
+    private Predicate<String> testPackIdFilter = testPackId -> true;
 
     public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function) {
         starting.add(new TransformFunction(function, transformType));
@@ -62,8 +62,8 @@ public class PipelineTreeConfig {
         return this;
     }
     
-    public PipelineTreeConfig withTestPackIdInclusionFilter(Predicate<String> testPackIdInclusionFilter) {
-        this.testPackIdInclusionFilter = testPackIdInclusionFilter;
+    public PipelineTreeConfig withTestPackIdFilter(Predicate<String> testPackIdFilter) {
+        this.testPackIdFilter = testPackIdFilter;
         return this;
     }
     
@@ -107,8 +107,8 @@ public class PipelineTreeConfig {
         return this;
     }
     
-    public Predicate<String> getTestPackIdInclusionFilter() {
-        return testPackIdInclusionFilter;
+    public Predicate<String> getTestPackIdFilter() {
+        return testPackIdFilter;
     }
 
     PipelineTestPackFilter getTestPackFilter() {

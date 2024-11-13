@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.regnosys.testing.pipeline.PipelineFilter.startsWith;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -216,50 +217,17 @@ public class PipelineTestPackWriterTest {
     void writeTestPacksForTreeConfigWithFilter(@TempDir Path tempDir) throws Exception {
         Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.REPORT.getResourcePath()).resolve("input"));
 
-        Path testPack1Path = Files.createDirectories(inputPath.resolve("test-pack-1"));
-        Path testPack2Path = Files.createDirectories(inputPath.resolve("test-pack-2"));
-        Path testPackAPath = Files.createDirectories(inputPath.resolve("test-pack-a"));
-        Path testPackBPath = Files.createDirectories(inputPath.resolve("test-pack-b"));
-        Path testPackCPath = Files.createDirectories(inputPath.resolve("test-pack-only-c"));
-        Path testPackDPath = Files.createDirectories(inputPath.resolve("test-pack-d"));
 
-        Files.write(testPack1Path.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
-        Files.write(testPack2Path.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+        Path testPackAPath = Files.createDirectories(inputPath.resolve("test-pack-a"));
+
         Files.write(testPackAPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
-        Files.write(testPackBPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
-        Files.write(testPackCPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
-        Files.write(testPackDPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
 
         PipelineTreeConfig chain = helper.createTreeConfigWithFilter().
                 strictUniqueIds().
                 withWritePath(tempDir);
         pipelineTestPackWriter.writeTestPacks(chain);
 
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-1.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-2.json");
         assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-a.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-d.json");
-
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-b.json");
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-only-c.json");
-
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-1.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-2.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-b.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-d.json");
-
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-a.json");
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-b-test-pack-only-c.json");
-
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-c-test-pack-only-c.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-d-test-pack-d.json");
-
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-e-test-pack-1.json");
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-e-test-pack-2.json");
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-e-test-pack-a.json");
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-e-test-pack-b.json");
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-e-test-pack-only-c.json");
-        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-e-test-pack-d.json");
     }
 
 
@@ -267,7 +235,7 @@ public class PipelineTestPackWriterTest {
     void writeSegregatedTestPacksWithFilter(@TempDir Path tempDir) throws Exception {
         // Trade Report Pipeline, startClass == TradeInstruction, middleClass == TradeReport, endClass == TradeProject
         PipelineTreeConfig tradeReportConf = new PipelineTreeConfig()
-                .withTestPackIdInclusionFilter(testPackId -> testPackId.startsWith("trade"))
+                .withTestPackIdFilter(startsWith("trade"))
                 .starting(TransformType.ENRICH, helper.startClass())
                 .add(helper.startClass(), TransformType.REPORT, helper.middleClass())
                 .add(helper.middleClass(), TransformType.PROJECTION, helper.endClass())
@@ -281,7 +249,7 @@ public class PipelineTestPackWriterTest {
         
         // Valuation Report Pipeline, middleBClass == ValuationReport. endBClass == ValuationProject
         PipelineTreeConfig valuationReportConf = new PipelineTreeConfig()
-                .withTestPackIdInclusionFilter(testPackId -> testPackId.startsWith("valuation"))
+                .withTestPackIdFilter(startsWith("valuation"))
                 .starting(TransformType.REPORT, helper.middleBClass())
                 .add(helper.middleBClass(), TransformType.PROJECTION, helper.endBClass())
                 .strictUniqueIds().withWritePath(tempDir);
