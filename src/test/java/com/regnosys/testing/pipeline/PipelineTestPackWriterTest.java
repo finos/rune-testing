@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Predicate;
 
 import static com.regnosys.testing.pipeline.PipelineFilter.startsWith;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -217,17 +218,33 @@ public class PipelineTestPackWriterTest {
     void writeTestPacksForTreeConfigWithFilter(@TempDir Path tempDir) throws Exception {
         Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.REPORT.getResourcePath()).resolve("input"));
 
-
+        Path testPack1Path = Files.createDirectories(inputPath.resolve("test-pack-1"));
+        Path testPack2Path = Files.createDirectories(inputPath.resolve("test-pack-2"));
         Path testPackAPath = Files.createDirectories(inputPath.resolve("test-pack-a"));
+        Path testPackBPath = Files.createDirectories(inputPath.resolve("test-pack-b"));
+        Path testPackCPath = Files.createDirectories(inputPath.resolve("test-pack-only-c"));
 
+        Files.write(testPack1Path.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+        Files.write(testPack2Path.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
         Files.write(testPackAPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+        Files.write(testPackBPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+        Files.write(testPackCPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
 
-        PipelineTreeConfig chain = helper.createTreeConfigWithFilter().
-                strictUniqueIds().
-                withWritePath(tempDir);
+        PipelineTreeConfig chain = new PipelineTreeConfig()
+                .withTestPackIdFilter(startsWith("test-pack-a", "test-pack-1", "test-pack-2").
+                        and(Predicate.not(startsWith("test-pack-b", "test-pack-only-c"))))
+                .starting(TransformType.REPORT, helper.middleAClass())
+                .add(helper.middleAClass(), TransformType.PROJECTION, helper.endAClass())
+                .strictUniqueIds()
+                .withWritePath(tempDir);
         pipelineTestPackWriter.writeTestPacks(chain);
 
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-1.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-2.json");
         assertFileExists(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-a.json");
+
+        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-b.json");
+        assertFileDoesNotExist(tempDir, "regulatory-reporting/config/test-pack-report-middle-a-test-pack-only-c.json");
     }
 
 
