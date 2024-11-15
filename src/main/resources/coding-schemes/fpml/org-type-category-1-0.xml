@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Contains a code representing the type of organization. Used to clarify
-			which participant's information is being reported.</doc:definition>
+            which participant's information is being reported.</doc:definition>
          <doc:publicationDate>2011-09-29</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,8 +44,8 @@
          </Value>
          <Value>
             <SimpleValue>The trade or trade report represents the information from the perspective
-					of the sender of the report, typically a clearing member firm or dealer (acting
-					as an agent).</SimpleValue>
+                    of the sender of the report, typically a clearing member firm or dealer (acting
+                    as an agent).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,8 +57,8 @@
          </Value>
          <Value>
             <SimpleValue>The trade or trade report represents the information from the perspective
-					of the counterparty of the sender of the report, which is typically a clearing
-					member firm or dealer.</SimpleValue>
+                    of the counterparty of the sender of the report, which is typically a clearing
+                    member firm or dealer.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -70,8 +70,8 @@
          </Value>
          <Value>
             <SimpleValue>The trade or trade report represents the information from the perspective
-					of a client opposite the sender of the report, which is typically a clearing
-					member firm or dealer.</SimpleValue>
+                    of a client opposite the sender of the report, which is typically a clearing
+                    member firm or dealer.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -83,8 +83,8 @@
          </Value>
          <Value>
             <SimpleValue>The trade or trade report represents the information from the perspective
-					of the sender of the report, typically a clearing member firm or dealer (acting
-					as a principal).</SimpleValue>
+                    of the sender of the report, typically a clearing member firm or dealer (acting
+                    as a principal).</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

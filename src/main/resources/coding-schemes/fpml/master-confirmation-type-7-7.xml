@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines the type of master confirmation agreement governing the
-			transaction.</doc:definition>
+            transaction.</doc:definition>
          <doc:publicationDate>2015-07-15</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,8 +44,8 @@
          </Value>
          <Value>
             <SimpleValue>Used for CDS Index trades. Relevant Master Confirmation determined by the
-					contents of the creditDefaultSwap element. Best practice is to use the most
-					specific code that applies.</SimpleValue>
+                    contents of the creditDefaultSwap element. Best practice is to use the most
+                    specific code that applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,7 +57,7 @@
          </Value>
          <Value>
             <SimpleValue>A privately negotiated European Interdealer Master Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -69,7 +69,7 @@
          </Value>
          <Value>
             <SimpleValue>A privately negotiated European Interdealer Master Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -81,7 +81,7 @@
          </Value>
          <Value>
             <SimpleValue>A European Interdealer Master Confirmation Agreement not defined by ISDA,
-					and modified by the parties to the transaction applies.</SimpleValue>
+                    and modified by the parties to the transaction applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -93,7 +93,7 @@
          </Value>
          <Value>
             <SimpleValue>A European Interdealer Master Confirmation Agreement not defined by ISDA
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -105,7 +105,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					AsiaCorporate.</SimpleValue>
+                    AsiaCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -117,7 +117,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					AsiaFinancialCorporate.</SimpleValue>
+                    AsiaFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -129,7 +129,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					AustraliaCorporate/NewZealandCorporate.</SimpleValue>
+                    AustraliaCorporate/NewZealandCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +141,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					AustraliaFinancialCorporate/NewZealandFinancialCorporate.</SimpleValue>
+                    AustraliaFinancialCorporate/NewZealandFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -153,7 +153,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					EuropeanCorporate.</SimpleValue>
+                    EuropeanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -165,7 +165,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					EuropeanCoCoFinancialCorporate.</SimpleValue>
+                    EuropeanCoCoFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -177,7 +177,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					EuropeanFinancialCorporate.</SimpleValue>
+                    EuropeanFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -189,7 +189,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					JapanCorporate.</SimpleValue>
+                    JapanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -201,7 +201,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					JapanFinancialCorporate.</SimpleValue>
+                    JapanFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -213,7 +213,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					NorthAmericanCorporate.</SimpleValue>
+                    NorthAmericanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -225,7 +225,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					NorthAmericanFinancialCorporate.</SimpleValue>
+                    NorthAmericanFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -237,7 +237,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					SingaporeCorporate.</SimpleValue>
+                    SingaporeCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -249,7 +249,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					SingaporeFinancialCorporate.</SimpleValue>
+                    SingaporeFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -261,7 +261,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					AsiaSovereign.</SimpleValue>
+                    AsiaSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +273,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					EmergingEuropeanAndMiddleEasternSovereign.</SimpleValue>
+                    EmergingEuropeanAndMiddleEasternSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -285,7 +285,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					JapanSovereign.</SimpleValue>
+                    JapanSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -297,7 +297,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					LatinAmericaSovereign.</SimpleValue>
+                    LatinAmericaSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -309,7 +309,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					WesternEuropeanSovereign.</SimpleValue>
+                    WesternEuropeanSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -321,7 +321,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardAsiaCorporate.</SimpleValue>
+                    StandardAsiaCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -333,7 +333,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardAsiaFinancialCorporate.</SimpleValue>
+                    StandardAsiaFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -345,7 +345,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardAustraliaCorporate and StandardNewZealandCorporate.</SimpleValue>
+                    StandardAustraliaCorporate and StandardNewZealandCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -357,8 +357,8 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardAustraliaFinancialCorporate and
-					StandardNewZealandFinancialCorporate.</SimpleValue>
+                    StandardAustraliaFinancialCorporate and
+                    StandardNewZealandFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -370,7 +370,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardEuropeanCorporate.</SimpleValue>
+                    StandardEuropeanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -382,7 +382,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardEuropeanCoCoFinancialCorporate.</SimpleValue>
+                    StandardEuropeanCoCoFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -394,7 +394,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardEuropeanFinancialCorporate.</SimpleValue>
+                    StandardEuropeanFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -406,7 +406,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardJapanCorporate.</SimpleValue>
+                    StandardJapanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -418,7 +418,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardJapanFinancialCorporate.</SimpleValue>
+                    StandardJapanFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -430,7 +430,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardNorthAmericanCorporate.</SimpleValue>
+                    StandardNorthAmericanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -442,7 +442,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					standardNorthAmericanFinancialCorporate.</SimpleValue>
+                    standardNorthAmericanFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -454,7 +454,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardSingaporeCorporate.</SimpleValue>
+                    StandardSingaporeCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -466,7 +466,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardSingaporeFinancialCorporate.</SimpleValue>
+                    StandardSingaporeFinancialCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -478,7 +478,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardAsiaSovereign.</SimpleValue>
+                    StandardAsiaSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -490,7 +490,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardEmergingEuropeanAndMiddleEasternSovereign.</SimpleValue>
+                    StandardEmergingEuropeanAndMiddleEasternSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -502,7 +502,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardJapanSovereign.</SimpleValue>
+                    StandardJapanSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -514,7 +514,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardLatinAmericaSovereign.</SimpleValue>
+                    StandardLatinAmericaSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -526,7 +526,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardWesternEuropeanSovereign.</SimpleValue>
+                    StandardWesternEuropeanSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -538,7 +538,7 @@
          </Value>
          <Value>
             <SimpleValue>Used for CDS Index trades executed under the Dow Jones CDX Emerging
-					Markets Master Confirmation.</SimpleValue>
+                    Markets Master Confirmation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -550,7 +550,7 @@
          </Value>
          <Value>
             <SimpleValue>Used for CDS Index trades executed under the Dow Jones CDX Emerging
-					Markets Diversified Master Confirmation.</SimpleValue>
+                    Markets Diversified Master Confirmation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -562,7 +562,7 @@
          </Value>
          <Value>
             <SimpleValue>Used for CDS Index trades executed under the Dow Jones CDX Master
-					Confirmation that covers CDX.NA.IG, CDX.NA.HY, and CDX.NA.XO.</SimpleValue>
+                    Confirmation that covers CDX.NA.IG, CDX.NA.HY, and CDX.NA.XO.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -574,7 +574,7 @@
          </Value>
          <Value>
             <SimpleValue>Used for CDS Index trades executed under the Dow Jones iTraxx Europe
-					Master Confirmation Agreement.</SimpleValue>
+                    Master Confirmation Agreement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -586,8 +586,8 @@
          </Value>
          <Value>
             <SimpleValue>A general reference to the types of Americas Master Confirmation
-					Agreements. Use the more specific values to reference a specific type of
-					Americas Master Confirmation Agreement.</SimpleValue>
+                    Agreements. Use the more specific values to reference a specific type of
+                    Americas Master Confirmation Agreement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -599,8 +599,8 @@
          </Value>
          <Value>
             <SimpleValue>A general reference to the types of Asia Master Confirmation Agreements.
-					Use the more specific values to reference a specific type of Asia Master
-					Confirmation Agreement.</SimpleValue>
+                    Use the more specific values to reference a specific type of Asia Master
+                    Confirmation Agreement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -612,8 +612,8 @@
          </Value>
          <Value>
             <SimpleValue>A general reference to the types of European Master Confirmation
-					Agreements. Use the more specific values to reference a specific type of
-					European Master Confirmation Agreement.</SimpleValue>
+                    Agreements. Use the more specific values to reference a specific type of
+                    European Master Confirmation Agreement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -636,8 +636,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2003 Master Credit Derivatives Confirmation Agreement interpreted as
-					if Asia had been specified as the relevant Transaction Type in the Transaction
-					Supplement.</SimpleValue>
+                    if Asia had been specified as the relevant Transaction Type in the Transaction
+                    Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -649,8 +649,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2003 Master Credit Derivatives Confirmation Agreement interpreted as
-					if Australia and New Zealand had been specified as the relevant Transaction Type
-					in the Transaction Supplement.</SimpleValue>
+                    if Australia and New Zealand had been specified as the relevant Transaction Type
+                    in the Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -662,8 +662,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2003 Master Credit Derivatives Confirmation Agreement interpreted as
-					if European had been specified as the relevant Transaction Type in the
-					Transaction Supplement.</SimpleValue>
+                    if European had been specified as the relevant Transaction Type in the
+                    Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -675,8 +675,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2003 Master Credit Derivatives Confirmation Agreement interpreted as
-					if Japan had been specified as the relevant Transaction Type in the Transaction
-					Supplement.</SimpleValue>
+                    if Japan had been specified as the relevant Transaction Type in the Transaction
+                    Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -688,8 +688,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2003 Master Credit Derivatives Confirmation Agreement interpreted as
-					if North American had been specified as the relevant Transaction Type in the
-					Transaction Supplement.</SimpleValue>
+                    if North American had been specified as the relevant Transaction Type in the
+                    Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -701,8 +701,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2003 Master Credit Derivatives Confirmation Agreement interpreted as
-					if Singapore had been specified as the relevant Transaction Type in the
-					Transaction Supplement.</SimpleValue>
+                    if Singapore had been specified as the relevant Transaction Type in the
+                    Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -714,9 +714,9 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2003 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Asia had been specified as the relevant Transaction Type in
-					the Transaction Supplement. The 2003 Sovereign Master Confirmation has been
-					superceded by the 2004.</SimpleValue>
+                    interpreted as if Asia had been specified as the relevant Transaction Type in
+                    the Transaction Supplement. The 2003 Sovereign Master Confirmation has been
+                    superceded by the 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -728,9 +728,9 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2003 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Central and Eastern Europe had been specified as the relevant
-					Transaction Type in the Transaction Supplement. The 2003 Sovereign Master
-					Confirmation has been superceded by the 2004.</SimpleValue>
+                    interpreted as if Central and Eastern Europe had been specified as the relevant
+                    Transaction Type in the Transaction Supplement. The 2003 Sovereign Master
+                    Confirmation has been superceded by the 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -742,9 +742,9 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2003 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Japan had been specified as the relevant Transaction Type in
-					the Transaction Supplement. The 2003 Sovereign Master Confirmation has been
-					superceded by the 2004.</SimpleValue>
+                    interpreted as if Japan had been specified as the relevant Transaction Type in
+                    the Transaction Supplement. The 2003 Sovereign Master Confirmation has been
+                    superceded by the 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -756,9 +756,9 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2003 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Latin America had been specified as the relevant Transaction
-					Type in the Transaction Supplement. The 2003 Sovereign Master Confirmation has
-					been superceded by the 2004.</SimpleValue>
+                    interpreted as if Latin America had been specified as the relevant Transaction
+                    Type in the Transaction Supplement. The 2003 Sovereign Master Confirmation has
+                    been superceded by the 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -770,9 +770,9 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2003 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Middle East had been specified as the relevant Transaction
-					Type in the Transaction Supplement. The 2003 Sovereign Master Confirmation has
-					been superceded by the 2004.</SimpleValue>
+                    interpreted as if Middle East had been specified as the relevant Transaction
+                    Type in the Transaction Supplement. The 2003 Sovereign Master Confirmation has
+                    been superceded by the 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -784,9 +784,9 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2003 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Western Europe had been specified as the relevant Transaction
-					Type in the Transaction Supplement. The 2003 Sovereign Master Confirmation has
-					been superceded by the 2004.</SimpleValue>
+                    interpreted as if Western Europe had been specified as the relevant Transaction
+                    Type in the Transaction Supplement. The 2003 Sovereign Master Confirmation has
+                    been superceded by the 2004.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -798,7 +798,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardAsiaCorporate.</SimpleValue>
+                    StandardAsiaCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -810,8 +810,8 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardAustraliaCorporate/Sovereign and
-					StandardNewZealandCorporate/Sovereign.</SimpleValue>
+                    StandardAustraliaCorporate/Sovereign and
+                    StandardNewZealandCorporate/Sovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -823,7 +823,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardEuropeanCorporate.</SimpleValue>
+                    StandardEuropeanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -835,7 +835,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardJapanCorporate.</SimpleValue>
+                    StandardJapanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -847,7 +847,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardNorthAmericanCorporate.</SimpleValue>
+                    StandardNorthAmericanCorporate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -859,7 +859,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardSingaporeCorporate/Sovereign.</SimpleValue>
+                    StandardSingaporeCorporate/Sovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -871,8 +871,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2004 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Asia had been specified as the relevant Transaction Type in
-					the Transaction Supplement.</SimpleValue>
+                    interpreted as if Asia had been specified as the relevant Transaction Type in
+                    the Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -884,8 +884,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2004 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Emerging European and Middle Eastern had been specified as the
-					relevant Transaction Type in the Transaction Supplement.</SimpleValue>
+                    interpreted as if Emerging European and Middle Eastern had been specified as the
+                    relevant Transaction Type in the Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -897,8 +897,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2004 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Japan had been specified as the relevant Transaction Type in
-					the Transaction Supplement.</SimpleValue>
+                    interpreted as if Japan had been specified as the relevant Transaction Type in
+                    the Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -910,8 +910,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2004 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Latin American had been specified as the relevant Transaction
-					Type in the Transaction Supplement.</SimpleValue>
+                    interpreted as if Latin American had been specified as the relevant Transaction
+                    Type in the Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -923,8 +923,8 @@
          </Value>
          <Value>
             <SimpleValue>ISDA Sovereign 2004 Master Credit Derivatives Confirmation Agreement
-					interpreted as if Western European had been specified as the relevant
-					Transaction Type in the Transaction Supplement.</SimpleValue>
+                    interpreted as if Western European had been specified as the relevant
+                    Transaction Type in the Transaction Supplement.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -936,7 +936,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2004 Americas Interdealer Master Equity Derivatives Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -948,7 +948,7 @@
          </Value>
          <Value>
             <SimpleValue>The Revised ISDA 2004 Americas Interdealer Master Equity Derivatives
-					Confirmation Agreement applies.</SimpleValue>
+                    Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -960,7 +960,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardAsiaSovereign.</SimpleValue>
+                    StandardAsiaSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -972,7 +972,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardEmergingEuropeanAndMiddleEasternSovereign.</SimpleValue>
+                    StandardEmergingEuropeanAndMiddleEasternSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -984,7 +984,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term values
-					StandardJapanSovereign.</SimpleValue>
+                    StandardJapanSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -996,7 +996,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardLatinAmericaSovereign.</SimpleValue>
+                    StandardLatinAmericaSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1008,7 +1008,7 @@
          </Value>
          <Value>
             <SimpleValue>Dummy MCA value mirroring the matrix term value
-					StandardWesternEuropeanSovereign.</SimpleValue>
+                    StandardWesternEuropeanSovereign.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1020,7 +1020,7 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2005 AEJ (Asia Excluding Japan) Interdealer Master Equity
-					Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1032,7 +1032,7 @@
          </Value>
          <Value>
             <SimpleValue>Second Revised ISDA 2005 AEJ (Asia Excluding Japan) Interdealer Master
-					Equity Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Equity Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1044,7 +1044,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2005 Japanese Interdealer Master Equity Derivatives Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1056,7 +1056,7 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2006 Variance Swap Japanese Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1068,7 +1068,7 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2006 Variance Swap Japanese Interdealer Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1080,7 +1080,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2007 European Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1092,7 +1092,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2007 Americas Master Variance Swap Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1104,7 +1104,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2007 AEJ Master Variance Swap Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1116,7 +1116,7 @@
          </Value>
          <Value>
             <SimpleValue>The Revised ISDA 2007 AEJ Master Variance Swap Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1128,7 +1128,7 @@
          </Value>
          <Value>
             <SimpleValue>The Second Revised ISDA 2007 AEJ Master Variance Swap Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1140,7 +1140,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2007 European Variance Swap Master Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1152,7 +1152,7 @@
          </Value>
          <Value>
             <SimpleValue>The Revised ISDA 2007 European Variance Swap Master Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1164,7 +1164,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2008 Japanese Dividend Swap Master Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1176,7 +1176,7 @@
          </Value>
          <Value>
             <SimpleValue>The Revised ISDA 2008 Japanese Dividend Swap Master Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1188,7 +1188,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2008 Americas Master Designated/Exchange-Traded Contract Option
-					Confirmation Agreement applies.</SimpleValue>
+                    Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1200,7 +1200,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2008 AEJ (Asia Excluding Japan) Master Equity Derivatives
-					Confirmation Agreement applies.</SimpleValue>
+                    Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1212,7 +1212,7 @@
          </Value>
          <Value>
             <SimpleValue>The Revised ISDA 2008 AEJ (Asia Excluding Japan) Master Equity
-					Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1224,7 +1224,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2008 Japanese Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1236,7 +1236,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2009 Americas Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1248,7 +1248,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2009 European Interdealer Master Equity Derivatives Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1260,7 +1260,7 @@
          </Value>
          <Value>
             <SimpleValue>2009 Pan-Asia Interdealer Master Equity Derivatives Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1272,7 +1272,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2010 EMEA EM Interdealer Master Equity Derivatives Confirmation
-					Agreement applies.</SimpleValue>
+                    Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1284,7 +1284,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2013 Americas Master Volatility Swap Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1296,7 +1296,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2013 AEJ Master Volatility Swap Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1308,7 +1308,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2013 European Volatility Swap Master Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1320,7 +1320,7 @@
          </Value>
          <Value>
             <SimpleValue>The ISDA 2013 Volatility Swap Japanese Confirmation Agreement
-					applies.</SimpleValue>
+                    applies.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

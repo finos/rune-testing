@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>A scheme defining the different types of Letters of
-			Credit.</doc:definition>
+            Credit.</doc:definition>
          <doc:publicationDate>2015-07-15</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,8 +44,8 @@
          </Value>
          <Value>
             <SimpleValue>A Letter of Credit that provides a means of facilitating payments between
-					parties in the normal course of business, supporting the shipment of and payment
-					for goods. Commercial Letters of Credit are intended to be drawn on.</SimpleValue>
+                    parties in the normal course of business, supporting the shipment of and payment
+                    for goods. Commercial Letters of Credit are intended to be drawn on.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,9 +57,9 @@
          </Value>
          <Value>
             <SimpleValue>A Letter of Credit the purpose of which is to provide credit support only
-					in the event of a performance default by the account party (i.e. the borrower)
-					or some other contingent event. The Standby Letter of Credit supports an
-					obligation to make a payment to the beneficiary.</SimpleValue>
+                    in the event of a performance default by the account party (i.e. the borrower)
+                    or some other contingent event. The Standby Letter of Credit supports an
+                    obligation to make a payment to the beneficiary.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -71,10 +71,10 @@
          </Value>
          <Value>
             <SimpleValue>A Letter of Credit under a facility that has been "pre-funded" by the
-					lenders on the closing date (with the proceeds from such funding typically being
-					deposited in a cash collateral account) rather than being funded on a later date
-					upon the occurrence of a contingent event requiring payment under the L/C to the
-					third party.</SimpleValue>
+                    lenders on the closing date (with the proceeds from such funding typically being
+                    deposited in a cash collateral account) rather than being funded on a later date
+                    upon the occurrence of a contingent event requiring payment under the L/C to the
+                    third party.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

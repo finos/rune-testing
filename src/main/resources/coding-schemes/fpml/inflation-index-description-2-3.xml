@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:description>
             <doc:paragraph>The specification of the Index Descriptions based on Annex A to the 2008 ISDA
-				Inflation Derivatives Definitions</doc:paragraph>
+                Inflation Derivatives Definitions</doc:paragraph>
          </doc:description>
          <doc:publicationDate>2022-07-15</doc:publicationDate>
       </Description>
@@ -68,7 +68,7 @@
          </Value>
          <Value>
             <SimpleValue>Austria: AUS - Non-revised Harmonised Indices of Consumer Prices
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -80,7 +80,7 @@
          </Value>
          <Value>
             <SimpleValue>Belgium: BLG - Non-revised Consumer Price Index - General Index
-					(CPI)</SimpleValue>
+                    (CPI)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -92,7 +92,7 @@
          </Value>
          <Value>
             <SimpleValue>Belgium: BLG - Non-revised Consumer Price Index - Health Index
-					(CPI)</SimpleValue>
+                    (CPI)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -104,7 +104,7 @@
          </Value>
          <Value>
             <SimpleValue>Belgium: BLG - Non-revised Harmonised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -178,9 +178,9 @@
             <Description>
                <doc:description>
                   <doc:paragraph>"DEK" code retained for backward compatibility with
-						inflation-index-description-2-0.</doc:paragraph>
+                        inflation-index-description-2-0.</doc:paragraph>
                   <doc:paragraph>See: 2006 ISDA Inflation Derivatives Definitions, Section 1.12.
-						"Index Descriptions", paragraph (e).</doc:paragraph>
+                        "Index Descriptions", paragraph (e).</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -199,9 +199,9 @@
             <Description>
                <doc:description>
                   <doc:paragraph>"DEK" code retained for backward compatibility with
-						inflation-index-description-2-0.</doc:paragraph>
+                        inflation-index-description-2-0.</doc:paragraph>
                   <doc:paragraph>See: 2006 ISDA Inflation Derivatives Definitions, Section 1.12.
-						"Index Descriptions", paragraph (e).</doc:paragraph>
+                        "Index Descriptions", paragraph (e).</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -213,7 +213,7 @@
          </Value>
          <Value>
             <SimpleValue>Denmark: DEK - Non-revised Harmonised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -236,7 +236,7 @@
          </Value>
          <Value>
             <SimpleValue>Germany: DEM - Non-revised Consumer Price Index for North
-					Rhine-Westphalia</SimpleValue>
+                    Rhine-Westphalia</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -248,7 +248,7 @@
          </Value>
          <Value>
             <SimpleValue>Germany: DEM - Non-revised Harmonised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -271,7 +271,7 @@
          </Value>
          <Value>
             <SimpleValue>Spain: ESP - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -305,7 +305,7 @@
          </Value>
          <Value>
             <SimpleValue>European Union: EUR - All Items-Non-revised Consumer Price
-					Index</SimpleValue>
+                    Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -328,7 +328,7 @@
          </Value>
          <Value>
             <SimpleValue>European Union: EUR - Excluding Tobacco-Non-revised Consumer Price
-					Index</SimpleValue>
+                    Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -340,7 +340,7 @@
          </Value>
          <Value>
             <SimpleValue>European Union: EUR - Excluding Tobacco-Revised Consumer Price
-					Index</SimpleValue>
+                    Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -363,7 +363,7 @@
          </Value>
          <Value>
             <SimpleValue>Finland: FIN - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -375,7 +375,7 @@
          </Value>
          <Value>
             <SimpleValue>France: FRC - Excluding Tobacco-Non-Revised Consumer Price
-					Index</SimpleValue>
+                    Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -387,7 +387,7 @@
          </Value>
          <Value>
             <SimpleValue>France: FRC - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -410,7 +410,7 @@
          </Value>
          <Value>
             <SimpleValue>Greece: GRD - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -477,7 +477,7 @@
          </Value>
          <Value>
             <SimpleValue>Ireland: IRL - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -511,7 +511,7 @@
          </Value>
          <Value>
             <SimpleValue>Italy: ITL - Inflation for Blue Collar Workers and Employees-Excluding
-					Tobacco Consumer Price Index</SimpleValue>
+                    Tobacco Consumer Price Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -523,7 +523,7 @@
          </Value>
          <Value>
             <SimpleValue>Italy: ITL - Inflation for Blue Collar Workers and Employees-Including
-					Tobacco Consumer Price Index</SimpleValue>
+                    Tobacco Consumer Price Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -535,7 +535,7 @@
          </Value>
          <Value>
             <SimpleValue>Italy: ITL - Non-revised Harmonised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -547,7 +547,7 @@
          </Value>
          <Value>
             <SimpleValue>Italy: ITL - Whole Community - Excluding Tobacco Consumer Price
-					Index</SimpleValue>
+                    Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -559,7 +559,7 @@
          </Value>
          <Value>
             <SimpleValue>Italy: ITL - Whole Community - Including Tobacco Consumer Price
-					Index</SimpleValue>
+                    Index</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -571,7 +571,7 @@
          </Value>
          <Value>
             <SimpleValue>Japan: JPY - Non-revised Consumer Price Index Nationwide General
-					Excluding Fresh Food (CPI)</SimpleValue>
+                    Excluding Fresh Food (CPI)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -605,7 +605,7 @@
          </Value>
          <Value>
             <SimpleValue>Luxembourg: LUX - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -661,7 +661,7 @@
          </Value>
          <Value>
             <SimpleValue>Netherlands: NLG - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -728,7 +728,7 @@
          </Value>
          <Value>
             <SimpleValue>Portugal: POR - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -806,7 +806,7 @@
          </Value>
          <Value>
             <SimpleValue>United Kingdom: GBP - Non-revised Consumer Prices Index including Housing
-					(UKCPIH)</SimpleValue>
+                    (UKCPIH)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -818,7 +818,7 @@
          </Value>
          <Value>
             <SimpleValue>United Kingdom: GBP - Harmonised-Non-revised Consumer Price Index
-					(HICP)</SimpleValue>
+                    (HICP)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -841,7 +841,7 @@
          </Value>
          <Value>
             <SimpleValue>United Kingdom: GBP - Non-revised Retail Price Index Excluding Mortgage
-					Interest Payments (UKRPIX)</SimpleValue>
+                    Interest Payments (UKRPIX)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -853,7 +853,7 @@
          </Value>
          <Value>
             <SimpleValue>United States: USA - Non-revised Consumer Price Index - Urban
-					(CPI-U)</SimpleValue>
+                    (CPI-U)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -876,7 +876,7 @@
          </Value>
          <Value>
             <SimpleValue>South Africa: ZAR - Non-revised Consumer Price Index Excluding Mortgages
-					(CPIX)</SimpleValue>
+                    (CPIX)</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

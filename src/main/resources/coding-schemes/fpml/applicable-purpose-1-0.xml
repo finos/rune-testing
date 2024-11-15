@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The purpose of a person or business unit in relation to an asset or
-			assets.</doc:definition>
+            assets.</doc:definition>
          <doc:publicationDate>2017-12-22</doc:publicationDate>
       </Description>
    </Annotation>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>Brokerage - Indicates details related to the broker/dealer
-					relationship.</SimpleValue>
+                    relationship.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -67,7 +67,7 @@
          </Value>
          <Value>
             <SimpleValue>CallBack - Indicates details related to the team that verifies settlement
-					instructions (i.e. the 'callback' team).</SimpleValue>
+                    instructions (i.e. the 'callback' team).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,8 +79,8 @@
          </Value>
          <Value>
             <SimpleValue>Credit - Indicates details for a specific credit (asset), usually a
-					business contact that is involved in structuring the syndicated loan deal or
-					facility.</SimpleValue>
+                    business contact that is involved in structuring the syndicated loan deal or
+                    facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -92,7 +92,7 @@
          </Value>
          <Value>
             <SimpleValue>Custody - Indicates details related to the custodian
-					relationship.</SimpleValue>
+                    relationship.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -104,7 +104,7 @@
          </Value>
          <Value>
             <SimpleValue>DistressedLoanClosing - Indicates details related to specifically the
-					closing of a distressed syndicated loan deal or facility.</SimpleValue>
+                    closing of a distressed syndicated loan deal or facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -116,8 +116,8 @@
          </Value>
          <Value>
             <SimpleValue>DistressedLoanServicing - Indicates details related to specifically the
-					ongoing loan servicing of a distressed syndicated loan deal or
-					facility.</SimpleValue>
+                    ongoing loan servicing of a distressed syndicated loan deal or
+                    facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -129,7 +129,7 @@
          </Value>
          <Value>
             <SimpleValue>DistressedLoanTradeSettlement - Indicates details related to specifically
-					the settlement of distressed syndicated loan trades.</SimpleValue>
+                    the settlement of distressed syndicated loan trades.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -141,7 +141,7 @@
          </Value>
          <Value>
             <SimpleValue>DistressedLoanTrading - Indicates details related to specifically the
-					trading of distressed syndicated loan facilities.</SimpleValue>
+                    trading of distressed syndicated loan facilities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -153,7 +153,7 @@
          </Value>
          <Value>
             <SimpleValue>DueDiligence - Indicates details specifically related to the due
-					diligence process.</SimpleValue>
+                    diligence process.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -165,7 +165,7 @@
          </Value>
          <Value>
             <SimpleValue>KnowYourCustomer - Indicates details specifically related to the
-					know-your-customer (i.e. KYC) process.</SimpleValue>
+                    know-your-customer (i.e. KYC) process.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -188,7 +188,7 @@
          </Value>
          <Value>
             <SimpleValue>LetterOfCreditServicing - Indicates details related to the ongoing
-					servicing of letters of credit (i.e. L/C team).</SimpleValue>
+                    servicing of letters of credit (i.e. L/C team).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -200,7 +200,7 @@
          </Value>
          <Value>
             <SimpleValue>LoanClosing - Indicates details related to the closing of a syndicated
-					loan deal or facility (i.e. the operations closing team).</SimpleValue>
+                    loan deal or facility (i.e. the operations closing team).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -212,8 +212,8 @@
          </Value>
          <Value>
             <SimpleValue>LoanOrigination - May be used instead of the 'Credit' code, and is used
-					to more explicitly indicate details related to the origination of a syndicated
-					loan asset.</SimpleValue>
+                    to more explicitly indicate details related to the origination of a syndicated
+                    loan asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -225,7 +225,7 @@
          </Value>
          <Value>
             <SimpleValue>LoanServicing - Indicates details related to the ongoing loan servicing
-					of a syndicated loan deal or facility.</SimpleValue>
+                    of a syndicated loan deal or facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -237,7 +237,7 @@
          </Value>
          <Value>
             <SimpleValue>LoanTradeSettlement - Indicates details related to the settlement of
-					syndicated loan trades.</SimpleValue>
+                    syndicated loan trades.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -249,7 +249,7 @@
          </Value>
          <Value>
             <SimpleValue>LoanTrading - Indicates details related to the trading of syndicated loan
-					facilities.</SimpleValue>
+                    facilities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -261,7 +261,7 @@
          </Value>
          <Value>
             <SimpleValue>PrimaryLoanTradeSettlement - Indicates details related to specifically
-					the settlement of syndicated loan trades in the primary stage.</SimpleValue>
+                    the settlement of syndicated loan trades in the primary stage.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -273,7 +273,7 @@
          </Value>
          <Value>
             <SimpleValue>SecondaryLoanTradeSettlement - Indicates details related to specifically
-					the settlement of syndicated loan trades in the secondary stage.</SimpleValue>
+                    the settlement of syndicated loan trades in the secondary stage.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -296,7 +296,7 @@
          </Value>
          <Value>
             <SimpleValue>Trust - Indicates details related to the trustee
-					relationship.</SimpleValue>
+                    relationship.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

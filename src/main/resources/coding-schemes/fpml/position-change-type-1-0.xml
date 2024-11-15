@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines the types of business events which can cause a change in position
-			for a given facility.</doc:definition>
+            for a given facility.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -43,7 +43,7 @@
          </Value>
          <Value>
             <SimpleValue>A purchase, by assignment (change in lender of record), of a portion of a
-					facility within the secondary markets.</SimpleValue>
+                    facility within the secondary markets.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>A sale, by assignment (change in lender of record), of a portion of a
-					facility within the secondary markets.</SimpleValue>
+                    facility within the secondary markets.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -67,7 +67,7 @@
          </Value>
          <Value>
             <SimpleValue>A decrease in the commitment level against a particular
-					facility.</SimpleValue>
+                    facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,7 +79,7 @@
          </Value>
          <Value>
             <SimpleValue> An increase in the commitment level against a particular
-					facility.</SimpleValue>
+                    facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -91,7 +91,7 @@
          </Value>
          <Value>
             <SimpleValue>The repayment of a loan within a given facility, resulting in a decrease
-					of the commitment level of the facility.</SimpleValue>
+                    of the commitment level of the facility.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -103,7 +103,7 @@
          </Value>
          <Value>
             <SimpleValue>The increase of a loan within a facility, due to the borrower requiring
-					further credit in order to cover interest costs.</SimpleValue>
+                    further credit in order to cover interest costs.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

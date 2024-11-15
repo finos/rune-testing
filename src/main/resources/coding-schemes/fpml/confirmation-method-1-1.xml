@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Contains a code representing a trade could be confirmed (ie. how the
-			legally binding terms of a derivatives contract could be documented and
-			agreed.).</doc:definition>
+            legally binding terms of a derivatives contract could be documented and
+            agreed.).</doc:definition>
          <doc:publicationDate>2012-11-05</doc:publicationDate>
       </Description>
    </Annotation>
@@ -45,7 +45,7 @@
          </Value>
          <Value>
             <SimpleValue>Confirmation via a shared confirmation facility or platform, or a
-					private/bilateral electronic system.</SimpleValue>
+                    private/bilateral electronic system.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,7 +57,7 @@
          </Value>
          <Value>
             <SimpleValue>Confirmation via a human-readable written document (possibly transmitted
-					electronically).</SimpleValue>
+                    electronically).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -69,11 +69,11 @@
          </Value>
          <Value>
             <SimpleValue>This trade has not been confirmed and is not expected to be confirmed in
-					any form. For example, this could include situations where the trade is an
-					inter-affiliate trade and no confirmation is required, or cases were
-					confirmation is negative only. For trades that have not yet been confirmed but
-					are expected to be confirmed, one of the other values should be
-					used.</SimpleValue>
+                    any form. For example, this could include situations where the trade is an
+                    inter-affiliate trade and no confirmation is required, or cases were
+                    confirmation is negative only. For trades that have not yet been confirmed but
+                    are expected to be confirmed, one of the other values should be
+                    used.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

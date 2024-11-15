@@ -30,8 +30,7 @@
         <version>5</version>
     </parent>
 
-    <name>rosetta-testing</name>
-
+    <name>Rune Testing</name>
     <groupId>com.regnosys</groupId>
     <artifactId>rosetta-testing</artifactId>
     <packaging>jar</packaging>

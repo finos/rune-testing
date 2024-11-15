@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the form of the restructuring credit event that is applicable to
-			the credit default swap.</doc:definition>
+            the credit default swap.</doc:definition>
          <doc:publicationDate>2015-01-20</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,8 +44,8 @@
          </Value>
          <Value>
             <SimpleValue>Restructuring (Section 4.7) and Modified Restructuring Maturity
-					Limitation and Conditionally Transferable Obligation (2014 Definitions: Section
-					3.31, 2003 Definitions: 2.32) apply.</SimpleValue>
+                    Limitation and Conditionally Transferable Obligation (2014 Definitions: Section
+                    3.31, 2003 Definitions: 2.32) apply.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,8 +57,8 @@
          </Value>
          <Value>
             <SimpleValue>Restructuring (Section 4.7) and Restructuring Maturity Limitation and
-					Fully Transferable Obligation (2014 Definitions: Section 3.31, 2003 Definitions:
-					2.32) apply.</SimpleValue>
+                    Fully Transferable Obligation (2014 Definitions: Section 3.31, 2003 Definitions:
+                    2.32) apply.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -70,7 +70,7 @@
          </Value>
          <Value>
             <SimpleValue>Restructuring as defined in the applicable ISDA Credit Derivatives
-					Definitions. (2003 or 2014).</SimpleValue>
+                    Definitions. (2003 or 2014).</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Financial Entity Indicator as defined by the CFTC.</doc:definition>
@@ -54,7 +54,7 @@
          </Value>
          <Value>
             <SimpleValue>An employee benefit plan as defined in paragraphs (3) and (32) of section
-					1002 of title 29 of the Commodity Exchange Act (CEA).</SimpleValue>
+                    1002 of title 29 of the Commodity Exchange Act (CEA).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -66,8 +66,8 @@
          </Value>
          <Value>
             <SimpleValue>A person predominantly engaged in activities that are in the business of
-					banking, or in activities that are financial in nature, as defined in section
-					1843(k) of title 12 of the Commodity Exchange Act (CEA).</SimpleValue>
+                    banking, or in activities that are financial in nature, as defined in section
+                    1843(k) of title 12 of the Commodity Exchange Act (CEA).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,7 +79,7 @@
          </Value>
          <Value>
             <SimpleValue>A major security based swap participant as defined in CFTC CEA §
-					2(h)(7)(C).</SimpleValue>
+                    2(h)(7)(C).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -113,7 +113,7 @@
          </Value>
          <Value>
             <SimpleValue>A private fund as defined in section 80b-2(a) of title 15 of the
-					Commodity Exchange Act (CEA).</SimpleValue>
+                    Commodity Exchange Act (CEA).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -125,7 +125,7 @@
          </Value>
          <Value>
             <SimpleValue>A security-based swap dealer as defined in CFTC CEA §
-					2(h)(7)(C).</SimpleValue>
+                    2(h)(7)(C).</SimpleValue>
          </Value>
       </Row>
       <Row>

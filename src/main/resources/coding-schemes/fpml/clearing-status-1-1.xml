@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines a list of clearing status codes.</doc:definition>
@@ -43,7 +43,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade has passed CCP eligibility checks and is accepted as a request
-					for clearing.</SimpleValue>
+                    for clearing.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade is awaiting approval by a clearing firm/broker before a
-					registration can be confirmed.</SimpleValue>
+                    registration can be confirmed.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -89,7 +89,7 @@
          </Value>
          <Value>
             <SimpleValue>The option trade has been exercised (applicable where the CCP is the
-					option executor).</SimpleValue>
+                    option executor).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -101,7 +101,7 @@
          </Value>
          <Value>
             <SimpleValue>The option trade has been expired (applicable where the CCP is the option
-					executor).</SimpleValue>
+                    executor).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -113,7 +113,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade is pending an internal CCP process before registration can be
-					confirmed.</SimpleValue>
+                    confirmed.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -125,7 +125,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade is awaiting approval by the other clearing firm/broker before a
-					registration can be confirmed.</SimpleValue>
+                    registration can be confirmed.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -137,7 +137,7 @@
          </Value>
          <Value>
             <SimpleValue>The request for a trade to be cleared has been received by the
-					CCP.</SimpleValue>
+                    CCP.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -149,7 +149,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade is registered with the CCP and novation has taken
-					place.</SimpleValue>
+                    place.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -161,7 +161,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade has failed CCP eligibility checks and is rejected as a request
-					for clearing.</SimpleValue>
+                    for clearing.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -173,7 +173,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade has been settled (applicable where the CCP initiates
-					settlement).</SimpleValue>
+                    settlement).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +185,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade has not been cleared and there is no pending clearing operation
-					on it.</SimpleValue>
+                    on it.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

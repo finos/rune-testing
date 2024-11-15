@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines a scheme of transaction types specified in the Credit Derivatives
-			Physical Settlement Matrix.</doc:definition>
+            Physical Settlement Matrix.</doc:definition>
          <doc:publicationDate>2021-12-17</doc:publicationDate>
       </Description>
    </Annotation>
@@ -110,7 +110,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of EMERGING EUROPEAN AND MIDDLE EASTERN
-					SOVEREIGN.</SimpleValue>
+                    SOVEREIGN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -144,7 +144,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of EMERGING EUROPEAN FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -156,7 +156,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of EMERGING EUROPEAN FINANCIAL CORPORATE
-					LPN.</SimpleValue>
+                    LPN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -201,7 +201,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of EUROPEAN LIMITED RECOURSE
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -213,7 +213,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of EUROPEAN SENIOR NON PREFERRED FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -291,7 +291,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of LATIN AMERICA FINANCIAL CORPORATE
-					B.</SimpleValue>
+                    B.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -303,7 +303,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of LATIN AMERICA FINANCIAL CORPORATE
-					BL.</SimpleValue>
+                    BL.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -370,7 +370,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of NORTH AMERICAN FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -459,7 +459,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD AUSTRALIA FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -482,7 +482,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EMERGING EUROPEAN AND MIDDLE EASTERN
-					SOVEREIGN.</SimpleValue>
+                    SOVEREIGN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -494,7 +494,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EMERGING EUROPEAN
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -506,7 +506,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EMERGING EUROPEAN CORPORATE
-					LPN.</SimpleValue>
+                    LPN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -518,7 +518,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EMERGING EUROPEAN FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -530,7 +530,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EMERGING EUROPEAN FINANCIAL CORPORATE
-					LPN.</SimpleValue>
+                    LPN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -542,7 +542,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EUROPEAN COCO FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -565,7 +565,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EUROPEAN FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -577,7 +577,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EUROPEAN LIMITED RECOURSE
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -589,7 +589,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD EUROPEAN SENIOR NON PREFERRED
-					FINANCIAL CORPORATE.</SimpleValue>
+                    FINANCIAL CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -612,7 +612,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD JAPAN FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -635,7 +635,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD LATIN AMERICA CORPORATE
-					B.</SimpleValue>
+                    B.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -647,7 +647,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD LATIN AMERICA CORPORATE
-					BL.</SimpleValue>
+                    BL.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -659,7 +659,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD LATIN AMERICA FINANCIAL CORPORATE
-					B.</SimpleValue>
+                    B.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -671,7 +671,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD LATIN AMERICA FINANCIAL CORPORATE
-					BL.</SimpleValue>
+                    BL.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -705,7 +705,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD NEW ZEALAND FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -739,7 +739,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD NORTH AMERICAN FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -762,7 +762,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD SINGAPORE FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -785,7 +785,7 @@
          </Value>
          <Value>
             <SimpleValue>Transaction Type of STANDARD SUBORDINATED EUROPEAN INSURANCE
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -797,7 +797,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD SUKUK FINANCIAL
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -809,7 +809,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD U.S. MUNICIPAL FULL FAITH AND
-					CREDIT.</SimpleValue>
+                    CREDIT.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -821,7 +821,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD U.S. MUNICIPAL GENERAL
-					FUND.</SimpleValue>
+                    FUND.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -844,7 +844,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of STANDARD WESTERN EUROPEAN
-					SOVEREIGN.</SimpleValue>
+                    SOVEREIGN.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -856,7 +856,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of SUBORDINATED EUROPEAN INSURANCE
-					CORPORATE.</SimpleValue>
+                    CORPORATE.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -901,7 +901,7 @@
          </Value>
          <Value>
             <SimpleValue>Matrix Transaction Type of U.S. MUNICIPAL FULL FAITH AND
-					CREDIT.</SimpleValue>
+                    CREDIT.</SimpleValue>
          </Value>
       </Row>
       <Row>

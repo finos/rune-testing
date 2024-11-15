@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the Disruption Fallbacks that are applicable.</doc:definition>
@@ -42,7 +42,7 @@
          </Value>
          <Value>
             <SimpleValue>Average Daily Price Disruption as defined in section 7.5 para (c) subpara
-					(vi) of the ISDA 1993 Commodity Derivative definitions.</SimpleValue>
+                    (vi) of the ISDA 1993 Commodity Derivative definitions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -54,9 +54,9 @@
          </Value>
          <Value>
             <SimpleValue>Calculation Agent Determination as defined in section 7.5 para (c)
-					subpara (vi) of the ISDA 2005 Commodity Derivative definitions or section 7.5
-					para (c) subpara (v) of the ISDA 1993 Commodity Derivative definitions as
-					applicable.</SimpleValue>
+                    subpara (vi) of the ISDA 2005 Commodity Derivative definitions or section 7.5
+                    para (c) subpara (v) of the ISDA 1993 Commodity Derivative definitions as
+                    applicable.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -68,7 +68,7 @@
          </Value>
          <Value>
             <SimpleValue>Delayed Publication or Announcement as defined in section 7.5 para (c)
-					subpara (vii) of the ISDA 2005 Commodity Derivative definitions.</SimpleValue>
+                    subpara (vii) of the ISDA 2005 Commodity Derivative definitions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -80,7 +80,7 @@
          </Value>
          <Value>
             <SimpleValue>Fallback Reference Dealers as defined in section 7.5 para (c) subpara (i)
-					of the ISDA 2005 Commodity Derivative definitions.</SimpleValue>
+                    of the ISDA 2005 Commodity Derivative definitions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -92,9 +92,9 @@
          </Value>
          <Value>
             <SimpleValue>Fallback Reference Price as defined in section 7.5 para (c) subpara (ii)
-					of the ISDA 2005 Commodity Derivative definitions or section 7.5 para (c)
-					subpara (i) of the ISDA 1993 Commodity Derivative definitions as
-					applicable.</SimpleValue>
+                    of the ISDA 2005 Commodity Derivative definitions or section 7.5 para (c)
+                    subpara (i) of the ISDA 1993 Commodity Derivative definitions as
+                    applicable.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -106,9 +106,9 @@
          </Value>
          <Value>
             <SimpleValue>Negotiated Fallback as defined in section 7.5 para (c) subpara (iii) of
-					the ISDA 2005 Commodity Derivative definitions or section 7.5 para (c) subpara
-					(ii) of the ISDA 1993 Commodity Derivative definitions as
-					applicable.</SimpleValue>
+                    the ISDA 2005 Commodity Derivative definitions or section 7.5 para (c) subpara
+                    (ii) of the ISDA 1993 Commodity Derivative definitions as
+                    applicable.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -120,9 +120,9 @@
          </Value>
          <Value>
             <SimpleValue>No Fault Termination as defined in section 7.5 para (c) subpara (iv) of
-					the ISDA 2005 Commodity Derivative definitions or section 7.5 para (c) subpara
-					(iii) of the ISDA 1993 Commodity Derivative definitions as
-					applicable.</SimpleValue>
+                    the ISDA 2005 Commodity Derivative definitions or section 7.5 para (c) subpara
+                    (iii) of the ISDA 1993 Commodity Derivative definitions as
+                    applicable.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -134,8 +134,8 @@
          </Value>
          <Value>
             <SimpleValue>Postponement as defined in section 7.5 para (c) subpara (v) of the ISDA
-					2005 Commodity Derivative definitions or section 7.5 para (c) subpara (iv) of
-					the ISDA 1993 Commodity Derivative definitions as applicable.</SimpleValue>
+                    2005 Commodity Derivative definitions or section 7.5 para (c) subpara (iv) of
+                    the ISDA 1993 Commodity Derivative definitions as applicable.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

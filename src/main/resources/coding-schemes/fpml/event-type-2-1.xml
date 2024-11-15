@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Contains a code representing an event type. This major version of the
-			scheme introduces a simpler structure for describing reportable events in which the
-			events against each trade are reported separately. The type of event is indicated by a
-			structured code value. The first part of the code indicates the general action while
-			subsequent parts provide the specific context. Some codes signal that the trade has
-			reached an 'end of life' state where we not normally expect to see any further activity
-			once any final settlements have occurred. This new event classification is associated
-			with the Reporting Redesign Work available in FpML version 5.11 Recordkeeping View. </doc:definition>
+            scheme introduces a simpler structure for describing reportable events in which the
+            events against each trade are reported separately. The type of event is indicated by a
+            structured code value. The first part of the code indicates the general action while
+            subsequent parts provide the specific context. Some codes signal that the trade has
+            reached an 'end of life' state where we not normally expect to see any further activity
+            once any final settlements have occurred. This new event classification is associated
+            with the Reporting Redesign Work available in FpML version 5.11 Recordkeeping View. </doc:definition>
          <doc:publicationDate>2023-06-21</doc:publicationDate>
       </Description>
    </Annotation>
@@ -46,8 +46,8 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Allocation code has been deprecated in favor of
-						Inception:Allocation. The code is kept in FpML for backward compatibility
-						purposes.</doc:paragraph>
+                        Inception:Allocation. The code is kept in FpML for backward compatibility
+                        purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -70,7 +70,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade through an allocation operation, as the entire
-					size of the trade is allocated. (End of Life = Yes).</SimpleValue>
+                    size of the trade is allocated. (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -82,7 +82,7 @@
          </Value>
          <Value>
             <SimpleValue>The reduction in size of a trade caused by an allocaiton operation, as
-					only part of the size of the trade is allocated. (End of Life = No).</SimpleValue>
+                    only part of the size of the trade is allocated. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -94,7 +94,7 @@
          </Value>
          <Value>
             <SimpleValue>A negotiated change to the terms of a trade. (End of Life =
-					No).</SimpleValue>
+                    No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -102,8 +102,8 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The BasketChange code has been deprecated in favor of
-						Modification:BasketChange. The code is kept in FpML for backward
-						compatibility purposes.</doc:paragraph>
+                        Modification:BasketChange. The code is kept in FpML for backward
+                        compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -115,7 +115,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade was affected by a change to the composition of a
-					basket that underlay it.</SimpleValue>
+                    basket that underlay it.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -127,8 +127,8 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade that was cancelled because an observed rate or
-					price crossed a pre-determined barrier (knock-out). (End of Life =
-					Yes).</SimpleValue>
+                    price crossed a pre-determined barrier (knock-out). (End of Life =
+                    Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -140,7 +140,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade that was raised in error. (End of Life =
-					Yes).</SimpleValue>
+                    Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -152,7 +152,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade that cancelled for legal reasons (e.g
-					prohibited by law or regulation). (End of Life = Yes).</SimpleValue>
+                    prohibited by law or regulation). (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -164,7 +164,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade because it was replaced by a corrected trade
-					(via an Inception:Rebooking event). (End of Life = Yes).</SimpleValue>
+                    (via an Inception:Rebooking event). (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -176,7 +176,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade that withdrawn from reporting from the
-					reporting service. (End of Life = Yes).</SimpleValue>
+                    reporting service. (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -188,7 +188,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade because it was cleared via a central
-					counterparty clearing house. (End of Life = Yes).</SimpleValue>
+                    counterparty clearing house. (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -200,7 +200,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade by the netting of cleared trades in a clearing
-					house. (End of Life = Yes).</SimpleValue>
+                    house. (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -208,7 +208,7 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Cleared code has been deprecated in favor of Clear. The code is
-						kept in FpML for backward compatibility purposes.</doc:paragraph>
+                        kept in FpML for backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -220,7 +220,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade is the result of a clearing operation. Applies
-					in the context of an alpha trade.</SimpleValue>
+                    in the context of an alpha trade.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -228,7 +228,7 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Clearing code has been deprecated in favor of Clear. The code is
-						kept in FpML for backward compatibility purposes.</doc:paragraph>
+                        kept in FpML for backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -240,7 +240,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade is the result of a clearing operation. Applies
-					in the context of a beta or gamma trade.</SimpleValue>
+                    in the context of a beta or gamma trade.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -252,8 +252,8 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade because it was replaced in a portfolio
-					compression operation (via an Inception:Compression event). (End of Life =
-					Yes).</SimpleValue>
+                    compression operation (via an Inception:Compression event). (End of Life =
+                    Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -261,8 +261,8 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The CorporateAction code has been deprecated in favor of
-						Modification:CorporateAction. The code is kept in FpML for backward
-						compatibility purposes.</doc:paragraph>
+                        Modification:CorporateAction. The code is kept in FpML for backward
+                        compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -274,7 +274,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade experienced a corporate action (e.g., strategic
-					restructuring, renaming, merger, acquisition).</SimpleValue>
+                    restructuring, renaming, merger, acquisition).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -282,7 +282,7 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Exercise code has been deprecated in favor of Inception:Exercise.
-						The code is kept in FpML for backward compatibility purposes.</doc:paragraph>
+                        The code is kept in FpML for backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -294,7 +294,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade results from an exercise event or experienced an
-					exercise.</SimpleValue>
+                    exercise.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -306,8 +306,8 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade because it was a fully exercised option
-					(possibly via an Inception:Exercise event if physically settled). (End of Life =
-					Yes).</SimpleValue>
+                    (possibly via an Inception:Exercise event if physically settled). (End of Life =
+                    Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -319,8 +319,8 @@
          </Value>
          <Value>
             <SimpleValue>The reduction in size of a trade because it is an option that was
-					partially exercised (possibly via an Inception:Exercise event if physically
-					settled). (End of Life = No).</SimpleValue>
+                    partially exercised (possibly via an Inception:Exercise event if physically
+                    settled). (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -328,7 +328,7 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Expiration code has been deprecated in favor of Expiry. The code
-						is kept in FpML for backward compatibility purposes.</doc:paragraph>
+                        is kept in FpML for backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -351,7 +351,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade because it was an option that expired without
-					being exercised. (End of Life = Yes).</SimpleValue>
+                    being exercised. (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -363,7 +363,7 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade as an allocation of another trade. (End of Life =
-					No).</SimpleValue>
+                    No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -375,8 +375,8 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade through a clearing operation. (This trade will
-					have a central counterparty clearinghouse as one counterparty). (End of Life =
-					No).</SimpleValue>
+                    have a central counterparty clearinghouse as one counterparty). (End of Life =
+                    No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -388,7 +388,7 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade through a portfolio compression operation. (End
-					of Life = No).</SimpleValue>
+                    of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -400,7 +400,7 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade through an exercise of a physically settled
-					option. (End of Life = No).</SimpleValue>
+                    option. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -412,7 +412,7 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade by the netting of cleared trades in a clearing
-					house. (End of Life = No).</SimpleValue>
+                    house. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -424,7 +424,7 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade through a new, standalone trade. (End of Life =
-					No).</SimpleValue>
+                    No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -436,7 +436,7 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade through the novation of another trade, in which
-					the counterparty iss assigned to another party. (End of Life = No).</SimpleValue>
+                    the counterparty iss assigned to another party. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -448,7 +448,7 @@
          </Value>
          <Value>
             <SimpleValue>The creation of a trade because of the cancellation and rebooking of
-					another trade. (End of Life = No).</SimpleValue>
+                    another trade. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -460,7 +460,7 @@
          </Value>
          <Value>
             <SimpleValue>The negotiated modification of a trade in which it size (notional, number
-					of option, volume, etc.) is increased. (End of Life = No).</SimpleValue>
+                    of option, volume, etc.) is increased. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -468,8 +468,8 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The IndexChange code has been deprecated in favor of
-						Modification:IndexChange. The code is kept in FpML for backward
-						compatibility purposes.</doc:paragraph>
+                        Modification:IndexChange. The code is kept in FpML for backward
+                        compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -481,7 +481,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade was affected by an external change to a
-					published index.</SimpleValue>
+                    published index.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -493,7 +493,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade because all of its terms have been satisfied
-					due to the passage of time. (End of Life = Yes).</SimpleValue>
+                    due to the passage of time. (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -505,8 +505,8 @@
          </Value>
          <Value>
             <SimpleValue>A change in terms of the trade because an observed rate or price crossed
-					a predetermined barrier (e.g. knock-in, partial knock-out, etc.) (End of Life =
-					No).</SimpleValue>
+                    a predetermined barrier (e.g. knock-in, partial knock-out, etc.) (End of Life =
+                    No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -518,7 +518,7 @@
          </Value>
          <Value>
             <SimpleValue>A change in terms of the trade caused by a change to the composition of a
-					basket that underlay it. (End of Life = No).</SimpleValue>
+                    basket that underlay it. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -530,8 +530,8 @@
          </Value>
          <Value>
             <SimpleValue>A change in terms of the trade caused by a corporate action (e.g. merger,
-					acquisition, name change, strategic restructuring). (End of Life =
-					No).</SimpleValue>
+                    acquisition, name change, strategic restructuring). (End of Life =
+                    No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -543,7 +543,7 @@
          </Value>
          <Value>
             <SimpleValue>A reduction in the size of a trade caused by a credit event experienced
-					by an underlying reference entity. (End of Life = No).</SimpleValue>
+                    by an underlying reference entity. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -555,7 +555,7 @@
          </Value>
          <Value>
             <SimpleValue>A change in terms of the trade caused by a change to an index (renaming,
-					discontinuation, etc.). (End of Life = No).</SimpleValue>
+                    discontinuation, etc.). (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -567,7 +567,7 @@
          </Value>
          <Value>
             <SimpleValue>A change in the terms of the trade caused by a legally mandated change
-					(e.g. act of government). (End of Life = No).</SimpleValue>
+                    (e.g. act of government). (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -579,7 +579,7 @@
          </Value>
          <Value>
             <SimpleValue>The modification of a trade by the netting of cleared trades in a
-					clearing house. (End of Life = No).</SimpleValue>
+                    clearing house. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -591,7 +591,7 @@
          </Value>
          <Value>
             <SimpleValue>A non-negotiated change to the terms of the trade caused by unspecified
-					reasons. (End of Life = No).</SimpleValue>
+                    reasons. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -603,8 +603,8 @@
          </Value>
          <Value>
             <SimpleValue>A change in the terms of the trade, such as its notional, caused by a
-					resetting event, generally the observation of a rate or price. (End of Life =
-					No).</SimpleValue>
+                    resetting event, generally the observation of a rate or price. (End of Life =
+                    No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -612,8 +612,8 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Novation code has been deprecated in favor of Novation:Full,
-						Novation:Full:StepOut or Novation:Partial. The code is kept in FpML for
-						backward compatibility purposes.</doc:paragraph>
+                        Novation:Full:StepOut or Novation:Partial. The code is kept in FpML for
+                        backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -625,7 +625,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade was novated (transferred fully or in part to
-					another counterparty).</SimpleValue>
+                    another counterparty).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -637,7 +637,7 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade through a novation operation, in which the
-					counterparty is assigned to another party. (End of Life = No).</SimpleValue>
+                    counterparty is assigned to another party. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -649,8 +649,8 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade through a novation operation, in which the
-					risk-taking party must change legal entities due to reassignment of the
-					counterparty. (End of Life = Yes).</SimpleValue>
+                    risk-taking party must change legal entities due to reassignment of the
+                    counterparty. (End of Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -662,8 +662,8 @@
          </Value>
          <Value>
             <SimpleValue>The reduction in size of a trade caused by a novation operation, in which
-					which some of the size of the trade is assigned to another counterparty. (End of
-					Life = No).</SimpleValue>
+                    which some of the size of the trade is assigned to another counterparty. (End of
+                    Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -675,9 +675,9 @@
          </Value>
          <Value>
             <SimpleValue>The resubmission of a trade because its regulatory reportability has
-					changed (e.g. now reportable to another regulator, or no longer reportable to a
-					certain regulator). This event is not considered a trade lifecycle event. (End
-					of Life = No).</SimpleValue>
+                    changed (e.g. now reportable to another regulator, or no longer reportable to a
+                    certain regulator). This event is not considered a trade lifecycle event. (End
+                    of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -685,7 +685,7 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Reset code has been deprecated in favor of Modification:Reset.
-						The code is kept in FpML for backward compatibility purposes.</doc:paragraph>
+                        The code is kept in FpML for backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -697,8 +697,8 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade's terms, such as notional, were changed by a
-					resetting event (for example an equity swap reset, or an fx-linked notional swap
-					reset).</SimpleValue>
+                    resetting event (for example an equity swap reset, or an fx-linked notional swap
+                    reset).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -710,8 +710,8 @@
          </Value>
          <Value>
             <SimpleValue>The elimination of a trade caused by a negotiated agreement between the
-					two parties, generally involving a payment from one party to the other. (End of
-					Life = Yes).</SimpleValue>
+                    two parties, generally involving a payment from one party to the other. (End of
+                    Life = Yes).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -723,8 +723,8 @@
          </Value>
          <Value>
             <SimpleValue>The reduction in size (notional, number of options, volume, etc.) of a
-					trade caused by a negotiated agreement between the two parties, generally
-					involving a payment from one party to the other. (End of Life = No).</SimpleValue>
+                    trade caused by a negotiated agreement between the two parties, generally
+                    involving a payment from one party to the other. (End of Life = No).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -732,7 +732,7 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Trade code has been deprecated in favor of Inception:NewTrade.
-						The code is kept in FpML for backward compatibility purposes.</doc:paragraph>
+                        The code is kept in FpML for backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -744,7 +744,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade or trade package is the result of a new trading
-					activity.</SimpleValue>
+                    activity.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -752,7 +752,7 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Valuation code has been deprecated. The code is kept in FpML for
-						backward compatibility purposes.</doc:paragraph>
+                        backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -764,7 +764,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade is being reported to update its
-					valuation.</SimpleValue>
+                    valuation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -772,8 +772,8 @@
             <Description>
                <doc:description>
                   <doc:paragraph>The Withdrawal code has been deprecated in favor of
-						Cancel:Withdrawal. The code is kept in FpML for backward compatibility
-						purposes.</doc:paragraph>
+                        Cancel:Withdrawal. The code is kept in FpML for backward compatibility
+                        purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -785,7 +785,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates that the trade was withdrawn from the reporting
-					service.</SimpleValue>
+                    service.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
