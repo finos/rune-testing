@@ -159,11 +159,12 @@ public class PipelineTestPackWriter {
     }
 
     private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
-        if (pipelineModel.getOutputSerialisation() != null) {
-            String outputFormat = pipelineModel.getOutputSerialisation().getFormat().toString().toLowerCase();
-            return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
-        }
-        return fileName;
+        String outputFormat = Optional.ofNullable(pipelineModel.getOutputSerialisation())
+                .map(PipelineModel.Serialisation::getFormat)
+                .map(PipelineModel.Serialisation.Format::toString)
+                .orElse("json")
+                .toLowerCase();
+        return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
     }
 
     private Map<String, List<Path>> filterAndGroupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples, Predicate<String> testPackSampleInclusionFilter) {
