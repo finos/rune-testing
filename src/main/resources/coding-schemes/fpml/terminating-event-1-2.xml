@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the type of business event that triggered the termination of
-			this trade. This is used to provide additional detail about how or why a trade
-			terminatated, particularly when this is not self-evident. For example, it can indicated
-			that the trade was terminated as a result of netting, or as a result of a novation or
-			transfer party initiated by a third party.</doc:definition>
+            this trade. This is used to provide additional detail about how or why a trade
+            terminatated, particularly when this is not self-evident. For example, it can indicated
+            that the trade was terminated as a result of netting, or as a result of a novation or
+            transfer party initiated by a third party.</doc:definition>
          <doc:publicationDate>2023-11-03</doc:publicationDate>
       </Description>
    </Annotation>
@@ -47,7 +47,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(AdditionalDisruptionEvents).</SimpleValue>
+                    (AdditionalDisruptionEvents).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -59,7 +59,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an
-					allocation.</SimpleValue>
+                    allocation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -71,9 +71,9 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an amendment. (Normally
-					an amendment should be represented directly as an amendment event; this
-					originating event reason is provided to cover the case where a system must
-					cancel and rebook the trade as a result of the amendment.)</SimpleValue>
+                    an amendment should be represented directly as an amendment event; this
+                    originating event reason is provided to cover the case where a system must
+                    cancel and rebook the trade as a result of the amendment.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -85,7 +85,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(ChangeInLaw).</SimpleValue>
+                    (ChangeInLaw).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,7 +97,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of a credit
-					event.</SimpleValue>
+                    event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -109,7 +109,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(Delisting).</SimpleValue>
+                    (Delisting).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -121,7 +121,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an option exercise
-					event.</SimpleValue>
+                    event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -133,7 +133,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(FailureToDeliver).</SimpleValue>
+                    (FailureToDeliver).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -145,7 +145,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(ForeignOwnershipEvent).</SimpleValue>
+                    (ForeignOwnershipEvent).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -157,8 +157,8 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of full netting. (All
-					netted trades offset each other exactly and as a result there was no resulting
-					trade.)</SimpleValue>
+                    netted trades offset each other exactly and as a result there was no resulting
+                    trade.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -170,7 +170,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(HedgingDisruption).</SimpleValue>
+                    (HedgingDisruption).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -182,7 +182,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(IncreasedCostOfHedging).</SimpleValue>
+                    (IncreasedCostOfHedging).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -194,7 +194,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(IncreasedCostOfStockBorrow).</SimpleValue>
+                    (IncreasedCostOfStockBorrow).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -206,7 +206,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(IndexAdjustmentEvents).</SimpleValue>
+                    (IndexAdjustmentEvents).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -218,7 +218,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(InsolvencyFiling).</SimpleValue>
+                    (InsolvencyFiling).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -230,7 +230,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(LossOfStockBorrow).</SimpleValue>
+                    (LossOfStockBorrow).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -242,7 +242,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(MergerEvents).</SimpleValue>
+                    (MergerEvents).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -254,7 +254,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(NationalisationOrInsolvency).</SimpleValue>
+                    (NationalisationOrInsolvency).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -277,7 +277,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of a novation event (the
-					terms transfer, assignment are also used in the industry).</SimpleValue>
+                    terms transfer, assignment are also used in the industry).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -289,7 +289,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of partial netting. (There
-					was a residual trade as a result of netting.)</SimpleValue>
+                    was a residual trade as a result of netting.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -301,7 +301,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of portfolio
-					compression.</SimpleValue>
+                    compression.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -324,9 +324,9 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of porting. ("Porting" is
-					a type of novation in a cleared environment where the actual parties to the
-					trade don't change, but one of the parties moves to a new clearing firm or
-					account.)</SimpleValue>
+                    a type of novation in a cleared environment where the actual parties to the
+                    trade don't change, but one of the parties moves to a new clearing firm or
+                    account.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -338,7 +338,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of strategic
-					restructuring.</SimpleValue>
+                    restructuring.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -350,7 +350,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of a renaming succession
-					event.</SimpleValue>
+                    event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -362,7 +362,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of a reorganization
-					succession event.</SimpleValue>
+                    succession event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -374,7 +374,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of an extraordinary event
-					(TenderOffer).</SimpleValue>
+                    (TenderOffer).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -386,7 +386,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated because it was voided. (Trade was
-					voided before it was cleared/confirmed.)</SimpleValue>
+                    voided before it was cleared/confirmed.)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -398,8 +398,8 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the trade was terminated as a result of withdrawal. (One party
-					withdrew from the trade prior to confirmation or clearing of the
-					trade.)</SimpleValue>
+                    withdrew from the trade prior to confirmation or clearing of the
+                    trade.)</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

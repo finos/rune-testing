@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the entity classification of a party under the U.S. Securities
-			and Exchange Commission (SEC).</doc:definition>
+            and Exchange Commission (SEC).</doc:definition>
          <doc:publicationDate>2017-03-17</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,8 +44,8 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the organization with respect to the reporting Regime is a
-					Clearing Agency, for example under SEC. CA under SEC has the same meaning as
-					CentralCounterparty under ESMA.</SimpleValue>
+                    Clearing Agency, for example under SEC. CA under SEC has the same meaning as
+                    CentralCounterparty under ESMA.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,7 +57,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the organization with respect to the reporting Regime is a
-					Major Security-based Swap Participant, for example under SEC SBSR.</SimpleValue>
+                    Major Security-based Swap Participant, for example under SEC SBSR.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -69,8 +69,8 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the organization with respect to the reporting Regime is
-					neither a Security-based Swap Dealer nor a Major Security-based Swap
-					Participant, for example under SEC SBSR.</SimpleValue>
+                    neither a Security-based Swap Dealer nor a Major Security-based Swap
+                    Participant, for example under SEC SBSR.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -82,7 +82,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates an organization with respect to the reporting Regime is a
-					participant.</SimpleValue>
+                    participant.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -94,7 +94,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates the organization with respect to the reporting Regime is
-					Security-based Swap Dealer, for example under SEC SBSR.</SimpleValue>
+                    Security-based Swap Dealer, for example under SEC SBSR.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://docs.oasis-open.org/codelist/ns/genericode/1.0/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The type of measure about an asset. Used for escribing valuation,
-			sensitivity, and risk measures.</doc:definition>
+            sensitivity, and risk measures.</doc:definition>
          <doc:publicationDate>2024-03-14</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,7 +44,7 @@
          </Value>
          <Value>
             <SimpleValue>The coupon accrued on the underlying bonds from that the most recent bond
-					coupon payment date until the valuation date.</SimpleValue>
+                    coupon payment date until the valuation date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,7 +56,7 @@
          </Value>
          <Value>
             <SimpleValue>The value of interest accrued from the previous payment to the valuation
-					date.</SimpleValue>
+                    date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,7 +79,7 @@
          </Value>
          <Value>
             <SimpleValue>The secondary price field as required by CFTC's 17 CFR Part
-					43.</SimpleValue>
+                    43.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -102,7 +102,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a point change shift in the credit
-					spread.</SimpleValue>
+                    spread.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -114,7 +114,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a point change shift in the default
-					probability.</SimpleValue>
+                    probability.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -126,7 +126,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in interest rate sensitivity caused by a single point change in
-					the yield curve (IR Gamma).</SimpleValue>
+                    the yield curve (IR Gamma).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -138,7 +138,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a single point change in the yield curve
-					(IR Delta).</SimpleValue>
+                    (IR Delta).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -150,7 +150,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a point change shift in the volatility
-					matrix (vega).</SimpleValue>
+                    matrix (vega).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -162,7 +162,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a point change shift in the credit default
-					recovery rate.</SimpleValue>
+                    recovery rate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -174,7 +174,7 @@
          </Value>
          <Value>
             <SimpleValue>The effective strike price of the option as derived from the underlying
-					asset swap. (Used for options on asset swaps).</SimpleValue>
+                    asset swap. (Used for options on asset swaps).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -186,7 +186,7 @@
          </Value>
          <Value>
             <SimpleValue>Systematic risk = Ratio of expected return to expected return of the
-					market</SimpleValue>
+                    market</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -198,8 +198,8 @@
          </Value>
          <Value>
             <SimpleValue>A monetary amount paid or received. For example, a monetary amount
-					payable on the valuation date, or a monetary amount payable on another specified
-					date, such as a payment date.</SimpleValue>
+                    payable on the valuation date, or a monetary amount payable on another specified
+                    date, such as a payment date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -211,7 +211,7 @@
          </Value>
          <Value>
             <SimpleValue>The CashEquivalentLocalCurrency converted to the reporting currency (e.g.
-					USD) at the spot exchange rate.</SimpleValue>
+                    USD) at the spot exchange rate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -223,8 +223,8 @@
          </Value>
          <Value>
             <SimpleValue>The aggregated equivalent FX position in a specific currency. This
-					includes the NPVs payable in that currency, plus equivalent positions generated
-					by trades price sensitivity to FX rates.</SimpleValue>
+                    includes the NPVs payable in that currency, plus equivalent positions generated
+                    by trades price sensitivity to FX rates.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -236,7 +236,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, excluding accrued
-					interest, excluding commissions, as observed on a market.</SimpleValue>
+                    interest, excluding commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -248,7 +248,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, excluding accrued
-					interest, excluding commissions, for settlement purposes.</SimpleValue>
+                    interest, excluding commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -260,7 +260,7 @@
          </Value>
          <Value>
             <SimpleValue>The reset price of an asset, expressed in par value, excluding accrued
-					interest, excluding commissions.</SimpleValue>
+                    interest, excluding commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -272,7 +272,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, excluding accrued
-					interest, including commissions, as observed on a market.</SimpleValue>
+                    interest, including commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -284,7 +284,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, excluding accrued
-					interest, including commissions, for settlement purposes.</SimpleValue>
+                    interest, including commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -296,7 +296,7 @@
          </Value>
          <Value>
             <SimpleValue>The reset price of an asset, expressed in par value, excluding accrued
-					interest, including commissions.</SimpleValue>
+                    interest, including commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -308,7 +308,7 @@
          </Value>
          <Value>
             <SimpleValue>An adjustment to the price of an instrument (such as a future) to
-					compensate for its lack of convexity.</SimpleValue>
+                    compensate for its lack of convexity.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -320,7 +320,7 @@
          </Value>
          <Value>
             <SimpleValue>The spread between the return of a credit instrument and of a
-					corresponding risk free instrument.</SimpleValue>
+                    corresponding risk free instrument.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -387,7 +387,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, including accrued
-					interest, excluding commissions, as observed on a market.</SimpleValue>
+                    interest, excluding commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -399,7 +399,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, including accrued
-					interest, excluding commissions, for settlement purposes.</SimpleValue>
+                    interest, excluding commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -411,7 +411,7 @@
          </Value>
          <Value>
             <SimpleValue>The reset price of an asset, expressed in par value, including accrued
-					interest, excluding commissions.</SimpleValue>
+                    interest, excluding commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -423,7 +423,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, including accrued
-					interest, including commissions, as observed on a market.</SimpleValue>
+                    interest, including commissions, as observed on a market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -435,7 +435,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an asset, expressed in par value, including accrued
-					interest, including commissions, for settlement purposes.</SimpleValue>
+                    interest, including commissions, for settlement purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -447,7 +447,7 @@
          </Value>
          <Value>
             <SimpleValue>The reset price of an asset, expressed in par value, including accrued
-					interest, including commissions.</SimpleValue>
+                    interest, including commissions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -459,7 +459,7 @@
          </Value>
          <Value>
             <SimpleValue>The dividend payout ratio, expressed as a decimal (e.g. 0.03 = 3%) per
-					year.</SimpleValue>
+                    year.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -471,7 +471,7 @@
          </Value>
          <Value>
             <SimpleValue>Capital which is kept aside to compensate for unexpected losses due to
-					credit risk. (VAR for 1 year and 99.97%)</SimpleValue>
+                    credit risk. (VAR for 1 year and 99.97%)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -483,8 +483,8 @@
          </Value>
          <Value>
             <SimpleValue>Unrealized profit or loss on an equity price based stream or product.
-					This is based on the difference between current market price and the
-					reset/reference price.</SimpleValue>
+                    This is based on the difference between current market price and the
+                    reset/reference price.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -496,7 +496,7 @@
          </Value>
          <Value>
             <SimpleValue>Economic Value Added = (Spread + Fees - Expected loss - Operating cost)
-					-ROE*(Capital at risk)</SimpleValue>
+                    -ROE*(Capital at risk)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -508,7 +508,7 @@
          </Value>
          <Value>
             <SimpleValue>A numerical price (usually a stock or bond price or a commodity price)
-					that is used to price a derivative.</SimpleValue>
+                    that is used to price a derivative.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -520,7 +520,7 @@
          </Value>
          <Value>
             <SimpleValue>A numerical rate (usually an interest or FX rate) that is used to price a
-					derivative.</SimpleValue>
+                    derivative.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -532,7 +532,7 @@
          </Value>
          <Value>
             <SimpleValue>Funding-related interest charges associated with profit or loss on
-					realized gains that have not yet been exchanged.</SimpleValue>
+                    realized gains that have not yet been exchanged.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -577,7 +577,7 @@
          </Value>
          <Value>
             <SimpleValue>The implied volatility of the underlying asset from the valuation date to
-					the expiration of the option.</SimpleValue>
+                    the expiration of the option.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -589,7 +589,7 @@
          </Value>
          <Value>
             <SimpleValue>Accrued interest on realized gains, for portfolio swap agreements where
-					unwind profit/loss not exchanged until reset.</SimpleValue>
+                    unwind profit/loss not exchanged until reset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -601,7 +601,7 @@
          </Value>
          <Value>
             <SimpleValue>The average excess return on a portfolio relative to the excess return
-					predicted by CAPM</SimpleValue>
+                    predicted by CAPM</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -613,7 +613,7 @@
          </Value>
          <Value>
             <SimpleValue>The last available spot price at the time of the transaction of the
-					underlying asset with no spread.</SimpleValue>
+                    underlying asset with no spread.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -669,7 +669,7 @@
          </Value>
          <Value>
             <SimpleValue>The price of an instrument as quoted on an exchange or similar
-					market.</SimpleValue>
+                    market.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -681,7 +681,7 @@
          </Value>
          <Value>
             <SimpleValue>Sharpe ratio where both return and risk are defined relative to a
-					benchmark portfolio</SimpleValue>
+                    benchmark portfolio</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -715,7 +715,7 @@
          </Value>
          <Value>
             <SimpleValue>Net Present Value = sum of present values of all cash flows; excludes
-					cash flows paid or received on the valution date.</SimpleValue>
+                    cash flows paid or received on the valution date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -738,7 +738,7 @@
          </Value>
          <Value>
             <SimpleValue>Used for bond positions to report the product of the open units and the
-					par value of the bond.</SimpleValue>
+                    par value of the bond.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -750,7 +750,7 @@
          </Value>
          <Value>
             <SimpleValue>Traded price of the entire package in which the reported derivative
-					transaction is a component.</SimpleValue>
+                    transaction is a component.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -762,10 +762,10 @@
          </Value>
          <Value>
             <SimpleValue>Traded price of the entire package in which the reported derivative
-					transaction is a component of a package transaction. Package transaction price
-					when the price of the package is expressed as a spread, difference between two
-					reference prices. See CFTC Amendments to Part 45 for full
-					definition.</SimpleValue>
+                    transaction is a component of a package transaction. Package transaction price
+                    when the price of the package is expressed as a spread, difference between two
+                    reference prices. See CFTC Amendments to Part 45 for full
+                    definition.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -777,7 +777,7 @@
          </Value>
          <Value>
             <SimpleValue>Price adjustment interest ... the amount of interest owing on the NPV
-					over the previous calculation period (use in clearing models).</SimpleValue>
+                    over the previous calculation period (use in clearing models).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -789,7 +789,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a parallel shift in the credit
-					spread.</SimpleValue>
+                    spread.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -801,7 +801,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a parallel shift in the default
-					probability.</SimpleValue>
+                    probability.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -813,7 +813,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a parallel shift in the yield curve/risk
-					free rate of interest (IR Delta, rho).</SimpleValue>
+                    free rate of interest (IR Delta, rho).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -825,7 +825,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a parallel shift in the volatility matrix
-					(vega).</SimpleValue>
+                    (vega).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -837,7 +837,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a parallel shift in the credit default
-					recovery rate.</SimpleValue>
+                    recovery rate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -871,7 +871,7 @@
          </Value>
          <Value>
             <SimpleValue>A fee paid or received to purchase a contract (usually an
-					option).</SimpleValue>
+                    option).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -894,8 +894,8 @@
          </Value>
          <Value>
             <SimpleValue>Net Present Value for prior day/processing run = sum of present values of
-					all cash flows; excludes cash flows paid or received on the valution
-					date.</SimpleValue>
+                    all cash flows; excludes cash flows paid or received on the valution
+                    date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -907,7 +907,7 @@
          </Value>
          <Value>
             <SimpleValue>Risk adjusted return on capital = (Adjusted income)/(Capital at
-					risk)</SimpleValue>
+                    risk)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -919,7 +919,7 @@
          </Value>
          <Value>
             <SimpleValue>Realized profit or loss that has not yet been exchanged. This is based on
-					positions that have been closed out but not settled.</SimpleValue>
+                    positions that have been closed out but not settled.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -953,7 +953,7 @@
          </Value>
          <Value>
             <SimpleValue>The estimated amount that a creditor would receive in final satisfaction
-					of the claims on a defaulted credit.</SimpleValue>
+                    of the claims on a defaulted credit.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -976,7 +976,7 @@
          </Value>
          <Value>
             <SimpleValue>The return from an asset expressed as a percentage of the amount of
-					economic capital involved in holding that asset.</SimpleValue>
+                    economic capital involved in holding that asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -988,7 +988,7 @@
          </Value>
          <Value>
             <SimpleValue>The return from an asset expressed as a percentage of the amount of
-					regulatory capital involved in holding that asset.</SimpleValue>
+                    regulatory capital involved in holding that asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1000,7 +1000,7 @@
          </Value>
          <Value>
             <SimpleValue>Measures the amount of risk concentrated in individual counterparties,
-					similar assets, common geographical locations, or common industries.</SimpleValue>
+                    similar assets, common geographical locations, or common industries.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1023,7 +1023,7 @@
          </Value>
          <Value>
             <SimpleValue>Return on risk-adjusted capital = (Adjusted income)/(BIS risk - based
-					capital requirement)</SimpleValue>
+                    capital requirement)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1057,7 +1057,7 @@
          </Value>
          <Value>
             <SimpleValue>The ratio between portfolio return in excess of the risk-free return and
-					portfolio risk (measured as volatility)</SimpleValue>
+                    portfolio risk (measured as volatility)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1091,7 +1091,7 @@
          </Value>
          <Value>
             <SimpleValue>Similar to Sharpe Ratio but risk defined as downside risk rather than
-					portfolio variance.</SimpleValue>
+                    portfolio variance.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1114,7 +1114,7 @@
          </Value>
          <Value>
             <SimpleValue>The price, exclusive of any commission, at which a transaction has been
-					conducted.</SimpleValue>
+                    conducted.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1126,7 +1126,7 @@
          </Value>
          <Value>
             <SimpleValue>The actual price (inclusive of commissions, when applicable) at which a
-					transaction has been conducted.</SimpleValue>
+                    transaction has been conducted.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1149,7 +1149,7 @@
          </Value>
          <Value>
             <SimpleValue>Similar to Sharpe Ratio but risk defined as CAPM systematic risk (beta)
-					rather than portfolio variance.</SimpleValue>
+                    rather than portfolio variance.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1161,7 +1161,7 @@
          </Value>
          <Value>
             <SimpleValue>Adjusted valuation required for regulatory reporting (Ex: JFSA 39
-					Valuation Amount).</SimpleValue>
+                    Valuation Amount).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1173,7 +1173,7 @@
          </Value>
          <Value>
             <SimpleValue>Change in NPV/value caused by a change in valuation date
-					(theta).</SimpleValue>
+                    (theta).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1185,7 +1185,7 @@
          </Value>
          <Value>
             <SimpleValue>Unadjusted valuation required for regulatory reporting (Ex: JFSA 39
-					Valuation Amount).</SimpleValue>
+                    Valuation Amount).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1197,7 +1197,7 @@
          </Value>
          <Value>
             <SimpleValue>Value at Risk is the amount of money that could be lost over a
-					pre-defined period of time with a a given level of confidence.</SimpleValue>
+                    pre-defined period of time with a a given level of confidence.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1209,7 +1209,7 @@
          </Value>
          <Value>
             <SimpleValue>Amount required to be posted to accommodate change in net value of trade
-					or portfolio.</SimpleValue>
+                    or portfolio.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1221,7 +1221,7 @@
          </Value>
          <Value>
             <SimpleValue>The underlying price volatility used for calculating the value of this
-					asset.</SimpleValue>
+                    asset.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

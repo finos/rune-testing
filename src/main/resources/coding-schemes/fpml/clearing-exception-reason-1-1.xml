@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The reason a trade is exempted from a clearing mandate.</doc:definition>
@@ -43,7 +43,7 @@
          </Value>
          <Value>
             <SimpleValue>Used to indicate a clearing exception where a firm is hedging and using
-					an agent to do doing the hedging on its behalf.</SimpleValue>
+                    an agent to do doing the hedging on its behalf.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>Clearing exception for certain swaps entered into by cooperatives. In the
-					US, see Regulation 50.51(a) Definition of Exempt Cooperative.</SimpleValue>
+                    US, see Regulation 50.51(a) Definition of Exempt Cooperative.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -67,7 +67,7 @@
          </Value>
          <Value>
             <SimpleValue>In the US, see CFTC Final Rule on End-User Exception to Clearing
-					Requirements for Swaps Fact Sheet.</SimpleValue>
+                    Requirements for Swaps Fact Sheet.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,7 +79,7 @@
          </Value>
          <Value>
             <SimpleValue>Used to indicate an exception to a clearing requirement without
-					elaborating on the type of exception.</SimpleValue>
+                    elaborating on the type of exception.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -91,7 +91,7 @@
          </Value>
          <Value>
             <SimpleValue>In the US, see CFTC Final Rule - Clearing Exemption for Swaps Between
-					Certain Affiliated Entities.</SimpleValue>
+                    Certain Affiliated Entities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -103,8 +103,8 @@
          </Value>
          <Value>
             <SimpleValue>In the US, see CFTC No Action Letter 13-22 No Action Relief from the
-					Clearing Requirement for Swaps Entered into by Eligible Treasury
-					Affiliates.</SimpleValue>
+                    Clearing Requirement for Swaps Entered into by Eligible Treasury
+                    Affiliates.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

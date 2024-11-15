@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The source from which the settlement price is to be
-			obtained.</doc:definition>
+            obtained.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -43,7 +43,7 @@
          </Value>
          <Value>
             <SimpleValue>The bid price per share on the exchange at the valuation time on the
-					valuation date</SimpleValue>
+                    valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>The mid-market price per share on the exchange at the valuation time on
-					the valuation date</SimpleValue>
+                    the valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -67,9 +67,9 @@
          </Value>
          <Value>
             <SimpleValue>An amount equal to the arithmetic average of the two prices constituting
-					the Bid/Offer Spread. "Bid/Offer Spread" means the highest bid price per share
-					and the corresponding lowest offer price per share last published prior to or at
-					the expiration time on the expiration date.</SimpleValue>
+                    the Bid/Offer Spread. "Bid/Offer Spread" means the highest bid price per share
+                    and the corresponding lowest offer price per share last published prior to or at
+                    the expiration time on the expiration date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -81,7 +81,7 @@
          </Value>
          <Value>
             <SimpleValue>The offer price per share on the exchange at the valuation time on the
-					valuation date</SimpleValue>
+                    valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -93,8 +93,8 @@
          </Value>
          <Value>
             <SimpleValue>(i) The published official closing price of the shares on the exchange on
-					the valuation date, or (ii) the official closing level of the index, as
-					published by the index sponsor, on the valuation date</SimpleValue>
+                    the valuation date, or (ii) the official closing level of the index, as
+                    published by the index sponsor, on the valuation date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -106,11 +106,11 @@
          </Value>
          <Value>
             <SimpleValue>The official settlement price (however described under the rules of the
-					relevant exchange or its clearing house) on maturity of any of the relevant
-					exchange-traded contracts published by the exchange or its clearing house. For
-					this purpose, exchange-traded contract shall mean a future or listed option
-					contract on the Index whose delivery date is expected to be on the valuation
-					date</SimpleValue>
+                    relevant exchange or its clearing house) on maturity of any of the relevant
+                    exchange-traded contracts published by the exchange or its clearing house. For
+                    this purpose, exchange-traded contract shall mean a future or listed option
+                    contract on the Index whose delivery date is expected to be on the valuation
+                    date</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -122,8 +122,8 @@
          </Value>
          <Value>
             <SimpleValue>The official reference price per share quoted by the exchange on the
-					exchange business day immediately prior to the expiration date equal to the
-					weighted average of the last 10% traded volume on the share</SimpleValue>
+                    exchange business day immediately prior to the expiration date equal to the
+                    weighted average of the last 10% traded volume on the share</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

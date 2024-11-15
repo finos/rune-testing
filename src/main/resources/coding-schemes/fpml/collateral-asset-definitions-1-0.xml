@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>ISDA Collateral Assets Definitions as published by ISDA in the 2003 ISDA
-			Collateral Asset Definitions.</doc:definition>
+            Collateral Asset Definitions.</doc:definition>
          <doc:publicationDate>2014-05-06</doc:publicationDate>
       </Description>
    </Annotation>
@@ -121,7 +121,7 @@
          </Value>
          <Value>
             <SimpleValue>Australian Government Securities Treasury Adjustable Rate
-					Bonds.</SimpleValue>
+                    Bonds.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -309,12 +309,12 @@
          </Value>
          <Value>
             <SimpleValue>Negotiable Debt Obligations issued by or taken over and since serviced
-					and managed by the Erblasttilgungsfond (Redemption Fund for Inherited
-					Liabilities) backed by Federal Republic of Germany, including but not limited to
-					former issues of the Treuhandanstalt, the Bundesbahn, the Bundespost, the
-					Economic Recovery Program (ERP), the privatised Federal Railway (Bahn AG), the
-					telecommunications element of the Federal Post Office (Telekom) and the German
-					Unity Fund.</SimpleValue>
+                    and managed by the Erblasttilgungsfond (Redemption Fund for Inherited
+                    Liabilities) backed by Federal Republic of Germany, including but not limited to
+                    former issues of the Treuhandanstalt, the Bundesbahn, the Bundespost, the
+                    Economic Recovery Program (ERP), the privatised Federal Railway (Bahn AG), the
+                    telecommunications element of the Federal Post Office (Telekom) and the German
+                    Unity Fund.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -502,9 +502,9 @@
          </Value>
          <Value>
             <SimpleValue>Equity securities issued by a Spanish company, and listed as an IBEX 35
-					constituent company as reported by the Sociedad de Bolsas, each share
-					representing the minimum unit of participation of a shareholder in the stock
-					capital of the company.</SimpleValue>
+                    constituent company as reported by the Sociedad de Bolsas, each share
+                    representing the minimum unit of participation of a shareholder in the stock
+                    capital of the company.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1110,7 +1110,7 @@
          </Value>
          <Value>
             <SimpleValue>Botbuoni Ordinari del Tesoro (BOT) zero coupon debt securities issued by
-					the Italian Treasury with maturities up to 365 days.</SimpleValue>
+                    the Italian Treasury with maturities up to 365 days.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1122,8 +1122,8 @@
          </Value>
          <Value>
             <SimpleValue>Buoni del Tesoro Poliennali fixed interest semi-annual debt securities
-					issued by the Italian Treasury with original maturities between 3 and 30
-					years.</SimpleValue>
+                    issued by the Italian Treasury with original maturities between 3 and 30
+                    years.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1135,8 +1135,8 @@
          </Value>
          <Value>
             <SimpleValue>Certificati di Credito del Tesoro a Cedola Variable (CCT) or floating
-					rate interest bearing debt securities issued by the Italian
-					Treasury.</SimpleValue>
+                    rate interest bearing debt securities issued by the Italian
+                    Treasury.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1159,7 +1159,7 @@
          </Value>
          <Value>
             <SimpleValue>Certificati del Tesoro zero coupon debt securities issued by the Italian
-					Treasury with maturities between 18 and 24 months.</SimpleValue>
+                    Treasury with maturities between 18 and 24 months.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1182,7 +1182,7 @@
          </Value>
          <Value>
             <SimpleValue>Debt securities issued and marketed by the Republic of Italy outside the
-					Italian market, traded as Eurobonds.</SimpleValue>
+                    Italian market, traded as Eurobonds.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1227,8 +1227,8 @@
          </Value>
          <Value>
             <SimpleValue>Equity securities issued by a Japanese company, each share representing
-					the minimum unit of participation of a partner in the stock capital of the
-					company.</SimpleValue>
+                    the minimum unit of participation of a partner in the stock capital of the
+                    company.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1295,7 +1295,7 @@
          </Value>
          <Value>
             <SimpleValue>Korean Development Insurance Corporation Bonds (Korean Won
-					denominated).</SimpleValue>
+                    denominated).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1307,7 +1307,7 @@
          </Value>
          <Value>
             <SimpleValue>Non-Korean Won denominated Korea Development Bank bonds
-					(KDBs).</SimpleValue>
+                    (KDBs).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1341,7 +1341,7 @@
          </Value>
          <Value>
             <SimpleValue>Non Korean Won denominated Korea National Housing Corporation bonds
-					(KNHCs).</SimpleValue>
+                    (KNHCs).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1584,7 +1584,7 @@
          </Value>
          <Value>
             <SimpleValue>International Bank for Reconstruction and Development (World Bank)
-					Discount Notes.</SimpleValue>
+                    Discount Notes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1596,7 +1596,7 @@
          </Value>
          <Value>
             <SimpleValue>International Bank for Reconstruction and Development (World Bank or
-					IBRD) Global Benchmark Bonds.</SimpleValue>
+                    IBRD) Global Benchmark Bonds.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1707,7 +1707,7 @@
          </Value>
          <Value>
             <SimpleValue>Farm Credit System Financial Assistance Corporation (FCSFAC)
-					Bonds.</SimpleValue>
+                    Bonds.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1752,7 +1752,7 @@
          </Value>
          <Value>
             <SimpleValue>Callable Agency Debt - the Federal Home Loan Mortgage Corporation (FHLMC
-					or Freddie Mac).</SimpleValue>
+                    or Freddie Mac).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1764,7 +1764,7 @@
          </Value>
          <Value>
             <SimpleValue>Federal Home Loan Mortgage Corporation Certificates - Mortgage Backed
-					Securities.</SimpleValue>
+                    Securities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1787,7 +1787,7 @@
          </Value>
          <Value>
             <SimpleValue>Callable Agency Debt - Federal National Mortgage Association (FNMA or
-					Fannie Mae).</SimpleValue>
+                    Fannie Mae).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1799,7 +1799,7 @@
          </Value>
          <Value>
             <SimpleValue>Federal National Mortgage Association Certificates - Mortgage Backed
-					Securities.</SimpleValue>
+                    Securities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1811,7 +1811,7 @@
          </Value>
          <Value>
             <SimpleValue>Callable Agency Debt - Government National Mortgage Association
-					(GNMA).</SimpleValue>
+                    (GNMA).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1823,7 +1823,7 @@
          </Value>
          <Value>
             <SimpleValue>Government National Mortgage Association Certificates - Mortgage Backed
-					Securities (GNMA or Ginnie Mae)</SimpleValue>
+                    Securities (GNMA or Ginnie Mae)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -1923,8 +1923,8 @@
          </Value>
          <Value>
             <SimpleValue>Standard &amp; Poor's Midcap 400 Equity Securities. corporations that are
-					included within the Standard And Poor's Midcap 400 Index published by Standard
-					And Poor's, a division of The McGraw-Hill Companies, Inc.</SimpleValue>
+                    included within the Standard And Poor's Midcap 400 Index published by Standard
+                    And Poor's, a division of The McGraw-Hill Companies, Inc.</SimpleValue>
          </Value>
       </Row>
       <Row>

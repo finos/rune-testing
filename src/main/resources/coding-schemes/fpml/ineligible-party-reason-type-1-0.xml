@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>A structure used to describe the reason why a party (i.e. lender) may be
-			ineligible to vote on a legal action approval.</doc:definition>
+            ineligible to vote on a legal action approval.</doc:definition>
          <doc:publicationDate>2021-06-25</doc:publicationDate>
          <doc:status>working-draft</doc:status>
       </Description>
@@ -45,7 +45,7 @@
          </Value>
          <Value>
             <SimpleValue>Lender holds a commitment in a covenant light structure, and therefore is
-					not eligible to vote on the legal action.</SimpleValue>
+                    not eligible to vote on the legal action.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,7 +57,7 @@
          </Value>
          <Value>
             <SimpleValue>The Lender is a defaulting lender, per Credit Agreement criteria, and is
-					therefore ineligible to vote on approval.</SimpleValue>
+                    therefore ineligible to vote on approval.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -69,7 +69,7 @@
          </Value>
          <Value>
             <SimpleValue>The lender's share of the deal or facility is insufficient for the lender
-					to be eligible to vote.</SimpleValue>
+                    to be eligible to vote.</SimpleValue>
          </Value>
       </Row>
       <Row>

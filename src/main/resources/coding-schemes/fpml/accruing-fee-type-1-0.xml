@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Facility-level accruing fees.</doc:definition>
@@ -43,8 +43,8 @@
          </Value>
          <Value>
             <SimpleValue>A fee paid by the borrower to keep loan in place until it can be used.
-					For a revolver, the fee paid by a borrower on unused/funded
-					commitments.</SimpleValue>
+                    For a revolver, the fee paid by a borrower on unused/funded
+                    commitments.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,11 +56,11 @@
          </Value>
          <Value>
             <SimpleValue>A fee that is paid on a facility's entire committed amount, regardless of
-					usage; it is often charged on revolving credits to investment grade borrowers
-					instead of a commitment fee because these facilities typically have a
-					competitive-bid option (CBO) that allows a borrower to solicit the best bid from
-					it syndicate group for a given borrowing. The lenders that do not lender until
-					the CBO are still paid for their commitment.</SimpleValue>
+                    usage; it is often charged on revolving credits to investment grade borrowers
+                    instead of a commitment fee because these facilities typically have a
+                    competitive-bid option (CBO) that allows a borrower to solicit the best bid from
+                    it syndicate group for a given borrowing. The lenders that do not lender until
+                    the CBO are still paid for their commitment.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -72,10 +72,10 @@
          </Value>
          <Value>
             <SimpleValue>A fee associated with a long-term commitment to provide a Bridge Loan or
-					Credit Facility, which starts accruing the day the Fee Letter is signed (or a
-					specified number of days thereafter) and terminates when the underlying
-					transaction is either consummated or terminated. The Ticking Fee is set forth in
-					the Fee Letter. </SimpleValue>
+                    Credit Facility, which starts accruing the day the Fee Letter is signed (or a
+                    specified number of days thereafter) and terminates when the underlying
+                    transaction is either consummated or terminated. The Ticking Fee is set forth in
+                    the Fee Letter. </SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -87,8 +87,8 @@
          </Value>
          <Value>
             <SimpleValue>Calculated as a percentage of the utilized portion of the facility. This
-					fee type is subject to banding rules - different portions of the utilization
-					amount may be subject to different percentages.</SimpleValue>
+                    fee type is subject to banding rules - different portions of the utilization
+                    amount may be subject to different percentages.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

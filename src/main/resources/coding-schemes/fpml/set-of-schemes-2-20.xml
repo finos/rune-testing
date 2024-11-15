@@ -1,62 +1,67 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeListSet xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://docs.oasis-open.org/codelist/ns/genericode/1.0/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeListSet.genericode.css"?>
+<gcl:CodeListSet xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Definition of references to the set of FpML coding schemes.</doc:definition>
-         <doc:publicationDate>2024-04-26</doc:publicationDate>
+         <doc:publicationDate>2024-11-15</doc:publicationDate>
          <doc:changeDescription>
         The International Swaps and Derivatives Association, Inc. (ISDA) has published a
-            new basic and enhanced coding-scheme catalog versions 2-19 published on April 26, 2024.
-            Below are the changes compared to the previous version 2-18 published on March 14, 2024. 
+            new basic and enhanced coding-scheme catalog versions 2-20 published on November 15, 2024.
+            Below are the changes compared to the previous version 2-19 published on April 26, 2024. 
         <ul class="bulleted">
+                           <li>The following coding scheme have been added for the purpose of CSA (Canadian Securities Administration) reporting: <ul class="bulleted">
+                                     <li>clearingExceptionReasonScheme <ul class="bulleted">
+                                               <li>Source: FpML</li>
+                                               <li>Version 1-0</li>
+                                               <li>Publication Date: 2024-11-15</li>
+                                        </ul>
+                     </li>
+                              </ul>
+               </li>
                            <li>The following coding schemes have been updated: <ul class="bulleted">
                                          <li>floatingRateIndexScheme<ul class="bulleted">
                             <li>New FROs added: <ul class="bulleted">
-                                    <li>CAD-CORRA Compounded Index</li>
-                                    <li>EUR-EuroSTR FTSE Term</li>
-                                    <li>USD-TBILL Auction High Rate</li>
+                                                                 <li>EUR-EuroSTR ICE Swap Rate</li>
+                                                                 <li>IDR-INDONIA</li>
+                                                                 <li>IDR-INDONIA-OIS Compound</li>
+                                                                 <li>PHP-ORR</li>
+                                                                 <li>USD-SOFR ICE Swap Rate Spreads</li>
                                 </ul>
                            </li>
                             <li>Updated FROs:<ul class="bulleted">
-                                    <li>GBP-SONIA Refinitiv Term was rebranded to GBP-SONIA FTSE Term.<ul class="bulleted">
-                                            <li>References to the defined term “Refinitiv
-                                                Screen” have been changed to “LSEG Screen” e.g.
-                                                JPY-STPR-Quoting Banks</li>
-                                        </ul>
-                                 </li>
+                                                                 <li>amended the "Fixing Day" for the "KRW-KOFR" and "KRW-KOFR-OIS Compound" Floating Rate Options</li>
+                                                                 <li>updated the "Fixing Time" for the "THB-THOR" annd "THB-THOR-OIS Compound" Floating Rate Options</li>
                                 </ul>
                            </li>
                             <li>Source: FpML</li>
-                            <li>Version changed from 3-8 to 3-9</li>
-                            <li>Publication Date: 2024-04-26</li>
+                            <li>Version changed from 3-9 to 3-10</li>
+                            <li>Publication Date: 2024-11-15</li>
                         </ul>
                                          </li>
-                                         <li>reportingRegimeNameScheme<ul class="bulleted">
-                            <li>Added code: "UKEMIR"<ul class="bulleted">
-                                    <li>United Kingdom European Markets Infrastructure
-                                        Regulation</li>
-                                </ul>
-                            </li>
-                            <li>Source: FpML</li>
-                            <li>Version changed from 1-6 to 1-7</li>
-                            <li>Publication Date: 2024-04-26</li>
-                        </ul>
-                                         </li>
-                                         <li>reportingPurposeScheme<ul class="bulleted">
-                            <li>Added code: "OtherObligation"<ul class="bulleted">
-                                 <li>To indicate the
-                                        jurisdiction(s) to which the specified person has a
-                                        reporting obligation, where applicable, other than the
-                                        jurisdiction which is the target of the context message
-                                        (e.g. MAS field 44 “Reporting Obligation of a Specified
-                                        Person”).</li>
-                              </ul>
+					                     <li>rateAdministratorScheme
+						<ul class="bulleted">
+							                           <li>New administrator added: <ul class="bulleted">
+								                                 <li>Central Bank of the Philippines (Bangko Sentral ng Pilipinas)</li>
+							                              </ul>
                            </li>
-                            <li>Source: FpML</li>
-                            <li>Version changed from 1-1 to 1-2</li>
-                            <li>Publication Date: 2024-04-26</li>
-                        </ul>
-                                         </li>
+							                           <li>Source: FpML</li>
+							                           <li>Version changed from 1-2 to 1-3</li>
+							                           <li>Publication Date: 2024-11-15</li>
+						                        </ul>
+					                     </li>
+					                     <li>contractualDefinitionsScheme
+						<ul class="bulleted">
+							                           <li>New codes added: 
+								<ul class="bulleted">
+									                                 <li>ISDA2022VerifiedCarbonCredit</li>
+									                                 <li>ISDA2023DigitalAsset</li>
+								                              </ul>
+							                           </li>
+							                           <li>Source: FpML</li>
+							                           <li>Version changed from 3-8 to 3-9</li>
+							                           <li>Publication Date: 2024-11-15</li>
+						                        </ul>
+					                     </li>
                                   </ul>
                            </li>
                            <li>Enhanced FpML Coding Scheme Catalog available:<ul class="bulleted">
@@ -73,10 +78,10 @@
    </Annotation>
    <Identification>
       <ShortName>FpML Set of Coding Schemes</ShortName>
-      <Version>2-19</Version>
+      <Version>2-20</Version>
       <CanonicalUri>http://www.fpml.org/coding-scheme/set-of-schemes</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-19</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-19.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-20</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/set-of-schemes-2-20.xml</LocationUri>
    </Identification>
    <CodeListRef>
       <Annotation>
@@ -364,6 +369,18 @@
       <CanonicalUri>http://www.fpml.org/coding-scheme/cftc-clearing-exception-and-exemptions</CanonicalUri>
       <CanonicalVersionUri>http://www.fpml.org/coding-scheme/cftc-clearing-exception-and-exemptions-1-1</CanonicalVersionUri>
       <LocationUri>http://www.fpml.org/coding-scheme/cftc-clearing-exception-and-exemptions-1-1.xml</LocationUri>
+   </CodeListRef>
+   <CodeListRef>
+      <Annotation>
+         <Description>
+            <doc:definition>The reason a trade is exempted from a clearing mandate as defined by the
+            Canadian Securities Administrators (CSA).</doc:definition>
+            <doc:publicationDate>2024-11-15</doc:publicationDate>
+         </Description>
+      </Annotation>
+      <CanonicalUri>http://www.fpml.org/coding-scheme/csa-clearing-exception-and-exemptions</CanonicalUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/csa-clearing-exception-and-exemptions-1-0</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/csa-clearing-exception-and-exemptions-1-0.xml</LocationUri>
    </CodeListRef>
    <CodeListRef>
       <Annotation>
@@ -827,12 +844,12 @@
          <Description>
             <doc:definition>Specifies a set of standard contract definitions relevant to the
             transaction</doc:definition>
-            <doc:publicationDate>2021-08-16</doc:publicationDate>
+            <doc:publicationDate>2024-11-15</doc:publicationDate>
          </Description>
       </Annotation>
       <CanonicalUri>http://www.fpml.org/coding-scheme/contractual-definitions</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-8</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-8.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-9</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-9.xml</LocationUri>
    </CodeListRef>
    <CodeListRef>
       <Annotation>
@@ -2844,12 +2861,12 @@
       <Annotation>
          <Description>
             <doc:definition>The FpML floating rate index codes contained in this document are based on the ISDA Floating Rate Options as published by ISDA in the 2021 ISDA Definitions, the 2006 ISDA Definitions, the Annex to the 2000 Definitions, Section 7.1. Rate Options, and other sources, including broker rates.  The codes correspond to their respective ISDA FRO only in the context of a transaction incorporating the corresponding contractual definitions.</doc:definition>
-            <doc:publicationDate>2024-04-26</doc:publicationDate>
+            <doc:publicationDate>2024-11-15</doc:publicationDate>
          </Description>
       </Annotation>
       <CanonicalUri>http://www.fpml.org/coding-scheme/floating-rate-index</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-9</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-9.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-10</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-10.xml</LocationUri>
    </CodeListRef>
    <CodeListRef>
       <Annotation>

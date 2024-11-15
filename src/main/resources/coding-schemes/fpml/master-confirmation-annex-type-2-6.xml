@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines the type of annex to be used with master confirmation agreement
-			governing the transaction.</doc:definition>
+            governing the transaction.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -43,9 +43,9 @@
          </Value>
          <Value>
             <SimpleValue>The Index Variance Swap 2004 Annex to the ISDA 2004 Americas Interdealer
-					Master Equity Derivatives Confirmation Agreement and to the Revised ISDA 2004
-					Americas Interdealer Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Master Equity Derivatives Confirmation Agreement and to the Revised ISDA 2004
+                    Americas Interdealer Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -57,9 +57,9 @@
          </Value>
          <Value>
             <SimpleValue>The Share Variance Swap 2004 Annex to the ISDA 2004 Americas Interdealer
-					Master Equity Derivatives Confirmation Agreement and to the Revised ISDA 2004
-					Americas Interdealer Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Master Equity Derivatives Confirmation Agreement and to the Revised ISDA 2004
+                    Americas Interdealer Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -71,7 +71,7 @@
          </Value>
          <Value>
             <SimpleValue>The Dispersion Variance Swap Annex to the Revised 2007 ISDA European
-					Variance Swap Master Confirmation Agreement applies.</SimpleValue>
+                    Variance Swap Master Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -83,7 +83,7 @@
          </Value>
          <Value>
             <SimpleValue>The EFS (Equity Share Finance Swap) 2007 Annex to the ISDA 2007 European
-					Master Equity Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Master Equity Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -95,8 +95,8 @@
          </Value>
          <Value>
             <SimpleValue>The Index Variance Swap 2007 Annex to the Revised ISDA 2004 Americas
-					Interdealer Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Interdealer Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,8 +108,8 @@
          </Value>
          <Value>
             <SimpleValue>The Share Variance Swap 2007 Annex to the Revised ISDA 2004 Americas
-					Interdealer Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Interdealer Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -121,7 +121,7 @@
          </Value>
          <Value>
             <SimpleValue>The Variance Option Standard Terms Appendix to the Revised ISDA 2007
-					European Variance Swap Master Confirmation Agreement applies.</SimpleValue>
+                    European Variance Swap Master Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -133,8 +133,8 @@
          </Value>
          <Value>
             <SimpleValue>The Cash-settled Open Market EFS (Equity Finance Share Swap) 2008 Annex
-					to the ISDA 2008 AEJ (Asia Excluding Japan) Master Equity Derivatives
-					Confirmation Agreement applies.</SimpleValue>
+                    to the ISDA 2008 AEJ (Asia Excluding Japan) Master Equity Derivatives
+                    Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -146,8 +146,8 @@
          </Value>
          <Value>
             <SimpleValue>The Cash-settled Open Market EFS (Equity Finance Share Swap) Annex to the
-					Revised ISDA 2008 AEJ (Asia Excluding Japan) Master Equity Derivatives
-					Confirmation Agreement applies.</SimpleValue>
+                    Revised ISDA 2008 AEJ (Asia Excluding Japan) Master Equity Derivatives
+                    Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -159,8 +159,8 @@
          </Value>
          <Value>
             <SimpleValue>The Open Market Equity Option 2008 Annex to the ISDA 2008 AEJ (Asia
-					Excluding Japan) Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Excluding Japan) Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -172,8 +172,8 @@
          </Value>
          <Value>
             <SimpleValue>The Open Market Equity Option Annex to the Revised ISDA 2008 AEJ (Asia
-					Excluding Japan) Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Excluding Japan) Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,7 +185,7 @@
          </Value>
          <Value>
             <SimpleValue>The Equity Option 2008 Annex to the ISDA 2008 Japanese Master Equity
-					Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -197,8 +197,8 @@
          </Value>
          <Value>
             <SimpleValue>The Cash-settled Closed Market Index and Share Options 2009 Annex to the
-					Revised ISDA 2008 AEJ (Asia Excluding Japan) Master Equity Derivatives
-					Confirmation Agreement applies.</SimpleValue>
+                    Revised ISDA 2008 AEJ (Asia Excluding Japan) Master Equity Derivatives
+                    Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -210,8 +210,8 @@
          </Value>
          <Value>
             <SimpleValue>The Interdealer Share Swap 2009 Annex to the ISDA 2009 European
-					Interdealer Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Interdealer Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -223,7 +223,7 @@
          </Value>
          <Value>
             <SimpleValue>The Index Swap 2009 Annex to the ISDA 2007 European Master Equity
-					Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -235,7 +235,7 @@
          </Value>
          <Value>
             <SimpleValue>The Index and Share Options 2009 Annex to the ISDA 2009 Americas Master
-					Equity Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Equity Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -247,8 +247,8 @@
          </Value>
          <Value>
             <SimpleValue>The Interdealer Index Swap 2009 Annex to the ISDA 2009 European
-					Interdealer Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    Interdealer Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -260,7 +260,7 @@
          </Value>
          <Value>
             <SimpleValue>The Index Swap 2009 Annex to the ISDA 2009 Pan-Asia Interdealer Master
-					Equity Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Equity Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -272,7 +272,7 @@
          </Value>
          <Value>
             <SimpleValue>The Share Swap 2009 Annex to the ISDA 2009 Pan-Asia Interdealer Master
-					Equity Derivatives Confirmation Agreement applies.</SimpleValue>
+                    Equity Derivatives Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -284,8 +284,8 @@
          </Value>
          <Value>
             <SimpleValue>The Fair Value Interdealer Share Swap 2010 Annex to the ISDA 2009
-					European Interdealer Master Equity Derivatives Confirmation Agreement
-					applies.</SimpleValue>
+                    European Interdealer Master Equity Derivatives Confirmation Agreement
+                    applies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -297,8 +297,8 @@
          </Value>
          <Value>
             <SimpleValue>The Cash-settled Index Option/Cash/Physically-settled Share Option 2010
-					Annex to the ISDA 2010 EMEA EM Interdealer Master Equity Derivatives
-					Confirmation Agreement applies.</SimpleValue>
+                    Annex to the ISDA 2010 EMEA EM Interdealer Master Equity Derivatives
+                    Confirmation Agreement applies.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

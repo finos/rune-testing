@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>FpML Benchmark rates</doc:definition>
@@ -48,8 +48,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -60,8 +59,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -72,8 +70,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -84,8 +81,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -96,8 +92,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -108,8 +103,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -120,8 +114,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>"EFFR" or "Fed Funds" per 2021 ISDA Definitions, Section 10.3 Overnight
-                Rate Benchmarks.</SimpleValue>
+            <SimpleValue>"EFFR" or "Fed Funds" per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -132,8 +125,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -144,8 +136,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -156,8 +147,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -168,8 +158,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -180,8 +169,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -192,8 +180,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -204,8 +191,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -216,8 +202,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -228,8 +213,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -240,8 +224,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -252,8 +235,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -264,8 +246,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -276,8 +257,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -288,8 +268,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -300,8 +279,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -312,8 +290,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -324,17 +301,14 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Annotation>
             <Description>
                <doc:description>
-                  <doc:paragraph>Deprecated usage: "SWESTR" replaces "STIBOR". "STIBOR" code has been
-                deprecated in the 2021 Definitions V4. The code is kept in FpML for backward
-                compatibility purposes.</doc:paragraph>
+                  <doc:paragraph>Deprecated usage: "SWESTR" replaces "STIBOR". "STIBOR" code has been deprecated in the 2021 Definitions V4. The code is kept in FpML for backward compatibility purposes.</doc:paragraph>
                </doc:description>
             </Description>
          </Annotation>
@@ -345,9 +319,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definition up to V3, Section 10.3 Overnight Rate Benchmarks.
-                What is defined as "SEK OIS" in the 2006 ISDA Collateral Cash Price Matrix up to
-                November 10, 2021 publication.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definition up to V3, Section 10.3 Overnight Rate Benchmarks. What is defined as "SEK OIS" in the 2006 ISDA Collateral Cash Price Matrix up to  November 10, 2021 publication.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -358,8 +330,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -370,8 +341,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -382,8 +352,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -394,8 +363,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -406,8 +374,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks. What is
-                defined as "TONAR" in the 2006 ISDA Collateral Cash Price Matrix.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks. What is defined as "TONAR" in the 2006 ISDA Collateral Cash Price Matrix.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -418,8 +385,7 @@
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate
-                Benchmarks.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Definitions, Section 10.3 Overnight Rate Benchmarks.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
