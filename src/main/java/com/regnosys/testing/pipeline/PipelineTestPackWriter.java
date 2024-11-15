@@ -134,8 +134,8 @@ public class PipelineTestPackWriter {
             Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
             outputSample = outputSample.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, outputSample.toFile().getName())));
 
-            PipelineFunctionRunner.Result run = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
-            TestPackModel.SampleModel.Assertions assertions = run.getAssertions();
+            PipelineFunctionRunner.Result result = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
+            TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
 
             String baseFileName = getBaseFileName(inputSample.toUri().toURL());
             String displayName = baseFileName.replace("-", " ");
@@ -144,7 +144,7 @@ public class PipelineTestPackWriter {
             sampleModels.add(sampleModel);
 
             Files.createDirectories(resourcesPath.resolve(outputSample).getParent());
-            Files.write(resourcesPath.resolve(outputSample), run.getSerialisedOutput().getBytes());
+            Files.write(resourcesPath.resolve(outputSample), result.getSerialisedOutput().getBytes());
         }
 
         List<TestPackModel.SampleModel> sortedSamples = sampleModels

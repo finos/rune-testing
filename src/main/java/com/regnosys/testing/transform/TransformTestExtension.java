@@ -9,9 +9,9 @@ package com.regnosys.testing.transform;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -86,14 +86,16 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     private final Path configPath;
     private final Class<T> funcType;
     private Validator xsdValidator;
-    @Inject RosettaTypeValidator typeValidator;
-    @Inject ReferenceConfig referenceConfig;
+    @Inject
+    RosettaTypeValidator typeValidator;
+    @Inject
+    ReferenceConfig referenceConfig;
     private Multimap<String, TransformTestResult> actualExpectation;
     private PipelineModel pipelineModel;
     private Injector injector;
+    private ObjectMapper inputObjectMapper;
     private ObjectWriter outputObjectWriter;
-
-
+    
     public TransformTestExtension(Module runtimeModule, Path configPath, Class<T> funcType) {
         this.runtimeModule = runtimeModule;
         this.configPath = configPath;
@@ -119,6 +121,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
         this.pipelineModel = getPipelineModel(getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER), funcType.getName());
+        this.inputObjectMapper = getObjectMapper(pipelineModel.getInputSerialisation()).orElse(JSON_OBJECT_MAPPER);
         this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(JSON_OBJECT_WRITER);
         this.actualExpectation = ArrayListMultimap.create();
     }
@@ -148,10 +151,12 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     protected <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) {
         String inputFile = sampleModel.getInputPath();
         URL inputFileUrl = getInputFileUrl(inputFile);
+        assertNotNull(inputFileUrl);
+        
         Class<IN> inputType = getInputType();
-        IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
-
+        
         try {
+            IN input = readFile(inputFileUrl, inputObjectMapper, inputType);
             IN resolvedInput = resolveReferences(input);
             OUT output = function.apply(resolvedInput);
 
@@ -174,7 +179,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         } catch (Exception e) {
             LOGGER.error("Exception occurred running transform", e);
             TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, true);
-            return new TransformTestResult(null, updateSampleModel(sampleModel, assertions));
+            return new TransformTestResult("", updateSampleModel(sampleModel, assertions));
         }
     }
 

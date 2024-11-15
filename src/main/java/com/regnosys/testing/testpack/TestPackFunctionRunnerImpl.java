@@ -88,10 +88,10 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
             output = function.apply(resolveReferences(input));
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to load input path {}", inputPath, e);
-            return Pair.of(null, new Assertions(null, null, true));
+            return Pair.of("", new Assertions(null, null, true));
         } catch (Exception e) {
             LOGGER.error("Exception occurred running sample creation", e);
-            return Pair.of(null, new Assertions(null, null, true));
+            return Pair.of("", new Assertions(null, null, true));
         }
 
         String serialisedOutput;
