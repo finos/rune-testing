@@ -29,6 +29,7 @@ import com.google.inject.Injector;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
+import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.xml.sax.SAXException;
@@ -44,12 +45,13 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static com.regnosys.rosetta.common.transform.TestPackUtils.getObjectMapper;
 import static com.regnosys.rosetta.common.transform.TestPackUtils.getObjectWriter;
 
 public class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunnerProvider {
 
-    protected static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
-    protected final static ObjectWriter JSON_OBJECT_WRITER =
+    private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
+    private final static ObjectWriter JSON_OBJECT_WRITER =
             JSON_OBJECT_MAPPER
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
                     .writerWithDefaultPrettyPrinter();
@@ -60,28 +62,39 @@ public class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunne
     ReferenceConfig referenceConfig;
 
     @Override
-    public TestPackFunctionRunner create(PipelineModel.Transform transform, Injector injector) {
-        Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
-        Class<?> functionType = toClass(transform.getFunction());
-        return createTestPackFunctionRunner(functionType, inputType, injector, JSON_OBJECT_WRITER, null);
-    }
-
-    @Override
-    public TestPackFunctionRunner create(PipelineModel.Transform transform, PipelineModel.Serialisation outputSerialisation, ImmutableMap<Class<?>, String> outputSchemaMap, Injector injector) {
+    public TestPackFunctionRunner create(PipelineModel.Transform transform,
+                                         PipelineModel.Serialisation inputSerialisation,
+                                         PipelineModel.Serialisation outputSerialisation,
+                                         ImmutableMap<Class<?>, String> schemaMap,
+                                         Injector injector) {
         Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
         Class<?> outputType = toClass(transform.getOutputType());
+        // Input de-serialisation
+        ObjectMapper inputObjectMapper = Optional.ofNullable(inputSerialisation)
+                .flatMap(TestPackUtils::getObjectMapper)
+                .orElse(JSON_OBJECT_MAPPER);
         // Output serialisation
-        ObjectWriter outputObjectWriter = getObjectWriter(outputSerialisation).orElse(JSON_OBJECT_WRITER);
+        ObjectWriter outputObjectWriter = Optional.ofNullable(inputSerialisation)
+                .flatMap(TestPackUtils::getObjectWriter)
+                .orElse(JSON_OBJECT_WRITER);
         // XSD validation
-        Validator xsdValidator = getXsdValidator(outputType, outputSchemaMap);
-        return createTestPackFunctionRunner(toClass(transform.getFunction()), inputType, injector, outputObjectWriter, xsdValidator);
+        Validator xsdValidator = Optional.ofNullable(schemaMap)
+                .map(sm -> getXsdValidator(outputType, sm))
+                .orElse(null);
+        return createTestPackFunctionRunner(toClass(transform.getFunction()), inputType, injector, inputObjectMapper, outputObjectWriter, xsdValidator);
     }
 
-    private <IN extends RosettaModelObject> TestPackFunctionRunner createTestPackFunctionRunner(Class<?> functionType, Class<IN> inputType, Injector injector, ObjectWriter outputObjectWriter, Validator xsdValidator) {
+    private <IN extends RosettaModelObject> TestPackFunctionRunner createTestPackFunctionRunner(Class<?> functionType, 
+                                                                                                Class<IN> inputType, 
+                                                                                                Injector injector, 
+                                                                                                ObjectMapper inputObjectMapper, 
+                                                                                                ObjectWriter outputObjectWriter, 
+                                                                                                Validator xsdValidator) {
         Function<IN, RosettaModelObject> transformFunction = getTransformFunction(functionType, inputType, injector);
-        return new TestPackFunctionRunnerImpl<>(transformFunction, inputType, typeValidator, referenceConfig, outputObjectWriter, xsdValidator);
+        return new TestPackFunctionRunnerImpl<>(transformFunction, inputType, typeValidator, referenceConfig, inputObjectMapper, outputObjectWriter, xsdValidator);
     }
 
+    @SuppressWarnings("unchecked")
     private Class<? extends RosettaModelObject> toClass(String name) {
         try {
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
@@ -113,7 +126,7 @@ public class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunne
 
     private Validator getXsdValidator(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
         URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
-                .map(r -> Resources.getResource(r))
+                .map(Resources::getResource)
                 .orElse(null);
         if (schemaUrl == null) {
             return null;
@@ -125,7 +138,7 @@ public class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunne
             Schema schema = schemaFactory.newSchema(schemaUrl);
             return schema.newValidator();
         } catch (SAXException e) {
-            throw new RuntimeException(String.format("Failed to create schema validator for {}", schemaUrl), e);
+            throw new RuntimeException(String.format("Failed to create schema validator for %s", schemaUrl), e);
         }
     }
 }

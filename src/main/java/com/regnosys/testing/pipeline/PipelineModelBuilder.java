@@ -21,6 +21,7 @@ package com.regnosys.testing.pipeline;
  */
 
 import com.regnosys.rosetta.common.transform.PipelineModel;
+import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -43,14 +44,16 @@ public class PipelineModelBuilder {
 
     protected PipelineModel build(PipelineNode modelBuilder, PipelineTreeConfig config) {
 
-        String inputType = helper.getInputType(modelBuilder.getFunction());
+        Class<?> inputClazz = helper.getInputType(modelBuilder.getFunction());
+        String inputType = inputClazz.getName();
         String outputType = helper.getOutputType(modelBuilder.getFunction());
+        String inputSerialisationConfigPath = config.getXmlConfigMap().get(inputClazz);
         String outputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getFuncMethod(modelBuilder.getFunction()).getReturnType());
         String name = helper.getName(modelBuilder.getFunction());
 
         // assume XML for now.
-        PipelineModel.Serialisation outputSerialisation = outputSerialisationConfigPath == null ? null :
-                new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.XML, outputSerialisationConfigPath);
+        PipelineModel.Serialisation inputSerialisation = getSerialisation(inputSerialisationConfigPath);
+        PipelineModel.Serialisation outputSerialisation = getSerialisation(outputSerialisationConfigPath);
 
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
@@ -58,7 +61,13 @@ public class PipelineModelBuilder {
         return new PipelineModel(pipelineId,
                 name,
                 new PipelineModel.Transform(modelBuilder.getTransformType(), modelBuilder.getFunction().getName(), inputType, outputType),
-                upstreamPipelineId, outputSerialisation);
+                upstreamPipelineId,
+                inputSerialisation,
+                outputSerialisation);
     }
 
+    private PipelineModel.Serialisation getSerialisation(String xmlConfigPath) {
+        return xmlConfigPath == null ? null :
+                new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.XML, xmlConfigPath);
+    }
 }

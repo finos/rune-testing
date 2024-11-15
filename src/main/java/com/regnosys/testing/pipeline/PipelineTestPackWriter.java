@@ -102,7 +102,7 @@ public class PipelineTestPackWriter {
                 TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config);
 
                 Path writePath = Files.createDirectories(resourcesPath.resolve(pipelineNode.getTransformType().getResourcePath()).resolve("config"));
-                Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
+                Path writeFile = writePath.resolve(testPackModel.getId() + ".xml");
                 objectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
         }
@@ -115,7 +115,7 @@ public class PipelineTestPackWriter {
         try (Stream<Path> paths = Files.walk(inputDir)) {
             return paths.filter(Files::isRegularFile)
                     .filter(Files::exists)
-                    .filter(x -> x.getFileName().toString().endsWith(".json"))
+                    .filter(x -> x.getFileName().toString().endsWith(".xml"))
                     .collect(Collectors.toList());
         }
     }

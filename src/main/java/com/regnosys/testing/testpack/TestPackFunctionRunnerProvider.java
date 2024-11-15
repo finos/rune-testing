@@ -30,7 +30,9 @@ import static com.regnosys.rosetta.common.transform.PipelineModel.Transform;
 @ImplementedBy(TestPackFunctionRunnerProviderImpl.class)
 public interface TestPackFunctionRunnerProvider {
     
-    TestPackFunctionRunner create(Transform transform, Injector injector);
-
-    TestPackFunctionRunner create(Transform transform, Serialisation outputSerialisation, ImmutableMap<Class<?>, String> outputSchemaMap, Injector injector);
+    TestPackFunctionRunner create(Transform transform,
+                                  Serialisation inputSerialisation,
+                                  Serialisation outputSerialisation,
+                                  ImmutableMap<Class<?>, String> outputSchemaMap,
+                                  Injector injector);
 }
