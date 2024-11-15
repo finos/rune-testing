@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The FpML floating rate index codes contained in this document are based on the ISDA Floating Rate Options as published by ISDA in the 2021 ISDA Definitions, the 2006 ISDA Definitions, the Annex to the 2000 Definitions, Section 7.1. Rate Options, and other sources, including broker rates.  The codes correspond to their respective ISDA FRO only in the context of a transaction incorporating the corresponding contractual definitions.</doc:definition>
-         <doc:publicationDate>2023-11-03</doc:publicationDate>
+         <doc:publicationDate>2024-11-15</doc:publicationDate>
          <doc:confidentiality>This document contains only public information.</doc:confidentiality>
          <doc:disclaimer>Aggregate Information Disclaimer: This content aggregates individual data submissions received by ISDA from third party participants. ISDA does not warrant that such aggregated data is comprehensive, and makes no warranty or guarantees to the accuracy of the underlying data provided by third parties.</doc:disclaimer>
          <doc:disclaimer>IMPORTANT: This document maps certain Floating Rate Option labels in the 2006 ISDA Definitions against Floating Rate Option labels in the 2021 ISDA Interest Rate Derivatives Definitions to the extent that they derive from the same underlying benchmark and is provided for information purposes on an 'as is' basis only.  It does not signify that one Floating Rate Option is a successor to another Floating Rate Option or that the definition of such Floating Rate Options are identical.  Among other differences, Floating Rate Options under the 2021 ISDA Interest Rate Derivatives Definitions may have updated fixing dates and fixing times, administrator names and fallback provisions in comparison to mapped Floating Rate Options under the 2006 ISDA Definitions. No representation is made as to its accuracy or completeness and the information it contains should not be relied on for any particular purpose. None of ISDA, FpML, their directors, staff or agents accept any responsibility for any inaccuracy or any loss incurred by any party as a result of any use to which it may be put. Consumers of this document should undertake their own due diligence on the subject matter it contains, in combination with such professional advisors as may be appropriate.</doc:disclaimer>
@@ -11,10 +11,10 @@
    </Annotation>
    <Identification>
       <ShortName>floatingRateIndexScheme</ShortName>
-      <Version>3-8</Version>
+      <Version>3-10</Version>
       <CanonicalUri>http://www.fpml.org/coding-scheme/floating-rate-index</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-8</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-8.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-10</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/floating-rate-index-3-10.xml</LocationUri>
    </Identification>
    <ColumnSet>
       <Column Id="Code" Use="required">
@@ -977,13 +977,53 @@
       </Row>
       <Row>
          <Value>
+            <SimpleValue>CAD-CORRA Compounded Index</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix and 2006 ISDA Definitions, Section 7.1 Rate Options, as amended and supplemented through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:startDate>2024-04-26</doc:startDate>
+                  <doc:firstDefinedIn>FRO-M-V11</doc:firstDefinedIn>
+                  <doc:administrator>Bank of Canada</doc:administrator>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
+               <doc:calculationParameters>
+                  <doc:category>Calculated Rate</doc:category>
+                  <doc:style>Compounded Index</doc:style>
+                  <doc:method>Compounded Index</doc:method>
+                  <doc:daycount>ACT/365.FIXED</doc:daycount>
+                  <doc:fixingTimeDefinition>11:30, Toronto time</doc:fixingTimeDefinition>
+                  <doc:fixing>
+                     <doc:time>11:30</doc:time>
+                     <doc:businessCenter>CATO</doc:businessCenter>
+                  </doc:fixing>
+                  <doc:fixingOffsetDefinition>The Reset Date</doc:fixingOffsetDefinition>
+                  <doc:fixingOffset>
+                     <doc:periodMultiplier>0</doc:periodMultiplier>
+                     <doc:period>D</doc:period>
+                     <doc:businessCenter>CATO</doc:businessCenter>
+                  </doc:fixingOffset>
+                  <doc:applicableBusinessDay>CATO</doc:applicableBusinessDay>
+               </doc:calculationParameters>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
             <SimpleValue>CAD-CORRA-OIS Compound</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISDA</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix, as amended through the date on which parties enter into the relevant transaction.</SimpleValue>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix and 2006 ISDA Definitions, Section 7.1 Rate Options, as amended and supplemented through the date on which parties enter into the relevant transaction.</SimpleValue>
          </Value>
          <Value>
             <ComplexValue>
@@ -4186,6 +4226,25 @@
       </Row>
       <Row>
          <Value>
+            <SimpleValue>EUR-EuroSTR FTSE Term</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix, as amended through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
             <SimpleValue>EUR-EuroSTR ICE Compounded Index</SimpleValue>
          </Value>
          <Value>
@@ -4294,6 +4353,25 @@
                <doc:definition>
                   <doc:reference title="2006 ISDA Definitions" source="ISDA Definitions" version="2006"/>
                   <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+               </doc:definition>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>EUR-EuroSTR ICE Swap Rate</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix and 2006 ISDA Definitions, Section 7.1 Rate Options, as amended and supplemented through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
                </doc:definition>
             </ComplexValue>
          </Value>
@@ -5187,6 +5265,29 @@
       </Row>
       <Row>
          <Value>
+            <SimpleValue>GBP-SONIA FTSE Term</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix and 2006 ISDA Definitions, Section 7.1 Rate Options, as amended and supplemented through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2006 ISDA Definitions" source="ISDA Definitions" version="2006"/>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
+               <doc:external>
+                  <doc:code target="iso20022" method="BenchmarkCurveNameCode">SONA</doc:code>
+               </doc:external>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
             <SimpleValue>GBP-SONIA ICE Compounded Index</SimpleValue>
          </Value>
          <Value>
@@ -5435,29 +5536,6 @@
                <doc:calculationParameters>
                   <doc:method>OIS Compounding</doc:method>
                </doc:calculationParameters>
-            </ComplexValue>
-         </Value>
-      </Row>
-      <Row>
-         <Value>
-            <SimpleValue>GBP-SONIA Refinitiv Term</SimpleValue>
-         </Value>
-         <Value>
-            <SimpleValue>ISDA</SimpleValue>
-         </Value>
-         <Value>
-            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix and 2006 ISDA Definitions, Section 7.1 Rate Options, as amended and supplemented through the date on which parties enter into the relevant transaction.</SimpleValue>
-         </Value>
-         <Value>
-            <ComplexValue>
-               <doc:definition>
-                  <doc:reference title="2006 ISDA Definitions" source="ISDA Definitions" version="2006"/>
-                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
-                  <doc:inLoan>NO</doc:inLoan>
-               </doc:definition>
-               <doc:external>
-                  <doc:code target="iso20022" method="BenchmarkCurveNameCode">SONA</doc:code>
-               </doc:external>
             </ComplexValue>
          </Value>
       </Row>
@@ -6316,6 +6394,47 @@
                   <doc:reference title="2006 ISDA Definitions" source="ISDA Definitions" version="2006"/>
                   <doc:inLoan>YES</doc:inLoan>
                </doc:definition>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>IDR-INDONIA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix, as amended through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>IDR-INDONIA-OIS Compound</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix, as amended through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
+               <doc:calculationParameters>
+                  <doc:method>OIS Compounding</doc:method>
+               </doc:calculationParameters>
             </ComplexValue>
          </Value>
       </Row>
@@ -9271,6 +9390,25 @@
                <doc:external>
                   <doc:code target="iso20022" method="BenchmarkCurveNameCode">SWAP</doc:code>
                </doc:external>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PHP-ORR</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix, as amended through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
             </ComplexValue>
          </Value>
       </Row>
@@ -13767,6 +13905,25 @@
       </Row>
       <Row>
          <Value>
+            <SimpleValue>USD-SOFR ICE Swap Rate Spreads</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix, as amended through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
             <SimpleValue>USD-SOFR ICE Term</SimpleValue>
          </Value>
          <Value>
@@ -13827,6 +13984,25 @@
                <doc:external>
                   <doc:code target="iso20022" method="BenchmarkCurveNameCode">SWAP</doc:code>
                </doc:external>
+            </ComplexValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>USD-TBILL Auction High Rate</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per 2021 ISDA Interest Rate Derivatives Definitions Floating Rate Matrix, as amended through the date on which parties enter into the relevant transaction.</SimpleValue>
+         </Value>
+         <Value>
+            <ComplexValue>
+               <doc:definition>
+                  <doc:reference title="2021 ISDA Definitions" source="ISDA Definitions" version="2021"/>
+                  <doc:inLoan>NO</doc:inLoan>
+               </doc:definition>
             </ComplexValue>
          </Value>
       </Row>

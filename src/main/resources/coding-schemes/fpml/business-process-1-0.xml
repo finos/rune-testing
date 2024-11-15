@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Contains a code representing the type of business process a message (e.g.
-			a status request) applies to.</doc:definition>
+            a status request) applies to.</doc:definition>
          <doc:publicationDate>2011-09-29</doc:publicationDate>
       </Description>
    </Annotation>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>Process for novating a trade to a central counterparty (with margining)
-					for credit risk mitigation.</SimpleValue>
+                    for credit risk mitigation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -89,7 +89,7 @@
          </Value>
          <Value>
             <SimpleValue>Process for comparing representations of a trade or portfolio for the
-					purpose of identifying and resolving discrepancies.</SimpleValue>
+                    purpose of identifying and resolving discrepancies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -101,7 +101,7 @@
          </Value>
          <Value>
             <SimpleValue>Process for calculating payment amounts and performing payments as
-					required by the terms of a transaction.</SimpleValue>
+                    required by the terms of a transaction.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

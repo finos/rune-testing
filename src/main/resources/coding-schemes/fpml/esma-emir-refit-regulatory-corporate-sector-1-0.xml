@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies Corporate sector as defined by ESMA EMIR
-			Refit.</doc:definition>
+            Refit.</doc:definition>
          <doc:publicationDate>2023-06-21</doc:publicationDate>
       </Description>
    </Annotation>
@@ -55,13 +55,13 @@
          </Value>
          <Value>
             <SimpleValue>(Financial) Alternative investment fund (AIF), as defined in point (a) of
-					Article 4(1) of Directive 2011/61/EU, which is either established in the Union
-					or managed by an alternative investment fund manager (AIFM) authorised or
-					registered in accordance with that Directive, unless that AIF is set up
-					exclusively for the purpose of serving one or more employee share purchase
-					plans, or unless that AIF is a securitisation special purpose entity as referred
-					to in point (g) of Article 2(3) of Directive 2011/61/EU, and, where relevant,
-					its AIFM established in the Union.</SimpleValue>
+                    Article 4(1) of Directive 2011/61/EU, which is either established in the Union
+                    or managed by an alternative investment fund manager (AIFM) authorised or
+                    registered in accordance with that Directive, unless that AIF is set up
+                    exclusively for the purpose of serving one or more employee share purchase
+                    plans, or unless that AIF is a securitisation special purpose entity as referred
+                    to in point (g) of Article 2(3) of Directive 2011/61/EU, and, where relevant,
+                    its AIFM established in the Union.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -95,7 +95,7 @@
          </Value>
          <Value>
             <SimpleValue>(Financial) Credit institution authorised in accordance with Directive
-					2013/36/EU.</SimpleValue>
+                    2013/36/EU.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -107,8 +107,8 @@
          </Value>
          <Value>
             <SimpleValue>(Financial) Central securities depository authorised in accordance with
-					Regulation (EU) No 909/2014 of the European Parliament and of the
-					Council.</SimpleValue>
+                    Regulation (EU) No 909/2014 of the European Parliament and of the
+                    Council.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -120,7 +120,7 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Electricity, gas, steam and air conditioning
-					supply.</SimpleValue>
+                    supply.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -132,7 +132,7 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Water supply, sewerage, waste management and remediation
-					activities.</SimpleValue>
+                    activities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -155,7 +155,7 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Wholesale and retail trade, repair of motor vehicles and
-					motorcycles.</SimpleValue>
+                    motorcycles.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -189,8 +189,8 @@
          </Value>
          <Value>
             <SimpleValue>(Financial) Insurance undertaking or reinsurance undertaking authorised
-					in accordance with Directive 2009/138/EC of the European Parliament and of the
-					Council.</SimpleValue>
+                    in accordance with Directive 2009/138/EC of the European Parliament and of the
+                    Council.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -202,7 +202,7 @@
          </Value>
          <Value>
             <SimpleValue>(Financial) Investment firm authorized in accordance with Directive
-					2014/65/EU of the European Parliament and of the Council.</SimpleValue>
+                    2014/65/EU of the European Parliament and of the Council.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -247,7 +247,7 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Professional, scientific and technical
-					activities.</SimpleValue>
+                    activities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -259,7 +259,7 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Administrative and support service
-					activities.</SimpleValue>
+                    activities.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -271,7 +271,7 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Public administration and defence; compulsory social
-					security.</SimpleValue>
+                    security.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -283,8 +283,8 @@
          </Value>
          <Value>
             <SimpleValue>(Financial) Institution for occupational retirement provision (IORP), as
-					defined in point (1) of Article 6 of Directive (EU) 2016/2341 of the European
-					Parliament and of the Council.</SimpleValue>
+                    defined in point (1) of Article 6 of Directive (EU) 2016/2341 of the European
+                    Parliament and of the Council.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -340,8 +340,8 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Activities of households as employers; undifferentiated
-					goods – and services – producing activities of households for own
-					use.</SimpleValue>
+                    goods – and services – producing activities of households for own
+                    use.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -353,7 +353,7 @@
          </Value>
          <Value>
             <SimpleValue>(Non Financial) Activities of extraterritorial organizations and
-					bodies.</SimpleValue>
+                    bodies.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -365,10 +365,10 @@
          </Value>
          <Value>
             <SimpleValue>(Financial) UCITS (undertakings for the collective investment in
-					transferable securities) and, where relevant, its management company, authorised
-					in accordance with Directive 2009/65/EC, unless that UCITS is set up exclusively
-					for the purpose of serving one or more employee share purchase
-					plans.</SimpleValue>
+                    transferable securities) and, where relevant, its management company, authorised
+                    in accordance with Directive 2009/65/EC, unless that UCITS is set up exclusively
+                    for the purpose of serving one or more employee share purchase
+                    plans.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

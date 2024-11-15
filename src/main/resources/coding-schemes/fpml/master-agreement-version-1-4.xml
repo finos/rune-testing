@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines the version of the master agreement governing the
-			transaction.</doc:definition>
+            transaction.</doc:definition>
          <doc:publicationDate>2014-02-05</doc:publicationDate>
       </Description>
    </Annotation>
@@ -121,7 +121,7 @@
          </Value>
          <Value>
             <SimpleValue>ZBT 2004 Zeebrugge Hub Natural Gas Trading Terms and
-					Conditions</SimpleValue>
+                    Conditions</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -144,7 +144,7 @@
          </Value>
          <Value>
             <SimpleValue>Master Agreement and Contractual Terms for Repurchase Agreements on the
-					Russian Financial Market 2007</SimpleValue>
+                    Russian Financial Market 2007</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -156,7 +156,7 @@
          </Value>
          <Value>
             <SimpleValue>Standard Documentation for Derivative Transactions on the Russian
-					Financial Markets 2009</SimpleValue>
+                    Financial Markets 2009</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -179,9 +179,9 @@
          </Value>
          <Value>
             <SimpleValue>ICMA Global Master Repurchase Agreement (GMRA) 2011, Standard
-					Documentation for Derivative Transactions on the Russian Financial Markets 2011,
-					Master Agreement and Contractual Terms for Repurchase Agreements on the Russian
-					Financial Market 2011</SimpleValue>
+                    Documentation for Derivative Transactions on the Russian Financial Markets 2011,
+                    Master Agreement and Contractual Terms for Repurchase Agreements on the Russian
+                    Financial Market 2011</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -193,7 +193,7 @@
          </Value>
          <Value>
             <SimpleValue>International Emissions Trading Association Emissions Reduction Purchase
-					Agreement Version 3.0</SimpleValue>
+                    Agreement Version 3.0</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -205,7 +205,7 @@
          </Value>
          <Value>
             <SimpleValue>International Emissions Trading Association Emissions Trading Master
-					Agreement Version 2.1</SimpleValue>
+                    Agreement Version 2.1</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -217,7 +217,7 @@
          </Value>
          <Value>
             <SimpleValue>International Emissions Trading Association Emissions Trading Master
-					Agreement Version 3.0</SimpleValue>
+                    Agreement Version 3.0</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +229,7 @@
          </Value>
          <Value>
             <SimpleValue>International Emissions Trading Association International Emissions
-					Trading Master Agreement Version 1.0</SimpleValue>
+                    Trading Master Agreement Version 1.0</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

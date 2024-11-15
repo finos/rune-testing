@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>List of assignment fee payment rules.</doc:definition>
@@ -43,8 +43,8 @@
          </Value>
          <Value>
             <SimpleValue>Half of the assignment fee, as set forth in the credit agreement, is
-					charged for the entire trade regardless of the number of facilities included in
-					the trade and regardless of the number of sub-allocations made. </SimpleValue>
+                    charged for the entire trade regardless of the number of facilities included in
+                    the trade and regardless of the number of sub-allocations made. </SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,8 +56,8 @@
          </Value>
          <Value>
             <SimpleValue>One full assignment fee, as fee set forth in the credit agreement, is
-					charged for each separate allocation/assignment agreement under the master
-					trade. </SimpleValue>
+                    charged for each separate allocation/assignment agreement under the master
+                    trade. </SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -69,8 +69,8 @@
          </Value>
          <Value>
             <SimpleValue>One full assignment fee, as fee set forth in the credit agreement, is
-					charged for the entire trade regardless of the number of facilities included in
-					the trade and regardless of the number of sub-allocations made. </SimpleValue>
+                    charged for the entire trade regardless of the number of facilities included in
+                    the trade and regardless of the number of sub-allocations made. </SimpleValue>
          </Value>
       </Row>
       <Row>

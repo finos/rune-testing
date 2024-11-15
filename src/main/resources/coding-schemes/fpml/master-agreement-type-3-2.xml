@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://docs.oasis-open.org/codelist/ns/genericode/1.0/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines the type of the master agreement governing the
-			transaction.</doc:definition>
+            transaction.</doc:definition>
          <doc:publicationDate>2024-03-14</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,7 +44,7 @@
          </Value>
          <Value>
             <SimpleValue>AFB Master Agreement for Foreign Exchange and Derivatives
-					Transactions</SimpleValue>
+                    Transactions</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,7 +56,7 @@
          </Value>
          <Value>
             <SimpleValue>A Bespoke (custom) Master Agreement, including one-off agreements for
-					transactions</SimpleValue>
+                    transactions</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -101,7 +101,7 @@
          </Value>
          <Value>
             <SimpleValue>EFET General Agreement Concerning the Delivery and Acceptance of
-					Electricity</SimpleValue>
+                    Electricity</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -113,7 +113,7 @@
          </Value>
          <Value>
             <SimpleValue>EFET General Agreement Concerning The Delivery And Acceptance of Natural
-					Gas</SimpleValue>
+                    Gas</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -125,7 +125,7 @@
          </Value>
          <Value>
             <SimpleValue>European Master Agreement and the Derivatives Annex (Banking Federation
-					of the European Union)</SimpleValue>
+                    of the European Union)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -137,7 +137,7 @@
          </Value>
          <Value>
             <SimpleValue>Master Agreement Relating to transactions on Forward Financial
-					Instruments (Federation Bancaire Francaise)</SimpleValue>
+                    Instruments (Federation Bancaire Francaise)</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -149,7 +149,7 @@
          </Value>
          <Value>
             <SimpleValue>GasEDI Base Contract for Short-term Sale and Purchase of Natural
-					Gas</SimpleValue>
+                    Gas</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -161,7 +161,7 @@
          </Value>
          <Value>
             <SimpleValue>German Master Agreement for Financial derivatives and Addendum for
-					Options on Stock Exchange Indices or Securities</SimpleValue>
+                    Options on Stock Exchange Indices or Securities</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -217,7 +217,7 @@
          </Value>
          <Value>
             <SimpleValue>International Emissions Trading Association Emissions Reduction Purchase
-					Agreement</SimpleValue>
+                    Agreement</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -229,7 +229,7 @@
          </Value>
          <Value>
             <SimpleValue>International Emissions Trading Association Emissions Trading Master
-					Agreement</SimpleValue>
+                    Agreement</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -241,7 +241,7 @@
          </Value>
          <Value>
             <SimpleValue>International Emissions Trading Association International Emissions
-					Trading Master Agreement</SimpleValue>
+                    Trading Master Agreement</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -319,7 +319,7 @@
          </Value>
          <Value>
             <SimpleValue>International Bullion Master Agreement Terms published by the London
-					Bullion Market Association</SimpleValue>
+                    Bullion Market Association</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -375,7 +375,7 @@
          </Value>
          <Value>
             <SimpleValue>Standard Documentation for Derivative Transactions on the Russian
-					Financial Markets</SimpleValue>
+                    Financial Markets</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -387,7 +387,7 @@
          </Value>
          <Value>
             <SimpleValue>Master Agreement and Contractual Terms for Repurchase Agreements on the
-					Russian Financial Market</SimpleValue>
+                    Russian Financial Market</SimpleValue>
          </Value>
       </Row>
       <Row>

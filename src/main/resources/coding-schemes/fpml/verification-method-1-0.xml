@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Contains a code representing a trade could be verified (ie. how the
-			economic terms of a contract could be checked for consistency).</doc:definition>
+            economic terms of a contract could be checked for consistency).</doc:definition>
          <doc:publicationDate>2012-06-01</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,7 +44,7 @@
          </Value>
          <Value>
             <SimpleValue>Verification via a shared verification facility or platform, or a
-					private/bilateral electronic system.</SimpleValue>
+                    private/bilateral electronic system.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,7 +56,7 @@
          </Value>
          <Value>
             <SimpleValue>Verification via a human-readable written document (possibly transmitted
-					electronically).</SimpleValue>
+                    electronically).</SimpleValue>
          </Value>
       </Row>
       <Row>

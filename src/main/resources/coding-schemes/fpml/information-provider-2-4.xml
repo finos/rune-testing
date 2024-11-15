@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The specification of a list of information providers and vendors who
-			publish financial markets information. Their information sources will typically be used
-			to determine a relevant market rate, price or index.</doc:definition>
+            publish financial markets information. Their information sources will typically be used
+            to determine a relevant market rate, price or index.</doc:definition>
          <doc:description>
             <doc:paragraph>List compiled from the Annex to the 2000 ISDA Definitions Section 7.2 -
-				Certain Published and Displayed Sources, and other sources.</doc:paragraph>
+                Certain Published and Displayed Sources, and other sources.</doc:paragraph>
          </doc:description>
          <doc:publicationDate>2022-11-18</doc:publicationDate>
       </Description>
@@ -137,7 +137,7 @@
          </Value>
          <Value>
             <SimpleValue>The Federal Home Loan Bank of San Francisco, or its
-					successor.</SimpleValue>
+                    successor.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -149,7 +149,7 @@
          </Value>
          <Value>
             <SimpleValue>ICESWAP Rate Administrator which means ICE Benchmark Administration, or
-					any successor thereto, as administrator of the ICE Swap Rate.</SimpleValue>
+                    any successor thereto, as administrator of the ICE Swap Rate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -238,8 +238,8 @@
          </Value>
          <Value>
             <SimpleValue>The Tokyo Swap Reference Rate (or TSR) Administrator, which means
-					Refinitiv Asia Pacific Limited, or any successor thereto, as administrator of
-					the TSR.</SimpleValue>
+                    Refinitiv Asia Pacific Limited, or any successor thereto, as administrator of
+                    the TSR.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

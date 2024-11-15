@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>A list that describes the party's role in relation to a syndication. It is
-			also used to associate a party role of the author in relation to a trading
-			identifier.</doc:definition>
+            also used to associate a party role of the author in relation to a trading
+            identifier.</doc:definition>
          <doc:publicationDate>2017-12-22</doc:publicationDate>
       </Description>
    </Annotation>
@@ -67,7 +67,7 @@
          </Value>
          <Value>
             <SimpleValue>A Broker/Dealer making a "market" in the loan asset class trading
-					space.</SimpleValue>
+                    space.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -123,7 +123,7 @@
          </Value>
          <Value>
             <SimpleValue>Vendor that may have a relationship to the loan trade. I.e. issues a
-					proprietary trade identifier.</SimpleValue>
+                    proprietary trade identifier.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

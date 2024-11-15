@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://docs.oasis-open.org/codelist/ns/genericode/1.0/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Contains a code representing a related party role. This can be extended to
-			provide custom roles.</doc:definition>
+            provide custom roles.</doc:definition>
          <doc:publicationDate>2024-02-15</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,7 +44,7 @@
          </Value>
          <Value>
             <SimpleValue>Organization responsible for preparing the accounting for the
-					trade.</SimpleValue>
+                    trade.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,7 +56,7 @@
          </Value>
          <Value>
             <SimpleValue>The organization responsible for supplying the allocations for a trade to
-					be allocated to multiple accounts/organizations.</SimpleValue>
+                    be allocated to multiple accounts/organizations.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -68,7 +68,7 @@
          </Value>
          <Value>
             <SimpleValue>The organization that arranged the trade, i.e. brought together the
-					counterparties. Synonyms/Alternatives: Inter-dealer broker, agent.</SimpleValue>
+                    counterparties. Synonyms/Alternatives: Inter-dealer broker, agent.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -80,12 +80,12 @@
          </Value>
          <Value>
             <SimpleValue>Organization that suffers the economic benefit of the trade. The
-					beneficiary may be distinct from the principal/counterparty - an example occurs
-					when a hedge fund trades via a prime broker; in this case the principal is the
-					prime broker, but the beneficiary is the hedge fund. This can be represented as
-					a payer/receiver account in the name of the hedge fund, but it is also possible
-					to add the party role of "Beneficiary" at the partyTradeInformation
-					level.</SimpleValue>
+                    beneficiary may be distinct from the principal/counterparty - an example occurs
+                    when a hedge fund trades via a prime broker; in this case the principal is the
+                    prime broker, but the beneficiary is the hedge fund. This can be represented as
+                    a payer/receiver account in the name of the hedge fund, but it is also possible
+                    to add the party role of "Beneficiary" at the partyTradeInformation
+                    level.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -97,9 +97,9 @@
          </Value>
          <Value>
             <SimpleValue>The entity for which the organization supporting the trade's processing
-					has booked/recorded the trade. This is used in non-reporting workflows
-					situations in which the trade doesn't need to be reported but a firm still wants
-					to specify their own side.</SimpleValue>
+                    has booked/recorded the trade. This is used in non-reporting workflows
+                    situations in which the trade doesn't need to be reported but a firm still wants
+                    to specify their own side.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -111,12 +111,12 @@
          </Value>
          <Value>
             <SimpleValue>Acquirer of the legal title to the financial instrument. In the case of
-					an option, the buyer is the holder of the option. In the case of a swap or
-					forward, the buyer will be determined by industry best practice. This does not
-					refer to an investor or investment manager or other organization on what is
-					typically called the "Buy side"; for that, see the "Client" role. Corresponds to
-					"Buyer" as defined in certain regulations such as ESMA MiFID II/MIFIR RTS 22
-					field 9.</SimpleValue>
+                    an option, the buyer is the holder of the option. In the case of a swap or
+                    forward, the buyer will be determined by industry best practice. This does not
+                    refer to an investor or investment manager or other organization on what is
+                    typically called the "Buy side"; for that, see the "Client" role. Corresponds to
+                    "Buyer" as defined in certain regulations such as ESMA MiFID II/MIFIR RTS 22
+                    field 9.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -128,11 +128,11 @@
          </Value>
          <Value>
             <SimpleValue>The party or person who, having legal authority to act on behalf of the
-					trade counterparty acting as Buyer as defined in this coding scheme, made the
-					decision to acquire the financial instrument. Corresponds to "buyer decision
-					maker" as defined in ESMA's MIFIR RTS 23 report. This does not refer to the
-					decision maker for what is traditionally called the "Buy side"; for that, see
-					the "Client Decision Maker" role.</SimpleValue>
+                    trade counterparty acting as Buyer as defined in this coding scheme, made the
+                    decision to acquire the financial instrument. Corresponds to "buyer decision
+                    maker" as defined in ESMA's MIFIR RTS 23 report. This does not refer to the
+                    decision maker for what is traditionally called the "Buy side"; for that, see
+                    the "Client Decision Maker" role.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -144,10 +144,10 @@
          </Value>
          <Value>
             <SimpleValue>An organization that clears trades through a clearing house, via a
-					clearing broker (member of the clearing house) who acts as an agent on its
-					behalf. The term "client" refers to the organization's role in the clearing
-					process in relation to its clearing broker, and not whether it is a price maker
-					or taker in the execution process.</SimpleValue>
+                    clearing broker (member of the clearing house) who acts as an agent on its
+                    behalf. The term "client" refers to the organization's role in the clearing
+                    process in relation to its clearing broker, and not whether it is a price maker
+                    or taker in the execution process.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -159,7 +159,7 @@
          </Value>
          <Value>
             <SimpleValue>A party to the trade that claims a clearing exception, such as an
-					end-user exception under Dodd-Frank Act provisions.</SimpleValue>
+                    end-user exception under Dodd-Frank Act provisions.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -171,9 +171,9 @@
          </Value>
          <Value>
             <SimpleValue>Organization that submits the trade to a clearing house on behalf of the
-					principal. Synonyms/alternates: Futures Commission Merchant (FCM), Clearing
-					Broker, Clearing Member Firm. Some implementations use "Clearing Broker" as
-					synonym.</SimpleValue>
+                    principal. Synonyms/alternates: Futures Commission Merchant (FCM), Clearing
+                    Broker, Clearing Member Firm. Some implementations use "Clearing Broker" as
+                    synonym.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -185,10 +185,10 @@
          </Value>
          <Value>
             <SimpleValue>The organization that acts as a central counterparty to clear a
-					derivatives contract. This is used to represent the role of Central
-					Counterparties (CCPs) or Derivative Clearing Organizations (DCOs). Sometimes
-					called "ClearingService". Some implementations also use the term
-					"Clearer".</SimpleValue>
+                    derivatives contract. This is used to represent the role of Central
+                    Counterparties (CCPs) or Derivative Clearing Organizations (DCOs). Sometimes
+                    called "ClearingService". Some implementations also use the term
+                    "Clearer".</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -200,8 +200,8 @@
          </Value>
          <Value>
             <SimpleValue>Client as defined under ESMA MIFIR. This is generally the investor or
-					other client of an investment firm, and is synonymous with the Beneficiary in
-					many circumstances.</SimpleValue>
+                    other client of an investment firm, and is synonymous with the Beneficiary in
+                    many circumstances.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -213,8 +213,8 @@
          </Value>
          <Value>
             <SimpleValue>The party or person who, having legal authority to act on behalf of a
-					trade counterparty, made the decision to acquire or sell the financial
-					instrument.</SimpleValue>
+                    trade counterparty, made the decision to acquire or sell the financial
+                    instrument.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -226,8 +226,8 @@
          </Value>
          <Value>
             <SimpleValue>Organization serving as a financial intermediary for the purposes of
-					electronic confirmation or providing services for post-processing of
-					transactional data.</SimpleValue>
+                    electronic confirmation or providing services for post-processing of
+                    transactional data.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -239,8 +239,8 @@
          </Value>
          <Value>
             <SimpleValue>A party to a contractual document. If the intended usage relates to the
-					context of the trade lifecycle, more specific annotations have been defined
-					which might be more appropriate.</SimpleValue>
+                    context of the trade lifecycle, more specific annotations have been defined
+                    which might be more appropriate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -263,7 +263,7 @@
          </Value>
          <Value>
             <SimpleValue>Organization offiially attached to the counterparty. e.g. partner,
-					branch, subsidiary.</SimpleValue>
+                    branch, subsidiary.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -275,7 +275,7 @@
          </Value>
          <Value>
             <SimpleValue>The topmost entity or organization, within the corporate hierarchy,
-					responsible for the reporting party.</SimpleValue>
+                    responsible for the reporting party.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -287,7 +287,7 @@
          </Value>
          <Value>
             <SimpleValue>Organization that enhances the credit of another organization (similar to
-					guarantor, but may not fully guarantee the obligation).</SimpleValue>
+                    guarantor, but may not fully guarantee the obligation).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -299,7 +299,7 @@
          </Value>
          <Value>
             <SimpleValue>Organization that maintains custody of the asset represented by the trade
-					on behalf of the owner/principal.</SimpleValue>
+                    on behalf of the owner/principal.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -311,7 +311,7 @@
          </Value>
          <Value>
             <SimpleValue>Entity submitting the transaction report to the competent
-					authority.</SimpleValue>
+                    authority.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -334,9 +334,9 @@
          </Value>
          <Value>
             <SimpleValue>A marketplace organization which purpose is to maintain document records.
-					If the intended usage relates to the context of the trade lifecycle, more
-					specific annotations have been defined which might be more
-					appropriate.</SimpleValue>
+                    If the intended usage relates to the context of the trade lifecycle, more
+                    specific annotations have been defined which might be more
+                    appropriate.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -348,7 +348,7 @@
          </Value>
          <Value>
             <SimpleValue>The (generally sell-side) organization that executed the trade; the
-					price-making party.</SimpleValue>
+                    price-making party.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -360,9 +360,9 @@
          </Value>
          <Value>
             <SimpleValue>Entity executing the transaction. If the transaction is executed directly
-					by the reporting party, it will be the reporting party. If it is executed by an
-					execution agent or an affiliated party on behalf of the reporting party, it will
-					be that affiliate or agent.</SimpleValue>
+                    by the reporting party, it will be the reporting party. If it is executed by an
+                    execution agent or an affiliated party on behalf of the reporting party, it will
+                    be that affiliate or agent.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -374,10 +374,10 @@
          </Value>
          <Value>
             <SimpleValue>The (generally buy-side) organization that acts to execute trades on
-					behalf of an investor. Typically this is an investment manager or asset manager,
-					and also makes the investment decisions for the investor. If required, a
-					separate InvestmentDecision role can be specified to distinguish that the party
-					making the investment decision is different.</SimpleValue>
+                    behalf of an investor. Typically this is an investment manager or asset manager,
+                    and also makes the investment decisions for the investor. If required, a
+                    separate InvestmentDecision role can be specified to distinguish that the party
+                    making the investment decision is different.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -389,8 +389,8 @@
          </Value>
          <Value>
             <SimpleValue>The facility, exchange, or market where the trade was executed. Synonym:
-					Swap Execution Facility, Designated Contract Market, Execution
-					Venue.</SimpleValue>
+                    Swap Execution Facility, Designated Contract Market, Execution
+                    Venue.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -402,7 +402,7 @@
          </Value>
          <Value>
             <SimpleValue>Organization that backs (guarantees) the credit risk of the
-					trade.</SimpleValue>
+                    trade.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -414,7 +414,7 @@
          </Value>
          <Value>
             <SimpleValue>The entity transmitting the order to the reporting firm. Synonym:
-					Transmitting Firm.</SimpleValue>
+                    Transmitting Firm.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -426,8 +426,8 @@
          </Value>
          <Value>
             <SimpleValue>The organization that takes on or took on the credit risk for this trade
-					by stepping in between the two economic parties (without a central counterparty
-					clearing mechanism).</SimpleValue>
+                    by stepping in between the two economic parties (without a central counterparty
+                    clearing mechanism).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -439,7 +439,7 @@
          </Value>
          <Value>
             <SimpleValue>The trade repository at which the trade was reported previous to the
-					current trade repository.</SimpleValue>
+                    current trade repository.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -451,7 +451,7 @@
          </Value>
          <Value>
             <SimpleValue>A party providing a post trade risk reduction service in the form of
-					compression.</SimpleValue>
+                    compression.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -463,7 +463,7 @@
          </Value>
          <Value>
             <SimpleValue>A party providing a post trade risk reduction service in the form of
-					portfolio rebalancing.</SimpleValue>
+                    portfolio rebalancing.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -475,8 +475,8 @@
          </Value>
          <Value>
             <SimpleValue>The reporting service (whether trade repository, market data service, or
-					exchange/facility/venue data distribution service) that published the report of
-					this trade.</SimpleValue>
+                    exchange/facility/venue data distribution service) that published the report of
+                    this trade.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -488,7 +488,7 @@
          </Value>
          <Value>
             <SimpleValue>The party with the regulatory responsibility to report this
-					trade.</SimpleValue>
+                    trade.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -500,7 +500,7 @@
          </Value>
          <Value>
             <SimpleValue>Organization offiially attached to the reporting party e.g. partner,
-					branch, subsidiary.</SimpleValue>
+                    branch, subsidiary.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -512,7 +512,7 @@
          </Value>
          <Value>
             <SimpleValue>The topmost entity or organization, within the corporate hierarchy,
-					responsible for the reporting party.</SimpleValue>
+                    responsible for the reporting party.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -524,13 +524,13 @@
          </Value>
          <Value>
             <SimpleValue>A counterparty in a trade, which performs in one of the following
-					capacities: 1) it transfers or agrees to transfer in the future an instrument or
-					title to that instrument in exchange for payment, 2) it writes a derivatives
-					instrument such as an option or a swap in which it provides risk protection to
-					the buyer. This does not refer to the broker/dealer or other organization on
-					what is typically called the "Sell side"; for that, see the "Executing Broker"
-					role. Corresponds to "Seller" as defined in certain regulations such as ESMA
-					MiFID II/MIFIR RTS 22 field 16.</SimpleValue>
+                    capacities: 1) it transfers or agrees to transfer in the future an instrument or
+                    title to that instrument in exchange for payment, 2) it writes a derivatives
+                    instrument such as an option or a swap in which it provides risk protection to
+                    the buyer. This does not refer to the broker/dealer or other organization on
+                    what is typically called the "Sell side"; for that, see the "Executing Broker"
+                    role. Corresponds to "Seller" as defined in certain regulations such as ESMA
+                    MiFID II/MIFIR RTS 22 field 16.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -542,11 +542,11 @@
          </Value>
          <Value>
             <SimpleValue>The party or person who, having legal authority to act on behalf of the
-					trade counterparty acting as Seller as defined in this coding scheme, made the
-					decision to sell the financial instrument. Corresponds to "seller decision
-					maker" as defined in ESMA's MIFIR RTS 23 report. This does not refer to the
-					decision maker for what is traditionally called the "Sell side"; for that, see
-					the "Trader" person role.</SimpleValue>
+                    trade counterparty acting as Seller as defined in this coding scheme, made the
+                    decision to sell the financial instrument. Corresponds to "seller decision
+                    maker" as defined in ESMA's MIFIR RTS 23 report. This does not refer to the
+                    decision maker for what is traditionally called the "Sell side"; for that, see
+                    the "Trader" person role.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -558,7 +558,7 @@
          </Value>
          <Value>
             <SimpleValue>The organization that makes or receives payments on behalf of the given
-					principal party.</SimpleValue>
+                    principal party.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -570,7 +570,7 @@
          </Value>
          <Value>
             <SimpleValue>An organization that maintains records of the trade for regulatory
-					reporting purposes.</SimpleValue>
+                    reporting purposes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -582,8 +582,8 @@
          </Value>
          <Value>
             <SimpleValue>The organization that originally supplied the record of the trade. In the
-					context of regulatory reporting, it is the submitter of the trade record to a
-					regulator or TR.</SimpleValue>
+                    context of regulatory reporting, it is the submitter of the trade record to a
+                    regulator or TR.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -595,7 +595,7 @@
          </Value>
          <Value>
             <SimpleValue>The entity responsible for managing the assets/investments of this party.
-					Synonnym: Asset Manager, Investment Manager, Trading Advisory.</SimpleValue>
+                    Synonnym: Asset Manager, Investment Manager, Trading Advisory.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -607,8 +607,8 @@
          </Value>
          <Value>
             <SimpleValue>An entity with which this party trades from time to time, ie. with which
-					it acts as a counterparty on some transactions. This role is used for static
-					reference data, not individual transactions.</SimpleValue>
+                    it acts as a counterparty on some transactions. This role is used for static
+                    reference data, not individual transactions.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

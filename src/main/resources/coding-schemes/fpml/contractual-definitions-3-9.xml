@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies a set of standard contract definitions relevant to the
-			transaction</doc:definition>
-         <doc:publicationDate>2021-08-16</doc:publicationDate>
+            transaction</doc:definition>
+         <doc:publicationDate>2024-11-15</doc:publicationDate>
       </Description>
    </Annotation>
    <Identification>
       <ShortName>contractualDefinitionsScheme</ShortName>
-      <Version>3-8</Version>
+      <Version>3-9</Version>
       <CanonicalUri>http://www.fpml.org/coding-scheme/contractual-definitions</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-8</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-8.xml</LocationUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-9</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/contractual-definitions-3-9.xml</LocationUri>
    </Identification>
    <ColumnSet>
       <Column Id="Code" Use="required">
@@ -231,6 +231,28 @@
          </Value>
          <Value>
             <SimpleValue>ISDA 2021 Interest Rate Derivatives Definitions</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ISDA2022VerifiedCarbonCredit</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA 2022 Verified Carbon Credit Transactions Definitions</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ISDA2023DigitalAsset</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA 2023 Digital Asset Definitions</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
