@@ -30,8 +30,7 @@
         <version>5</version>
     </parent>
 
-    <name>rosetta-testing</name>
-
+    <name>Rune Testing</name>
     <groupId>com.regnosys</groupId>
     <artifactId>rosetta-testing</artifactId>
     <packaging>jar</packaging>
@@ -99,7 +98,7 @@
 
         <xtext.version>2.27.0</xtext.version>
         <unruly.version>1.6</unruly.version>
-        <kotlin.version>1.7.21</kotlin.version>
+        <kotlin.version>1.9.23</kotlin.version>
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
         <guava.version>32.0.1-jre</guava.version>
