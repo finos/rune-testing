@@ -87,7 +87,7 @@ public class PipelineTestPackWriter {
             Path outputPath = resourcesPath.resolve(pipelineNode.getOutputPath(config.isStrictUniqueIds()));
             LOGGER.info("Output path {} ", outputPath);
 
-            List<Path> inputSamples = findAllJsonSamples(inputPath);
+            List<Path> inputSamples = findAllSamples(inputPath);
 
             Map<String, List<Path>> testPackToSamples =
                     filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdInclusionFilter());
@@ -102,20 +102,19 @@ public class PipelineTestPackWriter {
                 TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config);
 
                 Path writePath = Files.createDirectories(resourcesPath.resolve(pipelineNode.getTransformType().getResourcePath()).resolve("config"));
-                Path writeFile = writePath.resolve(testPackModel.getId() + ".xml");
+                Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
                 objectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
         }
     }
 
-    private List<Path> findAllJsonSamples(Path inputDir) throws IOException {
+    private List<Path> findAllSamples(Path inputDir) throws IOException {
         if (!Files.exists(inputDir)) {
             return List.of();
         }
         try (Stream<Path> paths = Files.walk(inputDir)) {
             return paths.filter(Files::isRegularFile)
                     .filter(Files::exists)
-                    .filter(x -> x.getFileName().toString().endsWith(".xml"))
                     .collect(Collectors.toList());
         }
     }

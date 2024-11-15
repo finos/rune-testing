@@ -9,9 +9,9 @@ package com.regnosys.testing.pipeline;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,6 @@ package com.regnosys.testing.pipeline;
  */
 
 import com.regnosys.rosetta.common.transform.PipelineModel;
-import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -43,11 +42,9 @@ public class PipelineModelBuilder {
     }
 
     protected PipelineModel build(PipelineNode modelBuilder, PipelineTreeConfig config) {
-
-        Class<?> inputClazz = helper.getInputType(modelBuilder.getFunction());
-        String inputType = inputClazz.getName();
+        String inputType = helper.getInputType(modelBuilder.getFunction());
         String outputType = helper.getOutputType(modelBuilder.getFunction());
-        String inputSerialisationConfigPath = config.getXmlConfigMap().get(inputClazz);
+        String inputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getInputClass(modelBuilder.getFunction()));
         String outputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getFuncMethod(modelBuilder.getFunction()).getReturnType());
         String name = helper.getName(modelBuilder.getFunction());
 

@@ -95,7 +95,7 @@
         <maven.compiler.release>11</maven.compiler.release>
 
         <rosetta.dsl.version>9.22.0</rosetta.dsl.version>
-        <rosetta.common.version>0.0.0.main-SNAPSHOT</rosetta.common.version>
+        <rosetta.common.version>0.0.0.add-ingest-transform-type-SNAPSHOT</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
         <unruly.version>1.6</unruly.version>

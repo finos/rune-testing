@@ -33,9 +33,13 @@ import java.util.stream.Collectors;
 
 public class FunctionNameHelper {
 
-    public Class<?> getInputType(Class<? extends RosettaFunction> function) {
+    public Class<?> getInputClass(Class<? extends RosettaFunction> function) {
         Method functionMethod = getFuncMethod(function);
         return functionMethod.getParameterTypes()[0];
+    }
+
+    public String getInputType(Class<? extends RosettaFunction> function) {
+        return getInputClass(function).getName();
     }
 
     public String getOutputType(Class<? extends RosettaFunction> function) {
