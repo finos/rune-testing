@@ -74,7 +74,7 @@ public class TestPackFunctionRunnerProviderImpl implements TestPackFunctionRunne
                 .flatMap(TestPackUtils::getObjectMapper)
                 .orElse(JSON_OBJECT_MAPPER);
         // Output serialisation
-        ObjectWriter outputObjectWriter = Optional.ofNullable(inputSerialisation)
+        ObjectWriter outputObjectWriter = Optional.ofNullable(outputSerialisation)
                 .flatMap(TestPackUtils::getObjectWriter)
                 .orElse(JSON_OBJECT_WRITER);
         // XSD validation
