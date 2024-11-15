@@ -80,6 +80,7 @@ public class FunctionNameHelper {
                 .orElse(function.getSimpleName());
 
         String sanitise = simpleName
+                .replace("Ingest_", "")
                 .replace("Report_", "")
                 .replace("Function", "")
                 .replace("Enrich_", "")
