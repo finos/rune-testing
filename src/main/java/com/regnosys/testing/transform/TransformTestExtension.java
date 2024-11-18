@@ -81,6 +81,8 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
             JSON_OBJECT_MAPPER
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
                     .writerWithDefaultPrettyPrinter();
+    // use empty string as error value for function output as it gets serialised
+    public static final String ERROR_OUTPUT = "";
 
     private final Module runtimeModule;
     private final Path configPath;
@@ -179,7 +181,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         } catch (Exception e) {
             LOGGER.error("Exception occurred running transform", e);
             TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, true);
-            return new TransformTestResult("", updateSampleModel(sampleModel, assertions));
+            return new TransformTestResult(ERROR_OUTPUT, updateSampleModel(sampleModel, assertions));
         }
     }
 
