@@ -90,7 +90,7 @@ public class PipelineTestPackWriter {
             List<Path> inputSamples = findAllSamples(inputPath);
 
             Map<String, List<Path>> testPackToSamples =
-                    filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdInclusionFilter());
+                    filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter());
 
             Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
                     .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
@@ -167,10 +167,10 @@ public class PipelineTestPackWriter {
         return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
     }
 
-    private Map<String, List<Path>> filterAndGroupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples, Predicate<String> testPackSampleInclusionFilter) {
+    private Map<String, List<Path>> filterAndGroupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples, Predicate<String> testPackIdFilter) {
         return inputSamples.stream()
                 .map(resourcesPath::relativize)
-                .filter(path -> testPackSampleInclusionFilter.test(testPackId(resourcesPath, inputPath, path)))
+                .filter(path -> testPackIdFilter.test(testPackId(resourcesPath, inputPath, path)))
                 .collect(Collectors.groupingBy(p -> testPackId(resourcesPath, inputPath, p)));
     }
 
