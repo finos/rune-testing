@@ -34,7 +34,6 @@ import com.rosetta.model.lib.validation.ValidatorFactory;
 import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 public class PipelineTestHelper {
 
@@ -55,9 +54,6 @@ public class PipelineTestHelper {
 
     private Path testPath;
     private CompiledCode compiledCode;
-    private ImmutableMultimap<String, Class<?>> TEST_PACKS_RESTRICTED_FUNCTIONS;
-    private ImmutableMultimap<String, Class<?>> TEST_PACKS_SPECIFIC_TO_FUNCTIONS;
-    private ImmutableMultimap<Class<?>, String> FUNCTIONS_SPECIFIC_TO_TEST_PACKS;
 
     static void setupInjector(Object caller) {
         Injector injector = new RosettaTestingInjectorProvider().getInjector();
@@ -75,26 +71,6 @@ public class PipelineTestHelper {
     void init() throws Exception {
         testPath = Path.of("src/test/resources/pipeline-test");
         compiledCode = compileCode();
-        //For these test packs, only run these functions
-        TEST_PACKS_RESTRICTED_FUNCTIONS =
-                ImmutableMultimap.<String, Class<?>>builder()
-                        .put("test-pack-a", middleAClass())
-                        .put("test-pack-b", middleBClass())
-                        .build();
-       //For these functions, only these test packs, do not include the test pack for other functions
-        TEST_PACKS_SPECIFIC_TO_FUNCTIONS =
-                ImmutableMultimap.<String, Class<?>>builder()
-                        .put("test-pack-only-c", middleCClass())
-                        .build();
-        //For these functions, only these test packs, but include the test packs for other functions
-        FUNCTIONS_SPECIFIC_TO_TEST_PACKS =
-                ImmutableMultimap.<Class<?>, String>builder()
-                        .put(middleDClass(), "test-pack-d")
-                        .build();
-    }
-
-    Path testPath() {
-        return testPath;
     }
 
     Class<RosettaFunction> endBClass() {
@@ -162,41 +138,6 @@ public class PipelineTestHelper {
         return new PipelineTreeConfig()
                 .add(startClass(), TransformType.REPORT, middleClass())
                 .add(middleClass(), TransformType.PROJECTION, endClass());
-    }
-
-    PipelineTreeConfig createTreeConfigForFilter() {
-        return new PipelineTreeConfig()
-                .starting(TransformType.REPORT, middleAClass())
-                .starting(TransformType.REPORT, middleBClass())
-                .starting(TransformType.REPORT, middleCClass())
-                .starting(TransformType.REPORT, middleDClass())
-                .starting(TransformType.REPORT, middleEClass());
-    }
-    PipelineTreeConfig createTreeConfigWithFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withTestPacksRestrictedForFunctions(TEST_PACKS_RESTRICTED_FUNCTIONS)
-                .withTestPacksSpecificToFunctions(TEST_PACKS_SPECIFIC_TO_FUNCTIONS)
-                .withFunctionsSpecificToTestPacks(FUNCTIONS_SPECIFIC_TO_TEST_PACKS)
-                .withExcludedFunctionsFromTestPackGeneration(List.of(middleEClass()));
-        return createTreeConfigForFilter().withTestPackFilter(filter);
-    }
-
-    PipelineTreeConfig createTreeConfigWithTestPackFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withTestPacksRestrictedForFunctions(TEST_PACKS_RESTRICTED_FUNCTIONS);
-        return createTreeConfigForFilter().withTestPackFilter(filter);
-    }
-
-    PipelineTreeConfig createTreeConfigWithFunctionFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withTestPacksSpecificToFunctions(TEST_PACKS_SPECIFIC_TO_FUNCTIONS);
-        return createTreeConfigForFilter().withTestPackFilter(filter);
-    }
-
-    PipelineTreeConfig createTreeConfigWithExcludedFilter() {
-        PipelineTestPackFilter filter = PipelineTestPackFilter.create()
-                .withExcludedFunctionsFromTestPackGeneration(List.of(middleDClass()));
-        return createTreeConfigForFilter().withTestPackFilter(filter);
     }
 
     private CompiledCode compileCode() throws Exception {
