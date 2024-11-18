@@ -21,6 +21,7 @@ package com.regnosys.testing.testpack;
  */
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
@@ -46,7 +47,7 @@ import java.util.function.Function;
 
 import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.Assertions;
 import static com.regnosys.rosetta.common.transform.TestPackUtils.readFile;
-import static com.regnosys.testing.testpack.TestPackFunctionRunnerProviderImpl.JSON_OBJECT_MAPPER;
+import static com.regnosys.testing.transform.TransformTestExtension.ERROR_OUTPUT;
 
 public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestPackFunctionRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestPackFunctionRunnerImpl.class);
@@ -56,6 +57,7 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
     private final Class<IN> inputType;
     private final RosettaTypeValidator typeValidator;
     private final ReferenceConfig referenceConfig;
+    private final ObjectMapper inputObjectMapper;
     private final ObjectWriter outputObjectWriter;
     private final Validator xsdValidator;
 
@@ -64,12 +66,14 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
                                       Class<IN> inputType,
                                       RosettaTypeValidator typeValidator,
                                       ReferenceConfig referenceConfig,
+                                      ObjectMapper inputObjectMapper,
                                       ObjectWriter outputObjectWriter,
                                       Validator xsdValidator) {
         this.function = function;
         this.inputType = inputType;
         this.typeValidator = typeValidator;
         this.referenceConfig = referenceConfig;
+        this.inputObjectMapper = inputObjectMapper;
         this.outputObjectWriter = outputObjectWriter;
         this.xsdValidator = xsdValidator;
     }
@@ -81,14 +85,14 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
             // TODO - fix this hack.
             Path inputPathFromRepositoryRoot = inputPath.isAbsolute() ? inputPath : ROSETTA_SOURCE_PATH.resolve(inputPath);
             URL inputFileUrl = inputPathFromRepositoryRoot.toUri().toURL();
-            IN input = readFile(inputFileUrl, JSON_OBJECT_MAPPER, inputType);
+            IN input = readFile(inputFileUrl, inputObjectMapper, inputType);
             output = function.apply(resolveReferences(input));
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to load input path {}", inputPath, e);
-            return Pair.of(null, new Assertions(null, null, true));
+            return Pair.of(ERROR_OUTPUT, new Assertions(null, null, true));
         } catch (Exception e) {
             LOGGER.error("Exception occurred running sample creation", e);
-            return Pair.of(null, new Assertions(null, null, true));
+            return Pair.of(ERROR_OUTPUT, new Assertions(null, null, true));
         }
 
         String serialisedOutput;
@@ -108,6 +112,7 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
         return Pair.of(serialisedOutput, assertions);
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends RosettaModelObject> T resolveReferences(T o) {
         RosettaModelObjectBuilder builder = o.toBuilder();
         new ReferenceResolverProcessStep(referenceConfig).runProcessStep(o.getType(), builder);

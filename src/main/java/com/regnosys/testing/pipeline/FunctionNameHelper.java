@@ -33,9 +33,13 @@ import java.util.stream.Collectors;
 
 public class FunctionNameHelper {
 
-    public String getInputType(Class<? extends RosettaFunction> function) {
+    public Class<?> getInputClass(Class<? extends RosettaFunction> function) {
         Method functionMethod = getFuncMethod(function);
-        return functionMethod.getParameterTypes()[0].getName();
+        return functionMethod.getParameterTypes()[0];
+    }
+
+    public String getInputType(Class<? extends RosettaFunction> function) {
+        return getInputClass(function).getName();
     }
 
     public String getOutputType(Class<? extends RosettaFunction> function) {
@@ -76,6 +80,7 @@ public class FunctionNameHelper {
                 .orElse(function.getSimpleName());
 
         String sanitise = simpleName
+                .replace("Ingest_", "")
                 .replace("Report_", "")
                 .replace("Function", "")
                 .replace("Enrich_", "")

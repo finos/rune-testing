@@ -9,9 +9,9 @@ package com.regnosys.testing.pipeline;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,15 +42,15 @@ public class PipelineModelBuilder {
     }
 
     protected PipelineModel build(PipelineNode modelBuilder, PipelineTreeConfig config) {
-
         String inputType = helper.getInputType(modelBuilder.getFunction());
         String outputType = helper.getOutputType(modelBuilder.getFunction());
+        String inputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getInputClass(modelBuilder.getFunction()));
         String outputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getFuncMethod(modelBuilder.getFunction()).getReturnType());
         String name = helper.getName(modelBuilder.getFunction());
 
         // assume XML for now.
-        PipelineModel.Serialisation outputSerialisation = outputSerialisationConfigPath == null ? null :
-                new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.XML, outputSerialisationConfigPath);
+        PipelineModel.Serialisation inputSerialisation = getSerialisation(inputSerialisationConfigPath);
+        PipelineModel.Serialisation outputSerialisation = getSerialisation(outputSerialisationConfigPath);
 
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
@@ -58,7 +58,13 @@ public class PipelineModelBuilder {
         return new PipelineModel(pipelineId,
                 name,
                 new PipelineModel.Transform(modelBuilder.getTransformType(), modelBuilder.getFunction().getName(), inputType, outputType),
-                upstreamPipelineId, outputSerialisation);
+                upstreamPipelineId,
+                inputSerialisation,
+                outputSerialisation);
     }
 
+    private PipelineModel.Serialisation getSerialisation(String xmlConfigPath) {
+        return xmlConfigPath == null ? null :
+                new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.XML, xmlConfigPath);
+    }
 }

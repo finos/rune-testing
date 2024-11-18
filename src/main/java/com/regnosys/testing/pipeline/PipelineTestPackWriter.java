@@ -87,7 +87,7 @@ public class PipelineTestPackWriter {
             Path outputPath = resourcesPath.resolve(pipelineNode.getOutputPath(config.isStrictUniqueIds()));
             LOGGER.info("Output path {} ", outputPath);
 
-            List<Path> inputSamples = findAllJsonSamples(inputPath);
+            List<Path> inputSamples = findAllSamples(inputPath);
 
             Map<String, List<Path>> testPackToSamples =
                     filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter());
@@ -108,14 +108,13 @@ public class PipelineTestPackWriter {
         }
     }
 
-    private List<Path> findAllJsonSamples(Path inputDir) throws IOException {
+    private List<Path> findAllSamples(Path inputDir) throws IOException {
         if (!Files.exists(inputDir)) {
             return List.of();
         }
         try (Stream<Path> paths = Files.walk(inputDir)) {
             return paths.filter(Files::isRegularFile)
                     .filter(Files::exists)
-                    .filter(x -> x.getFileName().toString().endsWith(".json"))
                     .collect(Collectors.toList());
         }
     }
@@ -135,8 +134,8 @@ public class PipelineTestPackWriter {
             Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
             outputSample = outputSample.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, outputSample.toFile().getName())));
 
-            PipelineFunctionRunner.Result run = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
-            TestPackModel.SampleModel.Assertions assertions = run.getAssertions();
+            PipelineFunctionRunner.Result result = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
+            TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
 
             String baseFileName = getBaseFileName(inputSample.toUri().toURL());
             String displayName = baseFileName.replace("-", " ");
@@ -145,7 +144,7 @@ public class PipelineTestPackWriter {
             sampleModels.add(sampleModel);
 
             Files.createDirectories(resourcesPath.resolve(outputSample).getParent());
-            Files.write(resourcesPath.resolve(outputSample), run.getSerialisedOutput().getBytes());
+            Files.write(resourcesPath.resolve(outputSample), result.getSerialisedOutput().getBytes());
         }
 
         List<TestPackModel.SampleModel> sortedSamples = sampleModels
@@ -160,11 +159,12 @@ public class PipelineTestPackWriter {
     }
 
     private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
-        if (pipelineModel.getOutputSerialisation() != null) {
-            String outputFormat = pipelineModel.getOutputSerialisation().getFormat().toString().toLowerCase();
-            return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
-        }
-        return fileName;
+        String outputFormat = Optional.ofNullable(pipelineModel.getOutputSerialisation())
+                .map(PipelineModel.Serialisation::getFormat)
+                .map(PipelineModel.Serialisation.Format::toString)
+                .orElse("json")
+                .toLowerCase();
+        return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
     }
 
     private Map<String, List<Path>> filterAndGroupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples, Predicate<String> testPackIdFilter) {
