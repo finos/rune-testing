@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The transaction (event) types that the associated settlement instructions
-			apply to.</doc:definition>
+            apply to.</doc:definition>
          <doc:publicationDate>2017-12-22</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,7 +44,7 @@
          </Value>
          <Value>
             <SimpleValue>AccruingFeePayment - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,7 +56,7 @@
          </Value>
          <Value>
             <SimpleValue>AccruingFeePaymentRetraction - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,7 +79,7 @@
          </Value>
          <Value>
             <SimpleValue>AdvanceRetraction - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -91,7 +91,7 @@
          </Value>
          <Value>
             <SimpleValue>AllocationPayment - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -103,7 +103,7 @@
          </Value>
          <Value>
             <SimpleValue>AllocationPaymentRetraction - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -115,7 +115,7 @@
          </Value>
          <Value>
             <SimpleValue>InterestPayment - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -127,7 +127,7 @@
          </Value>
          <Value>
             <SimpleValue>InterestPaymentRetraction - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -139,7 +139,7 @@
          </Value>
          <Value>
             <SimpleValue>NonRecurringFeePayment - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -151,7 +151,7 @@
          </Value>
          <Value>
             <SimpleValue>NonRecurringFeePaymentRetraction - Option reflecting an existing cash
-					event type.</SimpleValue>
+                    event type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -174,7 +174,7 @@
          </Value>
          <Value>
             <SimpleValue>RepaymentRetraction - Option reflecting an existing cash event
-					type.</SimpleValue>
+                    type.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -186,7 +186,7 @@
          </Value>
          <Value>
             <SimpleValue>TradePayment - Option epresents the payment object for all loan trading
-					notifications.</SimpleValue>
+                    notifications.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -198,7 +198,7 @@
          </Value>
          <Value>
             <SimpleValue>TradePaymentRetraction - Option epresents the payment object for all loan
-					trading notifications.</SimpleValue>
+                    trading notifications.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>A type is containing a code representing how two parties are related, e.g.
-			Affiliated, Intragroup.</doc:definition>
+            Affiliated, Intragroup.</doc:definition>
          <doc:publicationDate>2015-05-10</doc:publicationDate>
       </Description>
    </Annotation>
@@ -44,8 +44,8 @@
          </Value>
          <Value>
             <SimpleValue>Indicates whether the transaction is between two affiliated entities. It
-					is referred to as Inter-affiliate under the Canadian CSA reporting
-					regime.</SimpleValue>
+                    is referred to as Inter-affiliate under the Canadian CSA reporting
+                    regime.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -68,7 +68,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates whether the contract was concluded as an intra-group
-					transaction, defined in Article 3, 4(2), 11(6) to 11(10) of EMIR.</SimpleValue>
+                    transaction, defined in Article 3, 4(2), 11(6) to 11(10) of EMIR.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

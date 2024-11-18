@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>A structure used to uniquely identify a financial metric type, described
-			by a scheme.</doc:definition>
+            by a scheme.</doc:definition>
          <doc:publicationDate>2021-06-25</doc:publicationDate>
          <doc:status>working-draft</doc:status>
       </Description>
@@ -67,7 +67,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of accrued salaries and
-					wages.</SimpleValue>
+                    wages.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -134,7 +134,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of current portion of long term
-					debt.</SimpleValue>
+                    debt.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -157,7 +157,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of earnings before interest and
-					taxes.</SimpleValue>
+                    taxes.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -169,7 +169,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of earnings before interest, taxes, and
-					depreciation.</SimpleValue>
+                    depreciation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -181,7 +181,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of earnings before interest, taxes,
-					depreciation, and amortization.</SimpleValue>
+                    depreciation, and amortization.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -193,7 +193,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of earnings before interest, taxes,
-					depreciation, amortization, and restructuring or rent costs.</SimpleValue>
+                    depreciation, amortization, and restructuring or rent costs.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -293,7 +293,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of property, plant, and
-					equipment.</SimpleValue>
+                    equipment.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -316,7 +316,7 @@
          </Value>
          <Value>
             <SimpleValue>Indicates a financial metric type of selling, general, and administrative
-					expenses.</SimpleValue>
+                    expenses.</SimpleValue>
          </Value>
       </Row>
       <Row>

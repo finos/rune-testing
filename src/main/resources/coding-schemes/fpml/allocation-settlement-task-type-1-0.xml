@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>A list of settlement tasks at the allocation level, the completion of
-			which are prerequisites to the settlement of a trade (or allocation).</doc:definition>
+            which are prerequisites to the settlement of a trade (or allocation).</doc:definition>
          <doc:publicationDate>2017-12-22</doc:publicationDate>
       </Description>
    </Annotation>
@@ -66,7 +66,7 @@
          </Value>
          <Value>
             <SimpleValue>Issuer (commonly Letter of Credit Issuer) consent to the allocation is
-					required.</SimpleValue>
+                    required.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -78,7 +78,7 @@
          </Value>
          <Value>
             <SimpleValue>Due diligence must be completed for the lender in order to settle the
-					allocation.</SimpleValue>
+                    allocation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -90,7 +90,7 @@
          </Value>
          <Value>
             <SimpleValue>The lender's party profile details are required to settle the
-					allocation.</SimpleValue>
+                    allocation.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -102,7 +102,7 @@
          </Value>
          <Value>
             <SimpleValue>The Swing Line Lender's consent to the allocation is
-					required.</SimpleValue>
+                    required.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

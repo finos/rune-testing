@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>The type of cash flows associated with OTC derivatives contracts and their
-			lifecycle events.</doc:definition>
+            lifecycle events.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -54,7 +54,7 @@
          </Value>
          <Value>
             <SimpleValue>A cash flow resulting from the assignment of a contract to a new
-					counterparty.</SimpleValue>
+                    counterparty.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -88,7 +88,7 @@
          </Value>
          <Value>
             <SimpleValue>A cash flow corresponding to the synthetic dividend of an equity
-					underlyer asset traded through a derivative instrument.</SimpleValue>
+                    underlyer asset traded through a derivative instrument.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -111,11 +111,11 @@
          </Value>
          <Value>
             <SimpleValue>A generic term for describing a non-scheduled cashflow that can be
-					associated either with the initial contract, with some later corrections to it
-					(e.g. a correction to the day count fraction that has a cashflow impact) or with
-					some lifecycle events. Fees that are specifically associated with termination
-					and partial termination, increase, amendment, and exercise events are qualified
-					accordingly.</SimpleValue>
+                    associated either with the initial contract, with some later corrections to it
+                    (e.g. a correction to the day count fraction that has a cashflow impact) or with
+                    some lifecycle events. Fees that are specifically associated with termination
+                    and partial termination, increase, amendment, and exercise events are qualified
+                    accordingly.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -138,8 +138,8 @@
          </Value>
          <Value>
             <SimpleValue>A cash flow corresponding to the return of the interest rate portion of a
-					derivative instrument that has different types of underlying assets, such as a
-					total return swap.</SimpleValue>
+                    derivative instrument that has different types of underlying assets, such as a
+                    total return swap.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -151,7 +151,7 @@
          </Value>
          <Value>
             <SimpleValue>A cash flow associated with a partial termination lifecycle
-					event.</SimpleValue>
+                    event.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -163,7 +163,7 @@
          </Value>
          <Value>
             <SimpleValue>The premium associated with an OTC contract such as an option or a
-					cap/floor.</SimpleValue>
+                    cap/floor.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -175,8 +175,8 @@
          </Value>
          <Value>
             <SimpleValue>A cash flow corresponding to the return of the price portion of a
-					derivative instrument that has different types of underlying assets, such as a
-					total return swap.</SimpleValue>
+                    derivative instrument that has different types of underlying assets, such as a
+                    total return swap.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -188,8 +188,8 @@
          </Value>
          <Value>
             <SimpleValue>A cash flow which amount typically corresponds to the notional of the
-					contract and that is exchanged between the parties on trade inception and
-					reverted back when the contract is terminated.</SimpleValue>
+                    contract and that is exchanged between the parties on trade inception and
+                    reverted back when the contract is terminated.</SimpleValue>
          </Value>
       </Row>
       <Row>

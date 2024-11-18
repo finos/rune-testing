@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Defines the type of each scheduled date that is
-			reported.</doc:definition>
+            reported.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -43,7 +43,7 @@
          </Value>
          <Value>
             <SimpleValue>Date interest first starts accruing. In most cases, this will be the
-					effective date.</SimpleValue>
+                    effective date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -55,8 +55,8 @@
          </Value>
          <Value>
             <SimpleValue>The effective date of the swap leg. This is useful when the information
-					is not directly included in the swap stream (for example, in certain equity
-					swaps).</SimpleValue>
+                    is not directly included in the swap stream (for example, in certain equity
+                    swaps).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -68,8 +68,8 @@
          </Value>
          <Value>
             <SimpleValue>The date of the final payment defined by this asset. The amount of the
-					payment, if known, could be represented by an associated value of measure type
-					"Cash".</SimpleValue>
+                    payment, if known, could be represented by an associated value of measure type
+                    "Cash".</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -81,8 +81,8 @@
          </Value>
          <Value>
             <SimpleValue>The date of the first payment defined by this asset. The amount of the
-					payment, if known, could be represented by an associated value of measure type
-					"Cash".</SimpleValue>
+                    payment, if known, could be represented by an associated value of measure type
+                    "Cash".</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -94,8 +94,8 @@
          </Value>
          <Value>
             <SimpleValue>The date of the next upcoming payment defined by this asset, on or after
-					the valuation date. The amount of the payment, if known, could be represented by
-					an associated value of measure type "Cash".</SimpleValue>
+                    the valuation date. The amount of the payment, if known, could be represented by
+                    an associated value of measure type "Cash".</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -107,7 +107,7 @@
          </Value>
          <Value>
             <SimpleValue>The date of the next upcoming reset in this stream, after the valuation
-					date.</SimpleValue>
+                    date.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -119,8 +119,8 @@
          </Value>
          <Value>
             <SimpleValue>The date of the most recent payment defined by this asset prior to the
-					valuation date. The amount of the payment could be represented by an associated
-					value of measure type "Cash".</SimpleValue>
+                    valuation date. The amount of the payment could be represented by an associated
+                    value of measure type "Cash".</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -132,9 +132,9 @@
          </Value>
          <Value>
             <SimpleValue>The date of the most recent reset in this stream, on or before the
-					valuation date. The reset rate could be represented by an associated value of
-					measure type "MarketQuote" (for an untreated rate), and/or one of measure type
-					"TreatedRate" (for a treated rate).</SimpleValue>
+                    valuation date. The reset rate could be represented by an associated value of
+                    measure type "MarketQuote" (for an untreated rate), and/or one of measure type
+                    "TreatedRate" (for a treated rate).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -146,8 +146,8 @@
          </Value>
          <Value>
             <SimpleValue>The termination date of the swap leg. This is useful when the information
-					is not directly included in the swap stream (for example, in certain equity
-					swaps).</SimpleValue>
+                    is not directly included in the swap stream (for example, in certain equity
+                    swaps).</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

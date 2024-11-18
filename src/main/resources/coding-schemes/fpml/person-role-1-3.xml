@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Indicates the role of a person in a transaction.</doc:definition>
@@ -76,7 +76,7 @@
          </Value>
          <Value>
             <SimpleValue>The party or person with legal responsibility for authorization of the
-					execution of the transaction.</SimpleValue>
+                    execution of the transaction.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -88,7 +88,7 @@
          </Value>
          <Value>
             <SimpleValue>Person within the firm who is responsible for execution of the
-					transaction.</SimpleValue>
+                    transaction.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -111,7 +111,7 @@
          </Value>
          <Value>
             <SimpleValue>Individual responsible for managing the closing-related operational
-					servicing of an asset.</SimpleValue>
+                    servicing of an asset.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -123,8 +123,8 @@
          </Value>
          <Value>
             <SimpleValue>Individual responsible for ongoing operational servicing of the asset.
-					E.g. managing principal draws and repayments, interest and fee payments,
-					etc.</SimpleValue>
+                    E.g. managing principal draws and repayments, interest and fee payments,
+                    etc.</SimpleValue>
          </Value>
       </Row>
       <Row>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Contains a code representing the type of venue where a trade could be
-			executed.</doc:definition>
+            executed.</doc:definition>
          <doc:publicationDate>2015-06-24</doc:publicationDate>
       </Description>
    </Annotation>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>Electronic Trading Platform as defined in the Japanese Financial
-					Instruments and Exchange Act.</SimpleValue>
+                    Instruments and Exchange Act.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -67,11 +67,11 @@
          </Value>
          <Value>
             <SimpleValue>Registered Multilateral Trading Facility (MiFID and MiFID II) - Pursuant
-					to MiFID II, refers to a multilateral system operated by an investment firm or
-					market operator, which brings together multiple third-party buying and selling
-					interests in financial instruments in the system, in accordance with
-					non-discretionary rules, in a way that results in a contract in accordance with
-					the provisions of Title II of the MiFID II.</SimpleValue>
+                    to MiFID II, refers to a multilateral system operated by an investment firm or
+                    market operator, which brings together multiple third-party buying and selling
+                    interests in financial instruments in the system, in accordance with
+                    non-discretionary rules, in a way that results in a contract in accordance with
+                    the provisions of Title II of the MiFID II.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -83,7 +83,7 @@
          </Value>
          <Value>
             <SimpleValue>Bilateral execution between counterparties not pursuant to the rules of a
-					SEF or DCM.</SimpleValue>
+                    SEF or DCM.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -95,10 +95,10 @@
          </Value>
          <Value>
             <SimpleValue>Organised Trading Facility (MiFID II). A multilateral system which is not
-					a regulated market or MTF and in which multiple third party buying and selling
-					interests in bonds, structured finance product, emissions allowances or
-					derivatives are able to interact in the system in a way which results in a
-					contract.</SimpleValue>
+                    a regulated market or MTF and in which multiple third party buying and selling
+                    interests in bonds, structured finance product, emissions allowances or
+                    derivatives are able to interact in the system in a way which results in a
+                    contract.</SimpleValue>
          </Value>
       </Row>
       <Row>

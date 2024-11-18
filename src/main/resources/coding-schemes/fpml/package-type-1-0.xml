@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the type of package.</doc:definition>
@@ -43,8 +43,8 @@
          </Value>
          <Value>
             <SimpleValue>A strategy in which a firm either pays or receives fixed for intermediate
-					term (the "body"), and does the opposite (receives or pays fixed) for a short
-					and a long term (the "wings").</SimpleValue>
+                    term (the "body"), and does the opposite (receives or pays fixed) for a short
+                    and a long term (the "wings").</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -56,7 +56,7 @@
          </Value>
          <Value>
             <SimpleValue>A strategy in which a swap is used to Roll from one IMM date into another
-					IMM swap.</SimpleValue>
+                    IMM swap.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -68,7 +68,7 @@
          </Value>
          <Value>
             <SimpleValue>A strategy in which 2 trades on different dates are done at the same
-					time, e.g., Sept vs June.</SimpleValue>
+                    time, e.g., Sept vs June.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -80,7 +80,7 @@
          </Value>
          <Value>
             <SimpleValue>A package created for a particular client need e.g.,
-					portfolioCompression, termination.</SimpleValue>
+                    portfolioCompression, termination.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -92,7 +92,7 @@
          </Value>
          <Value>
             <SimpleValue>A strategy in which a firms buys new version of index and sells and old
-					version of the same index.</SimpleValue>
+                    version of the same index.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -104,7 +104,7 @@
          </Value>
          <Value>
             <SimpleValue>A package in which only a maximum of one of the components will be
-					executed (used for credit limit checking/orders).</SimpleValue>
+                    executed (used for credit limit checking/orders).</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -116,7 +116,7 @@
          </Value>
          <Value>
             <SimpleValue>A strategy in which a firm either buys a treasury and enters a payer
-					swap, or sells treasury and enters a receiver swap.</SimpleValue>
+                    swap, or sells treasury and enters a receiver swap.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -128,8 +128,8 @@
          </Value>
          <Value>
             <SimpleValue>A strategy in which a firm either pays or receives fixed for some term
-					versus the opposite (receives or pays fixed) for different term. Typically the
-					second term starts at the completion of the first.</SimpleValue>
+                    versus the opposite (receives or pays fixed) for different term. Typically the
+                    second term starts at the completion of the first.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

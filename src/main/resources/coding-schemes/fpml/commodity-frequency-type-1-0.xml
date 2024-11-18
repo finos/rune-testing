@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gcl:CodeList xmlns:gcl="http://xml.genericode.org/2004/ns/CodeList/0.2/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.genericode.org/2004/ns/CodeList/0.2/ CodeList.xsd">
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:gcl="https://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
          <doc:definition>Specifies the frequency with which a price shall be
-			observed.</doc:definition>
+            observed.</doc:definition>
       </Description>
    </Annotation>
    <Identification>
@@ -43,7 +43,7 @@
          </Value>
          <Value>
             <SimpleValue>The price will be observed on all days (day type is defined in the
-					message) in the Calculation Period.</SimpleValue>
+                    message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -55,7 +55,7 @@
          </Value>
          <Value>
             <SimpleValue>The price will be observed only on the first day (day type is defined in
-					the message) in the Calculation Period.</SimpleValue>
+                    the message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -67,7 +67,7 @@
          </Value>
          <Value>
             <SimpleValue>The price will be observed only on the last day (day type is defined in
-					the message) in the Calculation Period.</SimpleValue>
+                    the message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
       <Row>
@@ -79,7 +79,7 @@
          </Value>
          <Value>
             <SimpleValue>The price will be observed only on the penultimate day (day type is
-					defined in the message) in the Calculation Period.</SimpleValue>
+                    defined in the message) in the Calculation Period.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>
