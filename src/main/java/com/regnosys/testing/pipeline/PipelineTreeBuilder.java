@@ -31,6 +31,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.regnosys.rosetta.common.transform.FunctionNameHelper;
+
 
 public class PipelineTreeBuilder {
     private final Logger LOGGER = LoggerFactory.getLogger(PipelineTreeBuilder.class);

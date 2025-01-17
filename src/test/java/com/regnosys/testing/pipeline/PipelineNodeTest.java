@@ -20,6 +20,7 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.TransformType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
