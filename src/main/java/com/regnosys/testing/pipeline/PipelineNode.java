@@ -22,6 +22,7 @@ package com.regnosys.testing.pipeline;
 
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.rosetta.model.lib.functions.RosettaFunction;
+import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 
 import java.util.List;
 import java.util.stream.Collectors;
