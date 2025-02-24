@@ -93,7 +93,7 @@
         <java.enforced.version>[17,18)</java.enforced.version>
         <maven.compiler.release>11</maven.compiler.release>
 
-        <rosetta.dsl.version>9.34.2</rosetta.dsl.version>
+        <rosetta.dsl.version>9.34.3</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.main-SNAPSHOT</rosetta.common.version>
 
         <xtext.version>2.27.0</xtext.version>
