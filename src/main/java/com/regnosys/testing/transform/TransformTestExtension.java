@@ -84,6 +84,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     // use empty string as error value for function output as it gets serialised
     public static final String ERROR_OUTPUT = "";
 
+    private String pipelineId;
     private final Module runtimeModule;
     private final Path configPath;
     private final Class<T> funcType;
@@ -99,6 +100,13 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     private ObjectWriter outputObjectWriter;
     
     public TransformTestExtension(Module runtimeModule, Path configPath, Class<T> funcType) {
+        this.runtimeModule = runtimeModule;
+        this.configPath = configPath;
+        this.funcType = funcType;
+    }
+
+    public TransformTestExtension(String pipelineId, Module runtimeModule, Path configPath, Class<T> funcType) {
+        this.pipelineId = pipelineId;
         this.runtimeModule = runtimeModule;
         this.configPath = configPath;
         this.funcType = funcType;
@@ -122,7 +130,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.injector = Guice.createInjector(runtimeModule);
         this.injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        this.pipelineModel = getPipelineModel(getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER), funcType.getName());
+        this.pipelineModel = getPipelineModel(pipelineId, getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER), funcType.getName());
         this.inputObjectMapper = getObjectMapper(pipelineModel.getInputSerialisation()).orElse(JSON_OBJECT_MAPPER);
         this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(JSON_OBJECT_WRITER);
         this.actualExpectation = ArrayListMultimap.create();
