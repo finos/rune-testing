@@ -36,6 +36,7 @@ public class PipelineNode {
     private PipelineNode upstream;
 
     public PipelineNode(String prefix, FunctionNameHelper functionNameHelper, TransformType transformType) {
+        this.prefix = prefix;
         this.functionNameHelper = functionNameHelper;
         this.transformType = transformType;
     }
@@ -84,7 +85,7 @@ public class PipelineNode {
     }
 
     public String id(boolean strictUniqueIds) {
-        return String.format("pipeline-%s-%s", getTransformType().name().toLowerCase(), idSuffix(strictUniqueIds, "-"));
+        return String.format("pipeline-%s-%s-%s", getTransformType().name().toLowerCase(), prefix, idSuffix(strictUniqueIds, "-"));
     }
 
     public String upstreamId(boolean strictUniqueIds) {
