@@ -105,7 +105,7 @@ public class PipelineTestHelper {
 
 
     PipelineTreeConfig createNestedTreeConfig() {
-        return new PipelineTreeConfig(null)
+        return new PipelineTreeConfig("testPrefix")
                 .starting(TransformType.ENRICH, startClass())
                 .add(startClass(), TransformType.REPORT, middleAClass())
                 .add(startClass(), TransformType.REPORT, middleBClass())
@@ -117,14 +117,14 @@ public class PipelineTestHelper {
 
 
     PipelineTreeConfig createTreeConfig() {
-        return new PipelineTreeConfig(null)
+        return new PipelineTreeConfig("testPrefix")
                 .starting(TransformType.ENRICH, startClass())
                 .add(startClass(), TransformType.REPORT, middleClass())
                 .add(middleClass(), TransformType.PROJECTION, endClass());
     }
 
     PipelineTreeConfig createNestedTreeConfigMultipleStartingNodes() {
-        return new PipelineTreeConfig(null)
+        return new PipelineTreeConfig("testPrefix")
                 .starting(TransformType.REPORT, middleAClass())
                 .add(middleAClass(), TransformType.PROJECTION, endAClass())
                 .add(middleAClass(), TransformType.PROJECTION, endBClass())
@@ -135,7 +135,7 @@ public class PipelineTestHelper {
     }
 
     PipelineTreeConfig createTreeConfigWithoutStarting() {
-        return new PipelineTreeConfig(null)
+        return new PipelineTreeConfig("testPrefix")
                 .add(startClass(), TransformType.REPORT, middleClass())
                 .add(middleClass(), TransformType.PROJECTION, endClass());
     }

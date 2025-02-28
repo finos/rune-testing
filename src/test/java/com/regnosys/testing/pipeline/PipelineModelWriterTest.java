@@ -60,13 +60,13 @@ public class PipelineModelWriterTest {
         PipelineTreeConfig chain = helper.createNestedTreeConfig().strictUniqueIds().withWritePath(tempDir);
         pipelineModelWriter.writePipelines(chain);
 
-        assertFileExists(tempDir, "enrich/config/pipeline-enrich-start.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/pipeline-report-start-middle-b.json");
-        assertFileExists(tempDir, "regulatory-reporting/config/pipeline-report-start-middle-a.json");
-        assertFileExists(tempDir, "projection/config/pipeline-projection-start-middle-a-end-a.json");
-        assertFileExists(tempDir, "projection/config/pipeline-projection-start-middle-b-end-b.json");
-        assertFileExists(tempDir, "projection/config/pipeline-projection-start-middle-b-end-a.json");
-        assertFileExists(tempDir, "projection/config/pipeline-projection-start-middle-a-end-b.json");
+        assertFileExists(tempDir, "enrich/config/pipeline-enrich-testPrefix-start.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/pipeline-report-testPrefix-start-middle-b.json");
+        assertFileExists(tempDir, "regulatory-reporting/config/pipeline-report-testPrefix-start-middle-a.json");
+        assertFileExists(tempDir, "projection/config/pipeline-projection-testPrefix-start-middle-a-end-a.json");
+        assertFileExists(tempDir, "projection/config/pipeline-projection-testPrefix-start-middle-b-end-b.json");
+        assertFileExists(tempDir, "projection/config/pipeline-projection-testPrefix-start-middle-b-end-a.json");
+        assertFileExists(tempDir, "projection/config/pipeline-projection-testPrefix-start-middle-a-end-b.json");
     }
 
     private static void assertFileExists(Path tempDir, String fileName) {
