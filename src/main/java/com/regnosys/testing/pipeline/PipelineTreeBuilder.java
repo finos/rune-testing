@@ -48,7 +48,7 @@ public class PipelineTreeBuilder {
         try {
             List<PipelineTreeConfig.TransformFunction> starting = pipelineTreeConfig.getStarting();
             List<PipelineNode> nodeList = starting.stream()
-                    .map(t -> downstreamPipelines(pipelineTreeConfig, new PipelineNode(helper, t.getTransformType()).withFunction(t.getFunction())))
+                    .map(t -> downstreamPipelines(pipelineTreeConfig, new PipelineNode(pipelineTreeConfig.getModelId(), helper, t.getTransformType()).withFunction(t.getFunction())))
                     .flatMap(Collection::stream)
                     .sorted(Comparator.comparing(PipelineNode::getTransformType))
                     .collect(Collectors.toList());
@@ -81,7 +81,7 @@ public class PipelineTreeBuilder {
 
     private List<PipelineNode> createPipelineAndLinkUpstream(PipelineTreeConfig pipelineChainFunction, PipelineNode currentPipeline, TransformType transformType) {
         List<Class<? extends RosettaFunction>> downstreamFunctions = pipelineChainFunction.getDownstreamFunctions(currentPipeline.getFunction());
-        return new PipelineNode(helper, transformType)
+        return new PipelineNode(pipelineChainFunction.getModelId(), helper, transformType)
                 .linkWithUpstream(currentPipeline)
                 .withFunctions(downstreamFunctions);
     }
