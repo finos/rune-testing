@@ -33,7 +33,7 @@ import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.xbase.testing.RegisteringFileSystemAccess;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

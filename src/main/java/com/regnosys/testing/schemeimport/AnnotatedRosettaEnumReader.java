@@ -20,7 +20,7 @@ package com.regnosys.testing.schemeimport;
  * ===============
  */
 
-import com.google.inject.Inject;
+import jakarta.inject.Inject;
 import com.regnosys.rosetta.rosetta.RosettaDocReference;
 import com.regnosys.rosetta.rosetta.RosettaEnumeration;
 import com.regnosys.rosetta.rosetta.RosettaModel;

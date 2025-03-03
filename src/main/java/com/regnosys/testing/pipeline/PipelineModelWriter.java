@@ -25,7 +25,7 @@ import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
 import org.slf4j.Logger;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
