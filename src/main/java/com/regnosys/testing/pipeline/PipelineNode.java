@@ -29,20 +29,20 @@ import java.util.stream.Collectors;
 
 public class PipelineNode {
 
-    private String prefix;
+    private String modelId;
     private final FunctionNameHelper functionNameHelper;
     private final TransformType transformType;
     private Class<? extends RosettaFunction> function;
     private PipelineNode upstream;
 
-    public PipelineNode(String prefix, FunctionNameHelper functionNameHelper, TransformType transformType) {
-        this.prefix = prefix;
+    public PipelineNode(String modelId, FunctionNameHelper functionNameHelper, TransformType transformType) {
+        this.modelId = modelId;
         this.functionNameHelper = functionNameHelper;
         this.transformType = transformType;
     }
 
-    PipelineNode(String prefix, FunctionNameHelper functionNameHelper, TransformType transformType, Class<? extends RosettaFunction> function, PipelineNode upstream) {
-        this.prefix = prefix;
+    PipelineNode(String modelId, FunctionNameHelper functionNameHelper, TransformType transformType, Class<? extends RosettaFunction> function, PipelineNode upstream) {
+        this.modelId = modelId;
         this.functionNameHelper = functionNameHelper;
         this.transformType = transformType;
         this.function = function;
@@ -62,7 +62,7 @@ public class PipelineNode {
 
     public List<PipelineNode> withFunctions(List<Class<? extends RosettaFunction>> function) {
         return function.stream()
-                .map(f -> new PipelineNode(prefix, functionNameHelper, transformType, f, upstream))
+                .map(f -> new PipelineNode(modelId, functionNameHelper, transformType, f, upstream))
                 .collect(Collectors.toList());
     }
 
@@ -85,16 +85,16 @@ public class PipelineNode {
     }
 
     public String id(boolean strictUniqueIds) {
-        return String.format("pipeline-%s-%s-%s", getTransformType().name().toLowerCase(), prefix, idSuffix(strictUniqueIds, "-"));
+        return String.format("pipeline-%s-%s-%s", getTransformType().name().toLowerCase(), modelId, idSuffix(strictUniqueIds, "-"));
     }
 
     public String upstreamId(boolean strictUniqueIds) {
         if (strictUniqueIds) {
             return (upstream == null) ? null :
-                    String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), prefix, upstream.upstreamIdSuffix(strictUniqueIds, "-"));
+                    String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.upstreamIdSuffix(strictUniqueIds, "-"));
         }
         return (upstream == null) ? null :
-                String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), prefix, upstream.idSuffix(strictUniqueIds, "-"));
+                String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.idSuffix(strictUniqueIds, "-"));
     }
 
     private String upstreamIdSuffix(boolean strictUniqueIds, String separator) {

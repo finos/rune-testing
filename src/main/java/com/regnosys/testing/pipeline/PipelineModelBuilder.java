@@ -58,14 +58,13 @@ public class PipelineModelBuilder {
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
 
-        String prefixedPipelineName = String.format("%s %s", config.getPrefix(), name);
+        String prefixedPipelineName = String.format("%s %s", config.getModelId(), name);
         return new PipelineModel(pipelineId,
                 prefixedPipelineName,
                 new PipelineModel.Transform(modelBuilder.getTransformType(), modelBuilder.getFunction().getName(), inputType, outputType),
                 upstreamPipelineId,
                 inputSerialisation,
-                outputSerialisation,
-                config.getPrefix());
+                outputSerialisation);
     }
 
     private PipelineModel.Serialisation getSerialisation(String xmlConfigPath) {

@@ -45,10 +45,10 @@ public class PipelineTreeConfig {
     private boolean strictUniqueIds;
     private Path writePath;
     private Predicate<String> testPackIdFilter = testPackId -> true;
-    private String prefix;
+    private String modelId;
 
-    public PipelineTreeConfig(String prefix) {
-        this.prefix = prefix;
+    public PipelineTreeConfig(String modelId) {
+        this.modelId = modelId;
     }
 
     public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function) {
@@ -82,10 +82,7 @@ public class PipelineTreeConfig {
         return this;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
-
+    public String getModelId() { return modelId; }
 
     public ImmutableMap<Class<?>, String> getXmlConfigMap() {
         return Optional.ofNullable(xmlConfigMap).orElse(ImmutableMap.of());
