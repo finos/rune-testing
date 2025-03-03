@@ -9,9 +9,9 @@ package com.regnosys.testing.pipeline;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,19 +47,19 @@ class PipelineNodeTest {
     @BeforeEach
     void setUp() {
         PipelineTestHelper.setupInjector(this);
-        ENRICH_NODE = new PipelineNode(functionNameHelper, TransformType.ENRICH, PipelineTestUtils.Enrich_Type_1ToType_2.class, null);
-        REPORT_NODE = new PipelineNode(functionNameHelper, TransformType.REPORT, PipelineTestUtils.Report_Type_2ToType_3.class, ENRICH_NODE);
-        PROJECTION_NODE = new PipelineNode(functionNameHelper, TransformType.PROJECTION, PipelineTestUtils.Project_Type_3ToType_4.class, REPORT_NODE);
+        ENRICH_NODE = new PipelineNode("prefix", functionNameHelper, TransformType.ENRICH, PipelineTestUtils.Enrich_Type_1ToType_2.class, null);
+        REPORT_NODE = new PipelineNode("prefix", functionNameHelper, TransformType.REPORT, PipelineTestUtils.Report_Type_2ToType_3.class, ENRICH_NODE);
+        PROJECTION_NODE = new PipelineNode("prefix", functionNameHelper, TransformType.PROJECTION, PipelineTestUtils.Project_Type_3ToType_4.class, REPORT_NODE);
     }
 
     @Test
     void id() {
-        assertEquals("pipeline-enrich-type1-to-type2", ENRICH_NODE.id(STRICT_IDS));
+        assertEquals("pipeline-enrich-prefix-type1-to-type2", ENRICH_NODE.id(STRICT_IDS));
     }
 
     @Test
     void idWithoutStrictIds() {
-        assertEquals("pipeline-enrich-type1-to-type2", ENRICH_NODE.id(NO_STRICT_IDs));
+        assertEquals("pipeline-enrich-prefix-type1-to-type2", ENRICH_NODE.id(NO_STRICT_IDs));
     }
 
     @Test
@@ -69,12 +69,12 @@ class PipelineNodeTest {
 
     @Test
     void upstreamId() {
-        assertEquals("pipeline-report-type1-to-type2-type2-to-type3", PROJECTION_NODE.upstreamId(STRICT_IDS));
+        assertEquals("pipeline-report-prefix-type1-to-type2-type2-to-type3", PROJECTION_NODE.upstreamId(STRICT_IDS));
     }
 
     @Test
     void upstreamIdWithoutStrictIds() {
-        assertEquals("pipeline-report-type2-to-type3", PROJECTION_NODE.upstreamId(NO_STRICT_IDs));
+        assertEquals("pipeline-report-prefix-type2-to-type3", PROJECTION_NODE.upstreamId(NO_STRICT_IDs));
     }
 
     @Test

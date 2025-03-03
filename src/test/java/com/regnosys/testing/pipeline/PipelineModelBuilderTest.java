@@ -62,9 +62,9 @@ class PipelineModelBuilderTest {
         PipelineModel middlePipeline = getOnlyElement(byTransformType.get(TransformType.REPORT));
         PipelineModel endPipeline = getOnlyElement(byTransformType.get(TransformType.PROJECTION));
 
-        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-start", null);
-        assertPipelineModel(middlePipeline, TransformType.REPORT, helper.middleClass(), "pipeline-report-middle", "pipeline-enrich-start");
-        assertPipelineModel(endPipeline, TransformType.PROJECTION, helper.endClass(), "pipeline-projection-end", "pipeline-report-middle");
+        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-testPrefix-start", null);
+        assertPipelineModel(middlePipeline, TransformType.REPORT, helper.middleClass(), "pipeline-report-testPrefix-middle", "pipeline-enrich-testPrefix-start");
+        assertPipelineModel(endPipeline, TransformType.PROJECTION, helper.endClass(), "pipeline-projection-testPrefix-end", "pipeline-report-testPrefix-middle");
     }
 
 
@@ -79,9 +79,9 @@ class PipelineModelBuilderTest {
         PipelineModel middlePipeline = getOnlyElement(byTransformType.get(TransformType.REPORT));
         PipelineModel endPipeline = getOnlyElement(byTransformType.get(TransformType.PROJECTION));
 
-        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-start", null);
-        assertPipelineModel(middlePipeline, TransformType.REPORT, helper.middleClass(), "pipeline-report-start-middle", "pipeline-enrich-start");
-        assertPipelineModel(endPipeline, TransformType.PROJECTION, helper.endClass(), "pipeline-projection-start-middle-end", "pipeline-report-start-middle");
+        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-testPrefix-start", null);
+        assertPipelineModel(middlePipeline, TransformType.REPORT, helper.middleClass(), "pipeline-report-testPrefix-start-middle", "pipeline-enrich-testPrefix-start");
+        assertPipelineModel(endPipeline, TransformType.PROJECTION, helper.endClass(), "pipeline-projection-testPrefix-start-middle-end", "pipeline-report-testPrefix-start-middle");
     }
 
     @Test
@@ -95,9 +95,9 @@ class PipelineModelBuilderTest {
         PipelineModel middlePipeline = getOnlyElement(byTransformType.get(TransformType.REPORT));
         PipelineModel endPipeline = getOnlyElement(byTransformType.get(TransformType.PROJECTION));
 
-        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-start", null);
-        assertPipelineModel(middlePipeline, TransformType.REPORT, helper.middleClass(), "pipeline-report-middle", "pipeline-enrich-start");
-        assertPipelineModel(endPipeline, TransformType.PROJECTION, helper.endClass(), "pipeline-projection-end", "pipeline-report-middle");
+        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-testPrefix-start", null);
+        assertPipelineModel(middlePipeline, TransformType.REPORT, helper.middleClass(), "pipeline-report-testPrefix-middle", "pipeline-enrich-testPrefix-start");
+        assertPipelineModel(endPipeline, TransformType.PROJECTION, helper.endClass(), "pipeline-projection-testPrefix-end", "pipeline-report-testPrefix-middle");
     }
 
 
@@ -115,15 +115,15 @@ class PipelineModelBuilderTest {
         List<PipelineModel> endPipelines = byTransformType.get(TransformType.PROJECTION);
         assertEquals(4, endPipelines.size());
 
-        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-start", null);
+        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-testPrefix-start", null);
 
-        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-start-middle-a", "pipeline-enrich-start");
-        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-start-middle-b", "pipeline-enrich-start");
+        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-testPrefix-start-middle-a", "pipeline-enrich-testPrefix-start");
+        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-testPrefix-start-middle-b", "pipeline-enrich-testPrefix-start");
 
-        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-start-middle-a-end-a", "pipeline-report-start-middle-a");
-        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-start-middle-a-end-b", "pipeline-report-start-middle-a");
-        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-start-middle-b-end-a", "pipeline-report-start-middle-b");
-        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-start-middle-b-end-b", "pipeline-report-start-middle-b");
+        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-start-middle-a-end-a", "pipeline-report-testPrefix-start-middle-a");
+        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-start-middle-a-end-b", "pipeline-report-testPrefix-start-middle-a");
+        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-start-middle-b-end-a", "pipeline-report-testPrefix-start-middle-b");
+        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-start-middle-b-end-b", "pipeline-report-testPrefix-start-middle-b");
     }
 
     @Test
@@ -140,15 +140,15 @@ class PipelineModelBuilderTest {
         List<PipelineModel> endPipelines = byTransformType.get(TransformType.PROJECTION);
         assertEquals(4, endPipelines.size());
 
-        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-start", null);
+        assertPipelineModel(startPipeline, TransformType.ENRICH, helper.startClass(), "pipeline-enrich-testPrefix-start", null);
 
-        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-middle-a", "pipeline-enrich-start");
-        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-middle-b", "pipeline-enrich-start");
+        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-testPrefix-middle-a", "pipeline-enrich-testPrefix-start");
+        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-testPrefix-middle-b", "pipeline-enrich-testPrefix-start");
 
-        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-end-a", "pipeline-report-middle-a");
-        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-end-b", "pipeline-report-middle-a");
-        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-end-a", "pipeline-report-middle-b");
-        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-end-b", "pipeline-report-middle-b");
+        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-end-a", "pipeline-report-testPrefix-middle-a");
+        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-end-b", "pipeline-report-testPrefix-middle-a");
+        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-end-a", "pipeline-report-testPrefix-middle-b");
+        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-end-b", "pipeline-report-testPrefix-middle-b");
     }
 
     @Test
@@ -164,13 +164,13 @@ class PipelineModelBuilderTest {
         List<PipelineModel> endPipelines = byTransformType.get(TransformType.PROJECTION);
         assertEquals(4, endPipelines.size());
 
-        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-middle-a", null);
-        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-middle-b", null);
+        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-testPrefix-middle-a", null);
+        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-testPrefix-middle-b", null);
 
-        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-middle-a-end-a", "pipeline-report-middle-a");
-        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-middle-a-end-b", "pipeline-report-middle-a");
-        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-middle-b-end-a", "pipeline-report-middle-b");
-        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-middle-b-end-b", "pipeline-report-middle-b");
+        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-middle-a-end-a", "pipeline-report-testPrefix-middle-a");
+        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-middle-a-end-b", "pipeline-report-testPrefix-middle-a");
+        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-middle-b-end-a", "pipeline-report-testPrefix-middle-b");
+        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-middle-b-end-b", "pipeline-report-testPrefix-middle-b");
     }
 
     @Test
@@ -186,13 +186,13 @@ class PipelineModelBuilderTest {
         List<PipelineModel> endPipelines = byTransformType.get(TransformType.PROJECTION);
         assertEquals(4, endPipelines.size());
 
-        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-middle-a", null);
-        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-middle-b", null);
+        assertPipelineModel(middlePipelines.get(0), TransformType.REPORT, helper.middleAClass(), "pipeline-report-testPrefix-middle-a", null);
+        assertPipelineModel(middlePipelines.get(1), TransformType.REPORT, helper.middleBClass(), "pipeline-report-testPrefix-middle-b", null);
 
-        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-end-a", "pipeline-report-middle-a");
-        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-end-b", "pipeline-report-middle-a");
-        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-end-a", "pipeline-report-middle-b");
-        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-end-b", "pipeline-report-middle-b");
+        assertPipelineModel(endPipelines.get(0), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-end-a", "pipeline-report-testPrefix-middle-a");
+        assertPipelineModel(endPipelines.get(1), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-end-b", "pipeline-report-testPrefix-middle-a");
+        assertPipelineModel(endPipelines.get(2), TransformType.PROJECTION, helper.endAClass(), "pipeline-projection-testPrefix-end-a", "pipeline-report-testPrefix-middle-b");
+        assertPipelineModel(endPipelines.get(3), TransformType.PROJECTION, helper.endBClass(), "pipeline-projection-testPrefix-end-b", "pipeline-report-testPrefix-middle-b");
     }
 
     @Test

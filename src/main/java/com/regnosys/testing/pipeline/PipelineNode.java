@@ -9,9 +9,9 @@ package com.regnosys.testing.pipeline;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,17 +29,20 @@ import java.util.stream.Collectors;
 
 public class PipelineNode {
 
+    private String modelId;
     private final FunctionNameHelper functionNameHelper;
     private final TransformType transformType;
     private Class<? extends RosettaFunction> function;
     private PipelineNode upstream;
 
-    public PipelineNode(FunctionNameHelper functionNameHelper, TransformType transformType) {
+    public PipelineNode(String modelId, FunctionNameHelper functionNameHelper, TransformType transformType) {
+        this.modelId = modelId;
         this.functionNameHelper = functionNameHelper;
         this.transformType = transformType;
     }
 
-    PipelineNode(FunctionNameHelper functionNameHelper, TransformType transformType, Class<? extends RosettaFunction> function, PipelineNode upstream) {
+    PipelineNode(String modelId, FunctionNameHelper functionNameHelper, TransformType transformType, Class<? extends RosettaFunction> function, PipelineNode upstream) {
+        this.modelId = modelId;
         this.functionNameHelper = functionNameHelper;
         this.transformType = transformType;
         this.function = function;
@@ -59,7 +62,7 @@ public class PipelineNode {
 
     public List<PipelineNode> withFunctions(List<Class<? extends RosettaFunction>> function) {
         return function.stream()
-                .map(f -> new PipelineNode(functionNameHelper, transformType, f, upstream))
+                .map(f -> new PipelineNode(modelId, functionNameHelper, transformType, f, upstream))
                 .collect(Collectors.toList());
     }
 
@@ -82,16 +85,16 @@ public class PipelineNode {
     }
 
     public String id(boolean strictUniqueIds) {
-        return String.format("pipeline-%s-%s", getTransformType().name().toLowerCase(), idSuffix(strictUniqueIds, "-"));
+        return String.format("pipeline-%s-%s-%s", getTransformType().name().toLowerCase(), modelId, idSuffix(strictUniqueIds, "-"));
     }
 
     public String upstreamId(boolean strictUniqueIds) {
         if (strictUniqueIds) {
             return (upstream == null) ? null :
-                    String.format("pipeline-%s-%s", upstream.getTransformType().name().toLowerCase(), upstream.upstreamIdSuffix(strictUniqueIds, "-"));
+                    String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.upstreamIdSuffix(strictUniqueIds, "-"));
         }
         return (upstream == null) ? null :
-                String.format("pipeline-%s-%s", upstream.getTransformType().name().toLowerCase(), upstream.idSuffix(strictUniqueIds, "-"));
+                String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.idSuffix(strictUniqueIds, "-"));
     }
 
     private String upstreamIdSuffix(boolean strictUniqueIds, String separator) {
