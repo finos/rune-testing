@@ -47,6 +47,10 @@ public class PipelineTreeConfig {
     private Predicate<String> testPackIdFilter = testPackId -> true;
     private String modelId;
 
+    public PipelineTreeConfig() {
+        this(null);
+    }
+
     public PipelineTreeConfig(String modelId) {
         this.modelId = modelId;
     }
