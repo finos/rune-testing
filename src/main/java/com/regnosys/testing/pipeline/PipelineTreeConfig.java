@@ -47,6 +47,12 @@ public class PipelineTreeConfig {
     private Predicate<String> testPackIdFilter = testPackId -> true;
     private String modelId;
 
+
+/**
+ * @deprecated This constructor is here to prevent existing model extensions from breaking. It will be removed in the future
+ * as part of wider work. on the PipelineTreeConfig class.
+ */
+    @Deprecated
     public PipelineTreeConfig() {
         this(null);
     }
