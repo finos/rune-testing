@@ -20,7 +20,7 @@ package util;
  * ===============
  */
 import com.google.common.collect.ImmutableList;
-import jakarta.inject.Inject;
+import com.google.inject.Inject;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.rosetta.RosettaModel;

@@ -28,7 +28,7 @@ import com.regnosys.rosetta.common.util.Pair;
 import com.regnosys.testing.testpack.TestPackFunctionRunner;
 import com.regnosys.testing.testpack.TestPackFunctionRunnerProvider;
 
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 import java.nio.file.Path;
 
 public class PipelineFunctionRunner {
