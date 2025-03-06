@@ -30,7 +30,7 @@ import com.regnosys.rosetta.transgest.ModelLoader;
 import com.rosetta.model.lib.ModelReportId;
 import com.rosetta.util.DottedPath;
 
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

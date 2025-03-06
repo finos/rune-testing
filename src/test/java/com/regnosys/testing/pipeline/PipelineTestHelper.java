@@ -31,7 +31,7 @@ import com.regnosys.testing.RosettaTestingInjectorProvider;
 import com.rosetta.model.lib.functions.RosettaFunction;
 import com.rosetta.model.lib.validation.ValidatorFactory;
 
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

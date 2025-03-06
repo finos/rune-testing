@@ -34,7 +34,7 @@ import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.xml.sax.SAXException;
 
-import jakarta.inject.Inject;
+import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
