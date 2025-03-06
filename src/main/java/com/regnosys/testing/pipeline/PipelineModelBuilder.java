@@ -20,13 +20,13 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 
 
 public class PipelineModelBuilder {
@@ -58,7 +58,9 @@ public class PipelineModelBuilder {
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
 
-        String prefixedPipelineName = String.format("%s %s", config.getModelId(), name);
+        String modelId = config.getModelId();
+        String prefixedPipelineName = StringUtils.isEmpty(modelId) ? name : String.format("%s %s", modelId, name);
+        
         return new PipelineModel(pipelineId,
                 prefixedPipelineName,
                 new PipelineModel.Transform(modelBuilder.getTransformType(), modelBuilder.getFunction().getName(), inputType, outputType),

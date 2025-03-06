@@ -44,12 +44,15 @@ class PipelineNodeTest {
 
     private static final boolean NO_STRICT_IDs = false;
 
+    private static PipelineNode EMPTY_MODEL_ID_NODE;
+
     @BeforeEach
     void setUp() {
         PipelineTestHelper.setupInjector(this);
         ENRICH_NODE = new PipelineNode("prefix", functionNameHelper, TransformType.ENRICH, PipelineTestUtils.Enrich_Type_1ToType_2.class, null);
         REPORT_NODE = new PipelineNode("prefix", functionNameHelper, TransformType.REPORT, PipelineTestUtils.Report_Type_2ToType_3.class, ENRICH_NODE);
         PROJECTION_NODE = new PipelineNode("prefix", functionNameHelper, TransformType.PROJECTION, PipelineTestUtils.Project_Type_3ToType_4.class, REPORT_NODE);
+        EMPTY_MODEL_ID_NODE = new PipelineNode("", functionNameHelper, TransformType.ENRICH, PipelineTestUtils.Enrich_Type_1ToType_2.class, null);
     }
 
     @Test
@@ -96,4 +99,30 @@ class PipelineNodeTest {
     void idSuffixWithoutStrictIdsChildNode() {
         assertEquals("type3-to-type4", PROJECTION_NODE.idSuffix(NO_STRICT_IDs, "-"));
     }
+
+    @Test
+    void idWithEmptyModelId() {
+        assertEquals("pipeline-enrich-type1-to-type2", EMPTY_MODEL_ID_NODE.id(STRICT_IDS));
+    }
+
+    @Test
+    void idWithoutStrictIdsWithEmptyModelId() {
+        assertEquals("pipeline-enrich-type1-to-type2", EMPTY_MODEL_ID_NODE.id(NO_STRICT_IDs));
+    }
+
+    @Test
+    void nullUpstreamWithEmptyModelId() {
+        assertNull(EMPTY_MODEL_ID_NODE.upstreamId(STRICT_IDS));
+    }
+
+    @Test
+    void idSuffixWithEmptyModelId() {
+        assertEquals("type1-to-type2", EMPTY_MODEL_ID_NODE.idSuffix(STRICT_IDS, "-"));
+    }
+
+    @Test
+    void idSuffixWithoutStrictIdsWithEmptyModelId() {
+        assertEquals("type1-to-type2", EMPTY_MODEL_ID_NODE.idSuffix(NO_STRICT_IDs, "-"));
+    }
+
 }

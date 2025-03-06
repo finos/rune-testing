@@ -20,16 +20,17 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.rosetta.model.lib.functions.RosettaFunction;
-import com.regnosys.rosetta.common.transform.FunctionNameHelper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PipelineNode {
 
-    private String modelId;
+    private final String modelId;
     private final FunctionNameHelper functionNameHelper;
     private final TransformType transformType;
     private Class<? extends RosettaFunction> function;
@@ -47,6 +48,14 @@ public class PipelineNode {
         this.transformType = transformType;
         this.function = function;
         this.upstream = upstream;
+    }
+
+    // TODO move this method to TestPackUtils.createPipelineId
+    private static String createPipelineId(TransformType transformType, String modelId, String idSuffix) {
+        String prefixedIdSuffix = StringUtils.isEmpty(modelId) ? idSuffix : String.format("%s-%s", modelId, idSuffix);
+        return String.format("pipeline-%s-%s",
+                transformType.name().toLowerCase(),
+                prefixedIdSuffix);
     }
 
     public String getInputPath(boolean strictUniqueIds) {
@@ -85,16 +94,16 @@ public class PipelineNode {
     }
 
     public String id(boolean strictUniqueIds) {
-        return String.format("pipeline-%s-%s-%s", getTransformType().name().toLowerCase(), modelId, idSuffix(strictUniqueIds, "-"));
+        return createPipelineId(getTransformType(), modelId, idSuffix(strictUniqueIds, "-"));
     }
 
     public String upstreamId(boolean strictUniqueIds) {
         if (strictUniqueIds) {
             return (upstream == null) ? null :
-                    String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.upstreamIdSuffix(strictUniqueIds, "-"));
+                    createPipelineId(upstream.getTransformType(), modelId, upstream.upstreamIdSuffix(strictUniqueIds, "-"));
         }
         return (upstream == null) ? null :
-                String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.idSuffix(strictUniqueIds, "-"));
+                createPipelineId(upstream.getTransformType(), modelId, upstream.idSuffix(strictUniqueIds, "-"));
     }
 
     private String upstreamIdSuffix(boolean strictUniqueIds, String separator) {
