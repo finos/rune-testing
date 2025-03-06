@@ -24,6 +24,7 @@ import com.regnosys.rosetta.common.transform.PipelineModel;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.regnosys.rosetta.common.transform.FunctionNameHelper;
@@ -58,7 +59,7 @@ public class PipelineModelBuilder {
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
 
-        String prefixedPipelineName = String.format("%s %s", config.getModelId(), name);
+        String prefixedPipelineName = Optional.ofNullable(config.getModelId()).map(mId -> String.format("%s %s", mId, name)).orElse(name);
         return new PipelineModel(pipelineId,
                 prefixedPipelineName,
                 new PipelineModel.Transform(modelBuilder.getTransformType(), modelBuilder.getFunction().getName(), inputType, outputType),

@@ -54,7 +54,7 @@ public class PipelineTreeConfig {
  */
     @Deprecated
     public PipelineTreeConfig() {
-        this("");
+        this(null);
     }
 
     public PipelineTreeConfig(String modelId) {
