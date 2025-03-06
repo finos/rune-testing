@@ -85,16 +85,19 @@ public class PipelineNode {
     }
 
     public String id(boolean strictUniqueIds) {
-        return String.format("pipeline-%s-%s-%s", getTransformType().name().toLowerCase(), modelId, idSuffix(strictUniqueIds, "-"));
+        String suffix = idSuffix(strictUniqueIds, "-");
+        return modelId.isEmpty()
+                ? String.format("pipeline-%s-%s", getTransformType().name().toLowerCase(), suffix)
+                : String.format("pipeline-%s-%s-%s", getTransformType().name().toLowerCase(), modelId, suffix);
     }
 
     public String upstreamId(boolean strictUniqueIds) {
-        if (strictUniqueIds) {
-            return (upstream == null) ? null :
-                    String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.upstreamIdSuffix(strictUniqueIds, "-"));
+        if (upstream == null) {
+            return null;
         }
-        return (upstream == null) ? null :
-                String.format("pipeline-%s-%s-%s", upstream.getTransformType().name().toLowerCase(), modelId, upstream.idSuffix(strictUniqueIds, "-"));
+        String format = modelId.isEmpty() ? "pipeline-%s-%s" : "pipeline-%s-%s-%s";
+        String suffix = strictUniqueIds ? upstream.upstreamIdSuffix(strictUniqueIds, "-") : upstream.idSuffix(strictUniqueIds, "-");
+        return String.format(format, upstream.getTransformType().name().toLowerCase(), modelId, suffix).replaceAll("-$", "");
     }
 
     private String upstreamIdSuffix(boolean strictUniqueIds, String separator) {
