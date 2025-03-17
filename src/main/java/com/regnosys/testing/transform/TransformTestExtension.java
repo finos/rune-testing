@@ -80,7 +80,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
 
-    private final static ObjectWriter JSON_OBJECT_WRITER =
+    private ObjectWriter jsonObjectWriter =
             JSON_OBJECT_MAPPER
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
                     .writerWithDefaultPrettyPrinter();
@@ -115,6 +115,14 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.funcType = funcType;
     }
 
+    public TransformTestExtension<T> withSortJsonPropertiesAlphabetically(boolean sortJsonPropertiesAlphabetically) {
+        jsonObjectWriter =
+                JSON_OBJECT_MAPPER
+                        .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically)
+                        .writerWithDefaultPrettyPrinter();
+        return this;
+    }
+    
     public TransformTestExtension<T> withSchemaValidation(URL xsdSchema) {
         try {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -142,7 +150,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                 if (this.pipelineModel == null || this.pipelineModel.isEmpty()) {
                     this.pipelineModel = populatedModels;
                     this.inputObjectMapper = getObjectMapper(model.getInputSerialisation()).orElse(JSON_OBJECT_MAPPER);
-                    this.outputObjectWriter = getObjectWriter(model.getOutputSerialisation()).orElse(JSON_OBJECT_WRITER);
+                    this.outputObjectWriter = getObjectWriter(model.getOutputSerialisation()).orElse(jsonObjectWriter);
                 }
             }
         }
@@ -152,7 +160,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
 
         //Finally Filter out any pipeline models that are not the one we are interested in if we restrict the test extension id:
-        if(this.pipelineId != null){
+        if (this.pipelineId != null) {
             this.pipelineModel = this.pipelineModel.stream()
                     .filter(p -> p.getId().equals(this.pipelineId)).collect(Collectors.toList());
         }
