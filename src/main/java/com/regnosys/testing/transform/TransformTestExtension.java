@@ -37,6 +37,7 @@ import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
+import com.regnosys.testing.TestingExpectationUtil;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import org.junit.jupiter.api.AfterAll;
@@ -176,7 +177,9 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
         TransformTestResult result = getResult(sampleModel, transformFunc);
 
-        actualExpectation.put(testPackId, result);
+        if (TestingExpectationUtil.WRITE_EXPECTATIONS) {
+            actualExpectation.put(testPackId, result);
+        }
 
         String actualOutput = result.getOutput();
         Path outputPath = Path.of(sampleModel.getOutputPath());
