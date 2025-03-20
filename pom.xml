@@ -106,7 +106,7 @@
         <!-- Release -->
         <gpg.keyname>configured-by-release-profile</gpg.keyname>
         <repoServerHost>s01.oss.sonatype.org</repoServerHost>
-        <stagingTimeoutInMinutes>10</stagingTimeoutInMinutes>
+        <stagingTimeoutInMinutes>20</stagingTimeoutInMinutes>
 
         <!-- test -->
         <junit.version>5.9.1</junit.version>
