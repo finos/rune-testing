@@ -19,6 +19,13 @@ steps:
       commands:
         - cf_export GPG_IMPORT_COMMAND="cat <(echo -e '${{GPG_PRIVATE_KEY}}') | gpg --batch --import" --mask
 
+  MvnSettings:
+    stage: 'setup'
+    title: Setup Maven settings
+    image: alpine/git
+    commands:
+      - cf_export MVN_CLI_OPT="-Dmaven.repo.local=\"${{CF_VOLUME_PATH}}/${{CF_REPO_NAME}}_m2/repository\""
+
   TagReleaseName:
     title: Setup RELEASE_NAME variable with tag
     stage: 'setup'
@@ -50,7 +57,7 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == true"
     commands:
-      - cf_export MVN_SET_VERSION="versions:set-property -DnewVersion=${{RELEASE_NAME}}"
+      - cf_export MVN_SET_VERSION="${{MVN_CLI_OPT}} versions:set-property -DnewVersion=${{RELEASE_NAME}}"
 
   BranchProperties:
     title: Setup branch build
@@ -61,7 +68,7 @@ steps:
         all:
           releaseNameNotDefined: "${{TAG_REPO}} == false"
     commands:
-      - cf_export MVN_SET_VERSION="versions:update-property -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
+      - cf_export MVN_SET_VERSION="${{MVN_CLI_OPT}} versions:update-property -DnewVersion=[${{RELEASE_NAME}}] -DallowSnapshots=true -DallowDowngrade=true"
 
   BuildTesting:
     title: Maven build rune-testing
@@ -72,13 +79,13 @@ steps:
     commands:
       - rm -rf /codefresh/volume/.m2/com/regnosys
       - bash -c "${{GPG_IMPORT_COMMAND}}"
-      - mvn versions:set -DnewVersion=${{RELEASE_NAME}}
+      - mvn ${{MVN_CLI_OPT}} versions:set -DnewVersion=${{RELEASE_NAME}}
       - mvn ${{MVN_SET_VERSION}} -Dproperty=rosetta.common.version
       - export CI_DEPLOY_USERNAME="${{CI_DEPLOY_USERNAME}}"
       - export CI_DEPLOY_PASSWORD="${{CI_DEPLOY_PASSWORD}}"
       - export GPG_KEYNAME="${{GPG_KEYNAME}}"
       - export GPG_PASSPHRASE="${{GPG_PASSPHRASE}}"
-      - mvn -s settings.xml -B clean deploy -P gpg
+      - mvn -s settings.xml -B ${{MVN_CLI_OPT}} clean deploy -P gpg
 
   FailPipeline:
     title: Fail pipeline if the Maven build failed
