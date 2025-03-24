@@ -21,6 +21,7 @@ package com.regnosys.testing.pipeline;
  */
 
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -28,7 +29,9 @@ import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.transform.FunctionNameHelper;
+import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
+import com.regnosys.testing.validation.ValidationSummariser;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -67,6 +70,9 @@ public class PipelineTestPackWriter {
             LOGGER.error("Write path not configured. Aborting.");
             return;
         }
+
+        ValidationSummariser validationSummariser = config.getValidationSummariser();
+
         LOGGER.info("Starting Test Pack Generation");
         ObjectWriter objectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
 
@@ -101,12 +107,16 @@ public class PipelineTestPackWriter {
 
             for (String testPackId : filteredTestPackToSamples.keySet()) {
                 List<Path> inputSamplesForTestPack = filteredTestPackToSamples.get(testPackId);
-                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config);
+                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config, validationSummariser);
 
                 Path writePath = Files.createDirectories(resourcesPath.resolve(pipelineNode.getTransformType().getResourcePath()).resolve("config"));
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
                 objectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
+        }
+
+        if (validationSummariser != null) {
+            validationSummariser.summerize();
         }
     }
 
@@ -121,7 +131,7 @@ public class PipelineTestPackWriter {
         }
     }
 
-    private TestPackModel writeTestPackSamples(Path resourcesPath, Path inputPath, Path outputDir, String testPackId, List<Path> inputSamplesForTestPack, PipelineNode pipelineNode, PipelineTreeConfig config) throws IOException {
+    private TestPackModel writeTestPackSamples(Path resourcesPath, Path inputPath, Path outputDir, String testPackId, List<Path> inputSamplesForTestPack, PipelineNode pipelineNode, PipelineTreeConfig config, ValidationSummariser validationSummariser) throws IOException {
         LOGGER.info("Test pack sample generation started for {}", testPackId);
         TransformType transformType = pipelineNode.getTransformType();
         LOGGER.info("{} {} samples to be generated", inputSamplesForTestPack.size(), transformType);
@@ -147,6 +157,11 @@ public class PipelineTestPackWriter {
 
             Files.createDirectories(resourcesPath.resolve(outputSample).getParent());
             Files.write(resourcesPath.resolve(outputSample), result.getSerialisedOutput().getBytes());
+
+            ValidationReport validationReport = result.getValidationReport();
+            if (validationSummariser != null) {
+                validationSummariser.addValidationReport(pipeline, sampleModel.getName(), sampleModel, validationReport);
+            }
         }
 
         List<TestPackModel.SampleModel> sortedSamples = sampleModels
@@ -158,6 +173,15 @@ public class PipelineTestPackWriter {
 
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
+    }
+
+    @NotNull
+    private static String getSimpleName(PipelineModel pipeline) {
+        try {
+            return Class.forName(pipeline.getTransform().getOutputType()).getSimpleName();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {

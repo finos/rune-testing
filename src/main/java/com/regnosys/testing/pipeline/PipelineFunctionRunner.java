@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Injector;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
-import com.regnosys.rosetta.common.util.Pair;
+import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.testpack.TestPackFunctionRunner;
 import com.regnosys.testing.testpack.TestPackFunctionRunnerProvider;
 
@@ -41,8 +41,7 @@ public class PipelineFunctionRunner {
 
     public Result run(PipelineModel pipelineModel, ImmutableMap<Class<?>, String> outputSchemaMap, Path inputPath) {
         TestPackFunctionRunner functionRunner = getFunctionRunner(pipelineModel, outputSchemaMap);
-        Pair<String, TestPackModel.SampleModel.Assertions> result = functionRunner.run(inputPath);
-        return new Result(result.left(), result.right());
+        return functionRunner.run(inputPath);
     }
 
     private TestPackFunctionRunner getFunctionRunner(PipelineModel pipelineModel, ImmutableMap<Class<?>, String> schemaMap) {
@@ -50,11 +49,13 @@ public class PipelineFunctionRunner {
     }
 
     public static class Result {
-        String serialisedOutput;
-        TestPackModel.SampleModel.Assertions assertions;
+        private final String serialisedOutput;
+        private final ValidationReport validationReport;
+        private final TestPackModel.SampleModel.Assertions assertions;
 
-        public Result(String serialisedOutput, TestPackModel.SampleModel.Assertions assertions) {
+        public Result(String serialisedOutput, ValidationReport validationReport, TestPackModel.SampleModel.Assertions assertions) {
             this.serialisedOutput = serialisedOutput;
+            this.validationReport = validationReport;
             this.assertions = assertions;
         }
 
@@ -64,6 +65,10 @@ public class PipelineFunctionRunner {
 
         public String getSerialisedOutput() {
             return serialisedOutput;
+        }
+
+        public ValidationReport getValidationReport() {
+            return validationReport;
         }
     }
 
