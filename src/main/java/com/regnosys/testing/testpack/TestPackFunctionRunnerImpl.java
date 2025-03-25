@@ -25,9 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
-import com.regnosys.rosetta.common.util.Pair;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
+import com.regnosys.testing.pipeline.PipelineFunctionRunner.Result;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import org.slf4j.Logger;
@@ -79,7 +79,7 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
     }
 
     @Override
-    public Pair<String, Assertions> run(Path inputPath) {
+    public Result run(Path inputPath) {
         RosettaModelObject output;
         try {
             // TODO - fix this hack.
@@ -89,10 +89,10 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
             output = function.apply(resolveReferences(input));
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to load input path {}", inputPath, e);
-            return Pair.of(ERROR_OUTPUT, new Assertions(null, null, true));
+            return new Result(ERROR_OUTPUT, null, new Assertions(null, null, true));
         } catch (Exception e) {
             LOGGER.error("Exception occurred running sample creation", e);
-            return Pair.of(ERROR_OUTPUT, new Assertions(null, null, true));
+            return new Result(ERROR_OUTPUT, null, new Assertions(null, null, true));
         }
 
         String serialisedOutput;
@@ -109,7 +109,7 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
         Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
 
         Assertions assertions = new Assertions(actualValidationFailures, schemaValidationFailure, false);
-        return Pair.of(serialisedOutput, assertions);
+        return new Result(serialisedOutput, validationReport, assertions);
     }
 
     @SuppressWarnings("unchecked")

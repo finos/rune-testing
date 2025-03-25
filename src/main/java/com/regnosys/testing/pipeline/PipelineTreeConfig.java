@@ -24,6 +24,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.testing.validation.ValidationSummariser;
 import com.rosetta.model.lib.functions.RosettaFunction;
 
 import java.nio.file.Path;
@@ -36,23 +37,23 @@ import java.util.stream.Collectors;
 
 public class PipelineTreeConfig {
 
+    private final List<TransformFunction> starting = new ArrayList<>();
+    private final String modelId;
+
     private ImmutableMap<Class<?>, String> xmlConfigMap;
     private ImmutableMap<Class<?>, String> xmlSchemaMap;
-    private final List<TransformFunction> starting = new ArrayList<>();
     private PipelineTestPackFilter pipelineTestPackFilter;
 
     private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
     private boolean strictUniqueIds;
     private Path writePath;
     private Predicate<String> testPackIdFilter = testPackId -> true;
-    private String modelId;
-
-
-/**
- * @deprecated This constructor is here to prevent existing model extensions from breaking. It will be removed in the future
- * as part of wider work. on the PipelineTreeConfig class.
- */
-    @Deprecated
+    private ValidationSummariser validationSummariser;
+    
+    /**
+     * Use this constructor when the Transform functions used in the tree config are unique to a model.
+     * When re-using functions that are shared between models, use the constructor with the modelId.
+     */
     public PipelineTreeConfig() {
         this(null);
     }
@@ -105,6 +106,15 @@ public class PipelineTreeConfig {
     public PipelineTreeConfig withWritePath(Path writePath) {
         this.writePath = writePath;
         return this;
+    }
+
+    public PipelineTreeConfig withValidationSummariser(ValidationSummariser validationSummariser) {
+        this.validationSummariser = validationSummariser;
+        return this;
+    }
+
+    public ValidationSummariser getValidationSummariser() {
+        return validationSummariser;
     }
 
     public Path getWritePath() {
