@@ -66,7 +66,9 @@ public class PipelineModelBuilder {
                 new PipelineModel.Transform(modelBuilder.getTransformType(), modelBuilder.getFunction().getName(), inputType, outputType),
                 upstreamPipelineId,
                 inputSerialisation,
-                outputSerialisation);
+                outputSerialisation,
+                modelId
+        );
     }
 
     private PipelineModel.Serialisation getSerialisation(String xmlConfigPath) {
