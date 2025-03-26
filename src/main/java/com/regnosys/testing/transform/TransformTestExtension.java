@@ -86,7 +86,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     // use empty string as error value for function output as it gets serialised
     public static final String ERROR_OUTPUT = "";
 
-    private String modelId;
+    private final String modelId;
     private final Module runtimeModule;
     private final Path configPath;
     private final Class<T> funcType;
