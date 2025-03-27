@@ -62,11 +62,9 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.transform.TestPackUtils.*;
@@ -80,6 +78,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
 
+
     private ObjectWriter jsonObjectWriter =
             JSON_OBJECT_MAPPER
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
@@ -87,7 +86,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     // use empty string as error value for function output as it gets serialised
     public static final String ERROR_OUTPUT = "";
 
-    private String pipelineId;
+    private final String modelId;
     private final Module runtimeModule;
     private final Path configPath;
     private final Class<T> funcType;
@@ -97,7 +96,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     @Inject
     ReferenceConfig referenceConfig;
     private Multimap<String, TransformTestResult> actualExpectation;
-    private List<PipelineModel> pipelineModel;
+    private PipelineModel pipelineModel;
     private Injector injector;
     private ObjectMapper inputObjectMapper;
     private ObjectWriter outputObjectWriter;
@@ -106,10 +105,11 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.runtimeModule = runtimeModule;
         this.configPath = configPath;
         this.funcType = funcType;
+        this.modelId = null;
     }
 
-    public TransformTestExtension(String pipelineId, Module runtimeModule, Path configPath, Class<T> funcType) {
-        this.pipelineId = pipelineId;
+    public TransformTestExtension(String modelId, Module runtimeModule, Path configPath, Class<T> funcType) {
+        this.modelId = modelId;
         this.runtimeModule = runtimeModule;
         this.configPath = configPath;
         this.funcType = funcType;
@@ -141,29 +141,9 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.injector = Guice.createInjector(runtimeModule);
         this.injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        List<PipelineModel> pipelineModels = getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER);
-        List<PipelineModel> populatedModels = new ArrayList<>();
-        for (PipelineModel model : pipelineModels) {
-            populatedModels.addAll(getPipelineModel(model.getId(), pipelineModels, funcType.getName()));
-
-            if (!populatedModels.isEmpty()) {
-                if (this.pipelineModel == null || this.pipelineModel.isEmpty()) {
-                    this.pipelineModel = populatedModels;
-                    this.inputObjectMapper = getObjectMapper(model.getInputSerialisation()).orElse(JSON_OBJECT_MAPPER);
-                    this.outputObjectWriter = getObjectWriter(model.getOutputSerialisation()).orElse(jsonObjectWriter);
-                }
-            }
-        }
-
-        if (this.pipelineModel == null || this.pipelineModel.isEmpty()) {
-            throw new IllegalArgumentException("No Matching PipelineModels found");
-        }
-
-        //Finally Filter out any pipeline models that are not the one we are interested in if we restrict the test extension id:
-        if (this.pipelineId != null) {
-            this.pipelineModel = this.pipelineModel.stream()
-                    .filter(p -> p.getId().equals(this.pipelineId)).collect(Collectors.toList());
-        }
+        this.pipelineModel = getPipelineModel(getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER), funcType.getName(), modelId);
+        this.inputObjectMapper = getObjectMapper(pipelineModel.getInputSerialisation()).orElse(JSON_OBJECT_MAPPER);
+        this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(jsonObjectWriter);
         this.actualExpectation = ArrayListMultimap.create();
     }
 
@@ -217,11 +197,11 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
             Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
 
             TestPackModel.SampleModel.Assertions assertions =
-                    new TestPackModel.SampleModel.Assertions(actualValidationFailures, schemaValidationFailure, false);
+                    new TestPackModel.SampleModel.Assertions(null, null, actualValidationFailures, schemaValidationFailure, false);
             return new TransformTestResult(serialisedOutput, updateSampleModel(sampleModel, assertions));
         } catch (Exception e) {
             LOGGER.error("Exception occurred running transform", e);
-            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, true);
+            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, null, false, true);
             return new TransformTestResult(ERROR_OUTPUT, updateSampleModel(sampleModel, assertions));
         }
     }
@@ -229,23 +209,15 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     public Stream<Arguments> getArguments() {
         T func = injector.getInstance(funcType);
         ClassLoader classLoader = this.getClass().getClassLoader();
-
-        return pipelineModel.stream()
-                .flatMap(model -> {
-                    List<TestPackModel> testPackModels = getTestPackModels(
-                            TestPackUtils.getTestPackModels(configPath, classLoader, JSON_OBJECT_MAPPER),
-                            model.getId()
-                    );
-                    return testPackModels.stream()
-                            .flatMap(testPackModel -> testPackModel.getSamples().stream()
-                                    .map(sampleModel -> Arguments.of(
-                                            String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
-                                            testPackModel.getId(),
-                                            sampleModel,
-                                            func
-                                    ))
-                            );
-                })
+        List<TestPackModel> testPackModels = getTestPackModels(TestPackUtils.getTestPackModels(configPath, classLoader, JSON_OBJECT_MAPPER), pipelineModel.getId());
+        return testPackModels.stream()
+                .flatMap(testPackModel -> testPackModel.getSamples().stream()
+                        .map(sampleModel ->
+                                Arguments.of(
+                                        String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
+                                        testPackModel.getId(),
+                                        sampleModel,
+                                        func)))
                 .filter(Objects::nonNull);
     }
 
@@ -259,14 +231,11 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     protected <IN extends RosettaModelObject> Class<IN> getInputType() {
-        for (PipelineModel model : pipelineModel) {
-            try {
-                return (Class<IN>) Class.forName(model.getTransform().getInputType());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+        try {
+            return (Class<IN>) Class.forName(pipelineModel.getTransform().getInputType());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
             }
-        }
-        throw new RuntimeException("No valid input type found in pipeline models");
     }
 
     protected <T extends RosettaModelObject> T resolveReferences(T modelObject) {
