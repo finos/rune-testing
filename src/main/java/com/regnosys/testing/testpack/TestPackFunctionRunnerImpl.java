@@ -89,10 +89,10 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
             output = function.apply(resolveReferences(input));
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to load input path {}", inputPath, e);
-            return new Result(ERROR_OUTPUT, null, new Assertions(null, null, true));
+            return new Result(ERROR_OUTPUT, null, new Assertions(null, null, null ,false, true));
         } catch (Exception e) {
             LOGGER.error("Exception occurred running sample creation", e);
-            return new Result(ERROR_OUTPUT, null, new Assertions(null, null, true));
+            return new Result(ERROR_OUTPUT, null, new Assertions(null, null, null ,false, true));
         }
 
         String serialisedOutput;
@@ -108,7 +108,7 @@ public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implement
 
         Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
 
-        Assertions assertions = new Assertions(actualValidationFailures, schemaValidationFailure, false);
+        Assertions assertions = new Assertions(null,null ,actualValidationFailures, schemaValidationFailure, false);
         return new Result(serialisedOutput, validationReport, assertions);
     }
 

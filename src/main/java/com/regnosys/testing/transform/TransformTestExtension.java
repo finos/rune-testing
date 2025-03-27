@@ -197,11 +197,11 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
             Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
 
             TestPackModel.SampleModel.Assertions assertions =
-                    new TestPackModel.SampleModel.Assertions(actualValidationFailures, schemaValidationFailure, false);
+                    new TestPackModel.SampleModel.Assertions(null, null, actualValidationFailures, schemaValidationFailure, false);
             return new TransformTestResult(serialisedOutput, updateSampleModel(sampleModel, assertions));
         } catch (Exception e) {
             LOGGER.error("Exception occurred running transform", e);
-            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, true);
+            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, null, false, true);
             return new TransformTestResult(ERROR_OUTPUT, updateSampleModel(sampleModel, assertions));
         }
     }
