@@ -20,7 +20,6 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
-import com.google.common.collect.ImmutableMultimap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
@@ -29,6 +28,7 @@ import com.regnosys.testing.CompiledCode;
 import com.regnosys.testing.ModelHelper;
 import com.regnosys.testing.RosettaTestingInjectorProvider;
 import com.rosetta.model.lib.functions.RosettaFunction;
+import com.rosetta.model.lib.qualify.QualifyFunctionFactory;
 import com.rosetta.model.lib.validation.ValidatorFactory;
 
 import javax.inject.Inject;
@@ -62,6 +62,7 @@ public class PipelineTestHelper {
             protected void configure() {
                 bind(ReferenceConfig.class).toInstance(ReferenceConfig.noScopeOrExcludedPaths());
                 bind(ValidatorFactory.class).to(ValidatorFactory.Default.class);
+                bind(QualifyFunctionFactory.class).to(QualifyFunctionFactory.Default.class);
             }
         });
         childInjector.injectMembers(caller);
