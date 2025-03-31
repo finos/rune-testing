@@ -29,17 +29,16 @@ import com.google.common.io.Resources;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.regnosys.rosetta.common.hashing.ReferenceConfig;
-import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TestPackUtils;
-import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
-import com.regnosys.rosetta.common.validation.ValidationReport;
+import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.testing.TestingExpectationUtil;
+import com.regnosys.testing.pipeline.PipelineFunctionResult;
+import com.regnosys.testing.pipeline.PipelineFunctionRunner;
+import com.regnosys.testing.pipeline.PipelineFunctionRunnerProvider;
 import com.rosetta.model.lib.RosettaModelObject;
-import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -52,19 +51,12 @@ import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.transform.TestPackUtils.*;
@@ -74,32 +66,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCallback {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
-
-    private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
-
-
-    private ObjectWriter jsonObjectWriter =
-            JSON_OBJECT_MAPPER
-                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-                    .writerWithDefaultPrettyPrinter();
     // use empty string as error value for function output as it gets serialised
     public static final String ERROR_OUTPUT = "";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
+    private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final String modelId;
     private final Module runtimeModule;
     private final Path configPath;
     private final Class<T> funcType;
-    private Validator xsdValidator;
     @Inject
-    RosettaTypeValidator typeValidator;
-    @Inject
-    ReferenceConfig referenceConfig;
-    private Multimap<String, TransformTestResult> actualExpectation;
+    PipelineFunctionRunnerProvider functionRunnerProvider;
+    private ObjectWriter jsonObjectWriter =
+            JSON_OBJECT_MAPPER
+                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+                    .writerWithDefaultPrettyPrinter();
+    private Validator outputXsdValidator;
     private PipelineModel pipelineModel;
-    private Injector injector;
-    private ObjectMapper inputObjectMapper;
-    private ObjectWriter outputObjectWriter;
+    private Multimap<String, TransformTestResult> actualExpectation;
+    private PipelineFunctionRunner functionRunner;
 
     public TransformTestExtension(Module runtimeModule, Path configPath, Class<T> funcType) {
         this.runtimeModule = runtimeModule;
@@ -122,29 +106,46 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                         .writerWithDefaultPrettyPrinter();
         return this;
     }
-    
-    public TransformTestExtension<T> withSchemaValidation(URL xsdSchema) {
+
+    public TransformTestExtension<T> withSchemaValidation(URL outputXsdSchema) {
         try {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
             schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
-            Schema schema = schemaFactory.newSchema(xsdSchema);
-            this.xsdValidator = schema.newValidator();
+            Schema schema = schemaFactory.newSchema(outputXsdSchema);
+            this.outputXsdValidator = schema.newValidator();
         } catch (SAXException e) {
             throw new RuntimeException(e);
         }
         return this;
     }
-
+ 
     @BeforeAll
     public void beforeAll(ExtensionContext context) {
-        this.injector = Guice.createInjector(runtimeModule);
-        this.injector.injectMembers(this);
+        Injector injector = Guice.createInjector(runtimeModule);
+        injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
         this.pipelineModel = getPipelineModel(getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER), funcType.getName(), modelId);
-        this.inputObjectMapper = getObjectMapper(pipelineModel.getInputSerialisation()).orElse(JSON_OBJECT_MAPPER);
-        this.outputObjectWriter = getObjectWriter(pipelineModel.getOutputSerialisation()).orElse(jsonObjectWriter);
+        @SuppressWarnings("unchecked")
+        Class<? extends RosettaModelObject> inputType = (Class<? extends RosettaModelObject>) toClass(classLoader, pipelineModel.getTransform().getInputType());
+        this.functionRunner = functionRunnerProvider.create(
+                pipelineModel.getTransform().getType(), 
+                inputType,
+                funcType, 
+                pipelineModel.getInputSerialisation(),
+                pipelineModel.getOutputSerialisation(),
+                JSON_OBJECT_MAPPER,
+                jsonObjectWriter,
+                outputXsdValidator);
         this.actualExpectation = ArrayListMultimap.create();
+    }
+
+    private Class<?> toClass(ClassLoader classLoader, String type) {
+        try {
+            return classLoader.loadClass(type);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load class " + type, e);
+        }
     }
 
     @AfterAll
@@ -152,62 +153,38 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         writeExpectations(actualExpectation);
     }
 
-    public <IN extends RosettaModelObject, OUT extends RosettaModelObject> void runTransformAndAssert(
-            String testPackId, TestPackModel.SampleModel sampleModel, Function<IN, OUT> transformFunc) {
+    public void runTransformAndAssert(String testPackId, TestPackModel.SampleModel sampleModel) {
+        URL inputPath = getInputFileUrl(sampleModel.getInputPath());
+        assertNotNull(inputPath);
 
-        TransformTestResult result = getResult(sampleModel, transformFunc);
+        PipelineFunctionResult result = functionRunner.run(UrlUtils.toPath(inputPath));
+
+        TestPackModel.SampleModel updateSampleModel = updateSampleModel(sampleModel, result.getAssertions());
+        String actualOutput = result.getSerialisedOutput();
 
         if (TestingExpectationUtil.WRITE_EXPECTATIONS) {
-            actualExpectation.put(testPackId, result);
+            actualExpectation.put(testPackId, new TransformTestResult(actualOutput, updateSampleModel));
         }
 
-        String actualOutput = result.getOutput();
-        Path outputPath = Path.of(sampleModel.getOutputPath());
+        Path outputPath = Path.of(updateSampleModel.getOutputPath());
         String expectedOutput = readStringFromResources(outputPath);
         assertEquals(expectedOutput, actualOutput);
 
-        TestPackModel.SampleModel.Assertions actualAssertions = result.getSampleModel().getAssertions();
-        TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
+        TestPackModel.SampleModel.Assertions actualAssertions = result.getAssertions();
+        TestPackModel.SampleModel.Assertions expectedAssertions = updateSampleModel.getAssertions();
         assertEquals(expectedAssertions, actualAssertions);
     }
 
-    protected <IN extends RosettaModelObject, OUT extends RosettaModelObject> TransformTestResult getResult(TestPackModel.SampleModel sampleModel, Function<IN, OUT> function) {
-        String inputFile = sampleModel.getInputPath();
-        URL inputFileUrl = getInputFileUrl(inputFile);
-        assertNotNull(inputFileUrl);
-
-        Class<IN> inputType = getInputType();
-
+    private URL getInputFileUrl(String inputFile) {
         try {
-            IN input = readFile(inputFileUrl, inputObjectMapper, inputType);
-            IN resolvedInput = resolveReferences(input);
-            OUT output = function.apply(resolvedInput);
-
-            assertNotNull(output);
-
-            // serialised output
-            String serialisedOutput = outputObjectWriter.writeValueAsString(output);
-
-            // validation failures
-            ValidationReport validationReport = typeValidator.runProcessStep(output.getType(), output);
-            validationReport.logReport();
-            int actualValidationFailures = validationReport.validationFailures().size();
-
-            // schema validation
-            Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
-
-            TestPackModel.SampleModel.Assertions assertions =
-                    new TestPackModel.SampleModel.Assertions(null, null, actualValidationFailures, schemaValidationFailure, false);
-            return new TransformTestResult(serialisedOutput, updateSampleModel(sampleModel, assertions));
-        } catch (Exception e) {
-            LOGGER.error("Exception occurred running transform", e);
-            TestPackModel.SampleModel.Assertions assertions = new TestPackModel.SampleModel.Assertions(null, null, null, false, true);
-            return new TransformTestResult(ERROR_OUTPUT, updateSampleModel(sampleModel, assertions));
+            return Resources.getResource(inputFile);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Failed to load input file {}", inputFile);
+            return null;
         }
     }
 
     public Stream<Arguments> getArguments() {
-        T func = injector.getInstance(funcType);
         ClassLoader classLoader = this.getClass().getClassLoader();
         List<TestPackModel> testPackModels = getTestPackModels(TestPackUtils.getTestPackModels(configPath, classLoader, JSON_OBJECT_MAPPER), pipelineModel.getId());
         return testPackModels.stream()
@@ -216,54 +193,15 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                                 Arguments.of(
                                         String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
                                         testPackModel.getId(),
-                                        sampleModel,
-                                        func)))
-                .filter(Objects::nonNull);
+                                        sampleModel)));
     }
 
-    private static URL getInputFileUrl(String inputFile) {
-        try {
-            return Resources.getResource(inputFile);
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Failed to load input file " + inputFile);
-            return null;
-        }
-    }
-
-    protected <IN extends RosettaModelObject> Class<IN> getInputType() {
-        try {
-            return (Class<IN>) Class.forName(pipelineModel.getTransform().getInputType());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-            }
-    }
-
-    protected <T extends RosettaModelObject> T resolveReferences(T modelObject) {
-        RosettaModelObjectBuilder builder = modelObject.toBuilder();
-        new ReferenceResolverProcessStep(referenceConfig).runProcessStep(modelObject.getType(), builder);
-        return (T) builder.build();
-    }
 
     protected void writeExpectations(Multimap<String, TransformTestResult> actualExpectation) throws Exception {
         TransformExpectationUtil.writeExpectations(actualExpectation, configPath);
     }
 
-    protected Boolean isSchemaValidationFailure(String actualXml) {
-        if (xsdValidator == null) {
-            return null;
-        }
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(actualXml.getBytes(StandardCharsets.UTF_8))) {
-            xsdValidator.validate(new StreamSource(inputStream));
-            return true;
-        } catch (SAXException e) {
-            LOGGER.error("Schema validation failed: {}", e.getMessage());
-            return false;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    protected TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
+    private TestPackModel.SampleModel updateSampleModel(TestPackModel.SampleModel sampleModel, TestPackModel.SampleModel.Assertions assertions) {
         return new TestPackModel.SampleModel(sampleModel.getId(), sampleModel.getName(), sampleModel.getInputPath(), sampleModel.getOutputPath(), assertions);
     }
 }
