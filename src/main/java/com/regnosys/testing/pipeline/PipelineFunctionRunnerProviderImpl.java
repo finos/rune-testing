@@ -112,7 +112,9 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                     return null;
                 }
                 return (RosettaModelObject) evaluateMethod.invoke(functionInstance, resolvedInput);
-            } catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(String.format("Failed to invoke function %s evaluate method", functionType.getName()), e.getTargetException());
+            } catch (IllegalAccessException e) {
                 throw new RuntimeException(String.format("Failed to invoke function %s evaluate method", functionType.getName()), e);
             }
         };
