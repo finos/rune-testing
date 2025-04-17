@@ -109,7 +109,6 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
 
             // validation failures
             ValidationReport validationReport = typeValidator.runProcessStep(postProcessedOutput.getType(), postProcessedOutput);
-            validationReport.logReport();
             actualValidationFailures = validationReport.validationFailures().size();
 
             // schema validation

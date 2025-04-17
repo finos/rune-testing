@@ -23,6 +23,7 @@ package com.regnosys.testing.pipeline;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
@@ -83,10 +84,10 @@ public class PipelineTestPackWriter {
             LOGGER.error("Write path not configured. Aborting.");
             return;
         }
-
+        Stopwatch stopwatch = Stopwatch.createStarted();
         ValidationSummariser validationSummariser = config.getValidationSummariser();
 
-        LOGGER.info("Starting Test Pack Generation");
+        LOGGER.info("Starting test pack Generation");
         ObjectWriter configObjectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
         ObjectWriter jsonObjectWriter =
                 JSON_OBJECT_MAPPER
@@ -98,11 +99,14 @@ public class PipelineTestPackWriter {
         PipelineTree pipelineTree = pipelineTreeBuilder.createPipelineTree(config);
 
         for (PipelineNode pipelineNode : pipelineTree.getNodeList()) {
-            LOGGER.info("Generating {} Test Packs for {} ", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
+            Stopwatch pipelineStopwatch = Stopwatch.createStarted();
+            TransformType transformType = pipelineNode.getTransformType();
+            String functionName = pipelineNode.getFunction().getName();
+            LOGGER.info("Generating {} test packs for {} ", transformType, functionName);
 
             final PipelineTestPackFilter pipelineTestPackFilter = config.getTestPackFilter();
             if (pipelineTestPackFilter != null && pipelineTestPackFilter.getExcludedFunctionsFromTestPackGeneration().contains(pipelineNode.getFunction())) {
-                LOGGER.info("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
+                LOGGER.info("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", transformType, functionName);
                 continue;
             }
 
@@ -120,21 +124,22 @@ public class PipelineTestPackWriter {
             Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
                     .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
 
-            LOGGER.info("{} Test Packs will be generated", filteredTestPackToSamples.keySet().size());
-
             for (String testPackId : filteredTestPackToSamples.keySet()) {
                 List<Path> inputSamplesForTestPack = filteredTestPackToSamples.get(testPackId);
                 TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config, jsonObjectWriter, validationSummariser);
 
-                Path writePath = Files.createDirectories(resourcesPath.resolve(pipelineNode.getTransformType().getResourcePath()).resolve("config"));
+                Path writePath = Files.createDirectories(resourcesPath.resolve(transformType.getResourcePath()).resolve("config"));
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
                 configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
+            LOGGER.info("Generated {} {} test packs for {}, took {}", filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch);
         }
 
         if (validationSummariser != null) {
             validationSummariser.summerize();
         }
+
+        LOGGER.info("Test pack generation complete, took {}", stopwatch);
     }
 
     private List<Path> findAllSamples(Path inputDir) throws IOException {
@@ -184,8 +189,10 @@ public class PipelineTestPackWriter {
                         jsonObjectWriter,
                         outputXsdValidator);
 
+        String functionName = functionType.getSimpleName();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         for (Path inputSample : inputSamplesForTestPack) {
-            LOGGER.info("Generating {} sample {}", transformType, inputSample.getFileName());
+            LOGGER.info("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
 
             Path relativeOutputPath = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
             Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, relativeOutputPath.toFile().getName())));
@@ -213,7 +220,7 @@ public class PipelineTestPackWriter {
                 .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
                 .collect(Collectors.toList());
 
-        LOGGER.info("Test Pack sample generation complete for {} ", testPackId);
+        LOGGER.info("Function {} test pack {} generation complete, took {}", functionName, testPackId, stopwatch);
 
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
