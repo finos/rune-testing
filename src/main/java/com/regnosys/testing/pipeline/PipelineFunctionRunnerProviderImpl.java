@@ -30,6 +30,8 @@ import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.rosetta.model.lib.RosettaModelObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.xml.validation.Validator;
@@ -39,6 +41,8 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunnerProvider {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PipelineFunctionRunnerProviderImpl.class);
 
     @Inject
     RosettaTypeValidator typeValidator;
@@ -50,9 +54,9 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
     WorkflowPostProcessor postProcessor;
 
     @Override
-    public PipelineFunctionRunner create(TransformType transformType, 
-                                         Class<? extends RosettaModelObject> inputType, 
-                                         Class<?> functionType, 
+    public PipelineFunctionRunner create(TransformType transformType,
+                                         Class<? extends RosettaModelObject> inputType,
+                                         Class<?> functionType,
                                          PipelineModel.Serialisation inputSerialisation,
                                          PipelineModel.Serialisation outputSerialisation,
                                          ObjectMapper defaultJsonObjectMapper,
@@ -66,7 +70,7 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
         ObjectWriter outputObjectWriter = Optional.ofNullable(outputSerialisation)
                 .flatMap(TestPackUtils::getObjectWriter)
                 .orElse(defaultJsonObjectWriter);
-        
+
         return createTestPackFunctionRunner(transformType,
                 functionType,
                 inputType,
@@ -82,14 +86,14 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                                                                                                 ObjectWriter outputObjectWriter,
                                                                                                 Validator xsdValidator) {
         Function<IN, RosettaModelObject> transformFunction = getTransformFunction(functionType, inputType);
-        return new PipelineFunctionRunnerImpl<>(transformType, 
-                transformFunction, 
-                inputType, 
-                typeValidator, 
-                referenceConfig, 
-                inputObjectMapper, 
-                outputObjectWriter, 
-                postProcessor, 
+        return new PipelineFunctionRunnerImpl<>(transformType,
+                transformFunction,
+                inputType,
+                typeValidator,
+                referenceConfig,
+                inputObjectMapper,
+                outputObjectWriter,
+                postProcessor,
                 xsdValidator);
     }
 
@@ -99,13 +103,17 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
         try {
             evaluateMethod = functionInstance.getClass().getMethod("evaluate", inputType);
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(String.format("Evaluate method with input type %s not found", inputType.getName()), e);
+            throw new RuntimeException(String.format("Function %s evaluate method with input type %s not found", functionType.getName(), inputType.getName()), e);
         }
         return (resolvedInput) -> {
             try {
+                if (resolvedInput == null) {
+                    LOGGER.info("Not invoking function {} as input is null", functionType.getName());
+                    return null;
+                }
                 return (RosettaModelObject) evaluateMethod.invoke(functionInstance, resolvedInput);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException("Failed to invoke evaluate method", e);
+                throw new RuntimeException(String.format("Failed to invoke function %s evaluate method", functionType.getName()), e);
             }
         };
     }
