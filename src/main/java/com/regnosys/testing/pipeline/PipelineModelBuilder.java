@@ -28,6 +28,8 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.regnosys.rosetta.common.transform.TestPackUtils.getSerialisation;
+
 
 public class PipelineModelBuilder {
 
@@ -69,10 +71,5 @@ public class PipelineModelBuilder {
                 outputSerialisation,
                 modelId
         );
-    }
-
-    private PipelineModel.Serialisation getSerialisation(String xmlConfigPath) {
-        return xmlConfigPath == null ? null :
-                new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.XML, xmlConfigPath);
     }
 }
