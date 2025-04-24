@@ -160,16 +160,15 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         PipelineFunctionResult result = functionRunner.run(UrlUtils.toPath(inputPath));
 
         String actualOutput = result.getSerialisedOutput();
+        TestPackModel.SampleModel.Assertions actualAssertions = result.getAssertions();
 
         if (TestingExpectationUtil.WRITE_EXPECTATIONS) {
-            actualExpectation.put(testPackId, new TransformTestResult(actualOutput, updateSampleModel(sampleModel, result.getAssertions())));
+            actualExpectation.put(testPackId, new TransformTestResult(actualOutput, updateSampleModel(sampleModel, actualAssertions)));
         }
 
-        Path outputPath = Path.of(sampleModel.getOutputPath());
-        String expectedOutput = readStringFromResources(outputPath);
+        String expectedOutput = readStringFromResources(Path.of(sampleModel.getOutputPath()));
         assertEquals(expectedOutput, actualOutput);
 
-        TestPackModel.SampleModel.Assertions actualAssertions = result.getAssertions();
         TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
         assertEquals(expectedAssertions, actualAssertions);
     }
