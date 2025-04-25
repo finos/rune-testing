@@ -54,7 +54,6 @@ public class LatestSchemesImportTest {
         try (FileOutputStream fos = new FileOutputStream(LatestSchemesImportTest.CODE_LIST_ZIP)) {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             String checksum = getZipCheckSum(Paths.get(CODE_LIST_ZIP));
-
             if (WRITE_LATEST_VERSION) {
                 //Unzip from CodeList just being downloaded
                 unzip();
