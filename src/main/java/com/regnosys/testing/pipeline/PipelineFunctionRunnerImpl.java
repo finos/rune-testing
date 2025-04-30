@@ -1,4 +1,4 @@
-package com.regnosys.testing.testpack;
+package com.regnosys.testing.pipeline;
 
 /*-
  * ===============
@@ -20,16 +20,18 @@ package com.regnosys.testing.testpack;
  * ===============
  */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
-import com.regnosys.rosetta.common.util.Pair;
+import com.regnosys.rosetta.common.postprocess.PathCountProcessor;
+import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
+import com.rosetta.model.lib.path.RosettaPath;
+import com.rosetta.model.lib.process.PostProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -39,7 +41,6 @@ import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -49,67 +50,101 @@ import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.As
 import static com.regnosys.rosetta.common.transform.TestPackUtils.readFile;
 import static com.regnosys.testing.transform.TransformTestExtension.ERROR_OUTPUT;
 
-public class TestPackFunctionRunnerImpl<IN extends RosettaModelObject> implements TestPackFunctionRunner {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestPackFunctionRunnerImpl.class);
-    public static final Path ROSETTA_SOURCE_PATH = Path.of("rosetta-source/src/main/resources/");
+public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implements PipelineFunctionRunner {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PipelineFunctionRunnerImpl.class);
 
+    private final TransformType transformType;
     private final Function<IN, RosettaModelObject> function;
     private final Class<IN> inputType;
     private final RosettaTypeValidator typeValidator;
     private final ReferenceConfig referenceConfig;
     private final ObjectMapper inputObjectMapper;
     private final ObjectWriter outputObjectWriter;
+    private final PostProcessor postProcessor;
     private final Validator xsdValidator;
 
 
-    public TestPackFunctionRunnerImpl(Function<IN, RosettaModelObject> function,
+    public PipelineFunctionRunnerImpl(TransformType transformType,
+                                      Function<IN, RosettaModelObject> function,
                                       Class<IN> inputType,
                                       RosettaTypeValidator typeValidator,
                                       ReferenceConfig referenceConfig,
                                       ObjectMapper inputObjectMapper,
                                       ObjectWriter outputObjectWriter,
+                                      PostProcessor postProcessor,
                                       Validator xsdValidator) {
+        this.transformType = transformType;
         this.function = function;
         this.inputType = inputType;
         this.typeValidator = typeValidator;
         this.referenceConfig = referenceConfig;
         this.inputObjectMapper = inputObjectMapper;
         this.outputObjectWriter = outputObjectWriter;
+        this.postProcessor = postProcessor;
         this.xsdValidator = xsdValidator;
     }
 
     @Override
-    public Pair<String, Assertions> run(Path inputPath) {
-        RosettaModelObject output;
+    public PipelineFunctionResult run(Path inputPath) {
+        Integer inputPathCount = null;
+        Integer outputPathCount = null;
+        Integer actualValidationFailures = null;
+        Boolean schemaValidationFailure = null;
+        
         try {
-            // TODO - fix this hack.
-            Path inputPathFromRepositoryRoot = inputPath.isAbsolute() ? inputPath : ROSETTA_SOURCE_PATH.resolve(inputPath);
-            URL inputFileUrl = inputPathFromRepositoryRoot.toUri().toURL();
+            URL inputFileUrl = inputPath.toUri().toURL();
             IN input = readFile(inputFileUrl, inputObjectMapper, inputType);
-            output = function.apply(resolveReferences(input));
-        } catch (MalformedURLException e) {
-            LOGGER.error("Failed to load input path {}", inputPath, e);
-            return Pair.of(ERROR_OUTPUT, new Assertions(null, null, true));
+            IN resolvedInput = resolveReferences(input);
+
+            RosettaModelObject output = function.apply(resolvedInput);
+            RosettaModelObject postProcessedOutput = postProcess(output);
+
+            // serialised output
+            String serialisedOutput = outputObjectWriter.writeValueAsString(postProcessedOutput);
+
+            if (transformType == TransformType.TRANSLATE) {
+                inputPathCount = getPathCount(input);
+                outputPathCount = getPathCount(postProcessedOutput);
+            }
+
+            // validation failures
+            ValidationReport validationReport = typeValidator.runProcessStep(postProcessedOutput.getType(), postProcessedOutput);
+            validationReport.logReport();
+            actualValidationFailures = validationReport.validationFailures().size();
+
+            // schema validation
+            schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
+
+            Assertions assertions =
+                    new Assertions(inputPathCount,
+                            outputPathCount,
+                            actualValidationFailures,
+                            schemaValidationFailure,
+                            false);
+            return new PipelineFunctionResult(serialisedOutput, validationReport, assertions);
         } catch (Exception e) {
-            LOGGER.error("Exception occurred running sample creation", e);
-            return Pair.of(ERROR_OUTPUT, new Assertions(null, null, true));
+            LOGGER.error("Exception occurred running transform", e);
+            Assertions assertions = 
+                    new Assertions(inputPathCount, 
+                            outputPathCount, 
+                            actualValidationFailures, 
+                            schemaValidationFailure, 
+                            true);
+            return new PipelineFunctionResult(ERROR_OUTPUT, null, assertions);
         }
+    }
 
-        String serialisedOutput;
-        try {
-            serialisedOutput = outputObjectWriter.writeValueAsString(output);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialise function output", e);
-        }
+    private int getPathCount(RosettaModelObject o) {
+        PathCountProcessor processor = new PathCountProcessor();
+        o.process(new RosettaPath.NullPath(), processor);
+        return processor.report().getCollectedPaths().size();
+    }
 
-        ValidationReport validationReport = typeValidator.runProcessStep(output.getType(), output);
-        validationReport.logReport();
-        int actualValidationFailures = validationReport.validationFailures().size();
-
-        Boolean schemaValidationFailure = isSchemaValidationFailure(serialisedOutput);
-
-        Assertions assertions = new Assertions(actualValidationFailures, schemaValidationFailure, false);
-        return Pair.of(serialisedOutput, assertions);
+    private <X extends RosettaModelObject> X postProcess(X output) {
+        RosettaModelObjectBuilder outputBuilder = output.toBuilder();
+        postProcessor.postProcess(outputBuilder.getType(), outputBuilder);
+        //noinspection unchecked
+        return (X) outputBuilder.build();
     }
 
     @SuppressWarnings("unchecked")

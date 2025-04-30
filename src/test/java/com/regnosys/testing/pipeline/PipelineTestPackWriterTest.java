@@ -230,7 +230,7 @@ public class PipelineTestPackWriterTest {
         Files.write(testPackBPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
         Files.write(testPackCPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
 
-        PipelineTreeConfig chain = new PipelineTreeConfig(null)
+        PipelineTreeConfig chain = new PipelineTreeConfig()
                 .withTestPackIdFilter(startsWith("test-pack-a", "test-pack-1", "test-pack-2").
                         and(Predicate.not(startsWith("test-pack-b", "test-pack-only-c"))))
                 .starting(TransformType.REPORT, helper.middleAClass())
@@ -251,7 +251,7 @@ public class PipelineTestPackWriterTest {
     @Test
     void writeSegregatedTestPacksWithFilter(@TempDir Path tempDir) throws Exception {
         // Trade Report Pipeline, startClass == TradeInstruction, middleClass == TradeReport, endClass == TradeProject
-        PipelineTreeConfig tradeReportConf = new PipelineTreeConfig(null)
+        PipelineTreeConfig tradeReportConf = new PipelineTreeConfig()
                 .withTestPackIdFilter(startsWith("trade"))
                 .starting(TransformType.ENRICH, helper.startClass())
                 .add(helper.startClass(), TransformType.REPORT, helper.middleClass())
@@ -265,7 +265,7 @@ public class PipelineTestPackWriterTest {
         Files.write(tradeTestPack1Path.resolve("t-1-2.json"), "{\"name\": \"1-2t\"}".getBytes());
         
         // Valuation Report Pipeline, middleBClass == ValuationReport. endBClass == ValuationProject
-        PipelineTreeConfig valuationReportConf = new PipelineTreeConfig(null)
+        PipelineTreeConfig valuationReportConf = new PipelineTreeConfig()
                 .withTestPackIdFilter(startsWith("valuation"))
                 .starting(TransformType.REPORT, helper.middleBClass())
                 .add(helper.middleBClass(), TransformType.PROJECTION, helper.endBClass())

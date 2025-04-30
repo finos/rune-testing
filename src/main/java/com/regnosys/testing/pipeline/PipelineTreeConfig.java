@@ -9,9 +9,9 @@ package com.regnosys.testing.pipeline;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.testing.validation.ValidationSummariser;
 import com.rosetta.model.lib.functions.RosettaFunction;
 
 import java.nio.file.Path;
@@ -36,24 +37,33 @@ import java.util.stream.Collectors;
 
 public class PipelineTreeConfig {
 
+    private final List<TransformFunction> starting = new ArrayList<>();
+    private final String modelId;
+    private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
+    
     private ImmutableMap<Class<?>, String> xmlConfigMap;
     private ImmutableMap<Class<?>, String> xmlSchemaMap;
-    private final List<TransformFunction> starting = new ArrayList<>();
+    private Boolean sortJsonPropertiesAlphabetically;
     private PipelineTestPackFilter pipelineTestPackFilter;
-
-    private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
     private boolean strictUniqueIds;
     private Path writePath;
     private Predicate<String> testPackIdFilter = testPackId -> true;
-    private String modelId;
+    private ValidationSummariser validationSummariser;
+
+    /**
+     * Use this constructor when the Transform functions used in the tree config are unique to a model.
+     * When re-using functions that are shared between models, use the constructor with the modelId.
+     */
+    public PipelineTreeConfig() {
+        this(null);
+    }
 
     public PipelineTreeConfig(String modelId) {
         this.modelId = modelId;
     }
 
-    public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function) {
-        starting.add(new TransformFunction(function, transformType));
-        return this;
+    public String getModelId() {
+        return modelId;
     }
 
     public PipelineTreeConfig strictUniqueIds() {
@@ -61,35 +71,23 @@ public class PipelineTreeConfig {
         return this;
     }
 
+    public boolean isStrictUniqueIds() {
+        return strictUniqueIds;
+    }
+
+    public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function) {
+        starting.add(new TransformFunction(function, transformType));
+        return this;
+    }
+
+    List<TransformFunction> getStarting() {
+        return starting;
+    }
+
     public PipelineTreeConfig add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function) {
         TransformFunction current = new TransformFunction(function, transformType);
         conf.put(upstreamFunction, current);
         return this;
-    }
-    
-    public PipelineTreeConfig withTestPackIdFilter(Predicate<String> testPackIdFilter) {
-        this.testPackIdFilter = testPackIdFilter;
-        return this;
-    }
-    
-    public PipelineTreeConfig withXmlConfigMap(ImmutableMap<Class<?>, String> xmlConfigMap) {
-        this.xmlConfigMap = xmlConfigMap;
-        return this;
-    }
-
-    public PipelineTreeConfig withXmlSchemaMap(ImmutableMap<Class<?>, String> xmlSchemaMap) {
-        this.xmlSchemaMap = xmlSchemaMap;
-        return this;
-    }
-
-    public String getModelId() { return modelId; }
-
-    public ImmutableMap<Class<?>, String> getXmlConfigMap() {
-        return Optional.ofNullable(xmlConfigMap).orElse(ImmutableMap.of());
-    }
-
-    public ImmutableMap<Class<?>, String> getXmlSchemaMap() {
-        return xmlSchemaMap;
     }
 
     public PipelineTreeConfig withWritePath(Path writePath) {
@@ -101,21 +99,45 @@ public class PipelineTreeConfig {
         return writePath;
     }
 
-    public boolean isStrictUniqueIds() {
-        return strictUniqueIds;
+    public PipelineTreeConfig withXmlConfigMap(ImmutableMap<Class<?>, String> xmlConfigMap) {
+        this.xmlConfigMap = xmlConfigMap;
+        return this;
     }
 
-    List<TransformFunction> getStarting() {
-        return starting;
+    public ImmutableMap<Class<?>, String> getXmlConfigMap() {
+        return Optional.ofNullable(xmlConfigMap).orElse(ImmutableMap.of());
+    }
+
+    public PipelineTreeConfig withXmlSchemaMap(ImmutableMap<Class<?>, String> xmlSchemaMap) {
+        this.xmlSchemaMap = xmlSchemaMap;
+        return this;
+    }
+
+    public ImmutableMap<Class<?>, String> getXmlSchemaMap() {
+        return xmlSchemaMap;
+    }
+
+    public PipelineTreeConfig withValidationSummariser(ValidationSummariser validationSummariser) {
+        this.validationSummariser = validationSummariser;
+        return this;
+    }
+
+    public ValidationSummariser getValidationSummariser() {
+        return validationSummariser;
+    }
+
+    public PipelineTreeConfig withTestPackIdFilter(Predicate<String> testPackIdFilter) {
+        this.testPackIdFilter = testPackIdFilter;
+        return this;
+    }
+
+    public Predicate<String> getTestPackIdFilter() {
+        return testPackIdFilter;
     }
 
     public PipelineTreeConfig withTestPackFilter(PipelineTestPackFilter pipelineTestPackFilter) {
         this.pipelineTestPackFilter = pipelineTestPackFilter;
         return this;
-    }
-    
-    public Predicate<String> getTestPackIdFilter() {
-        return testPackIdFilter;
     }
 
     PipelineTestPackFilter getTestPackFilter() {
@@ -130,6 +152,15 @@ public class PipelineTreeConfig {
     public TransformType getDownstreamTransformType(Class<? extends RosettaFunction> function) {
         Collection<TransformFunction> transformFunctions = conf.get(function);
         return transformFunctions.stream().map(TransformFunction::getTransformType).findFirst().orElse(null);
+    }
+
+    public PipelineTreeConfig withSortJsonPropertiesAlphabetically(boolean sortJsonPropertiesAlphabetically) {
+        this.sortJsonPropertiesAlphabetically = sortJsonPropertiesAlphabetically;
+        return this;
+    }
+
+    public boolean isSortJsonPropertiesAlphabetically() {
+        return Optional.ofNullable(sortJsonPropertiesAlphabetically).orElse(true);
     }
 
     static class TransformFunction {

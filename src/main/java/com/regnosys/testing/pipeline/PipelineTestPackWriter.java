@@ -20,21 +20,36 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.io.Resources;
+import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
+import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
-import com.regnosys.rosetta.common.transform.FunctionNameHelper;
+import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
+import com.regnosys.testing.validation.ValidationSummariser;
+import com.rosetta.model.lib.RosettaModelObject;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+import org.xml.sax.SAXException;
 
 import jakarta.inject.Inject;
+import javax.xml.XMLConstants;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -42,22 +57,24 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 import static com.regnosys.rosetta.common.util.UrlUtils.getBaseFileName;
 
 public class PipelineTestPackWriter {
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(PipelineTestPackWriter.class);
+
+    private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
+
     private final PipelineTreeBuilder pipelineTreeBuilder;
     private final PipelineModelBuilder pipelineModelBuilder;
-    private final PipelineFunctionRunner pipelineFunctionRunner;
+    private final PipelineFunctionRunnerProvider functionRunnerProvider;
     private final FunctionNameHelper helper;
 
 
     @Inject
-    public PipelineTestPackWriter(PipelineTreeBuilder pipelineTreeBuilder, PipelineFunctionRunner pipelineFunctionRunner, PipelineModelBuilder pipelineModelBuilder, FunctionNameHelper helper) {
+    public PipelineTestPackWriter(PipelineTreeBuilder pipelineTreeBuilder, PipelineFunctionRunnerProvider functionRunnerProvider, PipelineModelBuilder pipelineModelBuilder, FunctionNameHelper helper) {
         this.pipelineTreeBuilder = pipelineTreeBuilder;
-        this.pipelineFunctionRunner = pipelineFunctionRunner;
+        this.functionRunnerProvider = functionRunnerProvider;
         this.pipelineModelBuilder = pipelineModelBuilder;
         this.helper = helper;
     }
@@ -67,19 +84,29 @@ public class PipelineTestPackWriter {
             LOGGER.error("Write path not configured. Aborting.");
             return;
         }
-        LOGGER.info("Starting Test Pack Generation");
-        ObjectWriter objectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        ValidationSummariser validationSummariser = config.getValidationSummariser();
+
+        LOGGER.info("Starting test pack Generation");
+        ObjectWriter configObjectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
+        ObjectWriter jsonObjectWriter =
+                JSON_OBJECT_MAPPER
+                        .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, config.isSortJsonPropertiesAlphabetically())
+                        .writerWithDefaultPrettyPrinter();
 
         Path resourcesPath = config.getWritePath();
 
         PipelineTree pipelineTree = pipelineTreeBuilder.createPipelineTree(config);
 
         for (PipelineNode pipelineNode : pipelineTree.getNodeList()) {
-            LOGGER.info("Generating {} Test Packs for {} ", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
+            Stopwatch pipelineStopwatch = Stopwatch.createStarted();
+            TransformType transformType = pipelineNode.getTransformType();
+            String functionName = pipelineNode.getFunction().getName();
+            LOGGER.info("Generating {} test packs for {} ", transformType, functionName);
 
             final PipelineTestPackFilter pipelineTestPackFilter = config.getTestPackFilter();
             if (pipelineTestPackFilter != null && pipelineTestPackFilter.getExcludedFunctionsFromTestPackGeneration().contains(pipelineNode.getFunction())) {
-                LOGGER.info("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", pipelineNode.getTransformType(), pipelineNode.getFunction().getName());
+                LOGGER.info("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", transformType, functionName);
                 continue;
             }
 
@@ -97,17 +124,22 @@ public class PipelineTestPackWriter {
             Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
                     .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
 
-            LOGGER.info("{} Test Packs will be generated", filteredTestPackToSamples.keySet().size());
-
             for (String testPackId : filteredTestPackToSamples.keySet()) {
                 List<Path> inputSamplesForTestPack = filteredTestPackToSamples.get(testPackId);
-                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config);
+                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config, jsonObjectWriter, validationSummariser);
 
-                Path writePath = Files.createDirectories(resourcesPath.resolve(pipelineNode.getTransformType().getResourcePath()).resolve("config"));
+                Path writePath = Files.createDirectories(resourcesPath.resolve(transformType.getResourcePath()).resolve("config"));
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
-                objectWriter.writeValue(writeFile.toFile(), testPackModel);
+                configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
+            LOGGER.info("Generated {} {} test packs for {}, took {}", filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch);
         }
+
+        if (validationSummariser != null) {
+            validationSummariser.summerize();
+        }
+
+        LOGGER.info("Test pack generation complete, took {}", stopwatch);
     }
 
     private List<Path> findAllSamples(Path inputDir) throws IOException {
@@ -121,32 +153,66 @@ public class PipelineTestPackWriter {
         }
     }
 
-    private TestPackModel writeTestPackSamples(Path resourcesPath, Path inputPath, Path outputDir, String testPackId, List<Path> inputSamplesForTestPack, PipelineNode pipelineNode, PipelineTreeConfig config) throws IOException {
+    private TestPackModel writeTestPackSamples(Path resourcesPath,
+                                               Path inputPath,
+                                               Path outputDir,
+                                               String testPackId,
+                                               List<Path> inputSamplesForTestPack,
+                                               PipelineNode pipelineNode,
+                                               PipelineTreeConfig config,
+                                               ObjectWriter jsonObjectWriter,
+                                               ValidationSummariser validationSummariser) throws IOException {
         LOGGER.info("Test pack sample generation started for {}", testPackId);
         TransformType transformType = pipelineNode.getTransformType();
         LOGGER.info("{} {} samples to be generated", inputSamplesForTestPack.size(), transformType);
         List<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
         String pipelineId = pipelineNode.id(config.isStrictUniqueIds());
         String pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
+        PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
 
+        PipelineModel.Transform transform = pipeline.getTransform();
+        Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
+        Class<? extends RosettaModelObject> functionType = toClass(transform.getFunction());
+        Class<? extends RosettaModelObject> outputType = toClass(transform.getOutputType());
+        // XSD validation
+        Validator outputXsdValidator = Optional.ofNullable(config.getXmlSchemaMap())
+                .map(sm -> getXsdValidator(outputType, sm))
+                .orElse(null);
+
+        PipelineFunctionRunner functionRunner =
+                functionRunnerProvider.create(transform.getType(),
+                        inputType,
+                        functionType,
+                        pipeline.getInputSerialisation(),
+                        pipeline.getOutputSerialisation(),
+                        JSON_OBJECT_MAPPER,
+                        jsonObjectWriter,
+                        outputXsdValidator);
+
+        String functionName = functionType.getSimpleName();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         for (Path inputSample : inputSamplesForTestPack) {
-            LOGGER.info("Generating {} sample {}", transformType, inputSample.getFileName());
+            LOGGER.info("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
 
-            PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
-            Path outputSample = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
-            outputSample = outputSample.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, outputSample.toFile().getName())));
+            Path relativeOutputPath = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
+            Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, relativeOutputPath.toFile().getName())));
 
-            PipelineFunctionRunner.Result result = pipelineFunctionRunner.run(pipeline, config.getXmlSchemaMap(), resourcesPath.resolve(inputSample));
+            PipelineFunctionResult result = functionRunner.run(resourcesPath.resolve(inputSample));
             TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
 
             String baseFileName = getBaseFileName(inputSample.toUri().toURL());
             String displayName = baseFileName.replace("-", " ");
 
-            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputSample.toString(), outputSample.toString(), assertions);
+            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputSample.toString(), outputPath.toString(), assertions);
             sampleModels.add(sampleModel);
 
-            Files.createDirectories(resourcesPath.resolve(outputSample).getParent());
-            Files.write(resourcesPath.resolve(outputSample), result.getSerialisedOutput().getBytes());
+            Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
+            Files.write(resourcesPath.resolve(outputPath), result.getSerialisedOutput().getBytes());
+
+            ValidationReport validationReport = result.getValidationReport();
+            if (validationSummariser != null) {
+                validationSummariser.addValidationReport(pipeline, sampleModel.getName(), sampleModel, validationReport);
+            }
         }
 
         List<TestPackModel.SampleModel> sortedSamples = sampleModels
@@ -154,12 +220,13 @@ public class PipelineTestPackWriter {
                 .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
                 .collect(Collectors.toList());
 
-        LOGGER.info("Test Pack sample generation complete for {} ", testPackId);
+        LOGGER.info("Function {} test pack {} generation complete, took {}", functionName, testPackId, stopwatch);
 
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
     }
 
+    @NotNull
     private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
         String outputFormat = Optional.ofNullable(pipelineModel.getOutputSerialisation())
                 .map(PipelineModel.Serialisation::getFormat)
@@ -228,5 +295,36 @@ public class PipelineTestPackWriter {
     protected boolean filterApplicableFunctionsForTestPack(String testPackName, PipelineNode pipelineNode, ImmutableMultimap<String, Class<?>> testPackIncludedReportIds) {
         ImmutableCollection<Class<?>> applicableReportsForTestPack = testPackIncludedReportIds.get(testPackName);
         return applicableReportsForTestPack.isEmpty() || applicableReportsForTestPack.contains(pipelineNode.getFunction());
+    }
+
+    @SuppressWarnings("unchecked")
+    private Class<? extends RosettaModelObject> toClass(String name) {
+        try {
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            if (contextClassLoader != null) {
+                return (Class<? extends RosettaModelObject>) contextClassLoader.loadClass(name);
+            }
+            return (Class<? extends RosettaModelObject>) Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Validator getXsdValidator(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
+        URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
+                .map(Resources::getResource)
+                .orElse(null);
+        if (schemaUrl == null) {
+            return null;
+        }
+        try {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
+            schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
+            Schema schema = schemaFactory.newSchema(schemaUrl);
+            return schema.newValidator();
+        } catch (SAXException e) {
+            throw new RuntimeException(String.format("Failed to create schema validator for %s", schemaUrl), e);
+        }
     }
 }

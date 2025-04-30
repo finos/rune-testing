@@ -54,9 +54,6 @@ public class LatestSchemesImportTest {
         try (FileOutputStream fos = new FileOutputStream(LatestSchemesImportTest.CODE_LIST_ZIP)) {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             String checksum = getZipCheckSum(Paths.get(CODE_LIST_ZIP));
-
-            assertEquals("3ab83d8417b8cd0da8678b789112211b", checksum, "CodeList zip has been updated, run again with WRITE_LATEST_VERSION enabled then update expected checksum");
-
             if (WRITE_LATEST_VERSION) {
                 //Unzip from CodeList just being downloaded
                 unzip();
@@ -65,6 +62,7 @@ public class LatestSchemesImportTest {
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST_ZIP));
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST));
             }
+            assertEquals("2479f3e4e345730f2440a1f1cb642426", checksum, "CodeList zip has been updated, run again with WRITE_EXPECTATIONS enabled then update expected checksum");
         }
     }
 

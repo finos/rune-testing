@@ -2,7 +2,7 @@ package com.regnosys.testing.pipeline;
 
 /*-
  * ===============
- * Rune Testing
+ * Rosetta Testing
  * ===============
  * Copyright (C) 2022 - 2024 REGnosys
  * ===============
@@ -20,51 +20,15 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
-import com.google.common.collect.ImmutableMap;
-import com.google.inject.Injector;
-import com.regnosys.rosetta.common.transform.PipelineModel;
-import com.regnosys.rosetta.common.transform.TestPackModel;
-import com.regnosys.rosetta.common.util.Pair;
-import com.regnosys.testing.testpack.TestPackFunctionRunner;
-import com.regnosys.testing.testpack.TestPackFunctionRunnerProvider;
-
-import jakarta.inject.Inject;
 import java.nio.file.Path;
 
-public class PipelineFunctionRunner {
+public interface PipelineFunctionRunner {
 
-    @Inject
-    Injector injector;
-
-    @Inject
-    TestPackFunctionRunnerProvider provider;
-
-    public Result run(PipelineModel pipelineModel, ImmutableMap<Class<?>, String> outputSchemaMap, Path inputPath) {
-        TestPackFunctionRunner functionRunner = getFunctionRunner(pipelineModel, outputSchemaMap);
-        Pair<String, TestPackModel.SampleModel.Assertions> result = functionRunner.run(inputPath);
-        return new Result(result.left(), result.right());
-    }
-
-    private TestPackFunctionRunner getFunctionRunner(PipelineModel pipelineModel, ImmutableMap<Class<?>, String> schemaMap) {
-        return provider.create(pipelineModel.getTransform(), pipelineModel.getInputSerialisation(), pipelineModel.getOutputSerialisation(), schemaMap, injector);
-    }
-
-    public static class Result {
-        String serialisedOutput;
-        TestPackModel.SampleModel.Assertions assertions;
-
-        public Result(String serialisedOutput, TestPackModel.SampleModel.Assertions assertions) {
-            this.serialisedOutput = serialisedOutput;
-            this.assertions = assertions;
-        }
-
-        public TestPackModel.SampleModel.Assertions getAssertions() {
-            return assertions;
-        }
-
-        public String getSerialisedOutput() {
-            return serialisedOutput;
-        }
-    }
-
+    /**
+     * Pipeline function execution.
+     *
+     * @param inputPath path from repository root for input sample
+     * @return serialised output, validation report and assertions
+     */
+    PipelineFunctionResult run(Path inputPath);
 }
