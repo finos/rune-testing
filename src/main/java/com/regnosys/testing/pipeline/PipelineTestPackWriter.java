@@ -42,7 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.xml.sax.SAXException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -178,11 +178,11 @@ public class PipelineTestPackWriter {
         Validator outputXsdValidator = Optional.ofNullable(config.getXmlSchemaMap())
                 .map(sm -> getXsdValidator(outputType, sm))
                 .orElse(null);
-        
+
         PipelineFunctionRunner functionRunner =
-                functionRunnerProvider.create(transform.getType(), 
-                        inputType, 
-                        functionType, 
+                functionRunnerProvider.create(transform.getType(),
+                        inputType,
+                        functionType,
                         pipeline.getInputSerialisation(),
                         pipeline.getOutputSerialisation(),
                         JSON_OBJECT_MAPPER,
@@ -309,7 +309,7 @@ public class PipelineTestPackWriter {
             throw new RuntimeException(e);
         }
     }
-    
+
     private Validator getXsdValidator(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
         URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
                 .map(Resources::getResource)
