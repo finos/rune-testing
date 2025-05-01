@@ -56,7 +56,7 @@ import java.util.stream.Stream;
 public class ReportTypeSummariser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportTypeSummariser.class);
-    
+
     private final ModelLoader modelLoader;
     private final Injector injector;
     private final RObjectFactory rObjectFactory;
@@ -86,6 +86,8 @@ public class ReportTypeSummariser {
 
         findReports(models, namespace, excludedReportsFilter)
                 .forEach(report -> {
+                    ModelReportId reportId = modelIdProvider.getReportId(report);
+                    LOGGER.info("Creating report type summary for {}", reportId);
                     RDataType rReportType = rObjectFactory.buildRDataType(report.getReportType());
                     RFunction rFunction = rObjectFactory.buildRFunction(report);
                     LabelProvider labelProvider = getLabelProvider(rFunction);
@@ -98,28 +100,28 @@ public class ReportTypeSummariser {
 
     /**
      * Merges 2 report type summary files into a single file that can be compared in Excel.
-     * 
+     *
      * @param classpathDir          path to model files, e.g. rosetta/drr
      * @param namespace             namespace starts with, e.g. drr
      * @param excludedReportsFilter reports to be excluded if the name contains any items
-     * @param v1                    first version to merge
-     * @param v2                    second version to merge
+     * @param branch1               first branch to merge
+     * @param branch2               second branch to merge
      * @param basePath              write path, typically a temp directory
      */
-    public void mergeTypeSummaryForReports(String classpathDir, DottedPath namespace, Set<String> excludedReportsFilter, String v1, String v2, Path basePath) {
+    public void mergeTypeSummaryForReports(String classpathDir, DottedPath namespace, Set<String> excludedReportsFilter, String branch1, String branch2, Path basePath) {
         List<RosettaModel> models = getModels(classpathDir);
 
         for (RosettaReport report : findReports(models, namespace, excludedReportsFilter)) {
             ModelReportId reportId = modelIdProvider.getReportId(report);
             LOGGER.info("Merging report type data for {}", reportId);
-            Path file1 = basePath.resolve(getFileName(report, v1));
+            Path file1 = basePath.resolve(getFileName(report, branch1));
             if (!Files.exists(file1)) {
-                LOGGER.info("{} not found for {} version {}", file1, reportId, v1);
+                LOGGER.info("{} not found for {} version {}", file1, reportId, branch1);
                 continue;
             }
-            Path file2 = basePath.resolve(getFileName(report, v2));
+            Path file2 = basePath.resolve(getFileName(report, branch2));
             if (!Files.exists(file2)) {
-                LOGGER.info("{} not found for {} version {}", file2, reportId, v2);
+                LOGGER.info("{} not found for {} version {}", file2, reportId, branch2);
                 continue;
             }
 
@@ -132,7 +134,7 @@ public class ReportTypeSummariser {
                     .collect(Collectors.toCollection(LinkedHashSet::new));
 
             StringBuilder sb = new StringBuilder();
-            sb.append(String.format("%s||||%s||\n", v1, v2));
+            sb.append(String.format("%s||||%s||\n", branch1, branch2));
             sb.append("Label|Path|Type||Label|Path|Type\n");
             for (String key : keys) {
                 Iterator<Data> data1 = content1.get(key).iterator();
@@ -147,6 +149,59 @@ public class ReportTypeSummariser {
             }
             writeFile(basePath.resolve(getFileName(report, "merged")), sb.toString());
         }
+    }
+
+    /**
+     * Merges 2 report type summary files into a single file that can be compared in Excel.
+     *
+     * @param classpathDir path to model files, e.g. rosetta/drr
+     * @param reportId1    first report to merge
+     * @param branch1      first branch to merge
+     * @param reportId2    second report to merge
+     * @param branch2      second branch to merge
+     * @param basePath     write path, typically a temp directory
+     */
+    public void mergeTypeSummaryForReport(String classpathDir, ModelReportId reportId1, String branch1, ModelReportId reportId2, String branch2, Path basePath) {
+        List<RosettaModel> models = getModels(classpathDir);
+
+        RosettaReport report1 = findReport(models, reportId1);
+        LOGGER.info("Merging report type data for {}", reportId1);
+        Path file1 = basePath.resolve(getFileName(report1, branch1));
+        if (!Files.exists(file1)) {
+            LOGGER.info("{} not found for {} version {}", file1, reportId1, branch1);
+            return;
+        }
+        RosettaReport report2 = findReport(models, reportId2);
+        Path file2 = basePath.resolve(getFileName(report2, branch2));
+        if (!Files.exists(file2)) {
+            LOGGER.info("{} not found for {} version {}", file2, report2, branch2);
+            return;
+        }
+
+        Multimap<String, Data> content1 = getLabelToDataMap(file1);
+        Multimap<String, Data> content2 = getLabelToDataMap(file2);
+
+        Set<String> keys = Stream.of(content1.keySet(), content2.keySet())
+                .flatMap(Collection::stream)
+                .sorted()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%s||||%s||\n", file1.getFileName(), file2.getFileName()));
+        sb.append("Label|Path|Type||Label|Path|Type\n");
+        for (String key : keys) {
+            Iterator<Data> data1 = content1.get(key).iterator();
+            Iterator<Data> data2 = content2.get(key).iterator();
+            while (data1.hasNext() || data2.hasNext()) {
+                sb.append(data1.hasNext() ? data1.next().toExcelFormat() : "||");
+                sb.append("||");
+                sb.append(data2.hasNext() ? data2.next().toExcelFormat() : "||");
+                sb.append("\n");
+            }
+
+        }
+        writeFile(basePath.resolve(getFileName(report2, "merged")), sb.toString());
+
     }
 
     @NotNull
@@ -201,6 +256,17 @@ public class ReportTypeSummariser {
                         Arrays.stream(modelIdProvider.getReportId(r).getCorpusList())
                                 .noneMatch(excludedReportsFilter::contains))
                 .collect(Collectors.toSet());
+    }
+
+    private RosettaReport findReport(List<RosettaModel> models, ModelReportId reportId) {
+        return models.stream()
+                .map(RosettaModel::getElements)
+                .flatMap(Collection::stream)
+                .filter(RosettaReport.class::isInstance)
+                .map(RosettaReport.class::cast)
+                .filter(r ->
+                        modelIdProvider.getReportId(r).equals(reportId))
+                .findFirst().orElseThrow();
     }
 
     private void collectTypeAttributes(RDataType parentDataType, RosettaPath path, LabelProvider labelProvider, Multimap<RType, Data> visitor) {
