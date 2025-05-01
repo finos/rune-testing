@@ -93,15 +93,16 @@
         <java.enforced.version>[17,18)</java.enforced.version>
         <maven.compiler.release>11</maven.compiler.release>
 
-        <rosetta.dsl.version>9.48.0</rosetta.dsl.version>
+        <rosetta.dsl.version>9.50.0</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.main-SNAPSHOT</rosetta.common.version>
 
-        <xtext.version>2.27.0</xtext.version>
+        <xtext.version>2.38.0</xtext.version>
+        <guice.version>6.0.0</guice.version>
         <unruly.version>1.6</unruly.version>
         <kotlin.version>1.7.21</kotlin.version>
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
-        <guava.version>32.0.1-jre</guava.version>
+        <guava.version>33.3.1-jre</guava.version>
 
         <!-- Release -->
         <gpg.keyname>configured-by-release-profile</gpg.keyname>
@@ -116,6 +117,7 @@
 
         <!-- plugins -->
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
+        <maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
         <cxf-xjc-plugin.version>3.3.1</cxf-xjc-plugin.version>
@@ -212,6 +214,11 @@
                 <groupId>com.regnosys</groupId>
                 <artifactId>rosetta-common</artifactId>
                 <version>${rosetta.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.xtext</groupId>
@@ -373,6 +380,31 @@
                                 </bannedDependencies>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <sourceDirectories>
+                        <sourceDirectory>src/main/java</sourceDirectory>
+                        <sourceDirectory>src/test/java</sourceDirectory>
+                    </sourceDirectories>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>Check style</id>
+                        <!-- This needs to run /after/ (test) source
+                        generation is done. -->
+                        <phase>process-test-sources</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

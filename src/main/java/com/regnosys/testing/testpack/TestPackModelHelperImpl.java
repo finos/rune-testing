@@ -35,7 +35,7 @@ import com.rosetta.model.lib.ModelSymbolId;
 import com.rosetta.util.DottedPath;
 import com.rosetta.util.types.generated.GeneratedJavaClassService;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

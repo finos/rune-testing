@@ -24,7 +24,7 @@ import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 

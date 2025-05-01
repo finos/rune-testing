@@ -31,7 +31,7 @@ import com.rosetta.model.lib.functions.RosettaFunction;
 import com.rosetta.model.lib.qualify.QualifyFunctionFactory;
 import com.rosetta.model.lib.validation.ValidatorFactory;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
