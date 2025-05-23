@@ -90,8 +90,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.enforced.version>[17,18)</java.enforced.version>
-        <maven.compiler.release>11</maven.compiler.release>
+        <java.enforced.version>[21,22)</java.enforced.version>
+        <maven.compiler.release>21</maven.compiler.release>
 
         <rosetta.dsl.version>9.54.0</rosetta.dsl.version>
         <rosetta.common.version>0.0.0.main-SNAPSHOT</rosetta.common.version>
