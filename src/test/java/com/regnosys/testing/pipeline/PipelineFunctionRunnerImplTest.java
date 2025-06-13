@@ -205,7 +205,7 @@ class PipelineFunctionRunnerImplTest {
         assertFalse(assertions.isRuntimeError());
 
         // Verify the interactions
-        verify(function, never()).apply(any(TestObject.class));
+        verify(function).apply(any(TestObject.class));
     }
 
     @Test
