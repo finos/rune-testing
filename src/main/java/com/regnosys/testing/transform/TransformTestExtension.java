@@ -50,16 +50,18 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import jakarta.inject.Inject;
+
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.transform.TestPackUtils.*;
+import static com.regnosys.rosetta.common.transform.TestPackUtils.getPipelineModel;
 import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -81,15 +83,18 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
                     .writerWithDefaultPrettyPrinter();
     private Validator outputXsdValidator;
-    private PipelineModel pipelineModel;
+    private boolean includeAllPipelinesForFunction;
+
+    private List<PipelineModel> functionPipelineModels;
     private Multimap<String, TransformTestResult> actualExpectation;
-    private PipelineFunctionRunner functionRunner;
+    private final Map<String, PipelineFunctionRunner> pipelineIdFunctionRunnerMap = new HashMap<>();
 
     public TransformTestExtension(Module runtimeModule, Path configPath, Class<T> funcType) {
         this.runtimeModule = runtimeModule;
         this.configPath = configPath;
         this.funcType = funcType;
         this.modelId = null;
+        this.includeAllPipelinesForFunction = false;
     }
 
     public TransformTestExtension(String modelId, Module runtimeModule, Path configPath, Class<T> funcType) {
@@ -97,6 +102,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         this.runtimeModule = runtimeModule;
         this.configPath = configPath;
         this.funcType = funcType;
+        this.includeAllPipelinesForFunction = false;
     }
 
     public TransformTestExtension<T> withSortJsonPropertiesAlphabetically(boolean sortJsonPropertiesAlphabetically) {
@@ -119,24 +125,35 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
         return this;
     }
- 
+
+    public TransformTestExtension<T> withIncludeAllPipelinesForFunction(boolean includeAllPipelinesForFunction) {
+        this.includeAllPipelinesForFunction = includeAllPipelinesForFunction;
+        return this;
+    }
+
     @BeforeAll
     public void beforeAll(ExtensionContext context) {
         Injector injector = Guice.createInjector(runtimeModule);
         injector.injectMembers(this);
         ClassLoader classLoader = this.getClass().getClassLoader();
-        this.pipelineModel = getPipelineModel(getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER), funcType.getName(), modelId);
-        @SuppressWarnings("unchecked")
-        Class<? extends RosettaModelObject> inputType = (Class<? extends RosettaModelObject>) toClass(classLoader, pipelineModel.getTransform().getInputType());
-        this.functionRunner = functionRunnerProvider.create(
-                pipelineModel.getTransform().getType(), 
-                inputType,
-                funcType, 
-                pipelineModel.getInputSerialisation(),
-                pipelineModel.getOutputSerialisation(),
-                JSON_OBJECT_MAPPER,
-                jsonObjectWriter,
-                outputXsdValidator);
+        List<PipelineModel> allPipelineModels = getPipelineModels(configPath, classLoader, JSON_OBJECT_MAPPER);
+        this.functionPipelineModels = includeAllPipelinesForFunction ?
+                getPipelineModels(allPipelineModels, funcType.getName()) :
+                Collections.singletonList(getPipelineModel(allPipelineModels, funcType.getName(), modelId));
+        functionPipelineModels.forEach(m -> {
+            @SuppressWarnings("unchecked")
+            Class<? extends RosettaModelObject> inputType = (Class<? extends RosettaModelObject>) toClass(classLoader, m.getTransform().getInputType());
+            PipelineFunctionRunner pipelineFunctionRunner = functionRunnerProvider.create(
+                    m.getTransform().getType(),
+                    inputType,
+                    funcType,
+                    m.getInputSerialisation(),
+                    m.getOutputSerialisation(),
+                    JSON_OBJECT_MAPPER,
+                    jsonObjectWriter,
+                    outputXsdValidator);
+            pipelineIdFunctionRunnerMap.put(m.getId(), pipelineFunctionRunner);
+        });
         this.actualExpectation = ArrayListMultimap.create();
     }
 
@@ -154,10 +171,23 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     public void runTransformAndAssert(String testPackId, TestPackModel.SampleModel sampleModel) {
+        if (includeAllPipelinesForFunction) {
+            throw new IllegalArgumentException("To test with option includeAllPipelinesForFunction, use method runTransformAndAssert(pipelineId, testPackId, sampleModel)");
+        }
+        PipelineFunctionRunner pipelineFunctionRunner = pipelineIdFunctionRunnerMap.values().iterator().next();
+        runTransformAndAssert(testPackId, sampleModel, pipelineFunctionRunner);
+    }
+
+    public void runTransformAndAssert(String pipelineId, String testPackId, TestPackModel.SampleModel sampleModel) {
+        PipelineFunctionRunner pipelineFunctionRunner = pipelineIdFunctionRunnerMap.get(pipelineId);
+        runTransformAndAssert(testPackId, sampleModel, pipelineFunctionRunner);
+    }
+
+    private void runTransformAndAssert(String testPackId, TestPackModel.SampleModel sampleModel, PipelineFunctionRunner pipelineFunctionRunner) {
         URL inputPath = getInputFileUrl(sampleModel.getInputPath());
         assertNotNull(inputPath);
 
-        PipelineFunctionResult result = functionRunner.run(UrlUtils.toPath(inputPath));
+        PipelineFunctionResult result = pipelineFunctionRunner.run(UrlUtils.toPath(inputPath));
 
         String actualOutput = result.getSerialisedOutput();
         TestPackModel.SampleModel.Assertions actualAssertions = result.getAssertions();
@@ -172,7 +202,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
         assertEquals(expectedAssertions, actualAssertions);
     }
-
+    
     private URL getInputFileUrl(String inputFile) {
         try {
             return Resources.getResource(inputFile);
@@ -184,17 +214,19 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     public Stream<Arguments> getArguments() {
         ClassLoader classLoader = this.getClass().getClassLoader();
-        List<TestPackModel> testPackModels = getTestPackModels(TestPackUtils.getTestPackModels(configPath, classLoader, JSON_OBJECT_MAPPER), pipelineModel.getId());
+        List<TestPackModel> testPackModels = functionPipelineModels.stream()
+                .map(p -> getTestPackModels(TestPackUtils.getTestPackModels(configPath, classLoader, JSON_OBJECT_MAPPER), p.getId()))
+                .flatMap(Collection::stream).toList();
         return testPackModels.stream()
                 .flatMap(testPackModel -> testPackModel.getSamples().stream()
                         .map(sampleModel ->
-                                Arguments.of(
-                                        String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
+                                Arguments.of(String.format("%s | %s", testPackModel.getName(), sampleModel.getId()),
                                         testPackModel.getId(),
-                                        sampleModel)));
+                                        sampleModel,
+                                        testPackModel.getPipelineId())));
     }
 
-
+    
     protected void writeExpectations(Multimap<String, TransformTestResult> actualExpectation) throws Exception {
         TransformExpectationUtil.writeExpectations(actualExpectation, configPath);
     }
