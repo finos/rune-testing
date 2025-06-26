@@ -26,12 +26,14 @@ import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.hashing.ReferenceResolverProcessStep;
 import com.regnosys.rosetta.common.postprocess.PathCountProcessor;
 import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.RosettaModelObjectBuilder;
 import com.rosetta.model.lib.path.RosettaPath;
 import com.rosetta.model.lib.process.PostProcessor;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -40,15 +42,17 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Function;
 
 import static com.regnosys.rosetta.common.transform.TestPackModel.SampleModel.Assertions;
 import static com.regnosys.rosetta.common.transform.TestPackUtils.readFile;
-import static com.regnosys.testing.transform.TransformTestExtension.ERROR_OUTPUT;
+import static com.regnosys.testing.transform.TransformTestExtension.EMPTY_OUTPUT;
 
 public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implements PipelineFunctionRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(PipelineFunctionRunnerImpl.class);
@@ -88,27 +92,57 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
     public PipelineFunctionResult run(Path inputPath) {
         Integer inputPathCount = null;
         Integer outputPathCount = null;
+        String serialisedOutput = EMPTY_OUTPUT;
+        ValidationReport validationReport = null;
         Integer actualValidationFailures = null;
         Boolean schemaValidationFailure = null;
-        
+
         try {
             URL inputFileUrl = inputPath.toUri().toURL();
-            IN input = readFile(inputFileUrl, inputObjectMapper, inputType);
-            IN resolvedInput = resolveReferences(input);
-
-            RosettaModelObject output = function.apply(resolvedInput);
-            RosettaModelObject postProcessedOutput = postProcess(output);
-
-            // serialised output
-            String serialisedOutput = outputObjectWriter.writeValueAsString(postProcessedOutput);
+            String inputContent = readString(inputFileUrl);
+            // empty input is expected if upstream returns empty or error
+            if (inputContent == null || EMPTY_OUTPUT.equals(inputContent)) {
+                Assertions assertions =
+                        new Assertions(inputPathCount,
+                                outputPathCount,
+                                actualValidationFailures,
+                                schemaValidationFailure,
+                                false);
+                return new PipelineFunctionResult(serialisedOutput, validationReport, assertions);
+            }
+                        
+            IN input = inputObjectMapper.readValue(inputContent, inputType);
 
             if (transformType == TransformType.TRANSLATE) {
                 inputPathCount = getPathCount(input);
+            }
+
+            IN resolvedInput = resolveReferences(input);
+
+            RosettaModelObject output = function.apply(resolvedInput);
+
+            // empty output is allowed
+            if (output == null) {
+                Assertions assertions =
+                        new Assertions(inputPathCount,
+                                outputPathCount,
+                                actualValidationFailures,
+                                schemaValidationFailure,
+                                false);
+                return new PipelineFunctionResult(serialisedOutput, validationReport, assertions);
+            }
+
+            RosettaModelObject postProcessedOutput = postProcess(output);
+
+            // serialised output
+            serialisedOutput = outputObjectWriter.writeValueAsString(postProcessedOutput);
+
+            if (transformType == TransformType.TRANSLATE) {
                 outputPathCount = getPathCount(postProcessedOutput);
             }
 
             // validation failures
-            ValidationReport validationReport = typeValidator.runProcessStep(postProcessedOutput.getType(), postProcessedOutput);
+            validationReport = typeValidator.runProcessStep(postProcessedOutput.getType(), postProcessedOutput);
             validationReport.logReport();
             actualValidationFailures = validationReport.validationFailures().size();
 
@@ -124,13 +158,13 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
             return new PipelineFunctionResult(serialisedOutput, validationReport, assertions);
         } catch (Exception e) {
             LOGGER.error("Exception occurred running transform", e);
-            Assertions assertions = 
-                    new Assertions(inputPathCount, 
-                            outputPathCount, 
-                            actualValidationFailures, 
-                            schemaValidationFailure, 
+            Assertions assertions =
+                    new Assertions(inputPathCount,
+                            outputPathCount,
+                            actualValidationFailures,
+                            schemaValidationFailure,
                             true);
-            return new PipelineFunctionResult(ERROR_OUTPUT, null, assertions);
+            return new PipelineFunctionResult(EMPTY_OUTPUT, validationReport, assertions);
         }
     }
 
@@ -166,6 +200,14 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
             return false;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    private String readString(URL u) {
+        try (Reader src = UrlUtils.openURL(u)) {
+            return IOUtils.toString(src);
+        } catch (IOException e) {
+            throw new UncheckedIOException(String.format("Failed to read url %s", u), e);
         }
     }
 }

@@ -69,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCallback {
 
     // use empty string as error value for function output as it gets serialised
-    public static final String ERROR_OUTPUT = "";
+    public static final String EMPTY_OUTPUT = "";
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
     private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final String modelId;
