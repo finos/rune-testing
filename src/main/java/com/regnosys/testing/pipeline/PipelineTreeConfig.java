@@ -22,6 +22,7 @@ package com.regnosys.testing.pipeline;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TransformType;
@@ -51,6 +52,7 @@ public class PipelineTreeConfig {
     private boolean strictUniqueIds;
     private Path writePath;
     private Predicate<String> testPackIdFilter = testPackId -> true;
+    private ImmutableSet<Path> csvTestPackSourceFiles;
     private ValidationSummariser validationSummariser;
 
     /**
@@ -154,6 +156,15 @@ public class PipelineTreeConfig {
 
     public Predicate<String> getTestPackIdFilter() {
         return testPackIdFilter;
+    }
+
+    public PipelineTreeConfig withCsvTestPackSourceFiles(Collection<Path> csvTestPackSourceFiles) {
+        this.csvTestPackSourceFiles = ImmutableSet.copyOf(csvTestPackSourceFiles);
+        return this;
+    }
+
+    public ImmutableSet<Path> getCsvTestPackSourceFiles() {
+        return Optional.ofNullable(csvTestPackSourceFiles).orElse(ImmutableSet.of());
     }
 
     public PipelineTreeConfig withTestPackFilter(PipelineTestPackFilter pipelineTestPackFilter) {

@@ -47,6 +47,8 @@ import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -98,6 +100,8 @@ public class PipelineTestPackWriter {
 
         PipelineTree pipelineTree = pipelineTreeBuilder.createPipelineTree(config);
 
+        createCsvSampleFiles(resourcesPath, config.getCsvTestPackSourceFiles());
+
         for (PipelineNode pipelineNode : pipelineTree.getNodeList()) {
             Stopwatch pipelineStopwatch = Stopwatch.createStarted();
             TransformType transformType = pipelineNode.getTransformType();
@@ -119,7 +123,7 @@ public class PipelineTestPackWriter {
             List<Path> inputSamples = findAllSamples(inputPath);
 
             Map<String, List<Path>> testPackToSamples =
-                    filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter());
+                    filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter(), config.getCsvTestPackSourceFiles());
 
             Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
                     .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
@@ -236,10 +240,40 @@ public class PipelineTestPackWriter {
         return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
     }
 
-    private Map<String, List<Path>> filterAndGroupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples, Predicate<String> testPackIdFilter) {
+    private void createCsvSampleFiles(Path resourcePath, ImmutableSet<Path> csvTestPackSourceFiles) throws IOException {
+        for (Path csvSourceFile : csvTestPackSourceFiles) {
+            Path resolvedCsvSourcePath = resourcePath.resolve(csvSourceFile);
+            try (BufferedReader reader = Files.newBufferedReader(resolvedCsvSourcePath)) {
+                String header = reader.readLine();
+                if (header == null) {
+                    throw new IOException("CSV file is empty: " + resolvedCsvSourcePath);
+                }
+
+                String line;
+                int rowNum = 1;
+
+                String baseName = com.google.common.io.Files.getNameWithoutExtension(resolvedCsvSourcePath.toString());
+                String extension = com.google.common.io.Files.getFileExtension(resolvedCsvSourcePath.toString());
+
+                while ((line = reader.readLine()) != null) {
+                    String fileName = String.format("%s_%d.%s", baseName, rowNum++, extension);
+                    Path outFile = resolvedCsvSourcePath.getParent().resolve(fileName);
+
+                    try (BufferedWriter writer = Files.newBufferedWriter(outFile)) {
+                        writer.write(header);
+                        writer.newLine();
+                        writer.write(line);
+                    }
+                }
+            }
+        }
+    }
+
+    private Map<String, List<Path>> filterAndGroupingByTestPackId(Path resourcesPath, Path inputPath, List<Path> inputSamples, Predicate<String> testPackIdFilter, ImmutableSet<Path> csvTestPackSourceFiles) {
         return inputSamples.stream()
                 .map(resourcesPath::relativize)
                 .filter(path -> testPackIdFilter.test(testPackId(resourcesPath, inputPath, path)))
+                .filter(path -> !csvTestPackSourceFiles.contains(path))
                 .collect(Collectors.groupingBy(p -> testPackId(resourcesPath, inputPath, p)));
     }
 
@@ -327,4 +361,11 @@ public class PipelineTestPackWriter {
             throw new RuntimeException(String.format("Failed to create schema validator for %s", schemaUrl), e);
         }
     }
+
+    public boolean isSubPath(Path base, Path other) {
+        Path basePath = base.normalize();
+        Path otherPath = other.normalize();
+        return otherPath.startsWith(basePath);
+    }
+
 }
