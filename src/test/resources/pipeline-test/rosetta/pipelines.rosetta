@@ -2,6 +2,7 @@ namespace pipeline.chain.test
 
 type SomeType:
   name string (1..1)
+  age string (0..1)
 
 func Start:
     inputs:

@@ -50,6 +50,29 @@ public class PipelineTestPackWriterTest {
     }
 
     @Test
+    void createCsvSampleFiles(@TempDir Path tempDir) throws IOException {
+        Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.TRANSLATE.getResourcePath()).resolve("input"));
+
+        Path testPackPath = Files.createDirectories(inputPath.resolve("csv-test-pack"));
+        Path csvTestPackSourceFile = testPackPath.resolve("csv-samples.csv");
+        Files.write(csvTestPackSourceFile, "name,age\nname1,age1\nname2,age2\nname3,age3".getBytes());
+
+        PipelineTreeConfig chain = helper.createCsvConfig(Path.of("ingest/input/csv-test-pack/csv-samples.csv")).strictUniqueIds().withWritePath(tempDir);
+        pipelineTestPackWriter.writeTestPacks(chain);
+
+        assertFileExists(tempDir, "ingest/config/test-pack-translate-start-csv-test-pack.json");
+        assertFileExists(tempDir, "ingest/input/csv-test-pack/csv-samples_1.csv");
+        assertFileExists(tempDir, "ingest/input/csv-test-pack/csv-samples_2.csv");
+        assertFileExists(tempDir, "ingest/input/csv-test-pack/csv-samples_3.csv");
+        assertFileExists(tempDir, "ingest/input/csv-test-pack/csv-samples.csv");
+        assertFileExists(tempDir, "ingest/output/start/csv-test-pack/csv-samples_1.json");
+        assertFileExists(tempDir, "ingest/output/start/csv-test-pack/csv-samples_2.json");
+        assertFileExists(tempDir, "ingest/output/start/csv-test-pack/csv-samples_3.json");
+        assertFileDoesNotExist(tempDir, "ingest/output/start/csv-test-pack/csv-samples.json");
+
+    }
+
+    @Test
     void writeTestPacksForNestedTreeConfig(@TempDir Path tempDir) throws Exception {
         Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.ENRICH.getResourcePath()).resolve("input"));
 

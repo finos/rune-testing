@@ -20,13 +20,16 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
+import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.testing.CompiledCode;
 import com.regnosys.testing.ModelHelper;
 import com.regnosys.testing.RosettaTestingInjectorProvider;
+import com.rosetta.model.lib.RosettaModelObject;
 import com.rosetta.model.lib.functions.RosettaFunction;
 import com.rosetta.model.lib.qualify.QualifyFunctionFactory;
 import com.rosetta.model.lib.validation.ValidatorFactory;
@@ -34,9 +37,11 @@ import com.rosetta.model.lib.validation.ValidatorFactory;
 import jakarta.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class PipelineTestHelper {
 
+    static final String SomeTypeClass = "pipeline.chain.test.SomeType";
     static final String StartClass = "pipeline.chain.test.functions.Start";
     static final String MiddleClass = "pipeline.chain.test.functions.Middle";
     static final String MiddleAClass = "pipeline.chain.test.functions.MiddleA";
@@ -90,6 +95,10 @@ public class PipelineTestHelper {
         return compiledCode.loadClass(EndClass);
     }
 
+    Class<RosettaModelObject> someTypeClass() {
+        return compiledCode.loadClass(SomeTypeClass);
+    }
+
     Class<RosettaFunction> startClass() {
         return compiledCode.loadClass(StartClass);
     }
@@ -116,6 +125,16 @@ public class PipelineTestHelper {
                 .add(middleBClass(), TransformType.PROJECTION, endBClass());
     }
 
+    PipelineTreeConfig createCsvConfig(Path csvTestPackSourceFile) {
+        ImmutableMap<Class<?>, PipelineModel.Serialisation.Format> inputSerialisationFormat = ImmutableMap.<Class<?>, PipelineModel.Serialisation.Format>builder()
+                .put(someTypeClass(), PipelineModel.Serialisation.Format.CSV)
+                .build();
+
+        return new PipelineTreeConfig("testPrefix")
+                .starting(TransformType.TRANSLATE, startClass())
+                .withInputSerialisationFormatMap(inputSerialisationFormat)
+                .withCsvTestPackSourceFiles(List.of(csvTestPackSourceFile));
+    }
 
     PipelineTreeConfig createTreeConfig() {
         return new PipelineTreeConfig("testPrefix")
