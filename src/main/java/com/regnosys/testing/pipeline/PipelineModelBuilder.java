@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import jakarta.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.regnosys.rosetta.common.transform.TestPackUtils.getSerialisation;
@@ -51,11 +52,17 @@ public class PipelineModelBuilder {
         String outputType = helper.getOutputType(modelBuilder.getFunction());
         String inputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getInputClass(modelBuilder.getFunction()));
         String outputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getFuncMethod(modelBuilder.getFunction()).getReturnType());
+        PipelineModel.Serialisation.Format inputSerialisatinoFormat = Optional.ofNullable(config.getInputSerialisationFormatMap())
+                .map(formatMap -> formatMap.get(helper.getInputClass(modelBuilder.getFunction())))
+                .orElse(null);
+        PipelineModel.Serialisation.Format outputSerialisationFormat = Optional.ofNullable(config.getOutputSerialisationFormatMap())
+                .map(formatMap ->  formatMap.get(helper.getFuncMethod(modelBuilder.getFunction()).getReturnType()))
+                .orElse(null);
         String name = helper.getName(modelBuilder.getFunction());
 
-        // assume XML for now.
-        PipelineModel.Serialisation inputSerialisation = getSerialisation(inputSerialisationConfigPath);
-        PipelineModel.Serialisation outputSerialisation = getSerialisation(outputSerialisationConfigPath);
+        // assume XML when serialisation format is null and config is populated
+        PipelineModel.Serialisation inputSerialisation = getSerialisation(inputSerialisatinoFormat, inputSerialisationConfigPath);
+        PipelineModel.Serialisation outputSerialisation = getSerialisation(outputSerialisationFormat, outputSerialisationConfigPath);
 
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
