@@ -22,7 +22,9 @@ package com.regnosys.testing.pipeline;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.testing.validation.ValidationSummariser;
 import com.rosetta.model.lib.functions.RosettaFunction;
@@ -43,11 +45,14 @@ public class PipelineTreeConfig {
     
     private ImmutableMap<Class<?>, String> xmlConfigMap;
     private ImmutableMap<Class<?>, String> xmlSchemaMap;
+    private ImmutableMap<Class<?>, PipelineModel.Serialisation.Format> inputSerialisationFormatMap;
+    private ImmutableMap<Class<?>, PipelineModel.Serialisation.Format> outputSerialisationFormatMap;
     private Boolean sortJsonPropertiesAlphabetically;
     private PipelineTestPackFilter pipelineTestPackFilter;
     private boolean strictUniqueIds;
     private Path writePath;
     private Predicate<String> testPackIdFilter = testPackId -> true;
+    private ImmutableSet<Path> csvTestPackSourceFiles;
     private ValidationSummariser validationSummariser;
 
     /**
@@ -117,6 +122,24 @@ public class PipelineTreeConfig {
         return xmlSchemaMap;
     }
 
+    public PipelineTreeConfig withInputSerialisationFormatMap(ImmutableMap<Class<?>, PipelineModel.Serialisation.Format> inputSerialisationFormatMap) {
+        this.inputSerialisationFormatMap = inputSerialisationFormatMap;
+        return this;
+    }
+
+    public ImmutableMap<Class<?>, PipelineModel.Serialisation.Format> getInputSerialisationFormatMap() {
+        return inputSerialisationFormatMap;
+    }
+
+    public PipelineTreeConfig withOutputSerialisationFormatMap(ImmutableMap<Class<?>, PipelineModel.Serialisation.Format> outputSerialisationFormatMap) {
+        this.outputSerialisationFormatMap = outputSerialisationFormatMap;
+        return this;
+    }
+
+    public ImmutableMap<Class<?>, PipelineModel.Serialisation.Format> getOutputSerialisationFormatMap() {
+        return outputSerialisationFormatMap;
+    }
+
     public PipelineTreeConfig withValidationSummariser(ValidationSummariser validationSummariser) {
         this.validationSummariser = validationSummariser;
         return this;
@@ -133,6 +156,15 @@ public class PipelineTreeConfig {
 
     public Predicate<String> getTestPackIdFilter() {
         return testPackIdFilter;
+    }
+
+    public PipelineTreeConfig withCsvTestPackSourceFiles(Collection<Path> csvTestPackSourceFiles) {
+        this.csvTestPackSourceFiles = ImmutableSet.copyOf(csvTestPackSourceFiles);
+        return this;
+    }
+
+    public ImmutableSet<Path> getCsvTestPackSourceFiles() {
+        return Optional.ofNullable(csvTestPackSourceFiles).orElse(ImmutableSet.of());
     }
 
     public PipelineTreeConfig withTestPackFilter(PipelineTestPackFilter pipelineTestPackFilter) {
