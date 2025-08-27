@@ -27,6 +27,7 @@ import com.google.inject.Injector;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.generator.java.types.JavaTypeTranslator;
+import com.regnosys.rosetta.generator.java.types.RGeneratedJavaClass;
 import com.regnosys.rosetta.rosetta.RosettaModel;
 import com.regnosys.rosetta.rosetta.RosettaReport;
 import com.regnosys.rosetta.transgest.ModelLoader;
@@ -228,7 +229,7 @@ public class ReportTypeSummariser {
                         this.getClass().getClassLoader())
                 .stream()
                 .map(UrlUtils::toUrl)
-                .collect(Collectors.toList());
+                .toList();
         List<RosettaModel> models = modelLoader.loadRosettaModels(urls.stream());
         if (models.size() <= 2) {
             throw new IllegalArgumentException("No model rosetta files found.  Only found basic types and annotations rosetta files.");
@@ -236,9 +237,11 @@ public class ReportTypeSummariser {
         return models;
     }
 
+    @SuppressWarnings("unchecked")
     private LabelProvider getLabelProvider(RFunction rFunction) {
         try {
-            Class<? extends LabelProvider> labelProviderClass = javaTypeTranslator.toLabelProviderJavaClass(rFunction).loadClass(getClass().getClassLoader());
+            RGeneratedJavaClass<? extends LabelProvider> labelProviderJavaClass = javaTypeTranslator.toLabelProviderJavaClass(rFunction);
+            Class<? extends LabelProvider> labelProviderClass = (Class<? extends LabelProvider>) getClass().getClassLoader().loadClass(labelProviderJavaClass.getCanonicalName().toString());
             return injector.getInstance(labelProviderClass);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -278,8 +281,7 @@ public class ReportTypeSummariser {
                             .map(p -> p.newSubPath(pathElement))
                             .orElse(RosettaPath.createPath(pathElement));
                     RType attributeType = attribute.getRMetaAnnotatedType().getRType();
-                    if (attributeType instanceof RDataType) {
-                        RDataType childDataType = (RDataType) attributeType;
+                    if (attributeType instanceof RDataType childDataType) {
                         // collect attributes for child type
                         collectTypeAttributes(childDataType, attributePath, labelProvider, visitor);
                     } else {
