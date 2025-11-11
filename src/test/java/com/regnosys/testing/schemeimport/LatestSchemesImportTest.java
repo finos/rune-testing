@@ -62,7 +62,7 @@ public class LatestSchemesImportTest {
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST_ZIP));
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST));
             }
-            assertEquals("56f79ac7dc081a3f30441a9fab0eb381", checksum, "CodeList zip has been updated, run again with WRITE_EXPECTATIONS enabled then update expected checksum");
+            assertEquals("c92e53d35095865d178ab1797385121d", checksum, "CodeList zip has been updated, run again with WRITE_EXPECTATIONS enabled then update expected checksum");
         }
     }
 
