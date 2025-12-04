@@ -52,7 +52,7 @@ public class PipelineModelBuilder {
         String outputType = helper.getOutputType(modelBuilder.getFunction());
         String inputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getInputClass(modelBuilder.getFunction()));
         String outputSerialisationConfigPath = config.getXmlConfigMap().get(helper.getFuncMethod(modelBuilder.getFunction()).getReturnType());
-        PipelineModel.Serialisation.Format inputSerialisatinoFormat = Optional.ofNullable(config.getInputSerialisationFormatMap())
+        PipelineModel.Serialisation.Format inputSerialisationFormat = Optional.ofNullable(config.getInputSerialisationFormatMap())
                 .map(formatMap -> formatMap.get(helper.getInputClass(modelBuilder.getFunction())))
                 .orElse(null);
         PipelineModel.Serialisation.Format outputSerialisationFormat = Optional.ofNullable(config.getOutputSerialisationFormatMap())
@@ -61,7 +61,7 @@ public class PipelineModelBuilder {
         String name = helper.getName(modelBuilder.getFunction());
 
         // assume XML when serialisation format is null and config is populated
-        PipelineModel.Serialisation inputSerialisation = getSerialisation(inputSerialisatinoFormat, inputSerialisationConfigPath);
+        PipelineModel.Serialisation inputSerialisation = getSerialisation(inputSerialisationFormat, inputSerialisationConfigPath);
         PipelineModel.Serialisation outputSerialisation = getSerialisation(outputSerialisationFormat, outputSerialisationConfigPath);
 
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());

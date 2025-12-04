@@ -234,9 +234,8 @@ public class PipelineTestPackWriter {
     private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
         String outputFormat = Optional.ofNullable(pipelineModel.getOutputSerialisation())
                 .map(PipelineModel.Serialisation::getFormat)
-                .map(PipelineModel.Serialisation.Format::toString)
-                .orElse("json")
-                .toLowerCase();
+                .map(PipelineModel.Serialisation.Format::getFileExtension)
+                .orElse("json");
         return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
     }
 
