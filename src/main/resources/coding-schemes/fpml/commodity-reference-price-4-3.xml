@@ -5398,7 +5398,7 @@
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBERG-PROPANE IN LINE-OPIS</SimpleValue>
+            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBURG-PROPANE IN LINE-OPIS</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISDA</SimpleValue>
@@ -5409,7 +5409,7 @@
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBERG-PROPANE IN LINE-OUT MONTH-OPIS</SimpleValue>
+            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBURG-PROPANE IN LINE-OUT MONTH-OPIS</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISDA</SimpleValue>
@@ -5420,7 +5420,7 @@
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBERG-PROPANE IN LINE-PROMPT MONTH-OPIS</SimpleValue>
+            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBURG-PROPANE IN LINE-PROMPT MONTH-OPIS</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISDA</SimpleValue>
@@ -5431,7 +5431,7 @@
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBERG-PROPANE STORAGE-OPIS</SimpleValue>
+            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBURG-PROPANE STORAGE-OPIS</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISDA</SimpleValue>
@@ -5442,7 +5442,7 @@
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBERG-PROPANE STORAGE-OUT MONTH-OPIS</SimpleValue>
+            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBURG-PROPANE STORAGE-OUT MONTH-OPIS</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISDA</SimpleValue>
@@ -5453,7 +5453,7 @@
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBERG-PROPANE STORAGE-PROMPT MONTH-OPIS</SimpleValue>
+            <SimpleValue>ENER-NATURAL GAS LIQUID-HATTIESBURG-PROPANE STORAGE-PROMPT MONTH-OPIS</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISDA</SimpleValue>

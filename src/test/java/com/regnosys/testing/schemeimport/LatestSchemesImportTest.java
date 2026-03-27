@@ -142,8 +142,7 @@ public class LatestSchemesImportTest {
                 System.out.println("copying " + path.toString());
                 Path d2 = destinationDir.resolve(path.getFileName());
                 System.out.println("destination File=" + d2);
-                if (Files.notExists(d2))
-                    Files.move(path, d2, StandardCopyOption.REPLACE_EXISTING);
+                Files.move(path, d2, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
