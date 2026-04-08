@@ -24,9 +24,6 @@
                             <li>Publication Date: 2026-03-30</li>
                         </ul>
                                          </li>
-                                  </ul>
-                           </li>
-                           <li>The following coding schemes have been added: <ul class="bulleted">
                                          <li>determinationMethodScheme<ul class="bulleted">
                             <li>New codes added: <ul class="bulleted">
                                     <li>TWAPVE</li>
@@ -40,6 +37,9 @@
                             <li>Publication Date: 2026-03-30</li>
                         </ul>
                                          </li>
+                                  </ul>
+                           </li>
+                           <li>The following coding schemes have been added: <ul class="bulleted">
                                          <li>tradeIdScheme<ul class="bulleted">
                             <li>Added alternative URI to provision packaged trade
                                 identifier.</li>
