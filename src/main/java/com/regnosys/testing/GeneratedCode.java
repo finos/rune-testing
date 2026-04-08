@@ -63,7 +63,7 @@ public class GeneratedCode {
 	}
 
 	private String toJavaFile(String className) {
-		return className.replace(".", File.separator) + ".java";
+		return className.replace(".", "/") + ".java";
 	}
 
 }

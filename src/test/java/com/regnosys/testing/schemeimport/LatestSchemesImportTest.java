@@ -84,7 +84,7 @@ public class LatestSchemesImportTest {
 
                 boolean isDirectory = false;
                 //check for files or directory
-                if (zipEntry.getName().endsWith(File.separator)) {
+                if (zipEntry.getName().endsWith("/") || zipEntry.getName().endsWith("\\")) {
                     isDirectory = true;
                 }
 

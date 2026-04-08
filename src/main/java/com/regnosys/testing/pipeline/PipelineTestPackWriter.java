@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import org.xml.sax.SAXException;
 
 import jakarta.inject.Inject;
+
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -207,7 +208,7 @@ public class PipelineTestPackWriter {
             String baseFileName = getBaseFileName(inputSample.toUri().toURL());
             String displayName = baseFileName.replace("-", " ");
 
-            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputSample.toString(), outputPath.toString(), assertions);
+            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputSample.toString().replace('\\', '/'), outputPath.toString().replace('\\', '/'), assertions);
             sampleModels.add(sampleModel);
 
             Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
@@ -279,7 +280,7 @@ public class PipelineTestPackWriter {
     private String testPackId(Path resourcesPath, Path inputPath, Path samplePath) {
         Path parent = samplePath.getParent();
         Path relativePath = resourcesPath.relativize(inputPath).relativize(parent);
-        return relativePath.toString().replace(File.separatorChar, '-');
+        return relativePath.toString().replace('\\', '/').replace('/', '-');
     }
 
     private @NotNull Map<String, List<Path>> filterTestPacks(PipelineNode pipelineNode, PipelineTestPackFilter pipelineTestPackFilter, Map<String, List<Path>> testPackToSamples) {
