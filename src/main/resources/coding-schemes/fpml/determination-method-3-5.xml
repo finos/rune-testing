@@ -2,15 +2,18 @@
 <gcl:CodeList xmlns:gcl="http://docs.oasis-open.org/codelist/ns/genericode/1.0/" xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
    <Annotation>
       <Description>
-         <doc:definition>Defines a list of collateral reason codes.</doc:definition>
+         <doc:definition>Specifies the method according to which an amount or a date is
+            determined.</doc:definition>
+         <doc:publicationDate>2026-03-30</doc:publicationDate>
+         <doc:status>working-draft</doc:status>
       </Description>
    </Annotation>
    <Identification>
-      <ShortName>collateralMarginCallResponseReasonScheme</ShortName>
-      <Version>1-0</Version>
-      <CanonicalUri>http://www.fpml.org/coding-scheme/collateral-margin-call-response-reason</CanonicalUri>
-      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/collateral-margin-call-response-reason-1-0</CanonicalVersionUri>
-      <LocationUri>http://www.fpml.org/coding-scheme/collateral-margin-call-response-reason-1-0.xml</LocationUri>
+      <ShortName>determinationMethodScheme</ShortName>
+      <Version>3-5</Version>
+      <CanonicalUri>http://www.fpml.org/coding-scheme/determination-method</CanonicalUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/determination-method-3-5</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/determination-method-3-5.xml</LocationUri>
    </Identification>
    <ColumnSet>
       <Column Id="Code" Use="required">
@@ -35,201 +38,224 @@
    <SimpleCodeList>
       <Row>
          <Value>
-            <SimpleValue>BaseCurrencyMismatch</SimpleValue>
+            <SimpleValue>AgreedInitialPrice</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Base Currency Mismatch</SimpleValue>
+            <SimpleValue>Agreed separately between the parties.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>CreditSupportAgreementMismatch</SimpleValue>
+            <SimpleValue>AsSpecifiedInMasterConfirmation</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Credit Support Agreement Mismatch</SimpleValue>
+            <SimpleValue>As specified in Master Confirmation.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>HeldCollateralMismatch</SimpleValue>
+            <SimpleValue>CalculationAgent</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Held Collateral Mismatch</SimpleValue>
+            <SimpleValue>Determined by the Calculation Agent.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>IndependentAmountConventionMismatch</SimpleValue>
+            <SimpleValue>ClosingPrice</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue> Independent Amount Convention Mismatch</SimpleValue>
+            <SimpleValue>Official Closing Price.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>MarkToMarketConventionMismatch</SimpleValue>
+            <SimpleValue>DividendCurrency</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Mark To Market Convention Mismatch</SimpleValue>
+            <SimpleValue>Determined by the Currency of Equity Dividends.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>MarkToMarketMismatch</SimpleValue>
+            <SimpleValue>ExpiringContractLevel</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Mark to Market Mismatch</SimpleValue>
+            <SimpleValue>The initial Index Level is the level of the Expiring Contract as provided
+                    in the Master Confirmation.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>NetOpenPositionIndependentAmountMismatch</SimpleValue>
+            <SimpleValue>HedgeExecution</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Net Open Position Independent Amount Mismatch</SimpleValue>
+            <SimpleValue>Determined by the Hedging Party.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>PartyReferenceMismatch</SimpleValue>
+            <SimpleValue>IssuerPaymentCurrency</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>The margin call was issued to the incorrect entity.</SimpleValue>
+            <SimpleValue>Issuer Payment Currency.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>PendingCollateralMismatch</SimpleValue>
+            <SimpleValue>NAV</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Pending Collateral Mismatch</SimpleValue>
+            <SimpleValue>Net Asset Value.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>SegregatedIndependentAmountMinimumTransferAmountMismatch</SimpleValue>
+            <SimpleValue>OpenPrice</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Segregated Independent Amount Minimum Transfer Amount
-                    Mismatch</SimpleValue>
+            <SimpleValue>Opening Price of the Market.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>SegregatedIndependentAmountRoundingMismatch</SimpleValue>
+            <SimpleValue>OSPPrice</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Segregated Independent Amount Rounding Mismatch</SimpleValue>
+            <SimpleValue>OSP Price.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>SegregatedIndependentAmountThresholdMismatch</SimpleValue>
+            <SimpleValue>SettlementCurrency</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Segregated Independent Amount Threshold Mismatch</SimpleValue>
+            <SimpleValue>Settlement Currency.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>TradeLevelIndependentAmountMismatch</SimpleValue>
+            <SimpleValue>StrikeDateDetermination</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Trade Level Independent Amount Mismatch</SimpleValue>
+            <SimpleValue>Date on which the strike is determined in respect of a forward starting
+                    swap.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ValuationDateMismatch</SimpleValue>
+            <SimpleValue>TWAPPrice</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Valuation Date Mismatch</SimpleValue>
+            <SimpleValue>Official TWAP Price.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>ValueAtRiskIndependentAmountMismatch</SimpleValue>
+            <SimpleValue>TWAPVE</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Value At Risk Independent Amount Mismatch</SimpleValue>
+            <SimpleValue>TWAP VE Price.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>VariationMarginMinimumTransferAmountMismatch</SimpleValue>
+            <SimpleValue>TWAPVEExcludingClose</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Variation Margin Minimum Transfer Amount Mismatch</SimpleValue>
+            <SimpleValue>TWAP VE Calculated by Excluding Closing price.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>VariationMarginRoundingMismatch</SimpleValue>
+            <SimpleValue>ValuationTime</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Variation Margin Rounding Mismatch</SimpleValue>
+            <SimpleValue>Price determined at valuation time.</SimpleValue>
          </Value>
       </Row>
       <Row>
          <Value>
-            <SimpleValue>VariationMarginThresholdMismatch</SimpleValue>
+            <SimpleValue>VWAPPrice</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>Variation Margin Threshold Mismatch</SimpleValue>
+            <SimpleValue>Official VWAP Price.</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>VWAPVE</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>VWAP VE Price.</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>VWAPVEExcludingClose</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>VWAP VE Calculated by Excluding Closing price.</SimpleValue>
          </Value>
       </Row>
    </SimpleCodeList>

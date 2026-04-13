@@ -44,7 +44,7 @@
             <SimpleValue>Allowances</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Environmental allowance certificates. (C02 emissions)</SimpleValue>
@@ -55,7 +55,7 @@
             <SimpleValue>Amount</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A numerical amount (typically a currency amount), expressed as a decimal value.</SimpleValue>
@@ -66,7 +66,7 @@
             <SimpleValue>BasisPoints</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A value expressed in terms of one hundredths of a percent, i.e. 5 means 5 basis points (bp) or 0.05%.</SimpleValue>
@@ -77,7 +77,7 @@
             <SimpleValue>BasisPointValue</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>The value (expressed in currency units) per basis point change in the underlying rate. Typically used for expressing sensitivity to interest rate chages ("IR delta" risk, "rho" risk).</SimpleValue>
@@ -88,7 +88,7 @@
             <SimpleValue>BasisPointValuePerBasisPoint</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>The Basis Point Value (BPV) (expressed in currency units per basis point) per basis point change in the underlying rate. Typically used for expressing second order sensitivity to interest rate changes (IR "gamma" risk, "convexity").</SimpleValue>
@@ -99,7 +99,7 @@
             <SimpleValue>BBL</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Barrel.</SimpleValue>
@@ -110,7 +110,7 @@
             <SimpleValue>BCF</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Billion cubic feet.</SimpleValue>
@@ -121,7 +121,7 @@
             <SimpleValue>BDFT</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Board feet</SimpleValue>
@@ -132,7 +132,7 @@
             <SimpleValue>BSH</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Bushel] Bushel split into GBBSH (8 imperial gal)and USBSH (8 US dry gal).</SimpleValue>
@@ -143,7 +143,7 @@
             <SimpleValue>BTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [British Thermal Unit ] Replaced by GBBTU, USBTU and ISOBTU.</SimpleValue>
@@ -154,7 +154,7 @@
             <SimpleValue>CBM</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Cubic Meters.</SimpleValue>
@@ -165,7 +165,7 @@
             <SimpleValue>CDD</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Cooling Degree Day.</SimpleValue>
@@ -176,7 +176,7 @@
             <SimpleValue>CER</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Certified Emissions Reduction. (C02 emissions)</SimpleValue>
@@ -187,7 +187,7 @@
             <SimpleValue>CPD</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Critical Precipitation Day.</SimpleValue>
@@ -198,7 +198,7 @@
             <SimpleValue>CRT</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Climate Reserve Tons. (C02 emissions)</SimpleValue>
@@ -209,7 +209,7 @@
             <SimpleValue>CWT</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Short hundredweight (100 lb)] Replaced by USCWT.</SimpleValue>
@@ -220,7 +220,7 @@
             <SimpleValue>dag</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>10 grams. Used in precious metals contracts (e.g MCX).</SimpleValue>
@@ -231,7 +231,7 @@
             <SimpleValue>Day</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Day (commonly used in Time Charter trades).</SimpleValue>
@@ -242,7 +242,7 @@
             <SimpleValue>Discount</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A discount factor expressed as a decimal, e.g. 0.95.</SimpleValue>
@@ -253,7 +253,7 @@
             <SimpleValue>dmtu</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Dry Metric Ton (Tonne) Units - Consists of a metric ton of mass excluding moisture.</SimpleValue>
@@ -264,7 +264,7 @@
             <SimpleValue>DTH</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Dekatherm] Replaced by GBMMBTU, USMMBTU and ISOMMBTU.</SimpleValue>
@@ -275,7 +275,7 @@
             <SimpleValue>ENVCRD</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Environmental Credit.</SimpleValue>
@@ -286,7 +286,7 @@
             <SimpleValue>ENVOFST</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Environmental Offset.</SimpleValue>
@@ -297,7 +297,7 @@
             <SimpleValue>ExchangeRate</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A dimensionless conversion rate, e.g. 1.2. Typically used for FX.</SimpleValue>
@@ -308,7 +308,7 @@
             <SimpleValue>FEU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>40 ft. Equivalent Unit container.</SimpleValue>
@@ -319,7 +319,7 @@
             <SimpleValue>G</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Gram.</SimpleValue>
@@ -330,7 +330,7 @@
             <SimpleValue>GAL</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Gallon] Replaced by GBGAL and USGAL.</SimpleValue>
@@ -341,7 +341,7 @@
             <SimpleValue>GBBSH</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>GB Bushel - When associated with a specific commodity implies standard unit of weight.</SimpleValue>
@@ -352,7 +352,7 @@
             <SimpleValue>GBBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>GB British Thermal Unit.</SimpleValue>
@@ -363,7 +363,7 @@
             <SimpleValue>GBCWT</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>GB Hundredweight.</SimpleValue>
@@ -374,7 +374,7 @@
             <SimpleValue>GBGAL</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>GB Gallon. Partially replaces deprecated GAL.</SimpleValue>
@@ -385,7 +385,7 @@
             <SimpleValue>GBMBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Thousand GB British Thermal Units.</SimpleValue>
@@ -396,7 +396,7 @@
             <SimpleValue>GBMMBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Million GB British Thermal Units or GB Dekatherm.</SimpleValue>
@@ -407,7 +407,7 @@
             <SimpleValue>GBT</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>GB Ton. Replaces deprecated t.</SimpleValue>
@@ -418,7 +418,7 @@
             <SimpleValue>GBTHM</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>GB Therm.</SimpleValue>
@@ -429,7 +429,7 @@
             <SimpleValue>GJ</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Gigajoule.</SimpleValue>
@@ -440,7 +440,7 @@
             <SimpleValue>GW</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Gigawatt.</SimpleValue>
@@ -451,7 +451,7 @@
             <SimpleValue>GWh</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Gigawatt-hour.</SimpleValue>
@@ -462,7 +462,7 @@
             <SimpleValue>HDD</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Heating Degree Day.</SimpleValue>
@@ -473,7 +473,7 @@
             <SimpleValue>hL</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Hectolitre.</SimpleValue>
@@ -484,7 +484,7 @@
             <SimpleValue>HOGB</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>100-troy ounces Gold Bar.</SimpleValue>
@@ -495,7 +495,7 @@
             <SimpleValue>IndexUnits</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A price, expressed in index units.</SimpleValue>
@@ -506,7 +506,7 @@
             <SimpleValue>Ingot</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Ingot] Ingot split into Standard Gold Bar (400 troy-oz) and Hundred Ounces Gold Bar (100 troy-oz).</SimpleValue>
@@ -517,7 +517,7 @@
             <SimpleValue>IRFuturesPrice</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A IMM futures style price, e.g. 9750 is equivalent to 2.5%.</SimpleValue>
@@ -528,7 +528,7 @@
             <SimpleValue>ISOBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISO British Thermal Unit.</SimpleValue>
@@ -539,7 +539,7 @@
             <SimpleValue>ISOMBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Thousand ISO British Thermal Units.</SimpleValue>
@@ -550,7 +550,7 @@
             <SimpleValue>ISOMMBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Million ISO British Thermal Units or ISO Dekatherm.</SimpleValue>
@@ -561,7 +561,7 @@
             <SimpleValue>ISOTHM</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>ISO Therm.</SimpleValue>
@@ -572,7 +572,7 @@
             <SimpleValue>J</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Joule.</SimpleValue>
@@ -583,7 +583,7 @@
             <SimpleValue>KG</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilogram.</SimpleValue>
@@ -594,7 +594,7 @@
             <SimpleValue>kL</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilolitre.</SimpleValue>
@@ -605,7 +605,7 @@
             <SimpleValue>KW</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilowatt.</SimpleValue>
@@ -616,7 +616,7 @@
             <SimpleValue>KWd</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilowatt-day.</SimpleValue>
@@ -627,7 +627,7 @@
             <SimpleValue>KWDC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Kilowatt Day Capacity] KWDC replaced by KWd.</SimpleValue>
@@ -638,7 +638,7 @@
             <SimpleValue>KWh</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilowatt-hour.</SimpleValue>
@@ -649,7 +649,7 @@
             <SimpleValue>KWHC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Kilowatt Hour Capacity] KWHC consolidated with KWh.</SimpleValue>
@@ -660,7 +660,7 @@
             <SimpleValue>KWm</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilowatt-month.</SimpleValue>
@@ -671,7 +671,7 @@
             <SimpleValue>KWMC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Kilowatt Month Capacity] KWMC replaced by KWm.</SimpleValue>
@@ -682,7 +682,7 @@
             <SimpleValue>KWmin</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilowatt-minute.</SimpleValue>
@@ -693,7 +693,7 @@
             <SimpleValue>KWMINC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Kilowatt Minute Capacity] KWMINC replaced by KWmin.</SimpleValue>
@@ -704,7 +704,7 @@
             <SimpleValue>KWy</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Kilowatt-year.</SimpleValue>
@@ -715,7 +715,7 @@
             <SimpleValue>KWYC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Kilowatt Year Capacity] KWYC replaced by KWy.</SimpleValue>
@@ -726,7 +726,7 @@
             <SimpleValue>L</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Litre.</SimpleValue>
@@ -737,7 +737,7 @@
             <SimpleValue>LB</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Pound.</SimpleValue>
@@ -748,7 +748,7 @@
             <SimpleValue>LogNormalVolatility</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A log normal volatility, expressed in %/month, where the percentage is represented as a decimal. For example, 0.15 means a log-normal volatility of 15% per month.</SimpleValue>
@@ -759,7 +759,7 @@
             <SimpleValue>MB</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Thousand Barrels (BBL).</SimpleValue>
@@ -770,7 +770,7 @@
             <SimpleValue>MBF</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Thousand board feet. Used in contracts on forestry underlyers.</SimpleValue>
@@ -781,7 +781,7 @@
             <SimpleValue>MBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Thousand British Thermal Units] MBTU replaced by GBMBTU, USMBTU and ISOMBTU.</SimpleValue>
@@ -792,7 +792,7 @@
             <SimpleValue>MJ</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Megajoule.</SimpleValue>
@@ -803,7 +803,7 @@
             <SimpleValue>MMBBL</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Million Barrels.</SimpleValue>
@@ -814,7 +814,7 @@
             <SimpleValue>MMBF</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Million board feet. Used in contracts on forestry underlyers.</SimpleValue>
@@ -825,7 +825,7 @@
             <SimpleValue>MMBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Million British Thermal Units] MMBTU replaced by GBMMBTU, USMMBTU and ISOMMBTU.</SimpleValue>
@@ -836,7 +836,7 @@
             <SimpleValue>msf</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Thousand (1,000) square feet.</SimpleValue>
@@ -847,7 +847,7 @@
             <SimpleValue>MT</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Metric Tonne.</SimpleValue>
@@ -858,7 +858,7 @@
             <SimpleValue>MW</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Megawatt.</SimpleValue>
@@ -869,7 +869,7 @@
             <SimpleValue>MWd</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Megawatt-day.</SimpleValue>
@@ -880,7 +880,7 @@
             <SimpleValue>MWDC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Megawatt Day Capacity] MWDC replaced by MWd.</SimpleValue>
@@ -891,7 +891,7 @@
             <SimpleValue>MWh</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Megawatt-hour.</SimpleValue>
@@ -902,7 +902,7 @@
             <SimpleValue>MWHC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Megawatt Hour Capacity] MWHC consolidated with MWh.</SimpleValue>
@@ -913,7 +913,7 @@
             <SimpleValue>MWm</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Megawatt-month.</SimpleValue>
@@ -924,7 +924,7 @@
             <SimpleValue>MWMC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Megawatt Month Capacity] MWMC replaced by MWm.</SimpleValue>
@@ -935,7 +935,7 @@
             <SimpleValue>MWmin</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Megawatt-minute.</SimpleValue>
@@ -946,7 +946,7 @@
             <SimpleValue>MWMINC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Megawatt Minute Capacity] MWMINC replaced by MWmin.</SimpleValue>
@@ -957,7 +957,7 @@
             <SimpleValue>MWy</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Megawatt-year.</SimpleValue>
@@ -968,7 +968,7 @@
             <SimpleValue>MWYC</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Megawatt Year Capacity] MWYC replaced by MWy.</SimpleValue>
@@ -979,7 +979,7 @@
             <SimpleValue>ozt</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Troy Ounce.</SimpleValue>
@@ -990,7 +990,7 @@
             <SimpleValue>ParValueDecimal</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A price, expressed in percentage of face value as a decimal, e.g. 101.5.</SimpleValue>
@@ -1001,7 +1001,7 @@
             <SimpleValue>ParValueFraction</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A price, expressed in percentage of face value with fractions, e.g. 101 3/8. Normally used for quoting bonds.</SimpleValue>
@@ -1012,7 +1012,7 @@
             <SimpleValue>Percentage</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A value expressed in percentage units i.e. 5 means 5%.</SimpleValue>
@@ -1023,7 +1023,7 @@
             <SimpleValue>Price</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A price, expressed in currency units.</SimpleValue>
@@ -1034,7 +1034,7 @@
             <SimpleValue>Rate</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A yield (typically an interest rate) expressed as a decimal. I.e. 0.05 means 5%.</SimpleValue>
@@ -1045,7 +1045,7 @@
             <SimpleValue>SGB</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Standard Gold Bar.</SimpleValue>
@@ -1056,7 +1056,7 @@
             <SimpleValue>Shares</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>The number of units of stock. Typically used for expressing sensitivity to equity prices (equity "delta" risk).</SimpleValue>
@@ -1067,7 +1067,7 @@
             <SimpleValue>Spread</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A difference in rates or prices expressed as a decimal. I.e. 0.05 means 5%.</SimpleValue>
@@ -1078,7 +1078,7 @@
             <SimpleValue>st</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Short Ton] Replaced by UST.</SimpleValue>
@@ -1089,7 +1089,7 @@
             <SimpleValue>t</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [(Long) To] Replaced by GBT.</SimpleValue>
@@ -1100,7 +1100,7 @@
             <SimpleValue>TEU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>20 ft. Equivalent Unit container.</SimpleValue>
@@ -1111,7 +1111,7 @@
             <SimpleValue>Therm</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>DEPRECATED [Therm] Therm replaced by GBTHM, USTHM and ISOTHM.</SimpleValue>
@@ -1122,7 +1122,7 @@
             <SimpleValue>UpfrontPoints</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>A difference in rates (typically FX rates) expressed as a decimal value.</SimpleValue>
@@ -1133,7 +1133,7 @@
             <SimpleValue>USBSH</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>US Bushel - When associated with a specific commodity implies standard unit of weight.</SimpleValue>
@@ -1144,7 +1144,7 @@
             <SimpleValue>USBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>US British Thermal Unit.</SimpleValue>
@@ -1155,7 +1155,7 @@
             <SimpleValue>USCWT</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>US Hundredweight. Replaces deprecated CWT.</SimpleValue>
@@ -1166,7 +1166,7 @@
             <SimpleValue>USGAL</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>US Gallon. Partially replaces deprecated GAL.</SimpleValue>
@@ -1177,7 +1177,7 @@
             <SimpleValue>USMBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Thousand US British Thermal Units.</SimpleValue>
@@ -1188,7 +1188,7 @@
             <SimpleValue>USMMBTU</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>Million US British Thermal Units or US Dekatherm.</SimpleValue>
@@ -1199,7 +1199,7 @@
             <SimpleValue>UST</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>US Ton. Replaces deprecated st.</SimpleValue>
@@ -1210,7 +1210,7 @@
             <SimpleValue>USTHM</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>US Therm.</SimpleValue>
@@ -1221,7 +1221,7 @@
             <SimpleValue>ValuePerDay</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>The value (expressed in currency units) for a one day change in a valuation date. Typically used for expressing sensitivity to the passage of time ("theta" risk, "carry", etc.).</SimpleValue>
@@ -1232,7 +1232,7 @@
             <SimpleValue>ValuePerPercent</SimpleValue>
          </Value>
          <Value>
-            <SimpleValue>ISDA</SimpleValue>
+            <SimpleValue>FpML</SimpleValue>
          </Value>
          <Value>
             <SimpleValue>The value (expressed in currency units) per percent change in the underlying rate. Typically used for expressing sensitivity to volatility changes ("vega" risk).</SimpleValue>
