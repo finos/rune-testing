@@ -143,7 +143,7 @@ public class SchemeImporterTestHelper {
     }
 
     protected String getFileName(String path) {
-        return path.substring(Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\')) + 1);
+        return path.substring(path.lastIndexOf('/') + 1);
     }
 
     protected void writeTestOutput(Map<String, String> rosettaExpected) throws IOException {
