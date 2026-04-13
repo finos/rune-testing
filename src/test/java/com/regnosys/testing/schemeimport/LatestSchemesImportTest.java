@@ -62,7 +62,7 @@ public class LatestSchemesImportTest {
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST_ZIP));
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST));
             }
-            assertEquals("39a7fdb456d6c5b38272bd973fd0203a", checksum, "CodeList zip has been updated, run again with WRITE_EXPECTATIONS enabled then update expected checksum");
+            assertEquals("c8d253d3d7ef86d2c88e10cf8a2ce50a", checksum, "CodeList zip has been updated, run again with WRITE_EXPECTATIONS enabled then update expected checksum");
         }
     }
 
@@ -142,7 +142,8 @@ public class LatestSchemesImportTest {
                 System.out.println("copying " + path.toString());
                 Path d2 = destinationDir.resolve(path.getFileName());
                 System.out.println("destination File=" + d2);
-                Files.move(path, d2, StandardCopyOption.REPLACE_EXISTING);
+                if (Files.notExists(d2))
+                    Files.move(path, d2, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException ex) {
             ex.printStackTrace();

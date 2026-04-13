@@ -34,6 +34,7 @@ import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
 import com.regnosys.testing.validation.ValidationSummariser;
@@ -207,7 +208,7 @@ public class PipelineTestPackWriter {
             String baseFileName = getBaseFileName(inputSample.toUri().toURL());
             String displayName = baseFileName.replace("-", " ");
 
-            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputSample.toString(), outputPath.toString(), assertions);
+            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, UrlUtils.toPortableString(inputSample), UrlUtils.toPortableString(outputPath), assertions);
             sampleModels.add(sampleModel);
 
             Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
@@ -279,7 +280,7 @@ public class PipelineTestPackWriter {
     private String testPackId(Path resourcesPath, Path inputPath, Path samplePath) {
         Path parent = samplePath.getParent();
         Path relativePath = resourcesPath.relativize(inputPath).relativize(parent);
-        return relativePath.toString().replace(File.separatorChar, '-');
+        return UrlUtils.toPortableString(relativePath).replace(File.separatorChar, '-');
     }
 
     private @NotNull Map<String, List<Path>> filterTestPacks(PipelineNode pipelineNode, PipelineTestPackFilter pipelineTestPackFilter, Map<String, List<Path>> testPackToSamples) {
