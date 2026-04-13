@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.inject.Inject;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -59,7 +58,6 @@ public class SchemeImporterTestHelper {
          */
         AdditiveMatch
     }
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SchemeImporterTestHelper.class);
     @Inject
     private SchemeImporter schemeImporter;
@@ -74,7 +72,7 @@ public class SchemeImporterTestHelper {
         List<RosettaModel> models = modelLoader.loadRosettaModels(rosettaPaths);
         List<RosettaEnumeration> rosettaEnumsFromModel = schemeImporter.getRosettaEnumsFromModel(models, body, codingScheme);
 
-        if (writeTestOutput) {
+        if(writeTestOutput) {
             persistEnumValues(rosettaEnumsFromModel, schemeEnumReader, enumComparison);
         }
 
@@ -83,7 +81,7 @@ public class SchemeImporterTestHelper {
 
     private void persistEnumValues(List<RosettaEnumeration> rosettaEnumsFromModel, SchemeEnumReader schemeEnumReader, EnumComparison enumComparison) throws IOException {
         Map<String, String> generatedFromScheme = null;
-        switch (enumComparison) {
+        switch (enumComparison){
             case ExactMatch: {
                 for (RosettaEnumeration rosettaEnumeration : rosettaEnumsFromModel) {
                     List<RosettaEnumValue> codingSchemeEnumValues = schemeImporter.getEnumValuesFromCodingScheme(rosettaEnumeration, schemeEnumReader);
@@ -100,8 +98,7 @@ public class SchemeImporterTestHelper {
                 generatedFromScheme = schemeImporter.generateRosettaEnums(rosettaEnumsFromModel);
                 break;
             }
-            default:
-                throw new IllegalArgumentException("Unknown enum value " + enumComparison);
+            default: throw new IllegalArgumentException("Unknown enum value " + enumComparison);
         }
         assertNotNull(generatedFromScheme);
         writeTestOutput(generatedFromScheme);
@@ -111,7 +108,7 @@ public class SchemeImporterTestHelper {
     boolean compareEnumValues(List<RosettaEnumValue> modelEnumValues, List<RosettaEnumValue> codingSchemeEnumValues, EnumComparison enumComparison) {
         if (enumComparison == EnumComparison.ExactMatch) {
             return CollectionUtils.listMatch(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
-        } else if (enumComparison == EnumComparison.AdditiveMatch) {
+        } else if(enumComparison == EnumComparison.AdditiveMatch){
             return CollectionUtils.collectionContains(codingSchemeEnumValues, modelEnumValues, (a, b) -> enumValueComparator.compare(a, b) == 0);
         }
         return false;
@@ -177,8 +174,8 @@ public class SchemeImporterTestHelper {
     private void addNewEnums(RosettaEnumeration rosettaEnumeration, List<RosettaEnumValue> newEnumValues) {
         List<String> newEnumNamesList = newEnumValues.stream().map(n -> n.getName()).collect(Collectors.toList());
         List<RosettaEnumValue> removedEnums = rosettaEnumeration.getEnumValues().stream()
-                .filter(e -> !newEnumNamesList.contains(e.getName()))
-                .collect(Collectors.toList());
+                .filter(e-> !newEnumNamesList.contains(e.getName()))
+                        .collect(Collectors.toList());
 
         //add any items removed in the latest Coding Scheme at the end
         newEnumValues.addAll(removedEnums);
