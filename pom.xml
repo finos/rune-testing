@@ -31,6 +31,7 @@
     </parent>
 
     <name>Rune Testing</name>
+    <groupId>org.finos.rune-testing</groupId>
     <artifactId>rune-testing</artifactId>
     <packaging>jar</packaging>
     <version>0.0.0.main-SNAPSHOT</version>
@@ -164,8 +165,8 @@
                 <version>${rune.dsl.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.regnosys</groupId>
-                <artifactId>rosetta-common</artifactId>
+                <groupId>org.finos.rune-common</groupId>
+                <artifactId>rune-common</artifactId>
                 <version>${rune.common.version}</version>
             </dependency>
             <dependency>
@@ -262,8 +263,8 @@
             <artifactId>rune-testing</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.regnosys</groupId>
-            <artifactId>rosetta-common</artifactId>
+            <groupId>org.finos.rune-common</groupId>
+            <artifactId>rune-common</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
