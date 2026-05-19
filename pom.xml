@@ -31,19 +31,17 @@
     </parent>
 
     <name>Rune Testing</name>
-    <groupId>com.regnosys</groupId>
-    <artifactId>rosetta-testing</artifactId>
+    <artifactId>rune-testing</artifactId>
     <packaging>jar</packaging>
     <version>0.0.0.main-SNAPSHOT</version>
     <url>https://github.com/REGnosys/rosetta-testing</url>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/REGnosys/rosetta-testing</developerConnection>
-        <connection>scm:git:git://github.com/REGnosys/rosetta-testing.git</connection>
+        <developerConnection>scm:git:https://github.com/finos/rune-testing</developerConnection>
+        <connection>scm:git:git://github.com/finos/rune-testing.git</connection>
         <tag>HEAD</tag>
-        <url>https://github.com/REGnosys/rosetta-testing</url>
+        <url>https://github.com/finos/rune-testing</url>
     </scm>
-
     <description>Rune Testing is a java library that is utilised by Rosetta Code Generators and models expressed in the Rosetta DSL.</description>
 
     <organization>
@@ -61,10 +59,10 @@
 
     <developers>
         <developer>
-            <id>minesh-s-patel</id>
-            <name>Minesh Patel</name>
+            <id>hugohills-regnosys</id>
+            <name>Hugo Hills</name>
             <email>infra@regnosys.com</email>
-            <url>http://github.com/minesh-s-patel</url>
+            <url>http://github.com/hugohills-regnosys</url>
             <organization>REGnosys</organization>
             <organizationUrl>https://regnosys.com</organizationUrl>
             <timezone>+1</timezone>
@@ -74,10 +72,10 @@
             </roles>
         </developer>
         <developer>
-            <id>hugohills-regnosys</id>
-            <name>Hugo Hills</name>
+            <id>JayasriR</id>
+            <name>Jayasri Radhakrishnan</name>
             <email>infra@regnosys.com</email>
-            <url>http://github.com/hugohills-regnosys</url>
+            <url>http://github.com/JayasriR</url>
             <organization>REGnosys</organization>
             <organizationUrl>https://regnosys.com</organizationUrl>
             <timezone>+1</timezone>
