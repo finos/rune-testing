@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 
 public class RosettaFileNameValidator {
 
+    // "synonym" is retained for backwards compatibility: synonym syntax has been removed from the Rune DSL,
+    // but older Rune projects may still contain validly-named "-synonym.rosetta" files.
     private static final List<String> VALID_SUFFIX = ImmutableList.of("func", "rule", "enum", "type", "synonym", "desc");
     private final String modelShortName;
     private final Path pathToRosettaFiles;
