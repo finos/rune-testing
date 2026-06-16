@@ -25,11 +25,14 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.inject.Injector;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.postprocess.WorkflowPostProcessor;
+import com.regnosys.rosetta.common.transform.LabelProviderResolver;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.rosetta.model.lib.RosettaModelObject;
+import com.rosetta.model.lib.functions.LabelProvider;
+import com.rosetta.model.lib.functions.RosettaFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,9 +69,13 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
         ObjectMapper inputObjectMapper = Optional.ofNullable(inputSerialisation)
                 .flatMap(TestPackUtils::getObjectMapper)
                 .orElse(defaultJsonObjectMapper);
-        // Output serialisation
+        // Output serialisation. The CSV_LABELLED format needs a LabelProvider, which the Rune DSL
+        // generates onto the transform function class (@RuneLabelProvider). The function class is
+        // already loaded and in hand here, so resolve the provider from it directly rather than
+        // threading a ClassLoader across the API. The provider is only resolved for CSV_LABELLED.
+        LabelProvider labelProvider = resolveLabelProvider(outputSerialisation, functionType);
         ObjectWriter outputObjectWriter = Optional.ofNullable(outputSerialisation)
-                .flatMap(TestPackUtils::getObjectWriter)
+                .flatMap(serialisation -> TestPackUtils.getObjectWriter(serialisation, labelProvider))
                 .orElse(defaultJsonObjectWriter);
 
         return createTestPackFunctionRunner(transformType,
@@ -77,6 +84,24 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                 inputObjectMapper,
                 outputObjectWriter,
                 outputXsdValidator);
+    }
+
+    /**
+     * Resolves the {@link LabelProvider} for the {@code CSV_LABELLED} output format from the
+     * transform function class (which carries the generated {@code @RuneLabelProvider}). Returns
+     * {@code null} for every other format, so the provider is never resolved unnecessarily.
+     * When the format is {@code CSV_LABELLED} but no provider can be resolved (function class
+     * missing or not a {@link RosettaFunction}), {@code null} is returned and
+     * {@link TestPackUtils#getObjectWriter(PipelineModel.Serialisation, LabelProvider)} throws.
+     */
+    private static LabelProvider resolveLabelProvider(PipelineModel.Serialisation outputSerialisation, Class<?> functionType) {
+        if (outputSerialisation == null
+                || outputSerialisation.getFormat() != PipelineModel.Serialisation.Format.CSV_LABELLED
+                || functionType == null
+                || !RosettaFunction.class.isAssignableFrom(functionType)) {
+            return null;
+        }
+        return LabelProviderResolver.fromTransformFunction(functionType.asSubclass(RosettaFunction.class));
     }
 
     private <IN extends RosettaModelObject> PipelineFunctionRunner createTestPackFunctionRunner(TransformType transformType,
