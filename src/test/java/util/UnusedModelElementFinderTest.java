@@ -52,8 +52,11 @@ public class UnusedModelElementFinderTest {
         UnusedModelElementFinder unusedModelElementFinder = new UnusedModelElementFinder(models);
 
         unusedModelElementFinder.run();
-        assertEquals(7, unusedModelElementFinder.getListOfTypes().size(), unusedModelElementFinder.getListOfTypes().toString());
+        // 8 includes the built-in com.rosetta.model.SerializationFormat enum (added in rune-dsl 10.0.0-dev.18),
+        // which is unused by this test model.
+        assertEquals(8, unusedModelElementFinder.getListOfTypes().size(), unusedModelElementFinder.getListOfTypes().toString());
 
+        assertTrue(unusedModelElementFinder.getListOfTypes().contains("com.rosetta.model.SerializationFormat"), "ListOfTypes should contain com.rosetta.model.SerializationFormat");
         assertTrue(unusedModelElementFinder.getListOfTypes().contains("cdm.test.Test1"), "ListOfTypes should contain cdm.test.Test1");
         assertTrue(unusedModelElementFinder.getListOfTypes().contains("cdm.test.Test2"), "ListOfTypes should contain cdm.test.Test2");
         assertTrue(unusedModelElementFinder.getListOfTypes().contains("cdm.test.Test3"),"ListOfTypes should contain cdm.test.Test3");
@@ -70,7 +73,9 @@ public class UnusedModelElementFinderTest {
         assertTrue(unusedModelElementFinder.getListOfUsedTypes().contains("cdm.test.TestEnum3UsedInFuncOnly"), "ListOfUsedTypes should contain cdm.test.TestEnum3UsedInFuncOnly");
 
 
-        assertEquals(2, unusedModelElementFinder.getListOfOrphanedTypes().size(), unusedModelElementFinder.getListOfOrphanedTypes().toString());
+        // 3 includes the built-in com.rosetta.model.SerializationFormat enum (added in rune-dsl 10.0.0-dev.18).
+        assertEquals(3, unusedModelElementFinder.getListOfOrphanedTypes().size(), unusedModelElementFinder.getListOfOrphanedTypes().toString());
+        assertTrue(unusedModelElementFinder.getListOfOrphanedTypes().contains("com.rosetta.model.SerializationFormat"), "ListOfOrphanedTypes should contain com.rosetta.model.SerializationFormat");
         assertTrue(unusedModelElementFinder.getListOfOrphanedTypes().contains("cdm.test.TestEnum2Unused"), "ListOfOrphanedTypes should contain cdm.test.TestEnum2Unused");
         assertTrue(unusedModelElementFinder.getListOfOrphanedTypes().contains("cdm.test.Test4Unused"), "ListOfOrphanedTypes should contain cdm.test.Test4Unused");
 
