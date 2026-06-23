@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Util needs to determine if types are used or not
@@ -88,7 +89,10 @@ public class UnusedModelElementFinder {
         for (RosettaModel model : models) {
             LOGGER.trace("Processing namespace {}, containing {} model elements", model.getName(), model.getElements().size());
 
+            Predicate<RosettaRootElement> isNotRosettaModel = rosettaRootElement -> !rosettaRootElement.getModel().getName().startsWith("com.rosetta.model");
+
             model.getElements().stream()
+                    .filter(isNotRosettaModel)
                     .filter(Data.class::isInstance)
                     .map(Data.class::cast)
                     .forEach(dataType -> {
@@ -103,6 +107,7 @@ public class UnusedModelElementFinder {
                     });
 
             model.getElements().stream()
+                    .filter(isNotRosettaModel)
                     .filter(RosettaEnumeration.class::isInstance)
                     .map(RosettaEnumeration.class::cast)
                     .forEach(enumeration -> {
@@ -111,6 +116,7 @@ public class UnusedModelElementFinder {
                     });
 
             model.getElements().stream()
+                    .filter(isNotRosettaModel)
                     .filter(Function.class::isInstance)
                     .map(Function.class::cast)
                     .forEach(function -> {
