@@ -52,7 +52,7 @@ public class UnusedModelElementFinderTest {
         UnusedModelElementFinder unusedModelElementFinder = new UnusedModelElementFinder(models);
 
         unusedModelElementFinder.run();
-        // 8 includes the built-in com.rosetta.model.SerializationFormat enum (added in rune-dsl 10.0.0-dev.19),
+        // 8 includes the built-in com.rosetta.model.SerializationFormat enum (added in rune-dsl 10.0.0-dev.18),
         // which is unused by this test model.
         assertEquals(8, unusedModelElementFinder.getListOfTypes().size(), unusedModelElementFinder.getListOfTypes().toString());
 
@@ -73,7 +73,7 @@ public class UnusedModelElementFinderTest {
         assertTrue(unusedModelElementFinder.getListOfUsedTypes().contains("cdm.test.TestEnum3UsedInFuncOnly"), "ListOfUsedTypes should contain cdm.test.TestEnum3UsedInFuncOnly");
 
 
-        // 3 includes the built-in com.rosetta.model.SerializationFormat enum (added in rune-dsl 10.0.0-dev.19).
+        // 3 includes the built-in com.rosetta.model.SerializationFormat enum (added in rune-dsl 10.0.0-dev.18).
         assertEquals(3, unusedModelElementFinder.getListOfOrphanedTypes().size(), unusedModelElementFinder.getListOfOrphanedTypes().toString());
         assertTrue(unusedModelElementFinder.getListOfOrphanedTypes().contains("com.rosetta.model.SerializationFormat"), "ListOfOrphanedTypes should contain com.rosetta.model.SerializationFormat");
         assertTrue(unusedModelElementFinder.getListOfOrphanedTypes().contains("cdm.test.TestEnum2Unused"), "ListOfOrphanedTypes should contain cdm.test.TestEnum2Unused");
