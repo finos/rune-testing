@@ -40,7 +40,6 @@ import jakarta.inject.Inject;
 import javax.xml.validation.Validator;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Optional;
 import java.util.function.Function;
 
 public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunnerProvider {
@@ -65,18 +64,16 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                                          ObjectMapper defaultJsonObjectMapper,
                                          ObjectWriter defaultJsonObjectWriter,
                                          Validator outputXsdValidator) {
-        // Input de-serialisation
-        ObjectMapper inputObjectMapper = Optional.ofNullable(inputSerialisation)
-                .flatMap(TestPackUtils::getObjectMapper)
-                .orElse(defaultJsonObjectMapper);
-        // Output serialisation. The CSV_LABELLED format needs a LabelProvider, which the Rune DSL
-        // generates onto the transform function class (@RuneLabelProvider). The function class is
-        // already loaded and in hand here, so resolve the provider from it directly rather than
-        // threading a ClassLoader across the API. The provider is only resolved for CSV_LABELLED.
+        // Input/output (de)serialisation is resolved by TestPackUtils: the pipeline's serialisation when
+        // present, otherwise the function's @Ingest/@Projection annotation (which a serialisation-agnostic
+        // pipeline omits), otherwise the default JSON mapper/writer. The CSV_LABELLED format of a pipeline
+        // outputSerialisation needs a LabelProvider resolved from the function class (@RuneLabelProvider);
+        // the annotation path resolves its own inside TransformObjectMapperFactory.
+        ObjectMapper inputObjectMapper =
+                TestPackUtils.getInputObjectMapper(inputSerialisation, functionType, defaultJsonObjectMapper);
         LabelProvider labelProvider = resolveLabelProvider(outputSerialisation, functionType);
-        ObjectWriter outputObjectWriter = Optional.ofNullable(outputSerialisation)
-                .flatMap(serialisation -> TestPackUtils.getObjectWriter(serialisation, labelProvider))
-                .orElse(defaultJsonObjectWriter);
+        ObjectWriter outputObjectWriter =
+                TestPackUtils.getOutputObjectWriter(outputSerialisation, functionType, labelProvider, defaultJsonObjectWriter);
 
         return createTestPackFunctionRunner(transformType,
                 functionType,
