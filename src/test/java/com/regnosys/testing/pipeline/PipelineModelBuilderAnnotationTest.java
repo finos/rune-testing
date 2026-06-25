@@ -19,7 +19,10 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import com.google.common.collect.ImmutableMap;
+import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
+import com.regnosys.rosetta.common.transform.TransformType;
 import com.rosetta.model.lib.functions.RosettaFunction;
 import com.rosetta.model.lib.transform.Enrich;
 import com.rosetta.model.lib.transform.Ingest;
@@ -38,12 +41,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Verifies how pipeline serialisation relates to the {@code @Ingest}/{@code @Projection} annotation the
  * code generator places on the function class.
  * <p>
- * The annotation on the function class is the single source of truth. When a function carries it, the
- * generated pipeline omits the {@code inputSerialisation}/{@code outputSerialisation} block entirely (see
- * {@link PipelineModelBuilder#hasTransformAnnotation}); the block is being phased out and only the
- * deprecated config-map fallback still emits it, for legacy functions that do not carry the annotation.
- * The static helpers exercised here remain available so old pipeline JSONs keep being read for backwards
- * compatibility.
+ * The annotation supplies the serialisation only for the direction it governs ({@code @Ingest} the input,
+ * {@code @Projection} the output). The opposite direction is still needed for testing but is not expressed
+ * by the annotation, so the builder keeps deriving it from the deprecated config maps. These tests cover
+ * both the per-direction annotation helpers and the combined {@link PipelineModelBuilder#build} behaviour.
  */
 class PipelineModelBuilderAnnotationTest {
 
@@ -66,18 +67,73 @@ class PipelineModelBuilderAnnotationTest {
     private static class UnannotatedFunction implements RosettaFunction {
     }
 
+    private static class InputThing {
+    }
+
+    private static class OutputThing {
+    }
+
+    @Ingest(format = SerializationFormat.XML, configPath = "xml-config/in.json")
+    private static class IngestFunctionWithBody implements RosettaFunction {
+        public OutputThing evaluate(InputThing input) {
+            return null;
+        }
+    }
+
+    @Projection(format = SerializationFormat.JSON)
+    private static class ProjectionFunctionWithBody implements RosettaFunction {
+        public OutputThing evaluate(InputThing input) {
+            return null;
+        }
+    }
+
     @Test
-    void annotatedFunctionsAreAnnotationDrivenSoSerialisationBlockIsOmitted() {
-        // @Ingest / @Projection functions are annotation-driven: the builder writes no serialisation block.
+    void annotatedFunctionsCarryTransformAnnotation() {
         assertTrue(PipelineModelBuilder.hasTransformAnnotation(XmlSchemaIngestFunction.class));
         assertTrue(PipelineModelBuilder.hasTransformAnnotation(BareXmlIngestFunction.class));
         assertTrue(PipelineModelBuilder.hasTransformAnnotation(JsonProjectionFunction.class));
     }
 
     @Test
+    void ingestOmitsInputSerialisationButKeepsOutputFromPipelineMap() {
+        FunctionNameHelper helper = new FunctionNameHelper();
+        PipelineModelBuilder builder = new PipelineModelBuilder(helper);
+        // The pipeline still configures the output serialisation (the direction @Ingest does not cover).
+        PipelineTreeConfig config = new PipelineTreeConfig()
+                .withOutputSerialisationFormatMap(ImmutableMap.of(OutputThing.class, PipelineModel.Serialisation.Format.JSON));
+        PipelineNode node = new PipelineNode("test", helper, TransformType.TRANSLATE, IngestFunctionWithBody.class, null);
+
+        PipelineModel model = builder.build(node, config);
+
+        // input is omitted - the @Ingest annotation expresses it and the object mapper reads it directly
+        assertNull(model.getInputSerialisation());
+        // output still comes from the pipeline map
+        assertEquals(PipelineModel.Serialisation.Format.JSON, model.getOutputSerialisation().getFormat());
+    }
+
+    @Test
+    void projectionOmitsOutputSerialisationButKeepsInputFromPipelineMap() {
+        FunctionNameHelper helper = new FunctionNameHelper();
+        PipelineModelBuilder builder = new PipelineModelBuilder(helper);
+        // The pipeline still configures the input serialisation (the direction @Projection does not cover).
+        PipelineTreeConfig config = new PipelineTreeConfig()
+                .withInputSerialisationFormatMap(ImmutableMap.of(InputThing.class, PipelineModel.Serialisation.Format.XML))
+                .withXmlConfigMap(ImmutableMap.of(InputThing.class, "xml-config/proj-in.json"));
+        PipelineNode node = new PipelineNode("test", helper, TransformType.PROJECTION, ProjectionFunctionWithBody.class, null);
+
+        PipelineModel model = builder.build(node, config);
+
+        // output is omitted - the @Projection annotation expresses it and the object mapper reads it directly
+        assertNull(model.getOutputSerialisation());
+        // input still comes from the pipeline map
+        assertEquals(PipelineModel.Serialisation.Format.XML, model.getInputSerialisation().getFormat());
+        assertEquals("xml-config/proj-in.json", model.getInputSerialisation().getConfigPath());
+    }
+
+    @Test
     void unannotatedFunctionsFallBackToTheLegacyMapPath() {
-        // @Enrich carries no serialisation annotation, and a plain function carries none at all; both fall
-        // back to the deprecated config-map path, which is the only path that still emits the block.
+        // @Enrich carries no serialisation annotation, and a plain function carries none at all; both
+        // directions then come entirely from the deprecated config-map path.
         assertFalse(PipelineModelBuilder.hasTransformAnnotation(EnrichFunction.class));
         assertFalse(PipelineModelBuilder.hasTransformAnnotation(UnannotatedFunction.class));
     }

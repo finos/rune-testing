@@ -55,21 +55,18 @@ public class PipelineModelBuilder {
         String outputType = helper.getOutputType(function);
         String name = helper.getName(function);
 
-        // The @Ingest/@Projection annotation the code generator places on the function class is now the
-        // single source of truth for serialisation. When the function carries such an annotation, the
-        // generated pipeline deliberately omits the inputSerialisation/outputSerialisation block: the
-        // annotation on the function class already describes it, so we phase the redundant block out.
-        //
-        // The deprecated, hand-maintained config maps on PipelineTreeConfig
-        // (withXmlConfigMap/withInputSerialisationFormatMap/...) are only consulted for legacy functions
-        // that do NOT carry the annotation yet. Old pipeline JSONs that still contain the serialisation
-        // block continue to be read by consumers for backwards compatibility; this only affects what we
-        // write.
-        boolean annotationDriven = hasTransformAnnotation(function);
+        // A serialisation-agnostic pipeline does not record the serialisation that the function's
+        // @Ingest/@Projection annotation already expresses: @Ingest covers the input, @Projection the
+        // output, and the object mapper for that direction is built from the annotation directly (as in
+        // rosetta-products). So we deliberately omit that direction here. The opposite direction is not
+        // expressed by the annotation but is still needed for testing (an @Ingest function's output is
+        // serialised to compare against expectations; an @Projection function's input is deserialised),
+        // so it keeps coming from the deprecated config maps on PipelineTreeConfig
+        // (withXmlConfigMap/withInputSerialisationFormatMap/...).
         PipelineModel.Serialisation inputSerialisation =
-                annotationDriven ? null : mapBasedInputSerialisation(function, config);
+                inputSerialisationFromAnnotation(function).isPresent() ? null : mapBasedInputSerialisation(function, config);
         PipelineModel.Serialisation outputSerialisation =
-                annotationDriven ? null : mapBasedOutputSerialisation(function, config);
+                outputSerialisationFromAnnotation(function).isPresent() ? null : mapBasedOutputSerialisation(function, config);
 
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
@@ -88,9 +85,10 @@ public class PipelineModelBuilder {
     }
 
     /**
-     * Whether the function carries an {@link Ingest} or {@link Projection} transform annotation. When it
-     * does, the annotation is the single source of truth for serialisation and the generated pipeline
-     * omits the serialisation block entirely (it is no longer emitted for these functions).
+     * Whether the function carries an {@link Ingest} or {@link Projection} transform annotation. The
+     * annotation supplies the serialisation for the direction it governs (the input for {@code @Ingest},
+     * the output for {@code @Projection}); the opposite direction is not expressed by the annotation and
+     * still comes from the deprecated pipeline config maps.
      */
     static boolean hasTransformAnnotation(Class<? extends RosettaFunction> function) {
         return function.isAnnotationPresent(Ingest.class) || function.isAnnotationPresent(Projection.class);
