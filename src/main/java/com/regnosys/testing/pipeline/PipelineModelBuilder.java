@@ -63,10 +63,11 @@ public class PipelineModelBuilder {
         // serialised to compare against expectations; an @Projection function's input is deserialised),
         // so it keeps coming from the deprecated config maps on PipelineTreeConfig
         // (withXmlConfigMap/withInputSerialisationFormatMap/...).
-        PipelineModel.Serialisation inputSerialisation =
-                inputSerialisationFromAnnotation(function).isPresent() ? null : mapBasedInputSerialisation(function, config);
-        PipelineModel.Serialisation outputSerialisation =
-                outputSerialisationFromAnnotation(function).isPresent() ? null : mapBasedOutputSerialisation(function, config);
+
+        //Replace this with inputSerialisationFromAnnotation(function).isPresent() ? null : mapBasedInputSerialisation(function, config); once we have models with annotations rolled out.
+        PipelineModel.Serialisation inputSerialisation = mapBasedInputSerialisation(function, config);
+        //Replace this with outputSerialisationFromAnnotation(function).isPresent() ? null : mapBasedOutputSerialisation(function, config);once we have models with annotations rolled out.
+        PipelineModel.Serialisation outputSerialisation = mapBasedOutputSerialisation(function, config);
 
         String pipelineId = modelBuilder.id(config.isStrictUniqueIds());
         String upstreamPipelineId = modelBuilder.upstreamId(config.isStrictUniqueIds());
