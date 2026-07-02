@@ -92,7 +92,7 @@
         <java.enforced.version>[21,22)</java.enforced.version>
         <maven.compiler.release>21</maven.compiler.release>
 
-        <rune.dsl.version>10.0.1</rune.dsl.version>
+        <rune.dsl.version>10.1.0</rune.dsl.version>
         <rune.common.version>0.0.0.main-SNAPSHOT</rune.common.version>
 
         <xtext.version>2.38.0</xtext.version>
