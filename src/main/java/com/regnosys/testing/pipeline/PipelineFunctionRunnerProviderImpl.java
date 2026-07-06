@@ -25,14 +25,13 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.inject.Injector;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.postprocess.WorkflowPostProcessor;
-import com.regnosys.rosetta.common.transform.LabelProviderResolver;
+import com.regnosys.rosetta.common.serialisation.ClasspathTransformMapperFactory;
+import com.regnosys.rosetta.common.serialisation.TransformMapperFactory;
+import com.regnosys.rosetta.common.serialisation.TransformSerializationResolver;
 import com.regnosys.rosetta.common.transform.PipelineModel;
-import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.rosetta.model.lib.RosettaModelObject;
-import com.rosetta.model.lib.functions.LabelProvider;
-import com.rosetta.model.lib.functions.RosettaFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +54,12 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
     @Inject
     WorkflowPostProcessor postProcessor;
 
+    // Models on the test-pack runner live on the application classpath, so the classpath factory is the
+    // right construction seam here (a runtime with isolated model classloaders implements its own).
+    private final TransformMapperFactory mapperFactory = new ClasspathTransformMapperFactory();
+
     @Override
+    @SuppressWarnings("deprecation") // the pipeline serialisation is a deprecated fallback for pre-annotation models
     public PipelineFunctionRunner create(TransformType transformType,
                                          Class<? extends RosettaModelObject> inputType,
                                          Class<?> functionType,
@@ -64,16 +68,16 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                                          ObjectMapper defaultJsonObjectMapper,
                                          ObjectWriter defaultJsonObjectWriter,
                                          Validator outputXsdValidator) {
-        // Input/output (de)serialisation is resolved by TestPackUtils: the pipeline's serialisation when
-        // present, otherwise the function's @Ingest/@Projection annotation (which a serialisation-agnostic
-        // pipeline omits), otherwise the default JSON mapper/writer. The CSV_LABELLED format of a pipeline
-        // outputSerialisation needs a LabelProvider resolved from the function class (@RuneLabelProvider);
-        // the annotation path resolves its own inside TransformObjectMapperFactory.
-        ObjectMapper inputObjectMapper =
-                TestPackUtils.getInputObjectMapper(inputSerialisation, functionType, defaultJsonObjectMapper);
-        LabelProvider labelProvider = resolveLabelProvider(outputSerialisation, functionType);
-        ObjectWriter outputObjectWriter =
-                TestPackUtils.getOutputObjectWriter(outputSerialisation, functionType, labelProvider, defaultJsonObjectWriter);
+        // Each side resolves from the function's @Ingest/@Projection annotation (the model's source of
+        // truth), falling back to the deprecated pipeline serialisation for models generated before
+        // transform annotations existed, and finally to the default JSON mapper/writer. Construction —
+        // including the CSV_LABELLED @RuneLabelProvider resolution — happens in the mapper factory.
+        ObjectMapper inputObjectMapper = TransformSerializationResolver.input(functionType, inputSerialisation)
+                .map(serialization -> mapperFactory.create(serialization, functionType))
+                .orElse(defaultJsonObjectMapper);
+        ObjectWriter outputObjectWriter = TransformSerializationResolver.output(functionType, outputSerialisation)
+                .map(serialization -> mapperFactory.createWriter(serialization, functionType))
+                .orElse(defaultJsonObjectWriter);
 
         return createTestPackFunctionRunner(transformType,
                 functionType,
@@ -81,24 +85,6 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                 inputObjectMapper,
                 outputObjectWriter,
                 outputXsdValidator);
-    }
-
-    /**
-     * Resolves the {@link LabelProvider} for the {@code CSV_LABELLED} output format from the
-     * transform function class (which carries the generated {@code @RuneLabelProvider}). Returns
-     * {@code null} for every other format, so the provider is never resolved unnecessarily.
-     * When the format is {@code CSV_LABELLED} but no provider can be resolved (function class
-     * missing or not a {@link RosettaFunction}), {@code null} is returned and
-     * {@link TestPackUtils#getObjectWriter(PipelineModel.Serialisation, LabelProvider)} throws.
-     */
-    private static LabelProvider resolveLabelProvider(PipelineModel.Serialisation outputSerialisation, Class<?> functionType) {
-        if (outputSerialisation == null
-                || outputSerialisation.getFormat() != PipelineModel.Serialisation.Format.CSV_LABELLED
-                || functionType == null
-                || !RosettaFunction.class.isAssignableFrom(functionType)) {
-            return null;
-        }
-        return LabelProviderResolver.fromTransformFunction(functionType.asSubclass(RosettaFunction.class));
     }
 
     private <IN extends RosettaModelObject> PipelineFunctionRunner createTestPackFunctionRunner(TransformType transformType,
