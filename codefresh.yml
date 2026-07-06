@@ -128,4 +128,4 @@ steps:
           variableDefined: "${{TAG_REPO}} == false"
           skipNextBuild: "${{SKIP_NEXT_BUILD}} == false"
     commands:
-      - codefresh run REGnosys/rosetta-components/rosetta-components --branch main --detach
+      - codefresh run BUNDLE/rosetta-components --branch main --detach
