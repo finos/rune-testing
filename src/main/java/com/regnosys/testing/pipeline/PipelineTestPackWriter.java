@@ -65,8 +65,6 @@ public class PipelineTestPackWriter {
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(PipelineTestPackWriter.class);
 
-    private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
-
     private final PipelineTreeBuilder pipelineTreeBuilder;
     private final PipelineModelBuilder pipelineModelBuilder;
     private final PipelineFunctionRunnerProvider functionRunnerProvider;
@@ -91,8 +89,9 @@ public class PipelineTestPackWriter {
 
         LOGGER.info("Starting test pack Generation");
         ObjectWriter configObjectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
+        ObjectMapper jsonObjectMapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         ObjectWriter jsonObjectWriter =
-                JSON_OBJECT_MAPPER
+                jsonObjectMapper
                         .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, config.isSortJsonPropertiesAlphabetically())
                         .writerWithDefaultPrettyPrinter();
 
@@ -130,7 +129,7 @@ public class PipelineTestPackWriter {
 
             for (String testPackId : filteredTestPackToSamples.keySet()) {
                 List<Path> inputSamplesForTestPack = filteredTestPackToSamples.get(testPackId);
-                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config, jsonObjectWriter, validationSummariser);
+                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config, jsonObjectMapper, jsonObjectWriter, validationSummariser);
 
                 Path writePath = Files.createDirectories(resourcesPath.resolve(transformType.getResourcePath()).resolve("config"));
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
@@ -164,6 +163,7 @@ public class PipelineTestPackWriter {
                                                List<Path> inputSamplesForTestPack,
                                                PipelineNode pipelineNode,
                                                PipelineTreeConfig config,
+                                               ObjectMapper jsonObjectMapper,
                                                ObjectWriter jsonObjectWriter,
                                                ValidationSummariser validationSummariser) throws IOException {
         LOGGER.info("Test pack sample generation started for {}", testPackId);
@@ -189,7 +189,7 @@ public class PipelineTestPackWriter {
                         functionType,
                         pipeline.getInputSerialisation(),
                         pipeline.getOutputSerialisation(),
-                        JSON_OBJECT_MAPPER,
+                        jsonObjectMapper,
                         jsonObjectWriter,
                         outputXsdValidator);
 
