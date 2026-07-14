@@ -93,7 +93,7 @@
         <java.enforced.version>[21,22)</java.enforced.version>
         <maven.compiler.release>21</maven.compiler.release>
 
-        <rune.dsl.version>9.85.0</rune.dsl.version>
+        <rune.dsl.version>9.85.1</rune.dsl.version>
         <rosetta.common.version>0.0.0.11.x.x-SNAPSHOT</rosetta.common.version>
 
         <xtext.version>2.38.0</xtext.version>
