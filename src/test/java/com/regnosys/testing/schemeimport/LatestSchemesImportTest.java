@@ -84,7 +84,8 @@ public class LatestSchemesImportTest {
 
                 boolean isDirectory = false;
                 //check for files or directory
-                if (zipEntry.getName().endsWith(File.separator)) {
+                // Zip entry names always use "/" regardless of the platform separator
+                if (zipEntry.getName().endsWith("/")) {
                     isDirectory = true;
                 }
 
