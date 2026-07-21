@@ -20,6 +20,7 @@ package com.regnosys.testing.serialisation;
  * ===============
  */
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.finos.rune.mapper.RuneJsonObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -56,7 +58,6 @@ class DefaultModelSerialisationTest {
         DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(classLoader);
 
         assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
-        assertNotNull(resolved.getObjectWriter());
     }
 
     @Test
@@ -143,7 +144,7 @@ class DefaultModelSerialisationTest {
     }
 
     @Test
-    void objectWriterMatchesTheResolvedMapper() throws IOException {
+    void createWriterMatchesTheResolvedMapper() throws IOException {
         ClassLoader classLoader = configClassLoader("rune-config.yml", """
                 model:
                   name: Test Model
@@ -152,13 +153,59 @@ class DefaultModelSerialisationTest {
 
         DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(classLoader);
 
-        ObjectWriter writer = resolved.getObjectWriter();
+        ObjectWriter writer = resolved.createWriter(true);
         assertNotNull(writer);
         // Pretty-printed (rune-json's own canonical shape: 2-space indent, "\n") and round-trips through
         // the same mapper.
-        String written = writer.writeValueAsString(java.util.Map.of("a", 1));
+        String written = writer.writeValueAsString(Map.of("a", 1));
         assertTrue(written.contains("\n"));
         assertEquals(1, resolved.getObjectMapper().readTree(written).get("a").asInt());
+    }
+
+    @Test
+    void legacyMapperHonoursAlphabeticalPropertySorting() throws IOException {
+        ClassLoader classLoader = configClassLoader("rune-config.yml", """
+                model:
+                  name: Test Model
+                  defaultSerialisationFormat: JSON
+                """);
+
+        assertTrue(sortsPropertiesAlphabetically(classLoader, true));
+        assertFalse(sortsPropertiesAlphabetically(classLoader, false));
+    }
+
+    @Test
+    void runeJsonMapperKeepsItsNaturalOrderRegardlessOfTheSortFlag() throws IOException {
+        ClassLoader classLoader = configClassLoader("rune-config.yml", """
+                model:
+                  name: Test Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """);
+
+        // Rune-json defines its own canonical field order, and the Rosetta runtime emits it unsorted.
+        // Alphabetising here would move regenerated expectations away from both, so the flag is ignored.
+        assertFalse(sortsPropertiesAlphabetically(classLoader, true));
+        assertFalse(sortsPropertiesAlphabetically(classLoader, false));
+    }
+
+    /**
+     * Writes a bean whose declaration order is the reverse of its alphabetical order, so the emitted
+     * property order says which of the two the writer used.
+     * <p>
+     * Resolves a fresh {@link DefaultModelSerialisation} per call on purpose: Jackson caches a
+     * serializer per type on first use, so flipping {@code MapperFeature} on a mapper that has already
+     * written that type has no effect.
+     */
+    private boolean sortsPropertiesAlphabetically(ClassLoader classLoader, boolean sortJsonPropertiesAlphabetically)
+            throws JsonProcessingException {
+        ObjectWriter writer = DefaultModelSerialisation.resolve(classLoader).createWriter(sortJsonPropertiesAlphabetically);
+        String written = writer.writeValueAsString(new UnsortedBean());
+        return written.indexOf("\"alpha\"") < written.indexOf("\"zulu\"");
+    }
+
+    public static class UnsortedBean {
+        public String zulu = "z";
+        public String alpha = "a";
     }
 
     @Test

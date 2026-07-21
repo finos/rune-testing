@@ -20,7 +20,6 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.base.Stopwatch;
@@ -66,9 +65,10 @@ public class PipelineTestPackWriter {
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(PipelineTestPackWriter.class);
 
-    // The default JSON mapper for a transform side with no explicit format: the model's configured
+    // The default JSON mapper/writer for a transform side with no explicit format: the model's configured
     // defaultSerialisationFormat (rune-json or legacy), read from its rune-config.yml/rosetta-config.yml.
-    private final ObjectMapper defaultJsonObjectMapper = DefaultModelSerialisation.resolve(this.getClass().getClassLoader()).getObjectMapper();
+    private final DefaultModelSerialisation defaultSerialisation = DefaultModelSerialisation.resolve(this.getClass().getClassLoader());
+    private final ObjectMapper defaultJsonObjectMapper = defaultSerialisation.getObjectMapper();
 
     private final PipelineTreeBuilder pipelineTreeBuilder;
     private final PipelineModelBuilder pipelineModelBuilder;
@@ -94,10 +94,7 @@ public class PipelineTestPackWriter {
 
         LOGGER.info("Starting test pack Generation");
         ObjectWriter configObjectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
-        ObjectWriter jsonObjectWriter =
-                defaultJsonObjectMapper
-                        .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, config.isSortJsonPropertiesAlphabetically())
-                        .writerWithDefaultPrettyPrinter();
+        ObjectWriter jsonObjectWriter = defaultSerialisation.createWriter(config.isSortJsonPropertiesAlphabetically());
 
         Path resourcesPath = config.getWritePath();
 

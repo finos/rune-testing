@@ -20,7 +20,6 @@ package com.regnosys.testing.transform;
  * ===============
  */
 
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ArrayListMultimap;
@@ -84,11 +83,9 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     PipelineFunctionRunnerProvider functionRunnerProvider;
     // The default JSON mapper/writer for a transform side with no explicit format: the model's configured
     // defaultSerialisationFormat (rune-json or legacy), read from its rune-config.yml/rosetta-config.yml.
-    private final ObjectMapper defaultJsonObjectMapper = DefaultModelSerialisation.resolve(this.getClass().getClassLoader()).getObjectMapper();
-    private ObjectWriter jsonObjectWriter =
-            defaultJsonObjectMapper
-                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-                    .writerWithDefaultPrettyPrinter();
+    private final DefaultModelSerialisation defaultSerialisation = DefaultModelSerialisation.resolve(this.getClass().getClassLoader());
+    private final ObjectMapper defaultJsonObjectMapper = defaultSerialisation.getObjectMapper();
+    private ObjectWriter jsonObjectWriter = defaultSerialisation.createWriter(true);
     private Validator outputXsdValidator;
     private boolean includeAllPipelinesForFunction;
 
@@ -113,10 +110,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     public TransformTestExtension<T> withSortJsonPropertiesAlphabetically(boolean sortJsonPropertiesAlphabetically) {
-        jsonObjectWriter =
-                defaultJsonObjectMapper
-                        .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically)
-                        .writerWithDefaultPrettyPrinter();
+        jsonObjectWriter = defaultSerialisation.createWriter(sortJsonPropertiesAlphabetically);
         return this;
     }
 

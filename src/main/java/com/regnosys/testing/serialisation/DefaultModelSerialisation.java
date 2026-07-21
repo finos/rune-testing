@@ -20,6 +20,7 @@ package com.regnosys.testing.serialisation;
  * ===============
  */
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
@@ -61,11 +62,11 @@ public final class DefaultModelSerialisation {
             RuneConfigurationFileProvider.LEGACY_FILE_NAME);
 
     private final ObjectMapper objectMapper;
-    private final ObjectWriter objectWriter;
+    private final boolean runeJson;
 
-    private DefaultModelSerialisation(ObjectMapper objectMapper, ObjectWriter objectWriter) {
+    private DefaultModelSerialisation(ObjectMapper objectMapper, boolean runeJson) {
         this.objectMapper = objectMapper;
-        this.objectWriter = objectWriter;
+        this.runeJson = runeJson;
     }
 
     /** The default {@link ObjectMapper} for this model: rune-json or legacy, per its configured default. */
@@ -74,25 +75,34 @@ public final class DefaultModelSerialisation {
     }
 
     /**
-     * The default {@link ObjectWriter} matching {@link #getObjectMapper()}, pretty-printing in each
-     * mapper's own canonical shape.
+     * A pretty-printing {@link ObjectWriter} over {@link #getObjectMapper()}.
+     * <p>
+     * {@code sortJsonPropertiesAlphabetically} is honoured on the legacy path only. Rune-json defines its
+     * own canonical field order — {@code RuneJsonAnnotationIntrospector} pins the meta properties
+     * ({@code @key}, {@code @ref}, …) to the front of every {@code @RuneDataType} and leaves the domain
+     * fields in declaration order — and alphabetising the remainder would reorder them away from that
+     * shape, and away from what the Rosetta runtime emits for the same pipeline. The flag is therefore
+     * ignored rather than applied, so a rune-json model always writes its natural order.
+     *
+     * @param sortJsonPropertiesAlphabetically whether the legacy mapper sorts properties alphabetically
      */
-    public ObjectWriter getObjectWriter() {
-        return objectWriter;
+    public ObjectWriter createWriter(boolean sortJsonPropertiesAlphabetically) {
+        if (!runeJson) {
+            objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically);
+        }
+        return objectMapper.writerWithDefaultPrettyPrinter();
     }
 
     /**
-     * Resolves the default mapper/writer for the model whose configuration is discoverable on
+     * Resolves the default mapper for the model whose configuration is discoverable on
      * {@code classLoader}.
      */
     public static DefaultModelSerialisation resolve(ClassLoader classLoader) {
         Objects.requireNonNull(classLoader, "classLoader must not be null");
         if (readDefaultSerialisationFormat(classLoader).orElse(null) == SerializationFormat.RUNE_JSON) {
-            RuneJsonObjectMapper mapper = new RuneJsonObjectMapper(classLoader);
-            return new DefaultModelSerialisation(mapper, mapper.writerWithDefaultPrettyPrinter());
+            return new DefaultModelSerialisation(new RuneJsonObjectMapper(classLoader), true);
         }
-        ObjectMapper mapper = RosettaObjectMapper.getNewRosettaObjectMapper();
-        return new DefaultModelSerialisation(mapper, mapper.writerWithDefaultPrettyPrinter());
+        return new DefaultModelSerialisation(RosettaObjectMapper.getNewRosettaObjectMapper(), false);
     }
 
     private static Optional<SerializationFormat> readDefaultSerialisationFormat(ClassLoader classLoader) {
