@@ -29,13 +29,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
-import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.ValidationReport;
 import com.regnosys.testing.reports.ObjectMapperGenerator;
+import com.regnosys.testing.serialisation.DefaultModelSerialisation;
 import com.regnosys.testing.validation.ValidationSummariser;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.jetbrains.annotations.NotNull;
@@ -65,6 +65,10 @@ public class PipelineTestPackWriter {
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(PipelineTestPackWriter.class);
 
+    // The default JSON mapper for a transform side with no explicit format: the model's configured
+    // defaultSerialisationFormat (rune-json or legacy), read from its rune-config.yml/rosetta-config.yml.
+    private final ObjectMapper defaultJsonObjectMapper = DefaultModelSerialisation.resolve(this.getClass().getClassLoader()).getObjectMapper();
+
     private final PipelineTreeBuilder pipelineTreeBuilder;
     private final PipelineModelBuilder pipelineModelBuilder;
     private final PipelineFunctionRunnerProvider functionRunnerProvider;
@@ -89,9 +93,8 @@ public class PipelineTestPackWriter {
 
         LOGGER.info("Starting test pack Generation");
         ObjectWriter configObjectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
-        ObjectMapper jsonObjectMapper = RosettaObjectMapper.getNewRosettaObjectMapper();
         ObjectWriter jsonObjectWriter =
-                jsonObjectMapper
+                defaultJsonObjectMapper
                         .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, config.isSortJsonPropertiesAlphabetically())
                         .writerWithDefaultPrettyPrinter();
 
@@ -129,7 +132,7 @@ public class PipelineTestPackWriter {
 
             for (String testPackId : filteredTestPackToSamples.keySet()) {
                 List<Path> inputSamplesForTestPack = filteredTestPackToSamples.get(testPackId);
-                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config, jsonObjectMapper, jsonObjectWriter, validationSummariser);
+                TestPackModel testPackModel = writeTestPackSamples(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, config, defaultJsonObjectMapper, jsonObjectWriter, validationSummariser);
 
                 Path writePath = Files.createDirectories(resourcesPath.resolve(transformType.getResourcePath()).resolve("config"));
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
