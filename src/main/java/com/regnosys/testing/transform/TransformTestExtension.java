@@ -38,6 +38,7 @@ import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.pipeline.PipelineFunctionResult;
 import com.regnosys.testing.pipeline.PipelineFunctionRunner;
 import com.regnosys.testing.pipeline.PipelineFunctionRunnerProvider;
+import com.regnosys.testing.serialisation.DefaultModelSerialisation;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -71,6 +72,8 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     // use empty string as error value for function output as it gets serialised
     public static final String EMPTY_OUTPUT = "";
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
+    // Reads the pipeline/test-pack config JSON itself (infrastructure metadata, not domain data), so this
+    // always stays on the legacy mapper regardless of the model's configured default.
     private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final String modelId;
     private final Module runtimeModule;
@@ -78,8 +81,11 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     private final Class<T> funcType;
     @Inject
     PipelineFunctionRunnerProvider functionRunnerProvider;
+    // The default JSON mapper/writer for a transform side with no explicit format: the model's configured
+    // defaultSerialisationFormat (rune-json or legacy), read from its rune-config.yml/rosetta-config.yml.
+    private final ObjectMapper defaultJsonObjectMapper = DefaultModelSerialisation.resolve(this.getClass().getClassLoader()).getObjectMapper();
     private ObjectWriter jsonObjectWriter =
-            JSON_OBJECT_MAPPER
+            defaultJsonObjectMapper
                     .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
                     .writerWithDefaultPrettyPrinter();
     private Validator outputXsdValidator;
@@ -107,7 +113,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
 
     public TransformTestExtension<T> withSortJsonPropertiesAlphabetically(boolean sortJsonPropertiesAlphabetically) {
         jsonObjectWriter =
-                JSON_OBJECT_MAPPER
+                defaultJsonObjectMapper
                         .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically)
                         .writerWithDefaultPrettyPrinter();
         return this;
@@ -149,7 +155,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                     funcType,
                     m.getInputSerialisation(),
                     m.getOutputSerialisation(),
-                    JSON_OBJECT_MAPPER,
+                    defaultJsonObjectMapper,
                     jsonObjectWriter,
                     outputXsdValidator);
             pipelineIdFunctionRunnerMap.put(m.getId(), pipelineFunctionRunner);
