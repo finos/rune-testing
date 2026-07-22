@@ -102,6 +102,7 @@
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
         <guava.version>33.3.1-jre</guava.version>
+        <plexus-utils.version>3.6.1</plexus-utils.version>
 
         <!-- Release -->
         <gpg.keyname>configured-by-release-profile</gpg.keyname>
@@ -249,6 +250,12 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <!-- Override transitive version pulled in via maven-plugin-api to fix CVE-2025-67030 -->
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>${plexus-utils.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
