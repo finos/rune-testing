@@ -103,6 +103,7 @@
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
         <guava.version>33.3.1-jre</guava.version>
+        <plexus-utils.version>3.6.1</plexus-utils.version>
 
         <!-- Release -->
         <gpg.keyname>configured-by-release-profile</gpg.keyname>
@@ -193,6 +194,13 @@
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <!-- Override the transitive version pulled in by org.finos.rune:rune-maven-plugin
+                     to fix CVE-2025-67030 (directory traversal in Expand#extractFile). -->
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>${plexus-utils.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.jaxb</groupId>
