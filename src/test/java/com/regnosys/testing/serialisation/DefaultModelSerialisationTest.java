@@ -213,6 +213,20 @@ class DefaultModelSerialisationTest {
         assertThrows(NullPointerException.class, () -> DefaultModelSerialisation.resolve(null));
     }
 
+    @Test
+    void nonJsonDefaultFailsLoudlyInsteadOfSilentlyFallingBackToLegacy() throws IOException {
+        ClassLoader classLoader = configClassLoader("rune-config.yml", """
+                model:
+                  name: Test Model
+                  defaultSerialisationFormat: XML
+                """);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> DefaultModelSerialisation.resolve(classLoader));
+
+        assertTrue(exception.getMessage().contains("XML"));
+    }
+
     private ClassLoader configClassLoader(String fileName, String yaml) throws IOException {
         Files.writeString(tempDir.resolve(fileName), yaml, StandardCharsets.UTF_8);
         return dirClassLoader();

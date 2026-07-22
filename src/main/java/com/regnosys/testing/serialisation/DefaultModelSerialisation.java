@@ -96,13 +96,25 @@ public final class DefaultModelSerialisation {
     /**
      * Resolves the default mapper for the model whose configuration is discoverable on
      * {@code classLoader}.
+     *
+     * @throws IllegalStateException if the configured format is anything other than
+     *         {@code JSON}/{@code RUNE_JSON} — the backend honours any {@link SerializationFormat}, but
+     *         the test harness only mirrors the two JSON flavours today, so any other value would
+     *         otherwise silently fall back to the legacy mapper and diverge from the runtime default.
      */
     public static DefaultModelSerialisation resolve(ClassLoader classLoader) {
         Objects.requireNonNull(classLoader, "classLoader must not be null");
-        if (readDefaultSerialisationFormat(classLoader).orElse(null) == SerializationFormat.RUNE_JSON) {
+        Optional<SerializationFormat> defaultFormat = readDefaultSerialisationFormat(classLoader);
+        if (defaultFormat.isEmpty() || defaultFormat.get() == SerializationFormat.JSON) {
+            return new DefaultModelSerialisation(RosettaObjectMapper.getNewRosettaObjectMapper(), false);
+        }
+        if (defaultFormat.get() == SerializationFormat.RUNE_JSON) {
             return new DefaultModelSerialisation(new RuneJsonObjectMapper(classLoader), true);
         }
-        return new DefaultModelSerialisation(RosettaObjectMapper.getNewRosettaObjectMapper(), false);
+        throw new IllegalStateException("Model config on classpath sets defaultSerialisationFormat: "
+                + defaultFormat.get() + ", which is not yet supported by the test harness (only JSON and "
+                + "RUNE_JSON are) - resolving a default mapper for it would silently diverge from the "
+                + "runtime default.");
     }
 
     private static Optional<SerializationFormat> readDefaultSerialisationFormat(ClassLoader classLoader) {
