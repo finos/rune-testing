@@ -121,6 +121,10 @@ public final class DefaultModelSerialisation {
         return findConfigUrl(classLoader).flatMap(DefaultModelSerialisation::readDefaultSerialisationFormat);
     }
 
+    // TODO: use a path to the config which could be configured as a maven property, so this code could
+    // read that property to know which config to use - the rune-maven-plugin and rosetta-maven-plugin
+    // could also reference the same pom property, giving a single source of truth for parent/child models
+    // on the same classpath instead of relying on classpath resource order.
     private static Optional<URL> findConfigUrl(ClassLoader classLoader) {
         return CONFIG_FILE_NAMES.stream()
                 .map(classLoader::getResource)
