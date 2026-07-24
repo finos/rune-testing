@@ -27,14 +27,21 @@ import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.config.RuneConfigurationService;
 import com.regnosys.rosetta.config.file.RuneConfigurationFileProvider;
 import com.rosetta.model.lib.transform.SerializationFormat;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.finos.rune.mapper.RuneJsonObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 
 /**
  * Resolves the default JSON serialisation (mapper + writer) for a transform side that carries no
@@ -47,16 +54,27 @@ import java.util.Optional;
  * as the Rosetta runtime does. A missing config file, an absent field, or a parse failure all fall back
  * to the legacy mapper, so a model that does not opt in keeps today's behaviour unchanged.
  * <p>
- * The model config is looked up as a classpath resource via the supplied {@link ClassLoader} — the model
- * lives on the application/test classpath here, unlike the products side, which reads from a resolved
- * workspace/jar base path. A dependency model on the same classpath may also ship a config file;
- * {@link ClassLoader#getResource(String)} returns the first on classpath order, which for a model's own
- * {@code tests} module is its own resources.
+ * Which model actually "owns" the config is no longer inferred from classpath resource order — a child
+ * model that ships no config of its own could otherwise silently pick up an ancestor's and adopt its
+ * default. Instead, {@code rune-maven-plugin} writes a per-model marker,
+ * {@value #MODEL_PROPERTIES_PATH}, recording whether that model ships its own config
+ * ({@value #RUNE_CONFIG_PRESENT_IN_MODEL_KEY}). The marker is looked up once via
+ * {@link ClassLoader#getResource(String)} (first on classpath order, matching a model's own {@code tests}
+ * module resolving to its own marker ahead of a dependency's), and its answer is authoritative: if it
+ * says {@code false}, no config is looked up at all, even if one happens to be reachable via a dependency.
+ * If it says {@code true}, the config is resolved relative to the marker's own container (its own jar or
+ * exploded classes directory), never via a second classpath-order lookup that could resolve to a
+ * different container.
  */
 public final class DefaultModelSerialisation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultModelSerialisation.class);
     private static final RuneConfigurationService RUNE_CONFIGURATION_SERVICE = new RuneConfigurationService();
+
+    static final String MODEL_PROPERTIES_PATH = "META-INF/rune/model.properties";
+    static final String RUNE_CONFIG_PRESENT_IN_MODEL_KEY = "runeConfigPresentInModel";
+    static final String RUNE_MAVEN_PLUGIN_VERSION_KEY = "runeMavenPluginVersion";
+
     private static final List<String> CONFIG_FILE_NAMES = List.of(
             RuneConfigurationFileProvider.FILE_NAME,
             RuneConfigurationFileProvider.LEGACY_FILE_NAME);
@@ -95,16 +113,40 @@ public final class DefaultModelSerialisation {
 
     /**
      * Resolves the default mapper for the model whose configuration is discoverable on
-     * {@code classLoader}.
+     * {@code classLoader}, consulting its {@value #MODEL_PROPERTIES_PATH} marker.
      *
-     * @throws IllegalStateException if the configured format is anything other than
-     *         {@code JSON}/{@code RUNE_JSON} — the backend honours any {@link SerializationFormat}, but
-     *         the test harness only mirrors the two JSON flavours today, so any other value would
-     *         otherwise silently fall back to the legacy mapper and diverge from the runtime default.
+     * @throws IllegalStateException if no marker is found on the classpath (this {@code rune-testing}
+     *         requires a marker that an older {@code rune-maven-plugin} does not produce), if the marker
+     *         declares the config present but neither config file is found in its own container, if an
+     *         ancestor's marker declares a newer {@code runeMavenPluginVersion} than the winning marker's
+     *         (violating the convention that a child's dsl/bundle version is always ≥ its parent's), or if
+     *         the configured format is anything other than {@code JSON}/{@code RUNE_JSON} — the backend
+     *         honours any {@link SerializationFormat}, but the test harness only mirrors the two JSON
+     *         flavours today, so any other value would otherwise silently fall back to the legacy mapper
+     *         and diverge from the runtime default.
      */
     public static DefaultModelSerialisation resolve(ClassLoader classLoader) {
         Objects.requireNonNull(classLoader, "classLoader must not be null");
-        Optional<SerializationFormat> defaultFormat = readDefaultSerialisationFormat(classLoader);
+        URL markerUrl = classLoader.getResource(MODEL_PROPERTIES_PATH);
+        if (markerUrl == null) {
+            throw new IllegalStateException("No " + MODEL_PROPERTIES_PATH + " marker found on the classpath. "
+                    + "rune-maven-plugin and rune-testing move together as a pair: this model was built with a "
+                    + "rune-maven-plugin version that predates the marker (or the marker's generate execution is "
+                    + "missing), while this rune-testing version requires it to be present. Rebuild the model "
+                    + "with a matching rune-maven-plugin version.");
+        }
+        checkPluginVersionConvention(classLoader, markerUrl);
+        Properties markerProperties = readProperties(markerUrl);
+        boolean configPresent = Boolean.parseBoolean(markerProperties.getProperty(RUNE_CONFIG_PRESENT_IN_MODEL_KEY));
+        if (!configPresent) {
+            return new DefaultModelSerialisation(RosettaObjectMapper.getNewRosettaObjectMapper(), false);
+        }
+        URL configUrl = resolveConfigUrlInContainer(markerUrl)
+                .orElseThrow(() -> new IllegalStateException("Model config marker at " + markerUrl + " declares "
+                        + RUNE_CONFIG_PRESENT_IN_MODEL_KEY + "=true, but neither " + RuneConfigurationFileProvider.FILE_NAME
+                        + " nor " + RuneConfigurationFileProvider.LEGACY_FILE_NAME + " was found alongside it in the "
+                        + "same container. This indicates a broken build."));
+        Optional<SerializationFormat> defaultFormat = readDefaultSerialisationFormat(configUrl);
         if (defaultFormat.isEmpty() || defaultFormat.get() == SerializationFormat.JSON) {
             return new DefaultModelSerialisation(RosettaObjectMapper.getNewRosettaObjectMapper(), false);
         }
@@ -117,19 +159,88 @@ public final class DefaultModelSerialisation {
                 + "runtime default.");
     }
 
-    private static Optional<SerializationFormat> readDefaultSerialisationFormat(ClassLoader classLoader) {
-        return findConfigUrl(classLoader).flatMap(DefaultModelSerialisation::readDefaultSerialisationFormat);
+    /**
+     * Resolves the config file relative to the marker's own container: strips {@value #MODEL_PROPERTIES_PATH}
+     * off the marker URL and probes {@code rune-config.yml}, then {@code rosetta-config.yml}, alongside it.
+     * Works for both {@code jar:file:/…!/} and exploded {@code file:/…/target/classes/} URL forms, since in
+     * both the marker's classpath-relative path is a literal suffix of the marker's URL.
+     */
+    private static Optional<URL> resolveConfigUrlInContainer(URL markerUrl) {
+        String markerUrlString = markerUrl.toExternalForm();
+        String containerBase = markerUrlString.substring(0, markerUrlString.length() - MODEL_PROPERTIES_PATH.length());
+        for (String fileName : CONFIG_FILE_NAMES) {
+            try {
+                URL candidate = new URI(containerBase + fileName).toURL();
+                try (InputStream in = candidate.openStream()) {
+                    return Optional.of(candidate);
+                }
+            } catch (URISyntaxException | IOException e) {
+                // Not present in this container (or, for URISyntaxException, containerBase + fileName isn't a
+                // validly-encoded URI - e.g. an unencoded space from a classpath entry on a path containing one);
+                // either way, try the next name.
+            }
+        }
+        return Optional.empty();
     }
 
-    // TODO: use a path to the config which could be configured as a maven property, so this code could
-    // read that property to know which config to use - the rune-maven-plugin and rosetta-maven-plugin
-    // could also reference the same pom property, giving a single source of truth for parent/child models
-    // on the same classpath instead of relying on classpath resource order.
-    private static Optional<URL> findConfigUrl(ClassLoader classLoader) {
-        return CONFIG_FILE_NAMES.stream()
-                .map(classLoader::getResource)
-                .filter(Objects::nonNull)
-                .findFirst();
+    /**
+     * Verifies the team convention that a child model's dsl/bundle version is always ≥ its parent's, which
+     * is what makes marker presence monotonic in plugin version and rules out a marker-less child sitting
+     * under a marked ancestor. Enumerates every marker on the classpath and fails if any *other* one
+     * declares a {@value #RUNE_MAVEN_PLUGIN_VERSION_KEY} greater than the winning marker's. A missing or
+     * unparseable version on either side skips that comparison rather than failing the build, so a
+     * malformed marker cannot block it.
+     */
+    private static void checkPluginVersionConvention(ClassLoader classLoader, URL winningMarkerUrl) {
+        ComparableVersion winningVersion = parseVersion(
+                readProperties(winningMarkerUrl).getProperty(RUNE_MAVEN_PLUGIN_VERSION_KEY));
+        if (winningVersion == null) {
+            return;
+        }
+        Enumeration<URL> allMarkers;
+        try {
+            allMarkers = classLoader.getResources(MODEL_PROPERTIES_PATH);
+        } catch (IOException e) {
+            LOGGER.warn("Failed to enumerate {} markers on the classpath, skipping the plugin version "
+                    + "convention check", MODEL_PROPERTIES_PATH, e);
+            return;
+        }
+        while (allMarkers.hasMoreElements()) {
+            URL markerUrl = allMarkers.nextElement();
+            if (markerUrl.toExternalForm().equals(winningMarkerUrl.toExternalForm())) {
+                continue;
+            }
+            String otherVersionString = readProperties(markerUrl).getProperty(RUNE_MAVEN_PLUGIN_VERSION_KEY);
+            ComparableVersion otherVersion = parseVersion(otherVersionString);
+            if (otherVersion != null && otherVersion.compareTo(winningVersion) > 0) {
+                throw new IllegalStateException("Model config marker at " + markerUrl + " declares "
+                        + RUNE_MAVEN_PLUGIN_VERSION_KEY + "=" + otherVersionString + ", newer than the winning "
+                        + "marker's " + winningMarkerUrl + " (version " + winningVersion + "). The team "
+                        + "convention that a child model's rune dsl/bundle version is always >= its parent's has "
+                        + "been violated.");
+            }
+        }
+    }
+
+    private static ComparableVersion parseVersion(String version) {
+        if (version == null || version.isBlank()) {
+            return null;
+        }
+        try {
+            return new ComparableVersion(version);
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private static Properties readProperties(URL url) {
+        Properties properties = new Properties();
+        try (InputStream in = url.openStream()) {
+            properties.load(in);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to read model properties marker at " + url, e);
+        }
+        return properties;
     }
 
     private static Optional<SerializationFormat> readDefaultSerialisationFormat(URL configUrl) {
