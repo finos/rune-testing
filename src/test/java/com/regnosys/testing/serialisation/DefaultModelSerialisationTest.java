@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -34,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -43,6 +45,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultModelSerialisationTest {
+
+    private static final String MARKER_RELATIVE_PATH = "META-INF/rune/model.properties";
+    private static final String DEFAULT_VERSION = "10.4.0";
 
     @TempDir
     Path tempDir;
@@ -74,7 +79,8 @@ class DefaultModelSerialisationTest {
     }
 
     @Test
-    void noConfigOnClasspathResolvesToLegacyMapper() throws MalformedURLException {
+    void noConfigOnClasspathResolvesToLegacyMapper() throws IOException {
+        writeMarker(tempDir, false, DEFAULT_VERSION);
         ClassLoader classLoader = dirClassLoader();
 
         DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(classLoader);
@@ -137,6 +143,7 @@ class DefaultModelSerialisationTest {
                   name: Test Model
                   defaultSerialisationFormat: JSON
                 """, StandardCharsets.UTF_8);
+        writeMarker(tempDir, true, DEFAULT_VERSION);
 
         DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(dirClassLoader());
 
@@ -227,12 +234,127 @@ class DefaultModelSerialisationTest {
         assertTrue(exception.getMessage().contains("XML"));
     }
 
+    @Test
+    void markerAbsentThrowsNamingBothArtifacts() throws MalformedURLException {
+        ClassLoader classLoader = dirClassLoader();
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> DefaultModelSerialisation.resolve(classLoader));
+
+        assertTrue(exception.getMessage().contains("rune-maven-plugin"));
+        assertTrue(exception.getMessage().contains("rune-testing"));
+    }
+
+    @Test
+    void markerFalseIgnoresPresentConfigOnClasspath() throws IOException {
+        Files.writeString(tempDir.resolve("rune-config.yml"), """
+                model:
+                  name: Test Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeMarker(tempDir, false, DEFAULT_VERSION);
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(dirClassLoader());
+
+        assertFalse(resolved.getObjectMapper() instanceof RuneJsonObjectMapper);
+    }
+
+    @Test
+    void markerTrueResolvesConfigFromItsOwnContainerAmongTwoContainers() throws IOException {
+        Path dependencyContainer = Files.createDirectories(tempDir.resolve("dependency"));
+        Path modelContainer = Files.createDirectories(tempDir.resolve("model"));
+
+        // A dependency on the classpath ships its own (differently-formatted, marker-less) config.
+        Files.writeString(dependencyContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Dependency Model
+                  defaultSerialisationFormat: JSON
+                """, StandardCharsets.UTF_8);
+
+        // This model ships its own marker and its own config, in its own container.
+        Files.writeString(modelContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Test Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeMarker(modelContainer, true, DEFAULT_VERSION);
+
+        // The dependency's container comes first in classpath order, adversarially.
+        ClassLoader classLoader = containersClassLoader(dependencyContainer, modelContainer);
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(classLoader);
+
+        assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
+    }
+
+    @Test
+    void ancestorMarkerWithHigherPluginVersionThrows() throws IOException {
+        Path childContainer = Files.createDirectories(tempDir.resolve("child"));
+        Path ancestorContainer = Files.createDirectories(tempDir.resolve("ancestor"));
+        writeMarker(childContainer, false, "10.3.0");
+        writeMarker(ancestorContainer, false, "10.4.0");
+
+        ClassLoader classLoader = containersClassLoader(childContainer, ancestorContainer);
+
+        assertThrows(IllegalStateException.class, () -> DefaultModelSerialisation.resolve(classLoader));
+    }
+
+    @Test
+    void conventionCheckSkippedWhenWinningMarkerHasNoVersion() throws IOException {
+        Path childContainer = Files.createDirectories(tempDir.resolve("child"));
+        Path ancestorContainer = Files.createDirectories(tempDir.resolve("ancestor"));
+        writeMarker(childContainer, false, null);
+        writeMarker(ancestorContainer, false, "999.0.0");
+
+        ClassLoader classLoader = containersClassLoader(childContainer, ancestorContainer);
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(classLoader);
+
+        assertFalse(resolved.getObjectMapper() instanceof RuneJsonObjectMapper);
+    }
+
+    @Test
+    void conventionCheckSkippedWhenAnAncestorMarkerHasNoVersion() throws IOException {
+        Path childContainer = Files.createDirectories(tempDir.resolve("child"));
+        Path ancestorContainer = Files.createDirectories(tempDir.resolve("ancestor"));
+        writeMarker(childContainer, false, "10.3.0");
+        writeMarker(ancestorContainer, false, null);
+
+        ClassLoader classLoader = containersClassLoader(childContainer, ancestorContainer);
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(classLoader);
+
+        assertFalse(resolved.getObjectMapper() instanceof RuneJsonObjectMapper);
+    }
+
     private ClassLoader configClassLoader(String fileName, String yaml) throws IOException {
         Files.writeString(tempDir.resolve(fileName), yaml, StandardCharsets.UTF_8);
+        writeMarker(tempDir, true, DEFAULT_VERSION);
         return dirClassLoader();
     }
 
     private ClassLoader dirClassLoader() throws MalformedURLException {
         return new URLClassLoader(new URL[]{tempDir.toUri().toURL()}, null);
+    }
+
+    private ClassLoader containersClassLoader(Path... containers) throws MalformedURLException {
+        URL[] urls = new URL[containers.length];
+        for (int i = 0; i < containers.length; i++) {
+            urls[i] = containers[i].toUri().toURL();
+        }
+        return new URLClassLoader(urls, null);
+    }
+
+    private void writeMarker(Path container, boolean configPresent, String runeMavenPluginVersion) throws IOException {
+        Path marker = container.resolve(MARKER_RELATIVE_PATH);
+        Files.createDirectories(marker.getParent());
+        Properties properties = new Properties();
+        properties.setProperty("runeConfigPresentInModel", String.valueOf(configPresent));
+        if (runeMavenPluginVersion != null) {
+            properties.setProperty("runeMavenPluginVersion", runeMavenPluginVersion);
+        }
+        try (OutputStream out = Files.newOutputStream(marker)) {
+            properties.store(out, null);
+        }
     }
 }
