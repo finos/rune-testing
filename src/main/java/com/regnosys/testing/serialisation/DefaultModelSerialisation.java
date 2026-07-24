@@ -108,7 +108,10 @@ public final class DefaultModelSerialisation {
      */
     public ObjectWriter createWriter(boolean sortJsonPropertiesAlphabetically) {
         if (!runeJson) {
-            objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically);
+            objectMapper.setConfig(objectMapper.getSerializationConfig()
+                    .with(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically));
+            objectMapper.setConfig(objectMapper.getDeserializationConfig()
+                    .with(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically));
         }
         return objectMapper.writerWithDefaultPrettyPrinter();
     }
