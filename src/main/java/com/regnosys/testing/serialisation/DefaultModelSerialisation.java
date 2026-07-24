@@ -32,8 +32,10 @@ import org.finos.rune.mapper.RuneJsonObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -169,15 +171,28 @@ public final class DefaultModelSerialisation {
         String markerUrlString = markerUrl.toExternalForm();
         String containerBase = markerUrlString.substring(0, markerUrlString.length() - MODEL_PROPERTIES_PATH.length());
         for (String fileName : CONFIG_FILE_NAMES) {
+            String candidateUrlString = containerBase + fileName;
+            URL candidate;
             try {
-                URL candidate = new URI(containerBase + fileName).toURL();
-                try (InputStream in = candidate.openStream()) {
-                    return Optional.of(candidate);
+                candidate = new URI(candidateUrlString).toURL();
+            } catch (URISyntaxException | MalformedURLException e) {
+                // Unexpected: containerBase was itself derived from a URL, so this would mean the classpath
+                // entry's URL isn't validly-encoded (e.g. an unencoded space) - log it rather than silently
+                // falling through, since that would otherwise look identical to "file not present".
+                LOGGER.error("Could not build a valid URI from {}, skipping this candidate config location",
+                        candidateUrlString, e);
+                continue;
+            }
+            try (InputStream ignored = candidate.openStream()) {
+                return Optional.of(candidate);
+            } catch (FileNotFoundException e) {
+                if (fileName.equals(RuneConfigurationFileProvider.LEGACY_FILE_NAME)) {
+                    LOGGER.error("{} not present either, no config found in this container", candidate);
+                } else {
+                    LOGGER.warn("{} not present in this container, trying the legacy candidate name", candidate);
                 }
-            } catch (URISyntaxException | IOException e) {
-                // Not present in this container (or, for URISyntaxException, containerBase + fileName isn't a
-                // validly-encoded URI - e.g. an unencoded space from a classpath entry on a path containing one);
-                // either way, try the next name.
+            } catch (IOException e) {
+                LOGGER.error("Failed to open candidate config location {}, skipping", candidate, e);
             }
         }
         return Optional.empty();
