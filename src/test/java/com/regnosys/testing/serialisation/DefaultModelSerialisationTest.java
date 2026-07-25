@@ -327,9 +327,154 @@ class DefaultModelSerialisationTest {
         assertFalse(resolved.getObjectMapper() instanceof RuneJsonObjectMapper);
     }
 
+    // ---- leaf election ----
+
+    @Test
+    void leafWinsEvenWhenItsAncestorsMarkerComesFirstOnTheClasspath() throws IOException {
+        // The sortpom scenario v1 could not survive: the ancestor's jar is listed before the
+        // child's, so its marker enumerates first, yet ancestry still elects the child.
+        Path ancestorContainer = Files.createDirectories(tempDir.resolve("ancestor"));
+        Path childContainer = Files.createDirectories(tempDir.resolve("child"));
+        Files.writeString(ancestorContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Ancestor Model
+                  defaultSerialisationFormat: JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(ancestorContainer, true, DEFAULT_VERSION,
+                "org.example:ancestor-java:1.0.0", "org.example:ancestor-parent", "");
+        Files.writeString(childContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Child Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(childContainer, true, DEFAULT_VERSION,
+                "org.example:child-java:2.0.0", "org.example:child-parent", "org.example:ancestor-parent");
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(
+                containersClassLoader(ancestorContainer, childContainer));
+
+        assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
+    }
+
+    @Test
+    void twoIndependentLeavesThrowNamingBothModels() throws IOException {
+        Path firstContainer = Files.createDirectories(tempDir.resolve("first"));
+        Path secondContainer = Files.createDirectories(tempDir.resolve("second"));
+        writeAncestryMarker(firstContainer, false, DEFAULT_VERSION,
+                "org.example:first-java:1.0.0", "org.example:first-parent", "");
+        writeAncestryMarker(secondContainer, false, DEFAULT_VERSION,
+                "org.example:second-java:1.0.0", "org.example:second-parent", "");
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> DefaultModelSerialisation.resolve(containersClassLoader(firstContainer, secondContainer)));
+
+        assertTrue(exception.getMessage().contains("org.example:first-java:1.0.0"));
+        assertTrue(exception.getMessage().contains("org.example:second-java:1.0.0"));
+    }
+
+    @Test
+    void anyPreAncestryMarkerDisablesElectionAndFallsBackToClasspathOrder() throws IOException {
+        // The first marker is a v1 one (no modelId); by ancestry the second would win, but the
+        // compatibility gate keeps classpath order, so the v1 marker's answer (no config) sticks.
+        Path v1Container = Files.createDirectories(tempDir.resolve("v1"));
+        Path childContainer = Files.createDirectories(tempDir.resolve("child"));
+        writeMarker(v1Container, false, DEFAULT_VERSION);
+        Files.writeString(childContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Child Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(childContainer, true, DEFAULT_VERSION,
+                "org.example:child-java:2.0.0", "org.example:child-parent", "");
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(
+                containersClassLoader(v1Container, childContainer));
+
+        assertFalse(resolved.getObjectMapper() instanceof RuneJsonObjectMapper);
+    }
+
+    @Test
+    void ancestryCycleFallsBackToClasspathOrder() throws IOException {
+        // Zero leaves - only possible with corrupted markers; must not block the build.
+        Path firstContainer = Files.createDirectories(tempDir.resolve("first"));
+        Path secondContainer = Files.createDirectories(tempDir.resolve("second"));
+        Files.writeString(firstContainer.resolve("rune-config.yml"), """
+                model:
+                  name: First Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(firstContainer, true, DEFAULT_VERSION,
+                "org.example:first-java:1.0.0", "org.example:first-parent", "org.example:second-parent");
+        writeAncestryMarker(secondContainer, false, DEFAULT_VERSION,
+                "org.example:second-java:1.0.0", "org.example:second-parent", "org.example:first-parent");
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(
+                containersClassLoader(firstContainer, secondContainer));
+
+        assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
+    }
+
+    @Test
+    void singleRootModelMarkerWinsTrivially() throws IOException {
+        Files.writeString(tempDir.resolve("rune-config.yml"), """
+                model:
+                  name: Root Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(tempDir, true, DEFAULT_VERSION,
+                "com.regnosys.rune-fpml:rosetta-source:1.2.3", "com.regnosys.rune-fpml:parent", "");
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(dirClassLoader());
+
+        assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
+    }
+
+    @Test
+    void versionConventionCheckStillFiresUnderLeafElection() throws IOException {
+        // The elected leaf (the child) has an older plugin version than its ancestor - orthogonal
+        // to election, this must still throw, naming the models rather than URLs.
+        Path ancestorContainer = Files.createDirectories(tempDir.resolve("ancestor"));
+        Path childContainer = Files.createDirectories(tempDir.resolve("child"));
+        writeAncestryMarker(ancestorContainer, false, "10.4.0",
+                "org.example:ancestor-java:1.0.0", "org.example:ancestor-parent", "");
+        writeAncestryMarker(childContainer, false, "10.3.0",
+                "org.example:child-java:2.0.0", "org.example:child-parent", "org.example:ancestor-parent");
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> DefaultModelSerialisation.resolve(containersClassLoader(ancestorContainer, childContainer)));
+
+        assertTrue(exception.getMessage().contains("org.example:ancestor-java:1.0.0"));
+        assertTrue(exception.getMessage().contains("org.example:child-java:2.0.0"));
+    }
+
+    @Test
+    void duplicateMarkersOfTheSameModelAreOneLeafNotAnAmbiguity() throws IOException {
+        // The same model appearing twice on the classpath is not two independent model graphs;
+        // classpath order breaks the tie.
+        Path firstContainer = Files.createDirectories(tempDir.resolve("first"));
+        Path secondContainer = Files.createDirectories(tempDir.resolve("second"));
+        Files.writeString(firstContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Test Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(firstContainer, true, DEFAULT_VERSION,
+                "org.example:model-java:1.0.0", "org.example:model-parent", "");
+        writeAncestryMarker(secondContainer, false, DEFAULT_VERSION,
+                "org.example:model-java:1.0.0", "org.example:model-parent", "");
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(
+                containersClassLoader(firstContainer, secondContainer));
+
+        assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
+    }
+
+    // ---- fixtures ----
+
     private ClassLoader configClassLoader(String fileName, String yaml) throws IOException {
         Files.writeString(tempDir.resolve(fileName), yaml, StandardCharsets.UTF_8);
-        writeMarker(tempDir, true, DEFAULT_VERSION);
+        writeAncestryMarker(tempDir, true, DEFAULT_VERSION,
+                "org.example:test-model-java:1.0.0", "org.example:test-model-parent", "");
         return dirClassLoader();
     }
 
@@ -345,13 +490,28 @@ class DefaultModelSerialisationTest {
         return new URLClassLoader(urls, null);
     }
 
+    /** A v1 marker, as written by a pre-ancestry rune-maven-plugin: no identity/ancestry keys. */
     private void writeMarker(Path container, boolean configPresent, String runeMavenPluginVersion) throws IOException {
+        writeAncestryMarker(container, configPresent, runeMavenPluginVersion, null, null, null);
+    }
+
+    private void writeAncestryMarker(Path container, boolean configPresent, String runeMavenPluginVersion,
+            String modelSourceGav, String modelId, String ancestorModels) throws IOException {
         Path marker = container.resolve(MARKER_RELATIVE_PATH);
         Files.createDirectories(marker.getParent());
         Properties properties = new Properties();
         properties.setProperty("runeConfigPresentInModel", String.valueOf(configPresent));
         if (runeMavenPluginVersion != null) {
             properties.setProperty("runeMavenPluginVersion", runeMavenPluginVersion);
+        }
+        if (modelSourceGav != null) {
+            properties.setProperty("modelSourceGav", modelSourceGav);
+        }
+        if (modelId != null) {
+            properties.setProperty("modelId", modelId);
+        }
+        if (ancestorModels != null) {
+            properties.setProperty("ancestorModels", ancestorModels);
         }
         try (OutputStream out = Files.newOutputStream(marker)) {
             properties.store(out, null);
