@@ -357,6 +357,37 @@ class DefaultModelSerialisationTest {
     }
 
     @Test
+    void grandparentIsRuledOutByTheIntermediatesMarkerNotTheLeafs() throws IOException {
+        // Three-model chain (root -> middle -> leaf), root's marker first on the classpath. The
+        // leaf's parentModels name only the middle model; the edge that rules the root out comes
+        // from the middle model's own marker - the property direct-parents election relies on.
+        Path rootContainer = Files.createDirectories(tempDir.resolve("root"));
+        Path middleContainer = Files.createDirectories(tempDir.resolve("middle"));
+        Path leafContainer = Files.createDirectories(tempDir.resolve("leaf"));
+        Files.writeString(rootContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Root Model
+                  defaultSerialisationFormat: JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(rootContainer, true, DEFAULT_VERSION,
+                "org.example:root-java:1.0.0", "org.example:root-parent", "");
+        writeAncestryMarker(middleContainer, false, DEFAULT_VERSION,
+                "org.example:middle-java:1.0.0", "org.example:middle-parent", "org.example:root-parent");
+        Files.writeString(leafContainer.resolve("rune-config.yml"), """
+                model:
+                  name: Leaf Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(leafContainer, true, DEFAULT_VERSION,
+                "org.example:leaf-java:1.0.0", "org.example:leaf-parent", "org.example:middle-parent");
+
+        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(
+                containersClassLoader(rootContainer, middleContainer, leafContainer));
+
+        assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
+    }
+
+    @Test
     void twoIndependentLeavesThrowNamingBothModels() throws IOException {
         Path firstContainer = Files.createDirectories(tempDir.resolve("first"));
         Path secondContainer = Files.createDirectories(tempDir.resolve("second"));
@@ -496,7 +527,7 @@ class DefaultModelSerialisationTest {
     }
 
     private void writeAncestryMarker(Path container, boolean configPresent, String runeMavenPluginVersion,
-            String modelSourceGav, String modelId, String ancestorModels) throws IOException {
+            String modelSourceGav, String modelId, String parentModels) throws IOException {
         Path marker = container.resolve(MARKER_RELATIVE_PATH);
         Files.createDirectories(marker.getParent());
         Properties properties = new Properties();
@@ -510,8 +541,8 @@ class DefaultModelSerialisationTest {
         if (modelId != null) {
             properties.setProperty("modelId", modelId);
         }
-        if (ancestorModels != null) {
-            properties.setProperty("ancestorModels", ancestorModels);
+        if (parentModels != null) {
+            properties.setProperty("parentModels", parentModels);
         }
         try (OutputStream out = Files.newOutputStream(marker)) {
             properties.store(out, null);
