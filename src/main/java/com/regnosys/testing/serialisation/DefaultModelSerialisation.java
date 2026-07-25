@@ -293,17 +293,17 @@ public final class DefaultModelSerialisation {
             LOGGER.debug("Leaf election skipped: a marker without {} (written by a pre-ancestry "
                     + "rune-maven-plugin) is on the classpath; falling back to the first marker in classpath "
                     + "order", MODEL_ID_KEY);
-            return markers.get(0);
+            return markers.getFirst();
         }
         List<Marker> leaves = markers.stream()
                 .filter(candidate -> markers.stream()
                         .noneMatch(other -> other != candidate && other.parentModels().contains(candidate.modelId())))
-                .collect(Collectors.toList());
+                .toList();
         if (leaves.isEmpty()) {
             LOGGER.warn("No leaf model found among the {} markers on the classpath - their parentModels "
                     + "declarations form a cycle, which can only come from corrupted markers. Falling back to "
                     + "the first marker in classpath order.", MODEL_PROPERTIES_PATH);
-            return markers.get(0);
+            return markers.getFirst();
         }
         long distinctLeafIds = leaves.stream().map(Marker::modelId).distinct().count();
         if (distinctLeafIds > 1) {
@@ -317,7 +317,7 @@ public final class DefaultModelSerialisation {
                     + "parent must be built with a marker-writing rune-maven-plugin; rebuild that intermediate "
                     + "model.");
         }
-        return leaves.get(0);
+        return leaves.getFirst();
     }
 
     /**

@@ -211,7 +211,9 @@ class DefaultModelSerialisationTest {
     }
 
     public static class UnsortedBean {
+        @SuppressWarnings("unused")
         public String zulu = "z";
+        @SuppressWarnings("unused")
         public String alpha = "a";
     }
 
