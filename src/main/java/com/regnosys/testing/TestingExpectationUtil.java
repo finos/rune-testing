@@ -21,6 +21,7 @@ package com.regnosys.testing;
  */
 
 import com.regnosys.rosetta.common.util.ClassPathUtils;
+import com.regnosys.rosetta.common.util.LineEndings;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +44,19 @@ public class TestingExpectationUtil {
     public static Optional<Path> TEST_WRITE_BASE_PATH = Optional.ofNullable(System.getenv("TEST_WRITE_BASE_PATH"))
             .map(Paths::get);
 
+    /**
+     * Reads an expectation file from the classpath, normalised to "\n".
+     * <p>
+     * Expectation files are compared against output that is always produced with
+     * "\n". A repository without a {@code .gitattributes} checks them out with CRLF
+     * on Windows, so without normalising here the comparison would depend on which
+     * operating system the file was checked out on.
+     */
     public static String readStringFromResources(Path resourcePath) {
         return Optional.ofNullable(ClassPathUtils.getResource(resourcePath))
                 .map(UrlUtils::toPath)
                 .map(TestingExpectationUtil::readString)
+                .map(LineEndings::normalise)
                 .orElse(null);
     }
 
@@ -61,14 +71,17 @@ public class TestingExpectationUtil {
 
     public static void assertJsonEquals(String expectedJson, String resultJson) {
         assertEquals(
-                normaliseLineEndings(expectedJson),
-                normaliseLineEndings(resultJson));
+                LineEndings.normalise(expectedJson),
+                LineEndings.normalise(resultJson));
     }
 
+    /**
+     * @deprecated use {@link LineEndings#normalise(String)}, which is reachable from
+     *             repositories that do not depend on rune-testing.
+     */
+    @Deprecated
     public static String normaliseLineEndings(String str) {
-        return Optional.ofNullable(str)
-                .map(s -> s.replace("\r", ""))
-                .orElse(null);
+        return LineEndings.normalise(str);
     }
 
     public static void writeFile(Path writePath, String json, boolean create) {

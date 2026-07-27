@@ -24,6 +24,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.regnosys.rosetta.common.serialisation.reportdata.ReportDataItem;
 import com.regnosys.rosetta.common.util.ClassPathUtils;
 import com.regnosys.rosetta.common.util.CollectionUtils;
+import com.regnosys.rosetta.common.util.LineEndings;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.rosetta.rosetta.RosettaEnumValue;
 import com.regnosys.rosetta.rosetta.RosettaEnumeration;
@@ -135,7 +136,11 @@ public class SchemeImporterTestHelper {
         URL rosettaPath = Arrays.stream(rosettaPaths)
                 .filter(x -> getFileName(x.getFile()).equals(fileName))
                 .findFirst().orElseThrow();
-        String contents = new String(rosettaPath.openStream().readAllBytes(), StandardCharsets.UTF_8);
+        // Normalised to "\n": the committed .rosetta file is compared against generated
+        // content, which is always produced with "\n", but checks out with CRLF on
+        // Windows in a repository without a .gitattributes
+        String contents = LineEndings.normalise(
+                new String(rosettaPath.openStream().readAllBytes(), StandardCharsets.UTF_8));
         return RosettaResourceWriter.rewriteProjectVersion(contents);
     }
 
