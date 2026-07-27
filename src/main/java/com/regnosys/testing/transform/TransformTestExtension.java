@@ -63,6 +63,7 @@ import java.util.stream.Stream;
 import static com.regnosys.rosetta.common.transform.TestPackUtils.*;
 import static com.regnosys.rosetta.common.transform.TestPackUtils.getPipelineModel;
 import static com.regnosys.testing.TestingExpectationUtil.readStringFromResources;
+import static com.regnosys.testing.TestingExpectationUtil.normaliseLineEndings;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -197,7 +198,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
 
         String expectedOutput = readStringFromResources(Path.of(sampleModel.getOutputPath()));
-        assertEquals(expectedOutput, actualOutput);
+        assertEquals(normaliseLineEndings(expectedOutput), normaliseLineEndings(actualOutput));
 
         TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
         assertEquals(expectedAssertions, actualAssertions);

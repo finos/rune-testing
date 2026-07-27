@@ -59,6 +59,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.regnosys.rosetta.common.util.UrlUtils.getBaseFileName;
+import static com.regnosys.rosetta.common.util.UrlUtils.toPortableString;
 
 public class PipelineTestPackWriter {
 
@@ -207,7 +208,9 @@ public class PipelineTestPackWriter {
             String baseFileName = getBaseFileName(inputSample.toUri().toURL());
             String displayName = baseFileName.replace("-", " ");
 
-            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, inputSample.toString(), outputPath.toString(), assertions);
+            // Sample paths are stored in the test-pack model and resolved as classpath
+            // resources, so they always use "/" regardless of the platform separator
+            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, toPortableString(inputSample), toPortableString(outputPath), assertions);
             sampleModels.add(sampleModel);
 
             Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
