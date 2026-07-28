@@ -31,6 +31,7 @@ import com.google.inject.Module;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
+import com.regnosys.rosetta.common.util.LineEndings;
 import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.testing.TestingExpectationUtil;
@@ -197,7 +198,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
 
         String expectedOutput = readStringFromResources(Path.of(sampleModel.getOutputPath()));
-        assertEquals(expectedOutput, actualOutput);
+        assertEquals(LineEndings.normalise(expectedOutput), LineEndings.normalise(actualOutput));
 
         TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
         assertEquals(expectedAssertions, actualAssertions);
