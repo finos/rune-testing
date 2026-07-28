@@ -137,10 +137,11 @@ public final class DefaultModelSerialisation {
      * {@value #PARENT_MODELS_KEY} — independent of classpath order. If any marker predates the
      * ancestry keys, the first marker in classpath order wins instead (compatibility fallback).
      *
-     * @throws IllegalStateException if no marker is found on the classpath (this {@code rune-testing}
-     *         requires a marker that an older {@code rune-maven-plugin} does not produce), if leaf
-     *         election finds several independent leaves (two unrelated model graphs on one test
-     *         classpath is genuinely ambiguous), if the winning marker declares the config present but
+     * @throws IllegalStateException if the markers cannot be enumerated or read at all (an IO failure
+     *         reading the classpath itself), if no marker is found on the classpath (this
+     *         {@code rune-testing} requires a marker that an older {@code rune-maven-plugin} does not
+     *         produce), if leaf election finds several independent leaves (two unrelated model graphs on
+     *         one test classpath is genuinely ambiguous), if the winning marker declares the config present but
      *         neither config file is found in its own container, if another marker declares a newer
      *         {@code runeMavenPluginVersion} than the winning marker's (violating the convention that a
      *         child's dsl/bundle version is always ≥ its parent's), or if the configured format is
@@ -255,9 +256,13 @@ public final class DefaultModelSerialisation {
     }
 
     /**
-     * Enumerates and parses every marker on the classpath, in classpath order. Should enumeration
-     * itself fail (an IO problem, not a malformed marker), degrades to the single
-     * {@link ClassLoader#getResource(String)} lookup with a warning rather than failing resolution.
+     * Enumerates and parses every marker on the classpath, in classpath order. Enumeration failing is an
+     * IO problem with the classpath itself, not a malformed marker: it fails loudly, matching
+     * {@link #readProperties(URL)}. Degrading to the single {@link ClassLoader#getResource(String)}
+     * lookup instead would reinstate the classpath-order semantics this marker exists to replace, and so
+     * could silently elect an ancestor's marker — the original bug, in a harder place to spot. The
+     * classpath-order fallback is therefore reached only from {@link #electWinner(List)}, for the
+     * deliberate pre-ancestry-marker and corrupted-ancestry cases.
      */
     private static List<Marker> readAllMarkers(ClassLoader classLoader) {
         List<URL> urls = new ArrayList<>();
@@ -267,12 +272,9 @@ public final class DefaultModelSerialisation {
                 urls.add(resources.nextElement());
             }
         } catch (IOException e) {
-            LOGGER.warn("Failed to enumerate {} markers on the classpath; falling back to the first marker "
-                    + "in classpath order", MODEL_PROPERTIES_PATH, e);
-            URL single = classLoader.getResource(MODEL_PROPERTIES_PATH);
-            if (single != null) {
-                urls.add(single);
-            }
+            throw new IllegalStateException("Failed to enumerate " + MODEL_PROPERTIES_PATH + " markers on the "
+                    + "classpath. This is an IO failure reading the classpath itself, not a malformed marker - "
+                    + "check for an unreadable or corrupt jar or classes directory on the test classpath.", e);
         }
         return urls.stream().map(url -> new Marker(url, readProperties(url))).collect(Collectors.toList());
     }

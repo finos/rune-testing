@@ -34,6 +34,7 @@ import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 
@@ -502,7 +503,58 @@ class DefaultModelSerialisationTest {
         assertInstanceOf(RuneJsonObjectMapper.class, resolved.getObjectMapper());
     }
 
+    @Test
+    void markerEnumerationFailureThrowsInsteadOfFallingBackToClasspathOrder() throws IOException {
+        // A readable marker declaring RUNE_JSON is reachable via the single-resource lookup, so a
+        // fallback to classpath order would resolve off it and silently adopt its format. An unreadable
+        // classpath must fail loudly instead: degrading here reinstates the very classpath-order
+        // semantics the marker replaces, in the place it is hardest to spot.
+        Files.writeString(tempDir.resolve("rune-config.yml"), """
+                model:
+                  name: Test Model
+                  defaultSerialisationFormat: RUNE_JSON
+                """, StandardCharsets.UTF_8);
+        writeAncestryMarker(tempDir, true, DEFAULT_VERSION,
+                "org.example:test-model-java:1.0.0", "org.example:test-model-parent", "");
+        ClassLoader classLoader = new EnumerationFailingClassLoader(dirClassLoader());
+        assertNotNull(classLoader.getResource(MARKER_RELATIVE_PATH), "fallback lookup must be able to succeed");
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> DefaultModelSerialisation.resolve(classLoader));
+
+        assertTrue(exception.getMessage().contains(MARKER_RELATIVE_PATH));
+        assertInstanceOf(IOException.class, exception.getCause());
+    }
+
     // ---- fixtures ----
+
+    /**
+     * A classloader whose marker <em>enumeration</em> fails while its single-resource lookup still
+     * succeeds — the one shape in which a fallback to {@link ClassLoader#getResource(String)} would have
+     * resolved a marker rather than surfacing the IO failure.
+     */
+    private static final class EnumerationFailingClassLoader extends ClassLoader {
+
+        private final ClassLoader delegate;
+
+        private EnumerationFailingClassLoader(ClassLoader delegate) {
+            super(null);
+            this.delegate = delegate;
+        }
+
+        @Override
+        public Enumeration<URL> getResources(String name) throws IOException {
+            if (MARKER_RELATIVE_PATH.equals(name)) {
+                throw new IOException("simulated unreadable classpath entry");
+            }
+            return delegate.getResources(name);
+        }
+
+        @Override
+        public URL getResource(String name) {
+            return delegate.getResource(name);
+        }
+    }
 
     private ClassLoader configClassLoader(String fileName, String yaml) throws IOException {
         Files.writeString(tempDir.resolve(fileName), yaml, StandardCharsets.UTF_8);
