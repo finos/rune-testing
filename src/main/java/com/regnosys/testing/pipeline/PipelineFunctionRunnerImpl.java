@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Validator;
+import javax.xml.validation.Schema;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Reader;
@@ -65,7 +65,10 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
     private final ObjectMapper inputObjectMapper;
     private final ObjectWriter outputObjectWriter;
     private final PostProcessor postProcessor;
-    private final Validator xsdValidator;
+    // A Schema, not a Validator, is held here: Validator is not thread-safe, and this runner may be
+    // invoked concurrently for different samples of the same test pack. Schema.newValidator() is cheap
+    // and safe to call per-invocation to get a thread-confined Validator.
+    private final Schema xsdSchema;
 
 
     public PipelineFunctionRunnerImpl(TransformType transformType,
@@ -76,7 +79,7 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
                                       ObjectMapper inputObjectMapper,
                                       ObjectWriter outputObjectWriter,
                                       PostProcessor postProcessor,
-                                      Validator xsdValidator) {
+                                      Schema xsdSchema) {
         this.transformType = transformType;
         this.function = function;
         this.inputType = inputType;
@@ -85,7 +88,7 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
         this.inputObjectMapper = inputObjectMapper;
         this.outputObjectWriter = outputObjectWriter;
         this.postProcessor = postProcessor;
-        this.xsdValidator = xsdValidator;
+        this.xsdSchema = xsdSchema;
     }
 
     @Override
@@ -189,11 +192,11 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
     }
 
     private Boolean isSchemaValidationFailure(String xml) {
-        if (xsdValidator == null) {
+        if (xsdSchema == null) {
             return null;
         }
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))) {
-            xsdValidator.validate(new StreamSource(inputStream));
+            xsdSchema.newValidator().validate(new StreamSource(inputStream));
             return true;
         } catch (SAXException e) {
             LOGGER.error("Schema validation failed: {}", e.getMessage());
