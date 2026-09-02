@@ -45,11 +45,11 @@ import jakarta.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -166,11 +166,10 @@ public class PipelineTestPackWriter {
                                                PipelineTreeConfig config,
                                                ObjectMapper jsonObjectMapper,
                                                ObjectWriter jsonObjectWriter,
-                                               ValidationSummariser validationSummariser) throws IOException {
+                                               ValidationSummariser validationSummariser) {
         LOGGER.info("Test pack sample generation started for {}", testPackId);
         TransformType transformType = pipelineNode.getTransformType();
         LOGGER.info("{} {} samples to be generated", inputSamplesForTestPack.size(), transformType);
-        List<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
         String pipelineId = pipelineNode.id(config.isStrictUniqueIds());
         String pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
         PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
@@ -179,9 +178,10 @@ public class PipelineTestPackWriter {
         Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
         Class<? extends RosettaModelObject> functionType = toClass(transform.getFunction());
         Class<? extends RosettaModelObject> outputType = toClass(transform.getOutputType());
-        // XSD validation
-        Validator outputXsdValidator = Optional.ofNullable(config.getXmlSchemaMap())
-                .map(sm -> getXsdValidator(outputType, sm))
+        // XSD validation. A Schema (not a Validator) is passed through since samples for this test pack
+        // are generated concurrently below, and javax.xml.validation.Validator is not thread-safe.
+        Schema outputXsdSchema = Optional.ofNullable(config.getXmlSchemaMap())
+                .map(sm -> getXsdSchema(outputType, sm))
                 .orElse(null);
 
         PipelineFunctionRunner functionRunner =
@@ -192,35 +192,16 @@ public class PipelineTestPackWriter {
                         pipeline.getOutputSerialisation(),
                         jsonObjectMapper,
                         jsonObjectWriter,
-                        outputXsdValidator);
+                        outputXsdSchema);
 
         String functionName = functionType.getSimpleName();
         Stopwatch stopwatch = Stopwatch.createStarted();
-        for (Path inputSample : inputSamplesForTestPack) {
-            LOGGER.info("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
-
-            Path relativeOutputPath = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
-            Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, relativeOutputPath.toFile().getName())));
-
-            PipelineFunctionResult result = functionRunner.run(resourcesPath.resolve(inputSample));
-            TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
-
-            String baseFileName = getBaseFileName(inputSample.toUri().toURL());
-            String displayName = baseFileName.replace("-", " ");
-
-            // Sample paths are stored in the test-pack model and resolved as classpath
-            // resources, so they always use "/" regardless of the platform separator
-            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, toPortableString(inputSample), toPortableString(outputPath), assertions);
-            sampleModels.add(sampleModel);
-
-            Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
-            Files.write(resourcesPath.resolve(outputPath), result.getSerialisedOutput().getBytes());
-
-            ValidationReport validationReport = result.getValidationReport();
-            if (validationSummariser != null) {
-                validationSummariser.addValidationReport(pipeline, sampleModel.getName(), sampleModel, validationReport);
-            }
-        }
+        // Each sample is independent (own input file, own output file, own SampleModel), so they're
+        // generated concurrently - this loop is by far the largest share of test-pack-generation time.
+        List<TestPackModel.SampleModel> sampleModels = inputSamplesForTestPack.parallelStream()
+                .map(inputSample -> generateSample(resourcesPath, inputPath, outputDir, testPackId, inputSample,
+                        transformType, functionName, functionRunner, pipeline, validationSummariser))
+                .collect(Collectors.toList());
 
         List<TestPackModel.SampleModel> sortedSamples = sampleModels
                 .stream()
@@ -231,6 +212,49 @@ public class PipelineTestPackWriter {
 
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
+    }
+
+    private TestPackModel.SampleModel generateSample(Path resourcesPath,
+                                                      Path inputPath,
+                                                      Path outputDir,
+                                                      String testPackId,
+                                                      Path inputSample,
+                                                      TransformType transformType,
+                                                      String functionName,
+                                                      PipelineFunctionRunner functionRunner,
+                                                      PipelineModel pipeline,
+                                                      ValidationSummariser validationSummariser) {
+        LOGGER.info("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
+
+        Path relativeOutputPath = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
+        Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, relativeOutputPath.toFile().getName())));
+
+        PipelineFunctionResult result = functionRunner.run(resourcesPath.resolve(inputSample));
+        TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
+
+        try {
+            String baseFileName = getBaseFileName(inputSample.toUri().toURL());
+            String displayName = baseFileName.replace("-", " ");
+
+            // Sample paths are stored in the test-pack model and resolved as classpath
+            // resources, so they always use "/" regardless of the platform separator
+            TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, toPortableString(inputSample), toPortableString(outputPath), assertions);
+
+            Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
+            Files.write(resourcesPath.resolve(outputPath), result.getSerialisedOutput().getBytes());
+
+            if (validationSummariser != null) {
+                ValidationReport validationReport = result.getValidationReport();
+                // addValidationReport implementations aren't guaranteed thread-safe; samples across the
+                // whole test pack share one validationSummariser, so guard the one mutating call site.
+                synchronized (validationSummariser) {
+                    validationSummariser.addValidationReport(pipeline, sampleModel.getName(), sampleModel, validationReport);
+                }
+            }
+            return sampleModel;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @NotNull
@@ -346,7 +370,7 @@ public class PipelineTestPackWriter {
         }
     }
 
-    private Validator getXsdValidator(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
+    private Schema getXsdSchema(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
         URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
                 .map(Resources::getResource)
                 .orElse(null);
@@ -357,8 +381,7 @@ public class PipelineTestPackWriter {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
             schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
-            Schema schema = schemaFactory.newSchema(schemaUrl);
-            return schema.newValidator();
+            return schemaFactory.newSchema(schemaUrl);
         } catch (SAXException e) {
             throw new RuntimeException(String.format("Failed to create schema validator for %s", schemaUrl), e);
         }
