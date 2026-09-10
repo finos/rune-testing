@@ -27,6 +27,7 @@ import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.postprocess.WorkflowPostProcessor;
 import com.regnosys.rosetta.common.serialisation.ClasspathTransformMapperFactory;
 import com.regnosys.rosetta.common.serialisation.TransformMapperFactory;
+import com.regnosys.rosetta.common.serialisation.TransformRoot;
 import com.regnosys.rosetta.common.serialisation.TransformSerializationResolver;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TransformType;
@@ -72,11 +73,17 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
         // truth), falling back to the deprecated pipeline serialisation for models generated before
         // transform annotations existed, and finally to the default JSON mapper/writer. Construction —
         // including the CSV_LABELLED @RuneLabelProvider resolution — happens in the mapper factory.
+        //
+        // Each side declares its TransformRoot, so a labelled CSV resolves its LabelProvider from the type
+        // that side actually declares. The input is rooted at inputType; the function's own provider is
+        // rooted at the function's output, so on the input side it is refused rather than borrowed. The
+        // output type is not in this signature, so the output root names the side only — which is the side
+        // on which a function-rooted provider is valid anyway.
         ObjectMapper inputObjectMapper = TransformSerializationResolver.input(functionType, inputSerialisation)
-                .map(serialization -> mapperFactory.create(serialization, functionType))
+                .map(serialization -> mapperFactory.create(serialization, functionType, TransformRoot.input(inputType)))
                 .orElse(defaultJsonObjectMapper);
         ObjectWriter outputObjectWriter = TransformSerializationResolver.output(functionType, outputSerialisation)
-                .map(serialization -> mapperFactory.createWriter(serialization, functionType))
+                .map(serialization -> mapperFactory.createWriter(serialization, functionType, TransformRoot.output()))
                 .orElse(defaultJsonObjectWriter);
 
         return createTestPackFunctionRunner(transformType,
