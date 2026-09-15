@@ -23,6 +23,10 @@ updates:
     ignore:
       - dependency-name: com.regnosys*
       - dependency-name: org.finos.rune*
+      # maven-artifact.version is pinned to match what rune-maven-plugin
+      # (via maven-plugin-api) resolves it to at the current rune.dsl.version -
+      # a value only a human tracing that chain can set correctly, not a bot.
+      - dependency-name: org.apache.maven:maven-artifact
       - dependency-name: org.eclipse.xtext:xtext-dev-bom
         update-types:
           - version-update:semver-major
