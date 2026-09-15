@@ -217,6 +217,20 @@
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.version}</version>
             </dependency>
+            <!-- xtext-dev-bom (imported above) pins junit-platform-* to its own,
+                 older junit-platform-version - it's imported before junit-bom, so
+                 its pin otherwise wins. Override explicitly so junit-jupiter-engine
+                 runs against a junit-platform-engine of the same version. -->
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-commons</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-engine</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-bom</artifactId>
