@@ -27,6 +27,10 @@ updates:
       # (via maven-plugin-api) resolves it to at the current rune.dsl.version -
       # a value only a human tracing that chain can set correctly, not a bot.
       - dependency-name: org.apache.maven:maven-artifact
+      # plexus-utils.version overrides the transitive version pulled in via
+      # maven-plugin-api to fix CVE-2025-67030 - needs to stay reviewed by a
+      # human, not bumped independently by a bot.
+      - dependency-name: org.codehaus.plexus:plexus-utils
       - dependency-name: org.eclipse.xtext:xtext-dev-bom
         update-types:
           - version-update:semver-major
