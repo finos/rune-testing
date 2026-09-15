@@ -62,7 +62,7 @@ public class LatestSchemesImportTest {
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST_ZIP));
                 deleteFileFolder(new File(LatestSchemesImportTest.CODE_LIST));
             }
-            assertEquals("39a7fdb456d6c5b38272bd973fd0203a", checksum, "CodeList zip has been updated, run again with WRITE_EXPECTATIONS enabled then update expected checksum");
+            assertEquals("57279b363ed1d97f3920e24bd2ec7e20", checksum, "CodeList zip has been updated, run again with WRITE_EXPECTATIONS enabled then update expected checksum");
         }
     }
 
@@ -84,7 +84,8 @@ public class LatestSchemesImportTest {
 
                 boolean isDirectory = false;
                 //check for files or directory
-                if (zipEntry.getName().endsWith(File.separator)) {
+                // Zip entry names always use "/" regardless of the platform separator
+                if (zipEntry.getName().endsWith("/")) {
                     isDirectory = true;
                 }
 

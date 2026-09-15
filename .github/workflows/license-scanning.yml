@@ -22,6 +22,8 @@ env:
   ALLOW_LICENSES: "
     licenses/license/name!='Apache License, Version 2.0' and
     not(contains(licenses/license/url, '://www.apache.org/licenses/LICENSE-2.0.txt')) and
+    licenses/license/name!='Apache-2.0' and
+    not(contains(licenses/license/url, '://opensource.org/licenses/Apache-2.0')) and
     
     licenses/license/name!='BSD License' and
     not(contains(licenses/license/url, 'antlr.org/license.html')) and
@@ -50,7 +52,9 @@ env:
     licenses/license/name!='The MIT License' and
     not(contains(licenses/license/url, '://opensource.org/licenses/MIT')) and
     not(contains(licenses/license/url, '://www.opensource.org/licenses/mit-license.php')) and
-    
+    licenses/license/name!='MIT' and
+    not(contains(licenses/license/url, '://opensource.org/license/mit')) and
+
     licenses/license/name!='CDDL + GPLv2 with classpath exception' and
     not(contains(licenses/license/url, '://github.com/javaee/javax.annotation/blob/master/LICENSE')) and
     licenses/license/name!='CDDL/GPLv2+CE' and
@@ -74,7 +78,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Install XQ
       run: pip install xq
     - uses: ./.github/actions/maven-build

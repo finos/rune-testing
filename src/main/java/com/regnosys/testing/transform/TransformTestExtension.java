@@ -20,7 +20,6 @@ package com.regnosys.testing.transform;
  * ===============
  */
 
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ArrayListMultimap;
@@ -32,12 +31,14 @@ import com.google.inject.Module;
 import com.regnosys.rosetta.common.serialisation.RosettaObjectMapper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
+import com.regnosys.rosetta.common.util.LineEndings;
 import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.util.UrlUtils;
 import com.regnosys.testing.TestingExpectationUtil;
 import com.regnosys.testing.pipeline.PipelineFunctionResult;
 import com.regnosys.testing.pipeline.PipelineFunctionRunner;
 import com.regnosys.testing.pipeline.PipelineFunctionRunnerProvider;
+import com.regnosys.testing.serialisation.DefaultModelSerialisation;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -71,6 +72,8 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     // use empty string as error value for function output as it gets serialised
     public static final String EMPTY_OUTPUT = "";
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformTestExtension.class);
+    // Reads the pipeline/test-pack config JSON itself (infrastructure metadata, not domain data), so this
+    // always stays on the legacy mapper regardless of the model's configured default.
     private static final ObjectMapper JSON_OBJECT_MAPPER = RosettaObjectMapper.getNewRosettaObjectMapper();
     private final String modelId;
     private final Module runtimeModule;
@@ -78,10 +81,11 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     private final Class<T> funcType;
     @Inject
     PipelineFunctionRunnerProvider functionRunnerProvider;
-    private ObjectWriter jsonObjectWriter =
-            JSON_OBJECT_MAPPER
-                    .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-                    .writerWithDefaultPrettyPrinter();
+    // The default JSON mapper/writer for a transform side with no explicit format: the model's configured
+    // defaultSerialisationFormat (rune-json or legacy), read from its rune-config.yml/rosetta-config.yml.
+    private final DefaultModelSerialisation defaultSerialisation = DefaultModelSerialisation.resolve(this.getClass().getClassLoader());
+    private final ObjectMapper defaultJsonObjectMapper = defaultSerialisation.getObjectMapper();
+    private ObjectWriter jsonObjectWriter = defaultSerialisation.createWriter(true);
     private Validator outputXsdValidator;
     private boolean includeAllPipelinesForFunction;
 
@@ -106,10 +110,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     public TransformTestExtension<T> withSortJsonPropertiesAlphabetically(boolean sortJsonPropertiesAlphabetically) {
-        jsonObjectWriter =
-                JSON_OBJECT_MAPPER
-                        .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, sortJsonPropertiesAlphabetically)
-                        .writerWithDefaultPrettyPrinter();
+        jsonObjectWriter = defaultSerialisation.createWriter(sortJsonPropertiesAlphabetically);
         return this;
     }
 
@@ -149,7 +150,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
                     funcType,
                     m.getInputSerialisation(),
                     m.getOutputSerialisation(),
-                    JSON_OBJECT_MAPPER,
+                    defaultJsonObjectMapper,
                     jsonObjectWriter,
                     outputXsdValidator);
             pipelineIdFunctionRunnerMap.put(m.getId(), pipelineFunctionRunner);
@@ -197,7 +198,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         }
 
         String expectedOutput = readStringFromResources(Path.of(sampleModel.getOutputPath()));
-        assertEquals(expectedOutput, actualOutput);
+        assertEquals(LineEndings.normalise(expectedOutput), LineEndings.normalise(actualOutput));
 
         TestPackModel.SampleModel.Assertions expectedAssertions = sampleModel.getAssertions();
         assertEquals(expectedAssertions, actualAssertions);

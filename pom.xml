@@ -31,19 +31,18 @@
     </parent>
 
     <name>Rune Testing</name>
-    <groupId>com.regnosys</groupId>
-    <artifactId>rosetta-testing</artifactId>
+    <groupId>org.finos.rune-testing</groupId>
+    <artifactId>rune-testing</artifactId>
     <packaging>jar</packaging>
     <version>0.0.0.main-SNAPSHOT</version>
     <url>https://github.com/REGnosys/rosetta-testing</url>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/REGnosys/rosetta-testing</developerConnection>
-        <connection>scm:git:git://github.com/REGnosys/rosetta-testing.git</connection>
+        <developerConnection>scm:git:https://github.com/finos/rune-testing</developerConnection>
+        <connection>scm:git:git://github.com/finos/rune-testing.git</connection>
         <tag>HEAD</tag>
-        <url>https://github.com/REGnosys/rosetta-testing</url>
+        <url>https://github.com/finos/rune-testing</url>
     </scm>
-
     <description>Rune Testing is a java library that is utilised by Rosetta Code Generators and models expressed in the Rosetta DSL.</description>
 
     <organization>
@@ -61,10 +60,10 @@
 
     <developers>
         <developer>
-            <id>minesh-s-patel</id>
-            <name>Minesh Patel</name>
+            <id>hugohills-regnosys</id>
+            <name>Hugo Hills</name>
             <email>infra@regnosys.com</email>
-            <url>http://github.com/minesh-s-patel</url>
+            <url>http://github.com/hugohills-regnosys</url>
             <organization>REGnosys</organization>
             <organizationUrl>https://regnosys.com</organizationUrl>
             <timezone>+1</timezone>
@@ -74,10 +73,10 @@
             </roles>
         </developer>
         <developer>
-            <id>hugohills-regnosys</id>
-            <name>Hugo Hills</name>
+            <id>JayasriR</id>
+            <name>Jayasri Radhakrishnan</name>
             <email>infra@regnosys.com</email>
-            <url>http://github.com/hugohills-regnosys</url>
+            <url>http://github.com/JayasriR</url>
             <organization>REGnosys</organization>
             <organizationUrl>https://regnosys.com</organizationUrl>
             <timezone>+1</timezone>
@@ -93,7 +92,7 @@
         <java.enforced.version>[21,22)</java.enforced.version>
         <maven.compiler.release>21</maven.compiler.release>
 
-        <rune.dsl.version>10.0.0-dev.8</rune.dsl.version>
+        <rune.dsl.version>10.11.0</rune.dsl.version>
         <rune.common.version>0.0.0.main-SNAPSHOT</rune.common.version>
 
         <xtext.version>2.38.0</xtext.version>
@@ -103,6 +102,10 @@
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
         <guava.version>33.3.1-jre</guava.version>
+        <plexus-utils.version>3.6.1</plexus-utils.version>
+        <!-- Matches the version resolved transitively via
+             rune-common -> rune-maven-plugin -> maven-plugin-api -> maven-artifact -->
+        <maven-artifact.version>3.9.14</maven-artifact.version>
 
         <!-- Release -->
         <gpg.keyname>configured-by-release-profile</gpg.keyname>
@@ -110,19 +113,19 @@
 
         <!-- test -->
         <junit.version>5.9.1</junit.version>
-        <mockito.version>5.12.0</mockito.version>
+        <mockito.version>5.23.0</mockito.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <logback.version>1.5.25</logback.version>
+        <logback.version>1.6.3</logback.version>
 
         <!-- plugins -->
-        <maven-enforcer-plugin.version>3.3.0</maven-enforcer-plugin.version>
-        <maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+        <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+        <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+        <build-helper-maven-plugin.version>3.6.2</build-helper-maven-plugin.version>
         <cxf-xjc-plugin.version>3.3.1</cxf-xjc-plugin.version>
-        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
     </properties>
 
@@ -166,8 +169,8 @@
                 <version>${rune.dsl.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.regnosys</groupId>
-                <artifactId>rosetta-common</artifactId>
+                <groupId>org.finos.rune-common</groupId>
+                <artifactId>rune-common</artifactId>
                 <version>${rune.common.version}</version>
             </dependency>
             <dependency>
@@ -251,6 +254,21 @@
                 <artifactId>logback-core</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+            <dependency>
+                <!-- Override transitive version pulled in via maven-plugin-api to fix CVE-2025-67030 -->
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>${plexus-utils.version}</version>
+            </dependency>
+            <dependency>
+                <!-- Declared directly because DefaultModelSerialisation uses ComparableVersion at compile
+                     time, rather than relying on the transitive path
+                     (rune-common -> rune-maven-plugin -> maven-plugin-api -> maven-artifact); version
+                     matches the current transitive resolution, so this changes nothing today. -->
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-artifact</artifactId>
+                <version>${maven-artifact.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -264,8 +282,8 @@
             <artifactId>rune-testing</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.regnosys</groupId>
-            <artifactId>rosetta-common</artifactId>
+            <groupId>org.finos.rune-common</groupId>
+            <artifactId>rune-common</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -274,6 +292,10 @@
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-artifact</artifactId>
         </dependency>
         <!-- add junit in non-test scope -->
         <dependency>
@@ -470,7 +492,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>2.4.0</version>
+                <version>2.7.1</version>
                 <configuration>
                     <verbose>false</verbose>
                     <licenseName>apache_v2</licenseName>

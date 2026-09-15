@@ -25,8 +25,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.inject.Injector;
 import com.regnosys.rosetta.common.hashing.ReferenceConfig;
 import com.regnosys.rosetta.common.postprocess.WorkflowPostProcessor;
+import com.regnosys.rosetta.common.serialisation.ClasspathTransformMapperFactory;
+import com.regnosys.rosetta.common.serialisation.TransformMapperFactory;
+import com.regnosys.rosetta.common.serialisation.TransformRoot;
+import com.regnosys.rosetta.common.serialisation.TransformSerializationResolver;
 import com.regnosys.rosetta.common.transform.PipelineModel;
-import com.regnosys.rosetta.common.transform.TestPackUtils;
 import com.regnosys.rosetta.common.transform.TransformType;
 import com.regnosys.rosetta.common.validation.RosettaTypeValidator;
 import com.rosetta.model.lib.RosettaModelObject;
@@ -37,7 +40,6 @@ import jakarta.inject.Inject;
 import javax.xml.validation.Validator;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Optional;
 import java.util.function.Function;
 
 public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunnerProvider {
@@ -53,7 +55,12 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
     @Inject
     WorkflowPostProcessor postProcessor;
 
+    // Models on the test-pack runner live on the application classpath, so the classpath factory is the
+    // right construction seam here (a runtime with isolated model classloaders implements its own).
+    private final TransformMapperFactory mapperFactory = new ClasspathTransformMapperFactory();
+
     @Override
+    @SuppressWarnings("deprecation") // the pipeline serialisation is a deprecated fallback for pre-annotation models
     public PipelineFunctionRunner create(TransformType transformType,
                                          Class<? extends RosettaModelObject> inputType,
                                          Class<?> functionType,
@@ -62,13 +69,21 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                                          ObjectMapper defaultJsonObjectMapper,
                                          ObjectWriter defaultJsonObjectWriter,
                                          Validator outputXsdValidator) {
-        // Input de-serialisation
-        ObjectMapper inputObjectMapper = Optional.ofNullable(inputSerialisation)
-                .flatMap(TestPackUtils::getObjectMapper)
+        // Each side resolves from the function's @Ingest/@Projection annotation (the model's source of
+        // truth), falling back to the deprecated pipeline serialisation for models generated before
+        // transform annotations existed, and finally to the default JSON mapper/writer. Construction —
+        // including the CSV_LABELLED @RuneLabelProvider resolution — happens in the mapper factory.
+        //
+        // Each side declares its TransformRoot, so a labelled CSV resolves its LabelProvider from the type
+        // that side actually declares. The input is rooted at inputType; the function's own provider is
+        // rooted at the function's output, so on the input side it is refused rather than borrowed. The
+        // output type is not in this signature, so the output root names the side only — which is the side
+        // on which a function-rooted provider is valid anyway.
+        ObjectMapper inputObjectMapper = TransformSerializationResolver.input(functionType, inputSerialisation)
+                .map(serialization -> mapperFactory.create(serialization, functionType, TransformRoot.input(inputType)))
                 .orElse(defaultJsonObjectMapper);
-        // Output serialisation
-        ObjectWriter outputObjectWriter = Optional.ofNullable(outputSerialisation)
-                .flatMap(TestPackUtils::getObjectWriter)
+        ObjectWriter outputObjectWriter = TransformSerializationResolver.output(functionType, outputSerialisation)
+                .map(serialization -> mapperFactory.createWriter(serialization, functionType, TransformRoot.output()))
                 .orElse(defaultJsonObjectWriter);
 
         return createTestPackFunctionRunner(transformType,
