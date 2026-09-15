@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.finos</groupId>
         <artifactId>finos</artifactId>
-        <version>7</version>
+        <version>10</version>
     </parent>
 
     <name>Rune Testing</name>
