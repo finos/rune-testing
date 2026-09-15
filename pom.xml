@@ -113,19 +113,19 @@
 
         <!-- test -->
         <junit.version>5.9.1</junit.version>
-        <mockito.version>5.12.0</mockito.version>
+        <mockito.version>5.23.0</mockito.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <logback.version>1.5.38</logback.version>
+        <logback.version>1.6.3</logback.version>
 
         <!-- plugins -->
-        <maven-enforcer-plugin.version>3.3.0</maven-enforcer-plugin.version>
-        <maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+        <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version>
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+        <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+        <build-helper-maven-plugin.version>3.6.2</build-helper-maven-plugin.version>
         <cxf-xjc-plugin.version>3.3.1</cxf-xjc-plugin.version>
-        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
     </properties>
 
@@ -492,7 +492,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>2.4.0</version>
+                <version>2.7.1</version>
                 <configuration>
                     <verbose>false</verbose>
                     <licenseName>apache_v2</licenseName>
