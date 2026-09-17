@@ -122,7 +122,7 @@
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
         <build-helper-maven-plugin.version>3.6.2</build-helper-maven-plugin.version>
-        <cxf-xjc-plugin.version>3.3.1</cxf-xjc-plugin.version>
+        <cxf-xjc-plugin.version>3.3.4</cxf-xjc-plugin.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
