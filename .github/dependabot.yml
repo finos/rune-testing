@@ -17,7 +17,7 @@ updates:
       - java
     # com.regnosys and Rune artifacts are bumped deliberately as part of
     # release coordination, not by a bot.
-    # xtext-dev-bom and guava are kept off minor/major bumps entirely -
+    # xtext-dev-bom, guava and jaxb are kept off minor/major bumps entirely -
     # only patch updates are allowed through, and standalone rather than
     # grouped.
     ignore:
@@ -43,6 +43,19 @@ updates:
       - dependency-name: com.google.inject*
         update-types:
           - version-update:semver-major
+      # jaxb-runtime 3.x/4.x only registers a jakarta.xml.bind.JAXBContextFactory
+      # provider, not javax.xml.bind's - so FpMLSchemeEnumReader and
+      # IsoCurrencySchemeEnumReader, which call javax.xml.bind.JAXBContext.
+      # newInstance() directly, still compile against the untouched
+      # javax.xml.bind:jaxb-api pin but throw JAXBException ("Implementation
+      # of JAXB-API has not been found") at runtime - confirmed by bumping
+      # jaxb-runtime alone and invoking JAXBContext.newInstance() directly.
+      # Neither reader has a test that exercises that path, so a bot bump
+      # here would pass CI and break silently at runtime.
+      - dependency-name: org.glassfish.jaxb*
+        update-types:
+          - version-update:semver-major
+          - version-update:semver-minor
     # One PR for routine minor/patch drift; majors still come through
     # individually so they get read properly.
     groups:
@@ -50,6 +63,7 @@ updates:
         exclude-patterns:
           - org.eclipse.xtext:xtext-dev-bom
           - com.google.guava:guava
+          - org.glassfish.jaxb*
         update-types:
           - minor
           - patch
