@@ -37,7 +37,6 @@ import com.regnosys.testing.reports.ObjectMapperGenerator;
 import com.regnosys.testing.serialisation.DefaultModelSerialisation;
 import com.regnosys.testing.validation.ValidationSummariser;
 import com.rosetta.model.lib.RosettaModelObject;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -232,7 +231,6 @@ public class PipelineTestPackWriter {
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
     }
 
-    @NotNull
     private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
         String outputFormat = Optional.ofNullable(pipelineModel.getOutputSerialisation())
                 .map(PipelineModel.Serialisation::getFormat)
@@ -284,7 +282,7 @@ public class PipelineTestPackWriter {
         return relativePath.toString().replace(File.separatorChar, '-');
     }
 
-    private @NotNull Map<String, List<Path>> filterTestPacks(PipelineNode pipelineNode, PipelineTestPackFilter pipelineTestPackFilter, Map<String, List<Path>> testPackToSamples) {
+    private Map<String, List<Path>> filterTestPacks(PipelineNode pipelineNode, PipelineTestPackFilter pipelineTestPackFilter, Map<String, List<Path>> testPackToSamples) {
         Map<String, List<Path>> filteredTestPackToSamples = testPackToSamples;
         final Set<String> testPackSpecificFunctions = pipelineTestPackFilter.getTestPacksSpecificToFunctions().entries()
                 .stream().filter(entry -> entry.getValue() == pipelineNode.getFunction()).map(Map.Entry::getKey)
