@@ -37,7 +37,6 @@ import com.rosetta.model.lib.ModelReportId;
 import com.rosetta.model.lib.functions.LabelProvider;
 import com.rosetta.model.lib.path.RosettaPath;
 import com.rosetta.util.DottedPath;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -205,7 +204,6 @@ public class ReportTypeSummariser {
 
     }
 
-    @NotNull
     private String getFileName(RosettaReport report, String version) {
         ModelReportId reportId = modelIdProvider.getReportId(report);
         return String.format("%s-%s.csv", reportId.joinRegulatoryReference("-"), version);
@@ -309,7 +307,6 @@ public class ReportTypeSummariser {
         }
     }
 
-    @NotNull
     private Multimap<String, Data> getLabelToDataMap(Path path) {
         Multimap<String, Data> labelToDataMap = ArrayListMultimap.create();
         try {

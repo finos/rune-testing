@@ -29,7 +29,6 @@ import com.regnosys.testing.schemeimport.SchemeEnumReader;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.util.Tuples;
 import org.genericode.xml._2004.ns.codelist._0.*;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -151,7 +150,6 @@ public class FpMLSchemeEnumReader implements SchemeEnumReader {
 				.replace("”", "'");
 	}
 
-	@NotNull
 	private static String removeNewLinesAndDuplicatedWhitespace(String name) {
 		return name
 				.trim()
