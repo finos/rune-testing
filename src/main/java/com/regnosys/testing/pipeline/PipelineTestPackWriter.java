@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
+import com.regnosys.rosetta.common.serialisation.TransformSerializationResolver;
 import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
@@ -198,7 +199,7 @@ public class PipelineTestPackWriter {
             LOGGER.info("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
 
             Path relativeOutputPath = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
-            Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, relativeOutputPath.toFile().getName())));
+            Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(functionType, pipeline, relativeOutputPath.toFile().getName())));
 
             PipelineFunctionResult result = functionRunner.run(resourcesPath.resolve(inputSample));
             TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
@@ -231,12 +232,19 @@ public class PipelineTestPackWriter {
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);
     }
 
-    private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
-        String outputFormat = Optional.ofNullable(pipelineModel.getOutputSerialisation())
-                .map(PipelineModel.Serialisation::getFormat)
-                .map(PipelineModel.Serialisation.Format::getFileExtension)
+    private String updateFileExtensionBasedOnOutputFormat(Class<?> functionType, PipelineModel pipelineModel, String fileName) {
+        return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFileExtension(functionType, pipelineModel.getOutputSerialisation());
+    }
+
+    /**
+     * The function's {@code @Projection} annotation decides the output format, as it does for the output
+     * writer; the pipeline's output serialisation applies only to functions without one.
+     */
+    @SuppressWarnings("deprecation")
+    static String outputFileExtension(Class<?> functionType, PipelineModel.Serialisation outputSerialisation) {
+        return TransformSerializationResolver.output(functionType, outputSerialisation)
+                .map(s -> PipelineModel.Serialisation.Format.valueOf(s.getFormat().name()).getFileExtension())
                 .orElse("json");
-        return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
     }
 
     private void createCsvSampleFiles(Path resourcePath, ImmutableSet<Path> csvTestPackSourceFiles) throws IOException {
