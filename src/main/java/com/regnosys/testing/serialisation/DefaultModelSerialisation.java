@@ -330,9 +330,18 @@ public final class DefaultModelSerialisation {
      * unparseable version on either side skips that comparison rather than failing the build, so a
      * malformed marker cannot block it. Orthogonal to leaf election: this detects version skew, election
      * detects order skew.
+     * <p>
+     * Skipped entirely when the winning model was built with a {@code -SNAPSHOT} plugin. Snapshot versions
+     * such as {@code 0.0.0.main-SNAPSHOT} or a branch build's {@code 0.0.0.<branch>-SNAPSHOT} carry no
+     * meaningful order against releases (they sort below every one), so a model built against a snapshot
+     * DSL would otherwise always fail against a released parent.
      */
     private static void checkPluginVersionConvention(List<Marker> markers, Marker winner) {
-        ComparableVersion winningVersion = parseVersion(winner.properties().getProperty(RUNE_MAVEN_PLUGIN_VERSION_KEY));
+        String winningVersionString = winner.properties().getProperty(RUNE_MAVEN_PLUGIN_VERSION_KEY);
+        if (winningVersionString != null && winningVersionString.endsWith("-SNAPSHOT")) {
+            return;
+        }
+        ComparableVersion winningVersion = parseVersion(winningVersionString);
         if (winningVersion == null) {
             return;
         }
