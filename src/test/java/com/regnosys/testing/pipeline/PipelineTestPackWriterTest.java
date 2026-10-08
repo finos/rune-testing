@@ -33,6 +33,7 @@ import java.util.function.Predicate;
 
 import static com.regnosys.testing.pipeline.PipelineFilter.equalsTo;
 import static com.regnosys.testing.pipeline.PipelineFilter.startsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -161,6 +162,41 @@ public class PipelineTestPackWriterTest {
         assertFileExists(tempDir, "projection/config/test-pack-projection-start-middle-a-end-a-test-pack-1.json");
         assertFileDoesNotExist(tempDir, "projection/config/test-pack-projection-start-middle-a-end-a-test-pack-2.json");
         assertFileDoesNotExist(tempDir, "projection/output/start/middle-a/end-a/test-pack-2/sample-2-1.json");
+    }
+
+    @Test
+    void writeTestPacksRunsEachNodeAfterItsUpstreamEvenAgainstTransformTypeOrder(@TempDir Path tempDir) throws Exception {
+        // REPORT feeding ENRICH: sorting nodes by transform type would run the ENRICH node before its input exists
+        Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.REPORT.getResourcePath()).resolve("input").resolve("test-pack-1"));
+        Files.write(inputPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+
+        PipelineTreeConfig chain = new PipelineTreeConfig("testPrefix")
+                .starting(TransformType.REPORT, helper.startClass())
+                .add(helper.startClass(), TransformType.ENRICH, helper.middleClass())
+                .strictUniqueIds()
+                .withWritePath(tempDir);
+        pipelineTestPackWriter.writeTestPacks(chain);
+
+        assertFileExists(tempDir, "regulatory-reporting/output/start/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "enrich/output/start/middle/test-pack-1/sample-1-1.json");
+    }
+
+    @Test
+    void parallelismIsAvailableProcessorsUnlessConfigured() {
+        String previous = System.getProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+        try {
+            System.clearProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+            assertEquals(Runtime.getRuntime().availableProcessors(), PipelineTestPackWriter.parallelism());
+
+            System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, "3");
+            assertEquals(3, PipelineTestPackWriter.parallelism());
+        } finally {
+            if (previous == null) {
+                System.clearProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+            } else {
+                System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, previous);
+            }
+        }
     }
 
     private static void writeEnrichInputSamples(Path tempDir) throws IOException {
