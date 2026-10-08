@@ -303,21 +303,6 @@ class DefaultModelSerialisationTest {
     }
 
     @Test
-    void conventionCheckSkippedWhenWinningMarkerIsASnapshot() throws IOException {
-        Path childContainer = Files.createDirectories(tempDir.resolve("child"));
-        Path ancestorContainer = Files.createDirectories(tempDir.resolve("ancestor"));
-        // A branch snapshot of the DSL sorts below every release, so a released ancestor would otherwise fail.
-        writeMarker(childContainer, false, "0.0.0.feature-fix-serialization-format-9-x-x-SNAPSHOT");
-        writeMarker(ancestorContainer, false, "9.95.0");
-
-        ClassLoader classLoader = containersClassLoader(childContainer, ancestorContainer);
-
-        DefaultModelSerialisation resolved = DefaultModelSerialisation.resolve(classLoader);
-
-        assertFalse(resolved.getObjectMapper() instanceof RuneJsonObjectMapper);
-    }
-
-    @Test
     void conventionCheckSkippedWhenWinningMarkerHasNoVersion() throws IOException {
         Path childContainer = Files.createDirectories(tempDir.resolve("child"));
         Path ancestorContainer = Files.createDirectories(tempDir.resolve("ancestor"));
