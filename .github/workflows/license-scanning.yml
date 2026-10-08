@@ -68,6 +68,9 @@ env:
     licenses/license/name!='Dual license consisting of the CDDL v1.1 and GPL v2' and
     not(contains(licenses/license/url, '://glassfish.dev.java.net/public/CDDL+GPL_1_1')) and
     
+    licenses/license/name!='The QuickFIX Software License, Version 1.0' and
+    not(contains(licenses/license/url, '://www.quickfixj.org/documentation/license.html')) and
+
     licenses/license/name!='Public Domain'
     "
   REPORT_PATH: "target/generated-resources"
