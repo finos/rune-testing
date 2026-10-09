@@ -87,6 +87,10 @@ public class PipelineTreeConfig {
         return strictUniqueIds;
     }
 
+    /**
+     * Adds a starting function: a node with no upstream function, which reads its samples from its transform type's
+     * input folder. It generates every test pack found there, subject only to the tree-wide filter.
+     */
     public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function) {
         return starting(transformType, function, ALL_TEST_PACKS);
     }
@@ -105,6 +109,10 @@ public class PipelineTreeConfig {
         return starting;
     }
 
+    /**
+     * Adds a function that reads the output of the upstream function, with no filter on that link: it generates every
+     * test pack its upstream function generated.
+     */
     public PipelineTreeConfig add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function) {
         return add(upstreamFunction, transformType, function, ALL_TEST_PACKS);
     }
@@ -126,6 +134,10 @@ public class PipelineTreeConfig {
         return this;
     }
 
+    /**
+     * Records the test pack filter for a link. A link added more than once keeps the union (OR) of its filters, so
+     * adding it again with a different filter widens it, and adding it with {@code ALL_TEST_PACKS} leaves it unfiltered.
+     */
     private void addEdgeTestPackIdFilter(Edge edge, Predicate<String> testPackIdFilter) {
         edgeTestPackIdFilters.merge(edge, testPackIdFilter, Predicate::or);
     }
@@ -238,6 +250,10 @@ public class PipelineTreeConfig {
         return Optional.ofNullable(sortJsonPropertiesAlphabetically).orElse(true);
     }
 
+    /**
+     * A link in the tree: the upstream function (null for a starting function) and the function that reads its output.
+     * Test pack filters are keyed by link, so two links are equal when both functions are.
+     */
     private static final class Edge {
 
         private final Class<? extends RosettaFunction> upstreamFunction;
