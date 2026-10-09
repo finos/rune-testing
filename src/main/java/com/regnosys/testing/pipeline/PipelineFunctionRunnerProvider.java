@@ -33,6 +33,11 @@ import javax.xml.validation.Schema;
 public interface PipelineFunctionRunnerProvider {
 
     /**
+     * Creates the runner for one pipeline step: it reads each input sample, runs the function, post-processes and
+     * validates the result, and serialises it. Input and output formats come from the function's transform annotations,
+     * falling back to the pipeline serialisation and then to the default JSON mapper and writer. One runner serves every
+     * sample of the step, possibly from several threads at once.
+     *
      * @param outputXsdSchema schema to validate function output against, or null to skip schema validation.
      *                        A {@link Schema} rather than a {@link javax.xml.validation.Validator} is taken here
      *                        since the resulting {@link PipelineFunctionRunner} may be invoked concurrently for

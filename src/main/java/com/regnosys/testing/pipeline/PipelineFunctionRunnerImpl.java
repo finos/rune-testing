@@ -71,6 +71,12 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
     private final Schema xsdSchema;
 
 
+    /**
+     * @param function  the model function, as one instance shared by every sample this runner is invoked for
+     * @param xsdSchema schema the serialised output is validated against, or null to skip schema validation. A
+     *                  thread-confined validator is created from it for each invocation, so the runner can be invoked
+     *                  concurrently
+     */
     public PipelineFunctionRunnerImpl(TransformType transformType,
                                       Function<IN, RosettaModelObject> function,
                                       Class<IN> inputType,
@@ -191,6 +197,11 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
         return (T) builder.build();
     }
 
+    /**
+     * Validates the serialised output against the XSD schema, with a validator created for this call (a
+     * {@code Validator} isn't thread-safe). Despite the name, returns true when the output is valid, false when it isn't
+     * (and logs why), and null when there is no schema.
+     */
     private Boolean isSchemaValidationFailure(String xml) {
         if (xsdSchema == null) {
             return null;

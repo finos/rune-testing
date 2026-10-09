@@ -94,12 +94,18 @@ public class PipelineTestPackWriter {
     }
 
     /**
-     * Generates the test packs of every node in the tree described by the config, in transform type order. For each
-     * node it runs the node's function over every input sample that passes both the tree-wide filter and the node's own
-     * filter, writes each output under the node's output path, and writes one test pack config per test pack.
+     * Generates the test packs of every node in the tree described by the config. For each node it runs the node's
+     * function over every input sample that passes both the tree-wide filter and the node's own filter, writes each
+     * output under the node's output path, and writes one test pack config per test pack.
      * <p>
-     * Each node logs one INFO line with how many test packs it generated, how long that took, and how many downstream
-     * functions read its output; paths and per-sample detail are logged at DEBUG.
+     * Samples run concurrently on a pool of {@link #parallelism()} worker threads. Nodes are taken one depth of the tree
+     * at a time, since a node only reads its upstream node's output: every sample of every node at one depth is queued
+     * on the pool, and the next depth starts when they have all finished. The same function instance is called from
+     * several threads, so model functions must be thread-safe. Output is the same as a sequential run: samples in each
+     * test pack config are sorted by id.
+     * <p>
+     * Each node logs one INFO line with how many test packs it generated, how long its samples took from the start of
+     * its depth, and how many downstream functions read its output; paths and per-sample detail are logged at DEBUG.
      *
      * @param config the tree to generate; does nothing (and logs an error) if it has no write path
      * @throws IOException if a sample can't be read or an output or config file can't be written
@@ -175,6 +181,9 @@ public class PipelineTestPackWriter {
         return levels.values();
     }
 
+    /**
+     * Number of upstream nodes between this node and its starting node: 0 for a starting node.
+     */
     private static int depth(PipelineNode node) {
         int depth = 0;
         for (PipelineNode upstream = node.getUpstream(); upstream != null; upstream = upstream.getUpstream()) {
@@ -183,6 +192,14 @@ public class PipelineTestPackWriter {
         return depth;
     }
 
+    /**
+     * Generates every node at one depth of the tree. Each node is prepared in turn and its samples are queued on the
+     * executor as soon as it is ready, so workers start while later nodes are still being prepared. Once every sample of
+     * the level has finished, writes each node's test pack configs (samples sorted by id) and logs one line per node and
+     * one for the level.
+     *
+     * @throws IOException if a sample fails with an I/O error, or a config can't be written
+     */
     private void writeLevel(List<PipelineNode> level,
                             PipelineTree pipelineTree,
                             PipelineTreeConfig config,
@@ -245,6 +262,14 @@ public class PipelineTestPackWriter {
         LOGGER.info("Generated {} samples for {} functions at depth {}, took {}", samples, nodes.size(), depth(level.get(0)), levelStopwatch);
     }
 
+    /**
+     * Prepares one node for generation: finds its input samples, groups them by test pack after applying the tree-wide
+     * filter, the node's own filter and any {@link PipelineTestPackFilter}, then builds its pipeline model, its function
+     * runner and its output XSD schema once, to be shared by all its samples.
+     *
+     * @return the node's work, with no samples if no test pack passes the filters; or null if the node is excluded from
+     * test pack generation
+     */
     private NodeWork prepareNode(PipelineNode pipelineNode, PipelineTreeConfig config, Path resourcesPath, ObjectWriter jsonObjectWriter) throws IOException {
         TransformType transformType = pipelineNode.getTransformType();
         String functionName = pipelineNode.getFunction().getName();
@@ -303,6 +328,13 @@ public class PipelineTestPackWriter {
         return new NodeWork(pipelineNode, inputPath, outputPath, pipeline, functionType, functionRunner, filteredTestPackToSamples, config);
     }
 
+    /**
+     * Runs the node's function on one sample and writes the output under the node's output path, with the output
+     * format's file extension. Called concurrently from the worker threads: it touches only this sample's files, and
+     * adds the validation report to the shared summariser under a lock.
+     *
+     * @return the sample's entry for the test pack config
+     */
     private TestPackModel.SampleModel generateSample(Path resourcesPath,
                                                       NodeWork node,
                                                       String testPackId,
@@ -337,6 +369,10 @@ public class PipelineTestPackWriter {
         return sampleModel;
     }
 
+    /**
+     * Waits for a sample and returns its result, rethrowing the exception it failed with: an {@link IOException},
+     * {@link RuntimeException} or {@link Error} as it was, anything else wrapped in an {@link IllegalStateException}.
+     */
     private static <T> T await(Future<T> future) throws IOException {
         try {
             return future.get();
@@ -358,6 +394,9 @@ public class PipelineTestPackWriter {
         }
     }
 
+    /**
+     * Formats a duration in nanoseconds as seconds with three decimals, for the per-node log line.
+     */
     private static String formatNanos(long nanos) {
         return String.format(Locale.ROOT, "%.3f s", nanos / 1e9);
     }
@@ -379,6 +418,13 @@ public class PipelineTestPackWriter {
         private final Map<String, List<Future<TestPackModel.SampleModel>>> sampleFutures = new LinkedHashMap<>();
         private final AtomicLong lastSampleFinished = new AtomicLong();
 
+        /**
+         * @param pipeline         the node's pipeline model, or null when it has no samples
+         * @param functionType     the node's function, used to resolve each output's file extension; null when it has
+         *                         no samples
+         * @param functionRunner   the runner shared by the node's samples, or null when it has no samples
+         * @param testPackToSamples the node's input samples, grouped by test pack id
+         */
         private NodeWork(PipelineNode pipelineNode, Path inputPath, Path outputPath, PipelineModel pipeline, Class<?> functionType,
                          PipelineFunctionRunner functionRunner, Map<String, List<Path>> testPackToSamples, PipelineTreeConfig config) {
             this.pipelineNode = pipelineNode;
@@ -393,6 +439,10 @@ public class PipelineTestPackWriter {
         }
     }
 
+    /**
+     * Names the pool's threads {@code testpack-worker-N}, so they can be told apart in logs and thread dumps, and makes
+     * them daemon threads, so a pool left running can't keep the JVM alive.
+     */
     private static final class TestPackWorkerThreadFactory implements ThreadFactory {
 
         private final AtomicInteger count = new AtomicInteger();
@@ -524,6 +574,11 @@ public class PipelineTestPackWriter {
         }
     }
 
+    /**
+     * Loads the XSD schema configured for the function's output type, or returns null if none is configured. A
+     * {@link Schema} is thread-safe, so one is shared by all the node's samples; each sample creates its own
+     * {@code Validator} from it.
+     */
     private Schema getXsdSchema(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
         URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
                 .map(Resources::getResource)

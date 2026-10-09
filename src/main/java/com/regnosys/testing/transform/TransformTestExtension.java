@@ -113,6 +113,10 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         return this;
     }
 
+    /**
+     * Validates each function output against the XSD schema at the given URL. The schema is loaded once and shared;
+     * each run creates its own validator from it.
+     */
     public TransformTestExtension<T> withSchemaValidation(URL outputXsdSchemaUrl) {
         try {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -130,6 +134,11 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
         return this;
     }
 
+    /**
+     * Injects this extension's dependencies, loads the pipeline models for the function under test (all of them, or
+     * just the one for this model, per {@link #withIncludeAllPipelinesForFunction}) and creates one function runner per
+     * pipeline, with the schema set by {@link #withSchemaValidation}, if any.
+     */
     @BeforeAll
     public void beforeAll(ExtensionContext context) {
         Injector injector = Guice.createInjector(runtimeModule);
