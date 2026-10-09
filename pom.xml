@@ -93,8 +93,8 @@
         <java.enforced.version>[21,22)</java.enforced.version>
         <maven.compiler.release>21</maven.compiler.release>
 
-        <rune.dsl.version>0.0.0.feature-fix-serialization-format-9-x-x-SNAPSHOT</rune.dsl.version>
-        <rosetta.common.version>0.0.0.featurefix-serialization-format-SNAPSHOT</rosetta.common.version>
+        <rune.dsl.version>9.97.1</rune.dsl.version>
+        <rosetta.common.version>0.0.0.11.x.x-SNAPSHOT</rosetta.common.version>
 
         <xtext.version>2.38.0</xtext.version>
         <guice.version>6.0.0</guice.version>
