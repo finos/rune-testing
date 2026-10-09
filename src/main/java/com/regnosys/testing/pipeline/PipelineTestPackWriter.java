@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
+import com.regnosys.rosetta.common.serialisation.TransformSerializationResolver;
 import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
@@ -260,7 +261,7 @@ public class PipelineTestPackWriter {
                 .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
 
         if (filteredTestPackToSamples.isEmpty()) {
-            return new NodeWork(pipelineNode, inputPath, outputPath, null, null, filteredTestPackToSamples, config);
+            return new NodeWork(pipelineNode, inputPath, outputPath, null, null, null, filteredTestPackToSamples, config);
         }
 
         PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
@@ -284,7 +285,7 @@ public class PipelineTestPackWriter {
                         jsonObjectWriter,
                         outputXsdSchema);
 
-        return new NodeWork(pipelineNode, inputPath, outputPath, pipeline, functionRunner, filteredTestPackToSamples, config);
+        return new NodeWork(pipelineNode, inputPath, outputPath, pipeline, functionType, functionRunner, filteredTestPackToSamples, config);
     }
 
     private TestPackModel.SampleModel generateSample(Path resourcesPath,
@@ -296,7 +297,7 @@ public class PipelineTestPackWriter {
         LOGGER.debug("Generating {} function {} test pack {} sample {}", transformType, node.pipelineNode.getFunction().getSimpleName(), testPackId, inputSample.getFileName());
 
         Path relativeOutputPath = resourcesPath.relativize(node.outputPath.resolve(resourcesPath.relativize(node.inputPath).relativize(inputSample)));
-        Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(node.pipeline, relativeOutputPath.toFile().getName())));
+        Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(node.functionType, node.pipeline, relativeOutputPath.toFile().getName())));
 
         PipelineFunctionResult result = node.functionRunner.run(resourcesPath.resolve(inputSample));
         TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
@@ -355,6 +356,7 @@ public class PipelineTestPackWriter {
         private final Path inputPath;
         private final Path outputPath;
         private final PipelineModel pipeline;
+        private final Class<?> functionType;
         private final PipelineFunctionRunner functionRunner;
         private final Map<String, List<Path>> testPackToSamples;
         private final String pipelineId;
@@ -362,12 +364,13 @@ public class PipelineTestPackWriter {
         private final Map<String, List<Future<TestPackModel.SampleModel>>> sampleFutures = new LinkedHashMap<>();
         private final AtomicLong lastSampleFinished = new AtomicLong();
 
-        private NodeWork(PipelineNode pipelineNode, Path inputPath, Path outputPath, PipelineModel pipeline, PipelineFunctionRunner functionRunner,
-                         Map<String, List<Path>> testPackToSamples, PipelineTreeConfig config) {
+        private NodeWork(PipelineNode pipelineNode, Path inputPath, Path outputPath, PipelineModel pipeline, Class<?> functionType,
+                         PipelineFunctionRunner functionRunner, Map<String, List<Path>> testPackToSamples, PipelineTreeConfig config) {
             this.pipelineNode = pipelineNode;
             this.inputPath = inputPath;
             this.outputPath = outputPath;
             this.pipeline = pipeline;
+            this.functionType = functionType;
             this.functionRunner = functionRunner;
             this.testPackToSamples = testPackToSamples;
             this.pipelineId = pipelineNode.id(config.isStrictUniqueIds());
@@ -387,12 +390,19 @@ public class PipelineTestPackWriter {
         }
     }
 
-    private String updateFileExtensionBasedOnOutputFormat(PipelineModel pipelineModel, String fileName) {
-        String outputFormat = Optional.ofNullable(pipelineModel.getOutputSerialisation())
-                .map(PipelineModel.Serialisation::getFormat)
-                .map(PipelineModel.Serialisation.Format::getFileExtension)
+    private String updateFileExtensionBasedOnOutputFormat(Class<?> functionType, PipelineModel pipelineModel, String fileName) {
+        return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFileExtension(functionType, pipelineModel.getOutputSerialisation());
+    }
+
+    /**
+     * The function's {@code @Projection} annotation decides the output format, as it does for the output
+     * writer; the pipeline's output serialisation applies only to functions without one.
+     */
+    @SuppressWarnings("deprecation")
+    static String outputFileExtension(Class<?> functionType, PipelineModel.Serialisation outputSerialisation) {
+        return TransformSerializationResolver.output(functionType, outputSerialisation)
+                .map(s -> PipelineModel.Serialisation.Format.valueOf(s.getFormat().name()).getFileExtension())
                 .orElse("json");
-        return fileName.substring(0, fileName.lastIndexOf(".")) + "." + outputFormat;
     }
 
     private void createCsvSampleFiles(Path resourcePath, ImmutableSet<Path> csvTestPackSourceFiles) throws IOException {
