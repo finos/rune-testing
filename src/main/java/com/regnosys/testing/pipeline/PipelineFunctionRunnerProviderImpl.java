@@ -87,6 +87,10 @@ public class PipelineFunctionRunnerProviderImpl implements PipelineFunctionRunne
                 outputXsdSchema);
     }
 
+    /**
+     * Creates a runner around one instance of the function, taken from the injector. That instance serves every sample
+     * the runner is invoked for, possibly concurrently.
+     */
     private <IN extends RosettaModelObject> PipelineFunctionRunner createTestPackFunctionRunner(TransformType transformType,
                                                                                                 Class<?> functionType,
                                                                                                 Class<IN> inputType,
