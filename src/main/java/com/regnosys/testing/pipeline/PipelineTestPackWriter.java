@@ -93,6 +93,17 @@ public class PipelineTestPackWriter {
         this.helper = helper;
     }
 
+    /**
+     * Generates the test packs of every node in the tree described by the config, in transform type order. For each
+     * node it runs the node's function over every input sample that passes both the tree-wide filter and the node's own
+     * filter, writes each output under the node's output path, and writes one test pack config per test pack.
+     * <p>
+     * Each node logs one INFO line with how many test packs it generated, how long that took, and how many downstream
+     * functions read its output; paths and per-sample detail are logged at DEBUG.
+     *
+     * @param config the tree to generate; does nothing (and logs an error) if it has no write path
+     * @throws IOException if a sample can't be read or an output or config file can't be written
+     */
     public void writeTestPacks(PipelineTreeConfig config) throws IOException {
         if (config.getWritePath() == null) {
             LOGGER.error("Write path not configured. Aborting.");
@@ -129,6 +140,10 @@ public class PipelineTestPackWriter {
         LOGGER.info("Test pack generation complete, took {} ({} worker threads)", stopwatch, parallelism);
     }
 
+    /**
+     * Every regular file under the input folder, or none if the folder doesn't exist (for example when an upstream
+     * node generated no output).
+     */
     private List<Path> findAllSamples(Path inputDir) throws IOException {
         if (!Files.exists(inputDir)) {
             return List.of();

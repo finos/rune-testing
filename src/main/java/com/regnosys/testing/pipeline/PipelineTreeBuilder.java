@@ -46,6 +46,15 @@ public class PipelineTreeBuilder {
         this.helper = helper;
     }
 
+    /**
+     * Builds the tree of pipeline nodes described by the config: one node per path from a starting function, each
+     * carrying its effective test pack filter (see {@link PipelineNode#getTestPackIdFilter()}).
+     * <p>
+     * A path configured more than once, for example a repeated starting function, becomes one node, so each function
+     * runs once per path. The nodes are returned sorted by transform type.
+     *
+     * @throws PipelineTreeCreationException if the tree can't be built
+     */
     public PipelineTree createPipelineTree(PipelineTreeConfig pipelineTreeConfig) {
         try {
             List<PipelineTreeConfig.TransformFunction> starting = pipelineTreeConfig.getStarting();
@@ -88,6 +97,10 @@ public class PipelineTreeBuilder {
         return pipelineNodes;
     }
 
+    /**
+     * Creates the nodes for the functions that read the given node's output, linked to it as their upstream node. Each
+     * new node's test pack filter is the given node's filter AND the filter on the link between the two functions.
+     */
     private List<PipelineNode> createPipelineAndLinkUpstream(PipelineTreeConfig pipelineChainFunction, PipelineNode currentPipeline, TransformType transformType) {
         List<Class<? extends RosettaFunction>> downstreamFunctions = pipelineChainFunction.getDownstreamFunctions(currentPipeline.getFunction());
         return new PipelineNode(pipelineChainFunction.getModelId(), helper, transformType)
