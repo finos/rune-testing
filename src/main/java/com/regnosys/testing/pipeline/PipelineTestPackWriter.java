@@ -152,13 +152,8 @@ public class PipelineTestPackWriter {
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
                 configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
-            int downstreamCount = pipelineTree.downstreamCount(pipelineNode);
-            if (downstreamCount == 0) {
-                LOGGER.info("Generated {} {} test packs for {}, took {}", filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch);
-            } else {
-                LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
-                        filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch, downstreamCount);
-            }
+            LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
+                    filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch, pipelineTree.downstreamCount(pipelineNode));
         }
 
         if (validationSummariser != null) {
