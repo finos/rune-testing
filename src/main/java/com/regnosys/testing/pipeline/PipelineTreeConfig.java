@@ -127,9 +127,7 @@ public class PipelineTreeConfig {
      * adding it without a filter accepts all test packs, so merging trees never narrows a link that was unfiltered.
      */
     public PipelineTreeConfig add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function, Predicate<String> testPackIdFilter) {
-        if (conf.get(upstreamFunction).stream().noneMatch(t -> t.getFunction().equals(function))) {
-            conf.put(upstreamFunction, new TransformFunction(function, transformType));
-        }
+        conf.put(upstreamFunction, new TransformFunction(function, transformType));
         addEdgeTestPackIdFilter(new Edge(upstreamFunction, function), testPackIdFilter);
         return this;
     }

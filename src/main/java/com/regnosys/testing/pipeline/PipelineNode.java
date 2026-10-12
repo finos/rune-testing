@@ -100,7 +100,7 @@ public class PipelineNode {
      * The test pack ids this node generates: the intersection of the link filters on the path from its starting
      * function. Accepts every test pack when no link on the path is filtered.
      */
-    public Predicate<String> getTestPackIdFilter() {
+    Predicate<String> getTestPackIdFilter() {
         return testPackIdFilter;
     }
 
