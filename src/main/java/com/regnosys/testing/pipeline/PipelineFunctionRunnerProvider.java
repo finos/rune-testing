@@ -38,11 +38,9 @@ public interface PipelineFunctionRunnerProvider {
      * falling back to the pipeline serialisation and then to the default JSON mapper and writer. One runner serves every
      * sample of the step, possibly from several threads at once.
      *
-     * @param outputXsdSchema schema to validate function output against, or null to skip schema validation.
-     *                        A {@link Schema} rather than a {@link javax.xml.validation.Validator} is taken here
-     *                        since the resulting {@link PipelineFunctionRunner} may be invoked concurrently for
-     *                        different samples, and {@code Validator} is not thread-safe; a fresh, thread-confined
-     *                        validator is created per invocation from the schema instead.
+     * @param outputXsdSchema schema to validate function output against, or null to skip schema validation. The runner
+     *                        creates a {@link javax.xml.validation.Validator} from it for each run, since a Validator
+     *                        isn't thread-safe and one runner serves samples on several threads.
      */
     PipelineFunctionRunner create(TransformType transformType,
                                   Class<? extends RosettaModelObject> inputType,

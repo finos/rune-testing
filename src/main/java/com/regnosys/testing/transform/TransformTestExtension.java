@@ -114,8 +114,7 @@ public class TransformTestExtension<T> implements BeforeAllCallback, AfterAllCal
     }
 
     /**
-     * Validates each function output against the XSD schema at the given URL. The schema is loaded once and shared;
-     * each run creates its own validator from it.
+     * Validates each function output against the XSD schema at the given URL.
      */
     public TransformTestExtension<T> withSchemaValidation(URL outputXsdSchemaUrl) {
         try {

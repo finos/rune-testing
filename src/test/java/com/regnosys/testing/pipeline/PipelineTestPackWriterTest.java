@@ -20,7 +20,11 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import com.regnosys.rosetta.common.transform.PipelineModel;
+import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.rosetta.common.validation.ValidationReport;
+import com.regnosys.testing.validation.ValidationSummariser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -29,6 +33,8 @@ import jakarta.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import static com.regnosys.testing.pipeline.PipelineFilter.equalsTo;
@@ -179,6 +185,57 @@ public class PipelineTestPackWriterTest {
 
         assertFileExists(tempDir, "regulatory-reporting/output/start/test-pack-1/sample-1-1.json");
         assertFileExists(tempDir, "enrich/output/start/middle/test-pack-1/sample-1-1.json");
+    }
+
+    @Test
+    void writeTestPacksAddsValidationReportsOnTheCallingThreadInInputOrder(@TempDir Path tempDir) throws Exception {
+        List<String> sequential = validationReportOrder(tempDir.resolve("sequential"), 1);
+        List<String> concurrent = validationReportOrder(tempDir.resolve("concurrent"), 4);
+
+        assertEquals(20, sequential.size());
+        assertEquals(sequential, concurrent);
+    }
+
+    /**
+     * Generates 20 samples on the given number of workers and returns the sample ids in the order their validation
+     * reports were added, failing if any was added from a worker thread.
+     */
+    private List<String> validationReportOrder(Path writePath, int parallelism) throws IOException {
+        Path inputPath = Files.createDirectories(writePath.resolve(TransformType.ENRICH.getResourcePath()).resolve("input").resolve("test-pack-1"));
+        for (int i = 1; i <= 20; i++) {
+            Files.write(inputPath.resolve("sample-" + i + ".json"), ("{\"name\": \"" + i + "\"}").getBytes());
+        }
+        Thread callingThread = Thread.currentThread();
+        List<String> sampleIds = new ArrayList<>();
+        ValidationSummariser summariser = new ValidationSummariser() {
+            @Override
+            public void addValidationReport(PipelineModel pipeline, String testPackName, TestPackModel.SampleModel sampleModel, ValidationReport report) {
+                assertEquals(callingThread, Thread.currentThread());
+                sampleIds.add(sampleModel.getId());
+            }
+
+            @Override
+            public void summerize() {
+            }
+        };
+        PipelineTreeConfig chain = new PipelineTreeConfig("testPrefix")
+                .starting(TransformType.ENRICH, helper.startClass())
+                .strictUniqueIds()
+                .withValidationSummariser(summariser)
+                .withWritePath(writePath);
+
+        String previous = System.getProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+        System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, String.valueOf(parallelism));
+        try {
+            pipelineTestPackWriter.writeTestPacks(chain);
+        } finally {
+            if (previous == null) {
+                System.clearProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+            } else {
+                System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, previous);
+            }
+        }
+        return sampleIds;
     }
 
     @Test
