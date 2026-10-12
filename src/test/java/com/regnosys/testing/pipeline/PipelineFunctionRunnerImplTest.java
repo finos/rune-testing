@@ -101,8 +101,6 @@ class PipelineFunctionRunnerImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ObjectWriter objectWriter = OBJECT_MAPPER.writerWithDefaultPrettyPrinter();
-        // xsdSchema.newValidator() is called fresh per run() invocation (rather than a single shared
-        // Validator being injected) since Validator isn't thread-safe and samples run concurrently.
         lenient().when(xsdSchema.newValidator()).thenReturn(xsdValidator);
         pipelineFunctionRunner = new PipelineFunctionRunnerImpl<>(
                 TransformType.TRANSLATE,

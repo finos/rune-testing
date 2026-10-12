@@ -102,7 +102,7 @@ public class PipelineTestPackWriter {
      * at a time, since a node only reads its upstream node's output: every sample of every node at one depth is queued
      * on the pool, and the next depth starts when they have all finished. The same function instance is called from
      * several threads, so model functions must be thread-safe. Output is the same as a sequential run: samples in each
-     * test pack config are sorted by id.
+     * test pack config are sorted by id, and validation reports are added in input order.
      * <p>
      * Each node logs one INFO line with how many test packs it generated, how long its samples took from the start of
      * its depth, and how many downstream functions read its output; paths and per-sample detail are logged at DEBUG.
@@ -195,8 +195,8 @@ public class PipelineTestPackWriter {
     /**
      * Generates every node at one depth of the tree. Each node is prepared in turn and its samples are queued on the
      * executor as soon as it is ready, so workers start while later nodes are still being prepared. Once every sample of
-     * the level has finished, writes each node's test pack configs (samples sorted by id) and logs one line per node and
-     * one for the level.
+     * the level has finished, adds each node's validation reports in input order, writes its test pack configs (samples
+     * sorted by id) and logs one line per node and one for the level.
      *
      * @throws IOException if a sample fails with an I/O error, or a config can't be written
      */
@@ -219,12 +219,12 @@ public class PipelineTestPackWriter {
             }
             nodes.add(node);
             for (Map.Entry<String, List<Path>> testPack : node.testPackToSamples.entrySet()) {
-                List<Future<TestPackModel.SampleModel>> futures = new ArrayList<>();
+                List<Future<GeneratedSample>> futures = new ArrayList<>();
                 for (Path inputSample : testPack.getValue()) {
                     futures.add(executor.submit(() -> {
-                        TestPackModel.SampleModel sampleModel = generateSample(resourcesPath, node, testPack.getKey(), inputSample, validationSummariser);
+                        GeneratedSample sample = generateSample(resourcesPath, node, testPack.getKey(), inputSample);
                         node.lastSampleFinished.accumulateAndGet(levelStopwatch.elapsed(TimeUnit.NANOSECONDS), Math::max);
-                        return sampleModel;
+                        return sample;
                     }));
                 }
                 node.sampleFutures.put(testPack.getKey(), futures);
@@ -234,11 +234,16 @@ public class PipelineTestPackWriter {
 
         for (NodeWork node : nodes) {
             TransformType transformType = node.pipelineNode.getTransformType();
-            for (Map.Entry<String, List<Future<TestPackModel.SampleModel>>> testPack : node.sampleFutures.entrySet()) {
+            for (Map.Entry<String, List<Future<GeneratedSample>>> testPack : node.sampleFutures.entrySet()) {
                 String testPackId = testPack.getKey();
                 List<TestPackModel.SampleModel> sortedSamples = new ArrayList<>();
-                for (Future<TestPackModel.SampleModel> future : testPack.getValue()) {
-                    sortedSamples.add(await(future));
+                for (Future<GeneratedSample> future : testPack.getValue()) {
+                    GeneratedSample sample = await(future);
+                    // Added here, in input order, so a summary doesn't depend on which sample finished first
+                    if (validationSummariser != null) {
+                        validationSummariser.addValidationReport(node.pipeline, sample.sampleModel.getName(), sample.sampleModel, sample.validationReport);
+                    }
+                    sortedSamples.add(sample.sampleModel);
                 }
                 sortedSamples.sort(Comparator.comparing(TestPackModel.SampleModel::getId));
 
@@ -249,15 +254,9 @@ public class PipelineTestPackWriter {
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
                 configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
-            String functionName = node.pipelineNode.getFunction().getName();
-            String took = formatNanos(node.lastSampleFinished.get());
-            int downstreamCount = pipelineTree.downstreamCount(node.pipelineNode);
-            if (downstreamCount == 0) {
-                LOGGER.info("Generated {} {} test packs for {}, took {}", node.sampleFutures.size(), transformType, functionName, took);
-            } else {
-                LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
-                        node.sampleFutures.size(), transformType, functionName, took, downstreamCount);
-            }
+            LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
+                    node.sampleFutures.size(), transformType, node.pipelineNode.getFunction().getName(),
+                    formatNanos(node.lastSampleFinished.get()), pipelineTree.downstreamCount(node.pipelineNode));
         }
         LOGGER.info("Generated {} samples for {} functions at depth {}, took {}", samples, nodes.size(), depth(level.get(0)), levelStopwatch);
     }
@@ -309,8 +308,7 @@ public class PipelineTestPackWriter {
         Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
         Class<? extends RosettaModelObject> functionType = toClass(transform.getFunction());
         Class<? extends RosettaModelObject> outputType = toClass(transform.getOutputType());
-        // XSD validation. A Schema (not a Validator) is passed through since samples are generated concurrently,
-        // and javax.xml.validation.Validator is not thread-safe.
+        // XSD validation
         Schema outputXsdSchema = Optional.ofNullable(config.getXmlSchemaMap())
                 .map(sm -> getXsdSchema(outputType, sm))
                 .orElse(null);
@@ -330,16 +328,14 @@ public class PipelineTestPackWriter {
 
     /**
      * Runs the node's function on one sample and writes the output under the node's output path, with the output
-     * format's file extension. Called concurrently from the worker threads: it touches only this sample's files, and
-     * adds the validation report to the shared summariser under a lock.
+     * format's file extension. Called concurrently from the worker threads: it touches only this sample's files.
      *
-     * @return the sample's entry for the test pack config
+     * @return the sample's entry for the test pack config, and its validation report
      */
-    private TestPackModel.SampleModel generateSample(Path resourcesPath,
-                                                      NodeWork node,
-                                                      String testPackId,
-                                                      Path inputSample,
-                                                      ValidationSummariser validationSummariser) throws IOException {
+    private GeneratedSample generateSample(Path resourcesPath,
+                                            NodeWork node,
+                                            String testPackId,
+                                            Path inputSample) throws IOException {
         TransformType transformType = node.pipelineNode.getTransformType();
         LOGGER.debug("Generating {} function {} test pack {} sample {}", transformType, node.pipelineNode.getFunction().getSimpleName(), testPackId, inputSample.getFileName());
 
@@ -359,14 +355,7 @@ public class PipelineTestPackWriter {
         Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
         Files.write(resourcesPath.resolve(outputPath), result.getSerialisedOutput().getBytes());
 
-        if (validationSummariser != null) {
-            ValidationReport validationReport = result.getValidationReport();
-            // addValidationReport implementations aren't guaranteed thread-safe, and samples share one summariser
-            synchronized (validationSummariser) {
-                validationSummariser.addValidationReport(node.pipeline, sampleModel.getName(), sampleModel, validationReport);
-            }
-        }
-        return sampleModel;
+        return new GeneratedSample(sampleModel, result.getValidationReport());
     }
 
     /**
@@ -414,7 +403,7 @@ public class PipelineTestPackWriter {
         private final Map<String, List<Path>> testPackToSamples;
         private final String pipelineId;
         private final String pipelineIdSuffix;
-        private final Map<String, List<Future<TestPackModel.SampleModel>>> sampleFutures = new LinkedHashMap<>();
+        private final Map<String, List<Future<GeneratedSample>>> sampleFutures = new LinkedHashMap<>();
         private final AtomicLong lastSampleFinished = new AtomicLong();
 
         /**
@@ -432,6 +421,20 @@ public class PipelineTestPackWriter {
             this.testPackToSamples = testPackToSamples;
             this.pipelineId = pipelineNode.id(config.isStrictUniqueIds());
             this.pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
+        }
+    }
+
+    /**
+     * A generated sample: its entry for the test pack config and its validation report.
+     */
+    private static final class GeneratedSample {
+
+        private final TestPackModel.SampleModel sampleModel;
+        private final ValidationReport validationReport;
+
+        private GeneratedSample(TestPackModel.SampleModel sampleModel, ValidationReport validationReport) {
+            this.sampleModel = sampleModel;
+            this.validationReport = validationReport;
         }
     }
 
@@ -565,9 +568,7 @@ public class PipelineTestPackWriter {
     }
 
     /**
-     * Loads the XSD schema configured for the function's output type, or returns null if none is configured. A
-     * {@link Schema} is thread-safe, so one is shared by all the node's samples; each sample creates its own
-     * {@code Validator} from it.
+     * Loads the XSD schema configured for the function's output type, or returns null if none is configured.
      */
     private Schema getXsdSchema(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
         URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
