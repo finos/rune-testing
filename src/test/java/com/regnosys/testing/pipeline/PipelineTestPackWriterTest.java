@@ -20,6 +20,9 @@ package com.regnosys.testing.pipeline;
  * ===============
  */
 
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
@@ -30,11 +33,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import jakarta.inject.Inject;
+import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.function.Predicate;
 
 import static com.regnosys.testing.pipeline.PipelineFilter.equalsTo;
@@ -78,6 +83,27 @@ public class PipelineTestPackWriterTest {
         assertFileExists(tempDir, "ingest/output/start/csv-test-pack/csv-samples_3.json");
         assertFileDoesNotExist(tempDir, "ingest/output/start/csv-test-pack/csv-samples.json");
 
+    }
+
+    @Test
+    void writeTestPacksLogsHowManyFunctionsReadEachStepsOutput(@TempDir Path tempDir) throws Exception {
+        Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.ENRICH.getResourcePath()).resolve("input").resolve("test-pack-1"));
+        Files.write(inputPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+
+        Logger logger = (Logger) LoggerFactory.getLogger(PipelineTestPackWriter.class);
+        ListAppender<ILoggingEvent> appender = new ListAppender<>();
+        appender.start();
+        logger.addAppender(appender);
+        try {
+            pipelineTestPackWriter.writeTestPacks(helper.createNestedTreeConfig().strictUniqueIds().withWritePath(tempDir));
+        } finally {
+            logger.detachAppender(appender);
+        }
+        List<String> messages = appender.list.stream().map(ILoggingEvent::getFormattedMessage).collect(Collectors.toList());
+
+        assertTrue(messages.stream().anyMatch(m -> m.startsWith("Generated 1 ENRICH test packs for " + PipelineTestHelper.StartClass + ",") && m.endsWith("; output read by 2 downstream functions")), messages::toString);
+        assertTrue(messages.stream().anyMatch(m -> m.startsWith("Generated 1 REPORT test packs for " + PipelineTestHelper.MiddleAClass + ",") && m.endsWith("; output read by 2 downstream functions")), messages::toString);
+        assertTrue(messages.stream().anyMatch(m -> m.startsWith("Generated 1 PROJECTION test packs for " + PipelineTestHelper.EndAClass + ",") && m.endsWith("; output read by 0 downstream functions")), messages::toString);
     }
 
     @Test
