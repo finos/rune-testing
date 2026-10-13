@@ -32,16 +32,23 @@ import com.rosetta.model.lib.functions.RosettaFunction;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PipelineTreeConfig {
 
+    // Links added without a filter store this, so a filter added for the same link elsewhere unions to all test packs
+    private static final Predicate<String> ALL_TEST_PACKS = testPackId -> true;
+
     private final List<TransformFunction> starting = new ArrayList<>();
     private final String modelId;
     private final Multimap<Class<? extends RosettaFunction>, TransformFunction> conf = ArrayListMultimap.create();
+    private final Map<Edge, Predicate<String>> edgeTestPackIdFilters = new HashMap<>();
     
     private ImmutableMap<Class<?>, String> xmlConfigMap;
     private ImmutableMap<Class<?>, String> xmlSchemaMap;
@@ -80,8 +87,21 @@ public class PipelineTreeConfig {
         return strictUniqueIds;
     }
 
+    /**
+     * Adds a starting function: a node with no upstream function, which reads its samples from its transform type's
+     * input folder. It generates every test pack found there, subject only to the tree-wide filter.
+     */
     public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function) {
+        return starting(transformType, function, ALL_TEST_PACKS);
+    }
+
+    /**
+     * Adds a starting function that only generates test packs whose id matches the given filter.
+     * The filter cascades: every function downstream of this one is also restricted to these test packs.
+     */
+    public PipelineTreeConfig starting(TransformType transformType, Class<? extends RosettaFunction> function, Predicate<String> testPackIdFilter) {
         starting.add(new TransformFunction(function, transformType));
+        addEdgeTestPackIdFilter(new Edge(null, function), testPackIdFilter);
         return this;
     }
 
@@ -89,10 +109,43 @@ public class PipelineTreeConfig {
         return starting;
     }
 
+    /**
+     * Adds a function that reads the output of the upstream function, with no filter on that link: it generates every
+     * test pack its upstream function generated.
+     */
     public PipelineTreeConfig add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function) {
-        TransformFunction current = new TransformFunction(function, transformType);
-        conf.put(upstreamFunction, current);
+        return add(upstreamFunction, transformType, function, ALL_TEST_PACKS);
+    }
+
+    /**
+     * Adds a downstream function that, when fed by the given upstream function, only generates test packs whose id matches
+     * the given filter. The filter cascades: a node's effective filter is the intersection of the filters on the path from
+     * its starting function, so functions further downstream are also restricted to these test packs.
+     * <p>
+     * The filter belongs to the upstream-to-function link rather than the function, so the same function can be given a
+     * different filter under a different upstream function. Adding the same link more than once unions the filters, and
+     * adding it without a filter accepts all test packs, so merging trees never narrows a link that was unfiltered.
+     */
+    public PipelineTreeConfig add(Class<? extends RosettaFunction> upstreamFunction, TransformType transformType, Class<? extends RosettaFunction> function, Predicate<String> testPackIdFilter) {
+        conf.put(upstreamFunction, new TransformFunction(function, transformType));
+        addEdgeTestPackIdFilter(new Edge(upstreamFunction, function), testPackIdFilter);
         return this;
+    }
+
+    /**
+     * Records the test pack filter for a link. A link added more than once keeps the union (OR) of its filters, so
+     * adding it again with a different filter widens it, and adding it with {@code ALL_TEST_PACKS} leaves it unfiltered.
+     */
+    private void addEdgeTestPackIdFilter(Edge edge, Predicate<String> testPackIdFilter) {
+        edgeTestPackIdFilters.merge(edge, testPackIdFilter, Predicate::or);
+    }
+
+    /**
+     * Returns the test pack filter for the link from the upstream function (null for a starting function) to the function.
+     * Links without a filter accept all test packs.
+     */
+    Predicate<String> getEdgeTestPackIdFilter(Class<? extends RosettaFunction> upstreamFunction, Class<? extends RosettaFunction> function) {
+        return edgeTestPackIdFilters.getOrDefault(new Edge(upstreamFunction, function), ALL_TEST_PACKS);
     }
 
     public PipelineTreeConfig withWritePath(Path writePath) {
@@ -193,6 +246,34 @@ public class PipelineTreeConfig {
 
     public boolean isSortJsonPropertiesAlphabetically() {
         return Optional.ofNullable(sortJsonPropertiesAlphabetically).orElse(true);
+    }
+
+    /**
+     * A link in the tree: the upstream function (null for a starting function) and the function that reads its output.
+     * Test pack filters are keyed by link, so two links are equal when both functions are.
+     */
+    private static final class Edge {
+
+        private final Class<? extends RosettaFunction> upstreamFunction;
+        private final Class<? extends RosettaFunction> function;
+
+        private Edge(Class<? extends RosettaFunction> upstreamFunction, Class<? extends RosettaFunction> function) {
+            this.upstreamFunction = upstreamFunction;
+            this.function = function;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Edge)) return false;
+            Edge edge = (Edge) o;
+            return Objects.equals(upstreamFunction, edge.upstreamFunction) && Objects.equals(function, edge.function);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(upstreamFunction, function);
+        }
     }
 
     static class TransformFunction {
