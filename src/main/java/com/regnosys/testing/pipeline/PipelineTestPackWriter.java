@@ -23,11 +23,13 @@ package com.regnosys.testing.pipeline;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.base.Stopwatch;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.regnosys.rosetta.common.transform.FunctionNameHelper;
 import com.regnosys.rosetta.common.transform.PipelineModel;
 import com.regnosys.rosetta.common.transform.TestPackModel;
@@ -58,9 +60,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -73,6 +72,9 @@ public class PipelineTestPackWriter {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(PipelineTestPackWriter.class);
 
     static final String PARALLELISM_PROPERTY = "rune.testpack.parallelism";
+
+    // Named, so they can be told apart in logs and thread dumps; daemons, so a stuck pool can't keep the JVM alive
+    private static final ThreadFactory WORKER_THREADS = new ThreadFactoryBuilder().setNameFormat("testpack-worker-%d").setDaemon(true).build();
 
     // The default JSON mapper/writer for a transform side with no explicit format: the model's configured
     // defaultSerialisationFormat (rune-json or legacy), read from its rune-config.yml/rosetta-config.yml.
@@ -98,14 +100,15 @@ public class PipelineTestPackWriter {
      * function over every input sample that passes both the tree-wide filter and the node's own filter, writes each
      * output under the node's output path, and writes one test pack config per test pack.
      * <p>
-     * Samples run concurrently on a pool of {@link #parallelism()} worker threads. Nodes are taken one depth of the tree
-     * at a time, since a node only reads its upstream node's output: every sample of every node at one depth is queued
-     * on the pool, and the next depth starts when they have all finished. The same function instance is called from
-     * several threads, so model functions must be thread-safe. Output is the same as a sequential run: samples in each
-     * test pack config are sorted by id, and validation reports are added in input order.
+     * Samples are generated on {@link #parallelism()} worker threads, one depth of the tree at a time: a node only reads
+     * its upstream node's output, so the samples of every node at one depth can run together once the depth above has
+     * finished. The same function instance is called from several threads, so model functions must be thread-safe.
+     * The files written are the same as a sequential run's: samples in each test pack config are sorted by id, and
+     * validation reports are added in input order.
      * <p>
-     * Each node logs one INFO line with how many test packs it generated, how long its samples took from the start of
-     * its depth, and how many downstream functions read its output; paths and per-sample detail are logged at DEBUG.
+     * Each node logs at INFO how many test packs it generated, how long its depth had been running when they were
+     * written, and how many downstream functions read its output, as well as each test pack and sample it generates;
+     * input and output paths are logged at DEBUG.
      *
      * @param config the tree to generate; does nothing (and logs an error) if it has no write path
      * @throws IOException if a sample can't be read or an output or config file can't be written
@@ -128,12 +131,72 @@ public class PipelineTestPackWriter {
 
         createCsvSampleFiles(resourcesPath, config.getCsvTestPackSourceFiles());
 
+        Map<String, Long> downstreamCounts = downstreamCounts(pipelineTree);
         int parallelism = parallelism();
-        ExecutorService executor = Executors.newFixedThreadPool(parallelism, new TestPackWorkerThreadFactory());
+        ExecutorService executor = Executors.newFixedThreadPool(parallelism, WORKER_THREADS);
         try {
-            // A node only reads its upstream's output, so every sample of every node at one depth can run at once
             for (List<PipelineNode> level : levels(pipelineTree)) {
-                writeLevel(level, pipelineTree, config, resourcesPath, configObjectWriter, jsonObjectWriter, validationSummariser, executor);
+                Stopwatch levelStopwatch = Stopwatch.createStarted();
+
+                // Start every test pack of every node at this depth, so all their samples share the worker threads
+                Map<PipelineNode, List<TestPackRun>> runsByNode = new LinkedHashMap<>();
+                for (PipelineNode pipelineNode : level) {
+                    TransformType transformType = pipelineNode.getTransformType();
+                    String functionName = pipelineNode.getFunction().getName();
+                    LOGGER.info("Generating {} test packs for {} ", transformType, functionName);
+
+                    final PipelineTestPackFilter pipelineTestPackFilter = config.getTestPackFilter();
+                    if (pipelineTestPackFilter != null && pipelineTestPackFilter.getExcludedFunctionsFromTestPackGeneration().contains(pipelineNode.getFunction())) {
+                        LOGGER.info("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", transformType, functionName);
+                        continue;
+                    }
+
+                    Path inputPath = resourcesPath.resolve(pipelineNode.getInputPath(config.isStrictUniqueIds()));
+                    PipelineNode upstream = pipelineNode.getUpstream();
+                    if (upstream == null) {
+                        LOGGER.debug("Input path {} ", inputPath);
+                    } else {
+                        LOGGER.debug("Input path {} (output of {} {})", inputPath, upstream.getTransformType(), upstream.getFunction().getName());
+                    }
+
+                    Path outputPath = resourcesPath.resolve(pipelineNode.getOutputPath(config.isStrictUniqueIds()));
+                    LOGGER.debug("Output path {} ", outputPath);
+
+                    List<Path> inputSamples = findAllSamples(inputPath);
+
+                    Map<String, List<Path>> testPackToSamples =
+                            filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter().and(pipelineNode.getTestPackIdFilter()), config.getCsvTestPackSourceFiles());
+
+                    Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
+                            .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
+
+                    List<TestPackRun> runs = new ArrayList<>();
+                    if (!filteredTestPackToSamples.isEmpty()) {
+                        // One pipeline model and function runner per node, shared by all its test packs and samples
+                        PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
+                        PipelineFunctionRunner functionRunner = createFunctionRunner(pipeline, config, jsonObjectWriter);
+                        for (String testPackId : filteredTestPackToSamples.keySet()) {
+                            List<Path> inputSamplesForTestPack = filteredTestPackToSamples.get(testPackId);
+                            runs.add(startTestPack(resourcesPath, inputPath, outputPath, testPackId, inputSamplesForTestPack, pipelineNode, pipeline, functionRunner, executor));
+                        }
+                    }
+                    runsByNode.put(pipelineNode, runs);
+                }
+
+                // Then wait for them in the same order, and write each test pack's config
+                for (Map.Entry<PipelineNode, List<TestPackRun>> nodeRuns : runsByNode.entrySet()) {
+                    PipelineNode pipelineNode = nodeRuns.getKey();
+                    TransformType transformType = pipelineNode.getTransformType();
+                    for (TestPackRun run : nodeRuns.getValue()) {
+                        TestPackModel testPackModel = run.finish(config, validationSummariser);
+
+                        Path writePath = Files.createDirectories(resourcesPath.resolve(transformType.getResourcePath()).resolve("config"));
+                        Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
+                        configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
+                    }
+                    LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
+                            nodeRuns.getValue().size(), transformType, pipelineNode.getFunction().getName(), levelStopwatch, downstreamCounts.getOrDefault(pipelineNode.id(true), 0L));
+                }
             }
         } finally {
             executor.shutdownNow();
@@ -144,6 +207,41 @@ public class PipelineTestPackWriter {
         }
 
         LOGGER.info("Test pack generation complete, took {} ({} worker threads)", stopwatch, parallelism);
+    }
+
+    /**
+     * Number of nodes that read each node's output, keyed by node id.
+     */
+    private static Map<String, Long> downstreamCounts(PipelineTree pipelineTree) {
+        return pipelineTree.getNodeList().stream()
+                .map(PipelineNode::getUpstream)
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(upstream -> upstream.id(true), Collectors.counting()));
+    }
+
+    /**
+     * Number of samples generated at once: the processors available to the JVM (which respects container CPU limits),
+     * or the {@value #PARALLELISM_PROPERTY} system property, e.g. to stay below a fractional CPU quota.
+     */
+    static int parallelism() {
+        Integer configured = Integer.getInteger(PARALLELISM_PROPERTY);
+        return configured != null && configured > 0 ? configured : Runtime.getRuntime().availableProcessors();
+    }
+
+    /**
+     * The tree's nodes grouped by depth, shallowest first, so each node comes after the node whose output it reads.
+     */
+    private static Collection<List<PipelineNode>> levels(PipelineTree pipelineTree) {
+        return pipelineTree.getNodeList().stream()
+                .collect(Collectors.groupingBy(PipelineTestPackWriter::depth, TreeMap::new, Collectors.toList()))
+                .values();
+    }
+
+    /**
+     * Number of nodes above this one in the tree: 0 for a starting node.
+     */
+    private static int depth(PipelineNode node) {
+        return node.getUpstream() == null ? 0 : depth(node.getUpstream()) + 1;
     }
 
     /**
@@ -162,148 +260,10 @@ public class PipelineTestPackWriter {
     }
 
     /**
-     * Number of samples generated at once: the processors available to the JVM (which respects container CPU limits),
-     * or the {@value #PARALLELISM_PROPERTY} system property, e.g. to stay below a fractional CPU quota.
+     * Creates the function runner for a node: it reads each input sample, runs the node's function, post-processes and
+     * validates the result, and serialises it.
      */
-    static int parallelism() {
-        Integer configured = Integer.getInteger(PARALLELISM_PROPERTY);
-        return configured != null && configured > 0 ? configured : Runtime.getRuntime().availableProcessors();
-    }
-
-    /**
-     * Nodes grouped by depth from their starting node, shallowest first. Every node's upstream is in an earlier group.
-     */
-    static Collection<List<PipelineNode>> levels(PipelineTree pipelineTree) {
-        Map<Integer, List<PipelineNode>> levels = new TreeMap<>();
-        for (PipelineNode node : pipelineTree.getNodeList()) {
-            levels.computeIfAbsent(depth(node), d -> new ArrayList<>()).add(node);
-        }
-        return levels.values();
-    }
-
-    /**
-     * Number of upstream nodes between this node and its starting node: 0 for a starting node.
-     */
-    private static int depth(PipelineNode node) {
-        int depth = 0;
-        for (PipelineNode upstream = node.getUpstream(); upstream != null; upstream = upstream.getUpstream()) {
-            depth++;
-        }
-        return depth;
-    }
-
-    /**
-     * Generates every node at one depth of the tree. Each node is prepared in turn and its samples are queued on the
-     * executor as soon as it is ready, so workers start while later nodes are still being prepared. Once every sample of
-     * the level has finished, adds each node's validation reports in input order, writes its test pack configs (samples
-     * sorted by id) and logs one line per node and one for the level.
-     *
-     * @throws IOException if a sample fails with an I/O error, or a config can't be written
-     */
-    private void writeLevel(List<PipelineNode> level,
-                            PipelineTree pipelineTree,
-                            PipelineTreeConfig config,
-                            Path resourcesPath,
-                            ObjectWriter configObjectWriter,
-                            ObjectWriter jsonObjectWriter,
-                            ValidationSummariser validationSummariser,
-                            ExecutorService executor) throws IOException {
-        Stopwatch levelStopwatch = Stopwatch.createStarted();
-        List<NodeWork> nodes = new ArrayList<>();
-        int samples = 0;
-        for (PipelineNode pipelineNode : level) {
-            // Queue each node's samples as soon as it is prepared, so workers start while later nodes are prepared
-            NodeWork node = prepareNode(pipelineNode, config, resourcesPath, jsonObjectWriter);
-            if (node == null) {
-                continue;
-            }
-            nodes.add(node);
-            for (Map.Entry<String, List<Path>> testPack : node.testPackToSamples.entrySet()) {
-                List<Future<GeneratedSample>> futures = new ArrayList<>();
-                for (Path inputSample : testPack.getValue()) {
-                    futures.add(executor.submit(() -> {
-                        GeneratedSample sample = generateSample(resourcesPath, node, testPack.getKey(), inputSample);
-                        node.lastSampleFinished.accumulateAndGet(levelStopwatch.elapsed(TimeUnit.NANOSECONDS), Math::max);
-                        return sample;
-                    }));
-                }
-                node.sampleFutures.put(testPack.getKey(), futures);
-                samples += futures.size();
-            }
-        }
-
-        for (NodeWork node : nodes) {
-            TransformType transformType = node.pipelineNode.getTransformType();
-            for (Map.Entry<String, List<Future<GeneratedSample>>> testPack : node.sampleFutures.entrySet()) {
-                String testPackId = testPack.getKey();
-                List<TestPackModel.SampleModel> sortedSamples = new ArrayList<>();
-                for (Future<GeneratedSample> future : testPack.getValue()) {
-                    GeneratedSample sample = await(future);
-                    // Added here, in input order, so a summary doesn't depend on which sample finished first
-                    if (validationSummariser != null) {
-                        validationSummariser.addValidationReport(node.pipeline, sample.sampleModel.getName(), sample.sampleModel, sample.validationReport);
-                    }
-                    sortedSamples.add(sample.sampleModel);
-                }
-                sortedSamples.sort(Comparator.comparing(TestPackModel.SampleModel::getId));
-
-                String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
-                TestPackModel testPackModel = new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), node.pipelineIdSuffix, testPackId), node.pipelineId, testPackName, sortedSamples);
-
-                Path writePath = Files.createDirectories(resourcesPath.resolve(transformType.getResourcePath()).resolve("config"));
-                Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
-                configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
-            }
-            LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
-                    node.sampleFutures.size(), transformType, node.pipelineNode.getFunction().getName(),
-                    formatNanos(node.lastSampleFinished.get()), pipelineTree.downstreamCount(node.pipelineNode));
-        }
-        LOGGER.info("Generated {} samples for {} functions at depth {}, took {}", samples, nodes.size(), depth(level.get(0)), levelStopwatch);
-    }
-
-    /**
-     * Prepares one node for generation: finds its input samples, groups them by test pack after applying the tree-wide
-     * filter, the node's own filter and any {@link PipelineTestPackFilter}, then builds its pipeline model, its function
-     * runner and its output XSD schema once, to be shared by all its samples.
-     *
-     * @return the node's work, with no samples if no test pack passes the filters; or null if the node is excluded from
-     * test pack generation
-     */
-    private NodeWork prepareNode(PipelineNode pipelineNode, PipelineTreeConfig config, Path resourcesPath, ObjectWriter jsonObjectWriter) throws IOException {
-        TransformType transformType = pipelineNode.getTransformType();
-        String functionName = pipelineNode.getFunction().getName();
-        LOGGER.debug("Generating {} test packs for {} ", transformType, functionName);
-
-        final PipelineTestPackFilter pipelineTestPackFilter = config.getTestPackFilter();
-        if (pipelineTestPackFilter != null && pipelineTestPackFilter.getExcludedFunctionsFromTestPackGeneration().contains(pipelineNode.getFunction())) {
-            LOGGER.debug("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", transformType, functionName);
-            return null;
-        }
-
-        Path inputPath = resourcesPath.resolve(pipelineNode.getInputPath(config.isStrictUniqueIds()));
-        PipelineNode upstream = pipelineNode.getUpstream();
-        if (upstream == null) {
-            LOGGER.debug("Input path {} ", inputPath);
-        } else {
-            LOGGER.debug("Input path {} (output of {} {})", inputPath, upstream.getTransformType(), upstream.getFunction().getName());
-        }
-
-        Path outputPath = resourcesPath.resolve(pipelineNode.getOutputPath(config.isStrictUniqueIds()));
-        LOGGER.debug("Output path {} ", outputPath);
-
-        List<Path> inputSamples = findAllSamples(inputPath);
-
-        Map<String, List<Path>> testPackToSamples =
-                filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter().and(pipelineNode.getTestPackIdFilter()), config.getCsvTestPackSourceFiles());
-
-        Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
-                .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
-
-        if (filteredTestPackToSamples.isEmpty()) {
-            return new NodeWork(pipelineNode, inputPath, outputPath, null, null, filteredTestPackToSamples, config);
-        }
-
-        PipelineModel pipeline = pipelineModelBuilder.build(pipelineNode, config);
+    private PipelineFunctionRunner createFunctionRunner(PipelineModel pipeline, PipelineTreeConfig config, ObjectWriter jsonObjectWriter) {
         PipelineModel.Transform transform = pipeline.getTransform();
         Class<? extends RosettaModelObject> inputType = toClass(transform.getInputType());
         Class<? extends RosettaModelObject> functionType = toClass(transform.getFunction());
@@ -313,114 +273,106 @@ public class PipelineTestPackWriter {
                 .map(sm -> getXsdSchema(outputType, sm))
                 .orElse(null);
 
-        PipelineFunctionRunner functionRunner =
-                functionRunnerProvider.create(transform.getType(),
-                        inputType,
-                        functionType,
-                        pipeline.getInputSerialisation(),
-                        pipeline.getOutputSerialisation(),
-                        defaultJsonObjectMapper,
-                        jsonObjectWriter,
-                        outputXsdSchema);
-
-        return new NodeWork(pipelineNode, inputPath, outputPath, pipeline, functionRunner, filteredTestPackToSamples, config);
+        return functionRunnerProvider.create(transform.getType(),
+                inputType,
+                functionType,
+                pipeline.getInputSerialisation(),
+                pipeline.getOutputSerialisation(),
+                defaultJsonObjectMapper,
+                jsonObjectWriter,
+                outputXsdSchema);
     }
 
     /**
-     * Runs the node's function on one sample and writes the output under the node's output path, with the output
-     * format's file extension. Called concurrently from the worker threads: it touches only this sample's files.
-     *
-     * @return the sample's entry for the test pack config, and its validation report
+     * Queues one task per sample of a test pack on the executor, and returns them as a {@link TestPackRun}. Each task
+     * runs the node's function on its sample and writes the output under {@code outputDir}, with the output format's
+     * file extension.
      */
-    private GeneratedSample generateSample(Path resourcesPath,
-                                            NodeWork node,
-                                            String testPackId,
-                                            Path inputSample) throws IOException {
-        TransformType transformType = node.pipelineNode.getTransformType();
-        LOGGER.debug("Generating {} function {} test pack {} sample {}", transformType, node.pipelineNode.getFunction().getSimpleName(), testPackId, inputSample.getFileName());
+    private TestPackRun startTestPack(Path resourcesPath,
+                                      Path inputPath,
+                                      Path outputDir,
+                                      String testPackId,
+                                      List<Path> inputSamplesForTestPack,
+                                      PipelineNode pipelineNode,
+                                      PipelineModel pipeline,
+                                      PipelineFunctionRunner functionRunner,
+                                      ExecutorService executor) {
+        LOGGER.info("Test pack sample generation started for {}", testPackId);
+        TransformType transformType = pipelineNode.getTransformType();
+        LOGGER.info("{} {} samples to be generated", inputSamplesForTestPack.size(), transformType);
+        String functionName = pipelineNode.getFunction().getSimpleName();
 
-        Path relativeOutputPath = resourcesPath.relativize(node.outputPath.resolve(resourcesPath.relativize(node.inputPath).relativize(inputSample)));
-        Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(node.pipeline, relativeOutputPath.toFile().getName())));
+        List<Future<GeneratedSample>> samples = new ArrayList<>();
+        for (Path inputSample : inputSamplesForTestPack) {
+            samples.add(executor.submit(() -> {
+                LOGGER.info("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
 
-        PipelineFunctionResult result = node.functionRunner.run(resourcesPath.resolve(inputSample));
-        TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
+                Path relativeOutputPath = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
+                Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, relativeOutputPath.toFile().getName())));
 
-        String baseFileName = getBaseFileName(inputSample.toUri().toURL());
-        String displayName = baseFileName.replace("-", " ");
+                PipelineFunctionResult result = functionRunner.run(resourcesPath.resolve(inputSample));
+                TestPackModel.SampleModel.Assertions assertions = result.getAssertions();
 
-        // Sample paths are stored in the test-pack model and resolved as classpath
-        // resources, so they always use "/" regardless of the platform separator
-        TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, toPortableString(inputSample), toPortableString(outputPath), assertions);
+                String baseFileName = getBaseFileName(inputSample.toUri().toURL());
+                String displayName = baseFileName.replace("-", " ");
 
-        Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
-        Files.write(resourcesPath.resolve(outputPath), result.getSerialisedOutput().getBytes());
+                // Sample paths are stored in the test-pack model and resolved as classpath
+                // resources, so they always use "/" regardless of the platform separator
+                TestPackModel.SampleModel sampleModel = new TestPackModel.SampleModel(baseFileName.toLowerCase(), displayName, toPortableString(inputSample), toPortableString(outputPath), assertions);
 
-        return new GeneratedSample(sampleModel, result.getValidationReport());
-    }
+                Files.createDirectories(resourcesPath.resolve(outputPath).getParent());
+                Files.write(resourcesPath.resolve(outputPath), result.getSerialisedOutput().getBytes());
 
-    /**
-     * Waits for a sample and returns its result, rethrowing the exception it failed with: an {@link IOException},
-     * {@link RuntimeException} or {@link Error} as it was, anything else wrapped in an {@link IllegalStateException}.
-     */
-    private static <T> T await(Future<T> future) throws IOException {
-        try {
-            return future.get();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Interrupted while generating test pack samples", e);
-        } catch (ExecutionException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof IOException) {
-                throw (IOException) cause;
-            }
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
-            }
-            if (cause instanceof Error) {
-                throw (Error) cause;
-            }
-            throw new IllegalStateException(cause);
+                return new GeneratedSample(sampleModel, result.getValidationReport());
+            }));
         }
+        return new TestPackRun(pipelineNode, pipeline, testPackId, functionName, samples);
     }
 
     /**
-     * Formats a duration in nanoseconds as seconds with three decimals, for the per-node log line.
+     * A test pack whose samples are queued on the worker threads.
      */
-    private static String formatNanos(long nanos) {
-        return String.format(Locale.ROOT, "%.3f s", nanos / 1e9);
-    }
-
-    /**
-     * One node's samples for a level: its paths, pipeline and function runner, created once and shared by its samples.
-     */
-    private static final class NodeWork {
+    private final class TestPackRun {
 
         private final PipelineNode pipelineNode;
-        private final Path inputPath;
-        private final Path outputPath;
         private final PipelineModel pipeline;
-        private final PipelineFunctionRunner functionRunner;
-        private final Map<String, List<Path>> testPackToSamples;
-        private final String pipelineId;
-        private final String pipelineIdSuffix;
-        private final Map<String, List<Future<GeneratedSample>>> sampleFutures = new LinkedHashMap<>();
-        private final AtomicLong lastSampleFinished = new AtomicLong();
+        private final String testPackId;
+        private final String functionName;
+        private final List<Future<GeneratedSample>> samples;
+        private final Stopwatch stopwatch = Stopwatch.createStarted();
+
+        private TestPackRun(PipelineNode pipelineNode, PipelineModel pipeline, String testPackId, String functionName, List<Future<GeneratedSample>> samples) {
+            this.pipelineNode = pipelineNode;
+            this.pipeline = pipeline;
+            this.testPackId = testPackId;
+            this.functionName = functionName;
+            this.samples = samples;
+        }
 
         /**
-         * @param pipeline         the node's pipeline model, or null when it has no samples
-         * @param functionRunner   the runner shared by the node's samples, or null when it has no samples
-         * @param testPackToSamples the node's input samples, grouped by test pack id
+         * Waits for the samples in input order, adding each validation report to the summariser in that order, so a
+         * summary doesn't depend on which sample finished first. Returns the test pack model, with its samples sorted
+         * by id.
+         *
+         * @throws IOException if a sample failed with an I/O error
          */
-        private NodeWork(PipelineNode pipelineNode, Path inputPath, Path outputPath, PipelineModel pipeline, PipelineFunctionRunner functionRunner,
-                         Map<String, List<Path>> testPackToSamples, PipelineTreeConfig config) {
-            this.pipelineNode = pipelineNode;
-            this.inputPath = inputPath;
-            this.outputPath = outputPath;
-            this.pipeline = pipeline;
-            this.functionRunner = functionRunner;
-            this.testPackToSamples = testPackToSamples;
-            this.pipelineId = pipelineNode.id(config.isStrictUniqueIds());
-            this.pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
+        private TestPackModel finish(PipelineTreeConfig config, ValidationSummariser validationSummariser) throws IOException {
+            List<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
+            for (Future<GeneratedSample> future : samples) {
+                GeneratedSample sample = await(future);
+                if (validationSummariser != null) {
+                    validationSummariser.addValidationReport(pipeline, sample.sampleModel.getName(), sample.sampleModel, sample.validationReport);
+                }
+                sampleModels.add(sample.sampleModel);
+            }
+            sampleModels.sort(Comparator.comparing(TestPackModel.SampleModel::getId));
+
+            LOGGER.info("Function {} test pack {} generation complete, took {}", functionName, testPackId, stopwatch);
+
+            String pipelineId = pipelineNode.id(config.isStrictUniqueIds());
+            String pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
+            String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
+            return new TestPackModel(String.format("test-pack-%s-%s-%s", pipelineNode.getTransformType().name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sampleModels);
         }
     }
 
@@ -439,18 +391,18 @@ public class PipelineTestPackWriter {
     }
 
     /**
-     * Names the pool's threads {@code testpack-worker-N}, so they can be told apart in logs and thread dumps, and makes
-     * them daemon threads, so a pool left running can't keep the JVM alive.
+     * Waits for a task and returns its result, rethrowing the exception it failed with.
      */
-    private static final class TestPackWorkerThreadFactory implements ThreadFactory {
-
-        private final AtomicInteger count = new AtomicInteger();
-
-        @Override
-        public Thread newThread(Runnable runnable) {
-            Thread thread = new Thread(runnable, "testpack-worker-" + count.incrementAndGet());
-            thread.setDaemon(true);
-            return thread;
+    private static <T> T await(Future<T> future) throws IOException {
+        try {
+            return future.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while generating test pack samples", e);
+        } catch (ExecutionException e) {
+            Throwables.throwIfInstanceOf(e.getCause(), IOException.class);
+            Throwables.throwIfUnchecked(e.getCause());
+            throw new IllegalStateException(e.getCause());
         }
     }
 
