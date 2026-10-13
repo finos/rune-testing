@@ -89,8 +89,8 @@ public class PipelineTestPackWriter {
      * node it runs the node's function over every input sample that passes both the tree-wide filter and the node's own
      * filter, writes each output under the node's output path, and writes one test pack config per test pack.
      * <p>
-     * Each node logs one INFO line with how many test packs it generated, how long that took, and how many downstream
-     * functions read its output; paths and per-sample detail are logged at DEBUG.
+     * Each node logs at INFO how many test packs it generated, how long that took and how many downstream functions
+     * read its output, as well as each test pack and sample it generates; input and output paths are logged at DEBUG.
      *
      * @param config the tree to generate; does nothing (and logs an error) if it has no write path
      * @throws IOException if a sample can't be read or an output or config file can't be written
@@ -113,15 +113,16 @@ public class PipelineTestPackWriter {
 
         createCsvSampleFiles(resourcesPath, config.getCsvTestPackSourceFiles());
 
+        Map<String, Long> downstreamCounts = downstreamCounts(pipelineTree);
         for (PipelineNode pipelineNode : pipelineTree.getNodeList()) {
             Stopwatch pipelineStopwatch = Stopwatch.createStarted();
             TransformType transformType = pipelineNode.getTransformType();
             String functionName = pipelineNode.getFunction().getName();
-            LOGGER.debug("Generating {} test packs for {} ", transformType, functionName);
+            LOGGER.info("Generating {} test packs for {} ", transformType, functionName);
 
             final PipelineTestPackFilter pipelineTestPackFilter = config.getTestPackFilter();
             if (pipelineTestPackFilter != null && pipelineTestPackFilter.getExcludedFunctionsFromTestPackGeneration().contains(pipelineNode.getFunction())) {
-                LOGGER.debug("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", transformType, functionName);
+                LOGGER.info("Aborting {} Test Pack Generation for {} as this has been excluded from Test Pack generation", transformType, functionName);
                 continue;
             }
 
@@ -153,7 +154,7 @@ public class PipelineTestPackWriter {
                 configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
             LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
-                    filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch, pipelineTree.downstreamCount(pipelineNode));
+                    filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch, downstreamCounts.getOrDefault(pipelineNode.id(true), 0L));
         }
 
         if (validationSummariser != null) {
@@ -161,6 +162,16 @@ public class PipelineTestPackWriter {
         }
 
         LOGGER.info("Test pack generation complete, took {}", stopwatch);
+    }
+
+    /**
+     * Number of nodes that read each node's output, keyed by node id.
+     */
+    private static Map<String, Long> downstreamCounts(PipelineTree pipelineTree) {
+        return pipelineTree.getNodeList().stream()
+                .map(PipelineNode::getUpstream)
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(upstream -> upstream.id(true), Collectors.counting()));
     }
 
     /**
@@ -193,9 +204,9 @@ public class PipelineTestPackWriter {
                                                ObjectMapper jsonObjectMapper,
                                                ObjectWriter jsonObjectWriter,
                                                ValidationSummariser validationSummariser) throws IOException {
-        LOGGER.debug("Test pack sample generation started for {}", testPackId);
+        LOGGER.info("Test pack sample generation started for {}", testPackId);
         TransformType transformType = pipelineNode.getTransformType();
-        LOGGER.debug("{} {} samples to be generated", inputSamplesForTestPack.size(), transformType);
+        LOGGER.info("{} {} samples to be generated", inputSamplesForTestPack.size(), transformType);
         List<TestPackModel.SampleModel> sampleModels = new ArrayList<>();
         String pipelineId = pipelineNode.id(config.isStrictUniqueIds());
         String pipelineIdSuffix = pipelineNode.idSuffix(config.isStrictUniqueIds(), "-");
@@ -223,7 +234,7 @@ public class PipelineTestPackWriter {
         String functionName = functionType.getSimpleName();
         Stopwatch stopwatch = Stopwatch.createStarted();
         for (Path inputSample : inputSamplesForTestPack) {
-            LOGGER.debug("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
+            LOGGER.info("Generating {} function {} test pack {} sample {}", transformType, functionName, testPackId, inputSample.getFileName());
 
             Path relativeOutputPath = resourcesPath.relativize(outputDir.resolve(resourcesPath.relativize(inputPath).relativize(inputSample)));
             Path outputPath = relativeOutputPath.getParent().resolve(Path.of(updateFileExtensionBasedOnOutputFormat(pipeline, relativeOutputPath.toFile().getName())));
@@ -253,7 +264,7 @@ public class PipelineTestPackWriter {
                 .sorted(Comparator.comparing(TestPackModel.SampleModel::getId))
                 .collect(Collectors.toList());
 
-        LOGGER.debug("Function {} test pack {} generation complete, took {}", functionName, testPackId, stopwatch);
+        LOGGER.info("Function {} test pack {} generation complete, took {}", functionName, testPackId, stopwatch);
 
         String testPackName = helper.capitalizeFirstLetter(testPackId.replace("-", " "));
         return new TestPackModel(String.format("test-pack-%s-%s-%s", transformType.name().toLowerCase(), pipelineIdSuffix, testPackId), pipelineId, testPackName, sortedSamples);

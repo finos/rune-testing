@@ -39,15 +39,4 @@ public class PipelineTree {
     public PipelineTreeConfig getPipelineTreeConfig() {
         return pipelineTreeConfig;
     }
-
-    /**
-     * Number of nodes that read the given node's output.
-     */
-    int downstreamCount(PipelineNode node) {
-        String nodeId = node.id(true);
-        return (int) nodeList.stream()
-                .map(PipelineNode::getUpstream)
-                .filter(upstream -> upstream != null && upstream.id(true).equals(nodeId))
-                .count();
-    }
 }
