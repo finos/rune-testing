@@ -23,7 +23,11 @@ package com.regnosys.testing.pipeline;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import com.regnosys.rosetta.common.transform.PipelineModel;
+import com.regnosys.rosetta.common.transform.TestPackModel;
 import com.regnosys.rosetta.common.transform.TransformType;
+import com.regnosys.rosetta.common.validation.ValidationReport;
+import com.regnosys.testing.validation.ValidationSummariser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -33,12 +37,14 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.function.Predicate;
 
 import static com.regnosys.testing.pipeline.PipelineFilter.equalsTo;
 import static com.regnosys.testing.pipeline.PipelineFilter.startsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -188,6 +194,92 @@ public class PipelineTestPackWriterTest {
         assertFileExists(tempDir, "projection/config/test-pack-projection-start-middle-a-end-a-test-pack-1.json");
         assertFileDoesNotExist(tempDir, "projection/config/test-pack-projection-start-middle-a-end-a-test-pack-2.json");
         assertFileDoesNotExist(tempDir, "projection/output/start/middle-a/end-a/test-pack-2/sample-2-1.json");
+    }
+
+    @Test
+    void writeTestPacksRunsEachNodeAfterItsUpstreamEvenAgainstTransformTypeOrder(@TempDir Path tempDir) throws Exception {
+        // REPORT feeding ENRICH: sorting nodes by transform type would run the ENRICH node before its input exists
+        Path inputPath = Files.createDirectories(tempDir.resolve(TransformType.REPORT.getResourcePath()).resolve("input").resolve("test-pack-1"));
+        Files.write(inputPath.resolve("sample-1-1.json"), "{\"name\": \"1-1\"}".getBytes());
+
+        PipelineTreeConfig chain = new PipelineTreeConfig("testPrefix")
+                .starting(TransformType.REPORT, helper.startClass())
+                .add(helper.startClass(), TransformType.ENRICH, helper.middleClass())
+                .strictUniqueIds()
+                .withWritePath(tempDir);
+        pipelineTestPackWriter.writeTestPacks(chain);
+
+        assertFileExists(tempDir, "regulatory-reporting/output/start/test-pack-1/sample-1-1.json");
+        assertFileExists(tempDir, "enrich/output/start/middle/test-pack-1/sample-1-1.json");
+    }
+
+    @Test
+    void writeTestPacksAddsValidationReportsOnTheCallingThreadInInputOrder(@TempDir Path tempDir) throws Exception {
+        List<String> sequential = validationReportOrder(tempDir.resolve("sequential"), 1);
+        List<String> concurrent = validationReportOrder(tempDir.resolve("concurrent"), 4);
+
+        assertEquals(20, sequential.size());
+        assertEquals(sequential, concurrent);
+    }
+
+    /**
+     * Generates 20 samples on the given number of workers and returns the sample ids in the order their validation
+     * reports were added, failing if any was added from a worker thread.
+     */
+    private List<String> validationReportOrder(Path writePath, int parallelism) throws IOException {
+        Path inputPath = Files.createDirectories(writePath.resolve(TransformType.ENRICH.getResourcePath()).resolve("input").resolve("test-pack-1"));
+        for (int i = 1; i <= 20; i++) {
+            Files.write(inputPath.resolve("sample-" + i + ".json"), ("{\"name\": \"" + i + "\"}").getBytes());
+        }
+        Thread callingThread = Thread.currentThread();
+        List<String> sampleIds = new ArrayList<>();
+        ValidationSummariser summariser = new ValidationSummariser() {
+            @Override
+            public void addValidationReport(PipelineModel pipeline, String testPackName, TestPackModel.SampleModel sampleModel, ValidationReport report) {
+                assertEquals(callingThread, Thread.currentThread());
+                sampleIds.add(sampleModel.getId());
+            }
+
+            @Override
+            public void summerize() {
+            }
+        };
+        PipelineTreeConfig chain = new PipelineTreeConfig("testPrefix")
+                .starting(TransformType.ENRICH, helper.startClass())
+                .strictUniqueIds()
+                .withValidationSummariser(summariser)
+                .withWritePath(writePath);
+
+        String previous = System.getProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+        System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, String.valueOf(parallelism));
+        try {
+            pipelineTestPackWriter.writeTestPacks(chain);
+        } finally {
+            if (previous == null) {
+                System.clearProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+            } else {
+                System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, previous);
+            }
+        }
+        return sampleIds;
+    }
+
+    @Test
+    void parallelismIsAvailableProcessorsUnlessConfigured() {
+        String previous = System.getProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+        try {
+            System.clearProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+            assertEquals(Runtime.getRuntime().availableProcessors(), PipelineTestPackWriter.parallelism());
+
+            System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, "3");
+            assertEquals(3, PipelineTestPackWriter.parallelism());
+        } finally {
+            if (previous == null) {
+                System.clearProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY);
+            } else {
+                System.setProperty(PipelineTestPackWriter.PARALLELISM_PROPERTY, previous);
+            }
+        }
     }
 
     private static void writeEnrichInputSamples(Path tempDir) throws IOException {
