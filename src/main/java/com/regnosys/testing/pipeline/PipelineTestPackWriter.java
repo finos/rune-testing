@@ -85,6 +85,17 @@ public class PipelineTestPackWriter {
         this.helper = helper;
     }
 
+    /**
+     * Generates the test packs of every node in the tree described by the config, in transform type order. For each
+     * node it runs the node's function over every input sample that passes both the tree-wide filter and the node's own
+     * filter, writes each output under the node's output path, and writes one test pack config per test pack.
+     * <p>
+     * Each node logs at INFO how many test packs it generated, how long that took and how many downstream functions
+     * read its output, as well as each test pack and sample it generates; input and output paths are logged at DEBUG.
+     *
+     * @param config the tree to generate; does nothing (and logs an error) if it has no write path
+     * @throws IOException if a sample can't be read or an output or config file can't be written
+     */
     public void writeTestPacks(PipelineTreeConfig config) throws IOException {
         if (config.getWritePath() == null) {
             LOGGER.error("Write path not configured. Aborting.");
@@ -93,7 +104,7 @@ public class PipelineTestPackWriter {
         Stopwatch stopwatch = Stopwatch.createStarted();
         ValidationSummariser validationSummariser = config.getValidationSummariser();
 
-        LOGGER.info("Starting test pack Generation");
+        LOGGER.debug("Starting test pack Generation");
         ObjectWriter configObjectWriter = ObjectMapperGenerator.createWriterMapper().writerWithDefaultPrettyPrinter();
         ObjectWriter jsonObjectWriter = defaultSerialisation.createWriter(config.isSortJsonPropertiesAlphabetically());
 
@@ -103,6 +114,7 @@ public class PipelineTestPackWriter {
 
         createCsvSampleFiles(resourcesPath, config.getCsvTestPackSourceFiles());
 
+        Map<String, Long> downstreamCounts = downstreamCounts(pipelineTree);
         for (PipelineNode pipelineNode : pipelineTree.getNodeList()) {
             Stopwatch pipelineStopwatch = Stopwatch.createStarted();
             TransformType transformType = pipelineNode.getTransformType();
@@ -116,15 +128,20 @@ public class PipelineTestPackWriter {
             }
 
             Path inputPath = resourcesPath.resolve(pipelineNode.getInputPath(config.isStrictUniqueIds()));
-            LOGGER.info("Input path {} ", inputPath);
+            PipelineNode upstream = pipelineNode.getUpstream();
+            if (upstream == null) {
+                LOGGER.debug("Input path {} ", inputPath);
+            } else {
+                LOGGER.debug("Input path {} (output of {} {})", inputPath, upstream.getTransformType(), upstream.getFunction().getName());
+            }
 
             Path outputPath = resourcesPath.resolve(pipelineNode.getOutputPath(config.isStrictUniqueIds()));
-            LOGGER.info("Output path {} ", outputPath);
+            LOGGER.debug("Output path {} ", outputPath);
 
             List<Path> inputSamples = findAllSamples(inputPath);
 
             Map<String, List<Path>> testPackToSamples =
-                    filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter(), config.getCsvTestPackSourceFiles());
+                    filterAndGroupingByTestPackId(resourcesPath, inputPath, inputSamples, config.getTestPackIdFilter().and(pipelineNode.getTestPackIdFilter()), config.getCsvTestPackSourceFiles());
 
             Map<String, List<Path>> filteredTestPackToSamples = Optional.ofNullable(pipelineTestPackFilter)
                     .map(t -> filterTestPacks(pipelineNode, pipelineTestPackFilter, testPackToSamples)).orElse(testPackToSamples);
@@ -137,7 +154,8 @@ public class PipelineTestPackWriter {
                 Path writeFile = writePath.resolve(testPackModel.getId() + ".json");
                 configObjectWriter.writeValue(writeFile.toFile(), testPackModel);
             }
-            LOGGER.info("Generated {} {} test packs for {}, took {}", filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch);
+            LOGGER.info("Generated {} {} test packs for {}, took {}; output read by {} downstream functions",
+                    filteredTestPackToSamples.size(), transformType, functionName, pipelineStopwatch, downstreamCounts.getOrDefault(pipelineNode.id(true), 0L));
         }
 
         if (validationSummariser != null) {
@@ -147,6 +165,20 @@ public class PipelineTestPackWriter {
         LOGGER.info("Test pack generation complete, took {}", stopwatch);
     }
 
+    /**
+     * Number of nodes that read each node's output, keyed by node id.
+     */
+    private static Map<String, Long> downstreamCounts(PipelineTree pipelineTree) {
+        return pipelineTree.getNodeList().stream()
+                .map(PipelineNode::getUpstream)
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(upstream -> upstream.id(true), Collectors.counting()));
+    }
+
+    /**
+     * Every regular file under the input folder, or none if the folder doesn't exist (for example when an upstream
+     * node generated no output).
+     */
     private List<Path> findAllSamples(Path inputDir) throws IOException {
         if (!Files.exists(inputDir)) {
             return List.of();
@@ -158,6 +190,11 @@ public class PipelineTestPackWriter {
         }
     }
 
+    /**
+     * Runs the node's function over every sample of one test pack, writes each output under {@code outputDir} (with
+     * the output format's file extension), adds each sample's validation report to the summariser, and returns the
+     * test pack model, with its samples sorted by id.
+     */
     private TestPackModel writeTestPackSamples(Path resourcesPath,
                                                Path inputPath,
                                                Path outputDir,
