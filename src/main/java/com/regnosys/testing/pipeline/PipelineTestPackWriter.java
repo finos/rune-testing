@@ -41,12 +41,17 @@ import com.regnosys.testing.validation.ValidationSummariser;
 import com.rosetta.model.lib.RosettaModelObject;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
 import jakarta.inject.Inject;
 import javax.xml.XMLConstants;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -269,8 +274,8 @@ public class PipelineTestPackWriter {
         Class<? extends RosettaModelObject> functionType = toClass(transform.getFunction());
         Class<? extends RosettaModelObject> outputType = toClass(transform.getOutputType());
         // XSD validation
-        Schema outputXsdSchema = Optional.ofNullable(config.getXmlSchemaMap())
-                .map(sm -> getXsdSchema(outputType, sm))
+        Validator outputXsdValidator = Optional.ofNullable(config.getXmlSchemaMap())
+                .map(sm -> getXsdValidator(outputType, sm))
                 .orElse(null);
 
         return functionRunnerProvider.create(transform.getType(),
@@ -280,7 +285,7 @@ public class PipelineTestPackWriter {
                 pipeline.getOutputSerialisation(),
                 defaultJsonObjectMapper,
                 jsonObjectWriter,
-                outputXsdSchema);
+                outputXsdValidator);
     }
 
     /**
@@ -519,10 +524,7 @@ public class PipelineTestPackWriter {
         }
     }
 
-    /**
-     * Loads the XSD schema configured for the function's output type, or returns null if none is configured.
-     */
-    private Schema getXsdSchema(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
+    private Validator getXsdValidator(Class<?> functionType, ImmutableMap<Class<?>, String> outputSchemaMap) {
         URL schemaUrl = Optional.ofNullable(outputSchemaMap.get(functionType))
                 .map(Resources::getResource)
                 .orElse(null);
@@ -533,9 +535,56 @@ public class PipelineTestPackWriter {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             // required to process xml elements with an maxOccurs greater than 5000 (rather than unbounded)
             schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
-            return schemaFactory.newSchema(schemaUrl);
+            return new SchemaValidator(schemaFactory.newSchema(schemaUrl));
         } catch (SAXException e) {
             throw new RuntimeException(String.format("Failed to create schema validator for %s", schemaUrl), e);
+        }
+    }
+
+    /**
+     * A {@link Validator} that validates each document with a new validator from the schema. A {@code Validator} isn't
+     * thread-safe, so this is what lets one function runner be shared by the worker threads.
+     */
+    private static final class SchemaValidator extends Validator {
+
+        private final Schema schema;
+        private ErrorHandler errorHandler;
+        private LSResourceResolver resourceResolver;
+
+        private SchemaValidator(Schema schema) {
+            this.schema = schema;
+        }
+
+        @Override
+        public void validate(Source source, Result result) throws SAXException, IOException {
+            Validator validator = schema.newValidator();
+            validator.setErrorHandler(errorHandler);
+            validator.setResourceResolver(resourceResolver);
+            validator.validate(source, result);
+        }
+
+        @Override
+        public void reset() {
+        }
+
+        @Override
+        public void setErrorHandler(ErrorHandler errorHandler) {
+            this.errorHandler = errorHandler;
+        }
+
+        @Override
+        public ErrorHandler getErrorHandler() {
+            return errorHandler;
+        }
+
+        @Override
+        public void setResourceResolver(LSResourceResolver resourceResolver) {
+            this.resourceResolver = resourceResolver;
+        }
+
+        @Override
+        public LSResourceResolver getResourceResolver() {
+            return resourceResolver;
         }
     }
 

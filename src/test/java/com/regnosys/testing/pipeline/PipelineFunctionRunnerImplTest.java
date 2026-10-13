@@ -48,7 +48,6 @@ import org.mockito.MockitoAnnotations;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
 import javax.xml.validation.Validator;
 import java.io.IOException;
 import java.net.URL;
@@ -90,9 +89,6 @@ class PipelineFunctionRunnerImplTest {
     private Validator xsdValidator;
 
     @Mock
-    private Schema xsdSchema;
-
-    @Mock
     private ValidationReport validationReport;
 
     private PipelineFunctionRunnerImpl<TestObject> pipelineFunctionRunner;
@@ -101,7 +97,6 @@ class PipelineFunctionRunnerImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ObjectWriter objectWriter = OBJECT_MAPPER.writerWithDefaultPrettyPrinter();
-        lenient().when(xsdSchema.newValidator()).thenReturn(xsdValidator);
         pipelineFunctionRunner = new PipelineFunctionRunnerImpl<>(
                 TransformType.TRANSLATE,
                 function,
@@ -111,7 +106,7 @@ class PipelineFunctionRunnerImplTest {
                 OBJECT_MAPPER,
                 objectWriter,
                 postProcessor,
-                xsdSchema
+                xsdValidator
         );
     }
 

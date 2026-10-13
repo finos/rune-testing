@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
+import javax.xml.validation.Validator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Reader;
@@ -65,13 +65,9 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
     private final ObjectMapper inputObjectMapper;
     private final ObjectWriter outputObjectWriter;
     private final PostProcessor postProcessor;
-    private final Schema xsdSchema;
+    private final Validator xsdValidator;
 
 
-    /**
-     * @param function  the model function, as one instance shared by every sample this runner is invoked for
-     * @param xsdSchema schema the serialised output is validated against, or null to skip schema validation
-     */
     public PipelineFunctionRunnerImpl(TransformType transformType,
                                       Function<IN, RosettaModelObject> function,
                                       Class<IN> inputType,
@@ -80,7 +76,7 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
                                       ObjectMapper inputObjectMapper,
                                       ObjectWriter outputObjectWriter,
                                       PostProcessor postProcessor,
-                                      Schema xsdSchema) {
+                                      Validator xsdValidator) {
         this.transformType = transformType;
         this.function = function;
         this.inputType = inputType;
@@ -89,7 +85,7 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
         this.inputObjectMapper = inputObjectMapper;
         this.outputObjectWriter = outputObjectWriter;
         this.postProcessor = postProcessor;
-        this.xsdSchema = xsdSchema;
+        this.xsdValidator = xsdValidator;
     }
 
     @Override
@@ -192,16 +188,12 @@ public class PipelineFunctionRunnerImpl<IN extends RosettaModelObject> implement
         return (T) builder.build();
     }
 
-    /**
-     * Validates the serialised output against the XSD schema. Despite the name, returns true when the output is valid,
-     * false when it isn't (and logs why), and null when there is no schema.
-     */
     private Boolean isSchemaValidationFailure(String xml) {
-        if (xsdSchema == null) {
+        if (xsdValidator == null) {
             return null;
         }
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))) {
-            xsdSchema.newValidator().validate(new StreamSource(inputStream));
+            xsdValidator.validate(new StreamSource(inputStream));
             return true;
         } catch (SAXException e) {
             LOGGER.error("Schema validation failed: {}", e.getMessage());
