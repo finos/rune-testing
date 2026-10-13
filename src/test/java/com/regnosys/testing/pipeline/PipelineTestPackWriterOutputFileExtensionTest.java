@@ -43,6 +43,10 @@ class PipelineTestPackWriterOutputFileExtensionTest {
     private static class CsvLabelledProjectionFunction implements RosettaFunction {
     }
 
+    @Projection(format = SerializationFormat.FIX)
+    private static class FixProjectionFunction implements RosettaFunction {
+    }
+
     @Ingest(format = SerializationFormat.XML)
     private static class XmlIngestFunction implements RosettaFunction {
     }
@@ -55,6 +59,7 @@ class PipelineTestPackWriterOutputFileExtensionTest {
         assertEquals("xml", PipelineTestPackWriter.outputFileExtension(XmlProjectionFunction.class, null));
         assertEquals("csv", PipelineTestPackWriter.outputFileExtension(CsvProjectionFunction.class, null));
         assertEquals("csv", PipelineTestPackWriter.outputFileExtension(CsvLabelledProjectionFunction.class, null));
+        assertEquals("fix", PipelineTestPackWriter.outputFileExtension(FixProjectionFunction.class, null));
     }
 
     @Test
@@ -73,6 +78,9 @@ class PipelineTestPackWriterOutputFileExtensionTest {
 
         PipelineModel.Serialisation csvLabelled = new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.CSV_LABELLED, null);
         assertEquals("csv", PipelineTestPackWriter.outputFileExtension(UnannotatedFunction.class, csvLabelled));
+
+        PipelineModel.Serialisation fix = new PipelineModel.Serialisation(PipelineModel.Serialisation.Format.FIX, null);
+        assertEquals("fix", PipelineTestPackWriter.outputFileExtension(UnannotatedFunction.class, fix));
     }
 
     @Test
