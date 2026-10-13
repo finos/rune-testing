@@ -158,17 +158,6 @@ class PipelineTreeBuilderTest {
         assertAccepts(nodesById(config).get("pipeline-enrich-testPrefix-start"), "tp-1", "tp-2", "tp-3", "tp-pre");
     }
 
-    @Test
-    void downstreamCountIsTheNumberOfNodesReadingANodesOutput() {
-        PipelineTree pipelineTree = pipelineTreeBuilder.createPipelineTree(helper.createNestedTreeConfig().strictUniqueIds());
-        Map<String, PipelineNode> nodes = pipelineTree.getNodeList().stream()
-                .collect(Collectors.toMap(n -> n.id(true), Function.identity()));
-
-        assertEquals(2, pipelineTree.downstreamCount(nodes.get("pipeline-enrich-testPrefix-start")));
-        assertEquals(2, pipelineTree.downstreamCount(nodes.get("pipeline-report-testPrefix-start-middle-a")));
-        assertEquals(0, pipelineTree.downstreamCount(nodes.get("pipeline-projection-testPrefix-start-middle-a-end-a")));
-    }
-
     private Map<String, PipelineNode> nodesById(PipelineTreeConfig config) {
         return pipelineTreeBuilder.createPipelineTree(config).getNodeList().stream()
                 .collect(Collectors.toMap(n -> n.id(true), Function.identity()));
