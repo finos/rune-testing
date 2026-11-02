@@ -100,7 +100,7 @@
         <unruly.version>1.6</unruly.version>
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
-        <guava.version>33.3.1-jre</guava.version>
+        <guava.version>33.7.1-jre</guava.version>
         <plexus-utils.version>3.6.1</plexus-utils.version>
         <!-- Pins the jackson-databind that arrives transitively via rune-common,
              so a scan does not depend on which rune-common snapshot is deployed -->
