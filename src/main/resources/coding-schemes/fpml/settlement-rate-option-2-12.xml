@@ -1,0 +1,1758 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href="FpML.CodeList.genericode.css"?>
+<gcl:CodeList xmlns:doc="http://www.fpml.org/coding-scheme/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gcl="http://docs.oasis-open.org/codelist/ns/genericode/1.0/" xsi:schemaLocation="http://docs.oasis-open.org/codelist/ns/genericode/1.0/ genericode.xsd">
+   <Annotation>
+      <Description>
+         <doc:definition>Defines a scheme of settlement rate options specified in the 2026 FX Definitions Settlement Rate Options Matrix and, for deprecated values, the Annex A to the 1998 FX and Currency Option Definitions. The codes correspond to their respective ISDA/EMTA Settlement Rate Option only in the context of a transaction incorporating the corresponding contractual definitions.</doc:definition>
+         <doc:publicationDate>2026-10-30</doc:publicationDate>
+         <doc:confidentiality>This document contains only public information.</doc:confidentiality>
+         <doc:disclaimer>The Settlement Rate Option Provider column identifies the body that publishes the rate, without prejudice to the ability of the parties to use any other publication source or service that makes the Spot Rate available, as agreed by the parties.</doc:disclaimer>
+      </Description>
+   </Annotation>
+   <Identification>
+      <ShortName>settlementRateOptionScheme</ShortName>
+      <Version>2-12</Version>
+      <CanonicalUri>http://www.fpml.org/coding-scheme/settlement-rate-option</CanonicalUri>
+      <CanonicalVersionUri>http://www.fpml.org/coding-scheme/settlement-rate-option-2-12</CanonicalVersionUri>
+      <LocationUri>http://www.fpml.org/coding-scheme/settlement-rate-option-2-12.xml</LocationUri>
+   </Identification>
+   <ColumnSet>
+      <Column Id="Code" Use="required">
+         <ShortName>Code</ShortName>
+         <Data Type="token">
+            <Annotation>
+               <Description>
+                  <doc:field name="Code Name">The unique string identifying the Settlement Rate Option, in the form DEFINED.TERM/SROCODE, e.g. CNY.SAEC/CNY01</doc:field>
+               </Description>
+            </Annotation>
+            <Parameter ShortName="maxLength">63</Parameter>
+         </Data>
+      </Column>
+      <Column Id="Source" Use="optional">
+         <ShortName>Source</ShortName>
+         <Data Type="string"/>
+      </Column>
+      <Column Id="Description" Use="optional">
+         <ShortName>Description</ShortName>
+         <Data Type="string">
+            <Annotation>
+               <Description>
+                  <doc:field name="SRO annotations">Does not provide the actual Settlement Rate Option definition, but rather points the user to the place where the definition can be found, e.g. Per the 2026 FX Definitions Settlement Rate Options Matrix, as amended through the date on which parties enter into the relevant transaction.</doc:field>
+               </Description>
+            </Annotation>
+         </Data>
+      </Column>
+      <Key Id="PrimaryKey">
+         <ShortName>key</ShortName>
+         <ColumnRef Ref="Code"/>
+      </Key>
+   </ColumnSet>
+   <SimpleCodeList>
+      <Row>
+         <Value>
+            <SimpleValue>ABSBB/ABS02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ABSFIX/ABS01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>AOA.OFFICIAL/AOA1</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ARS.BNAR/ARS01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ARS.EMTA.INDICATIVE.SURVEY.RATE/ARS04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Annotation>
+            <Description>
+               <doc:description>
+                  <doc:paragraph>Deprecated usage: ARS.MAE/ARS05 replaces ARS.EMTA.INDUSTRY.SURVEY.RATE/ARS03.</doc:paragraph>
+                  <doc:paragraph>See: June 30, 2014 - ISDA/EMTA/FXC amendments to Annex A - Argentine Peso Rate Source Definition.</doc:paragraph>
+               </doc:description>
+            </Description>
+         </Annotation>
+         <Value>
+            <SimpleValue>ARS.EMTA.INDUSTRY.SURVEY.RATE/ARS03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ARS.MAE/ARS05</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ARS.OFFICIAL.RATE/ARS02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ASFI.MID/ASF01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>AUDFIX/AUD01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>AZN.CBAZ/AZN01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>Bloomberg.ASK/BFX02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>Bloomberg.BID/BFX01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>Bloomberg.MID/BFX03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BOJ.FIX/BOJ01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.BRBY/BRL01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.EMTA.INDICATIVE.SURVEY.RATE/BRL13</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.EMTA.INDUSTRY.SURVEY.RATE/BRL12</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.OFFICIAL.RATE/BRL02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.PCOT-COMMERCIAL/BRL03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.PCOT-FLOATING/BRL04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.PTAX/BRL09</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.PTAX-COMMERCIAL/BRL05</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.PTAX-COMMERCIAL.BRFR/BRL06</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.PTAX-FLOATING/BRL07</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>BRL.PTAX-FLOATING.BRFR/BRL08</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.BCCH/CLP01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.CHILD-INFORMAL/CLP02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.CHILD-INTERBANK/CLP03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.CHILD-OBSERVADO/CLP04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.CHILG-INFORMAL/CLP05</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.CHILG-INTERBANK/CLP06</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.CHILG-OBSERVADO/CLP07</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.DOLAR.OBS/CLP10</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.EMTA.INDICATIVE.SURVEY.RATE/CLP11</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.OFFICIAL.RATE/CLP08</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CLP.TELERATE.38942/CLP09</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CNY.CNHHK/CNY03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CNY.SAEC/CNY01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CNY.SFEMC.INDICATIVE.SURVEY.RATE/CNY02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>COP.CO/COL03/COP01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>COP.EMTA.INDICATIVE.SURVEY.RATE/COP03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>COP.TCRM/COP02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>COP.TRM/COP02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CRC.MONEX/CRC01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CURRENCY-IMPLIED.RATE.(ADR)/CURA1</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CURRENCY-IMPLIED.RATE.(LOCAL.ASSET)/CURA2</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CURRENCY-MUTUAL.AGREEMENT/CUR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CURRENCY-MUTUAL.AGREEMENT/CURA3</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CURRENCY-REFERENCE.DEALERS/CUR02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CURRENCY-REFERENCE.DEALERS/CURA4</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>CURRENCY-WHOLESALE.MARKET/CURA5</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>DOP.OFFICIAL/DOP01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>DZD.BDA/DZD01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ECS.DNRP/ECS01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>EGP.FEMF/EGP01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ETB.MID/ETB01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>GHS.REFINITIV/GHS03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>GHS.WMR/GHS04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>HKDBB/HKD02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>HKDFIX/HKD01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>HUF.EUR.OFFICIAL/HUF02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>HUF.USD.OFFICIAL/HUF01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>IDR.ABS/IDR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>IDR.JISDOR/IDR04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>IDR.SFEMC.INDICATIVE.SURVEY.RATE/IDR02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>IDR.VWAP/IDR03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ILS.BOIJ/ILS01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ILS.FXIL/ILS02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ILS.OFFICIAL/ILS02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ILS FXIL/ILS02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>INR.FBIL/INR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Annotation>
+            <Description>
+               <doc:description>
+                  <doc:paragraph>Deprecated usage: INR.FBIL/INR01 replaces INR.RBIB/INR01.</doc:paragraph>
+                  <doc:paragraph>See: July 10, 2018 - ISDA amendments to Annex A - Indian Rupee Rate Source Definition.</doc:paragraph>
+               </doc:description>
+            </Description>
+         </Annotation>
+         <Value>
+            <SimpleValue>INR.RBIB/INR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>INR.SFEMC.INDICATIVE.SURVEY.RATE/INR02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KES.OFFICIAL/KES02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KES.REFINITIV/KES01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KES.WMR/KES03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KRW.KEBEY/KRW01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KRW.KFTC18/KRW02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KRW.KFTC30/KRW05</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KRW.SFEMC.INDICATIVE.SURVEY.RATE/KRW04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KRW.TELERATE.45644/KRW03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KZT.EMTA.INDICATIVE.SURVEY.RATE/KZT02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>KZT.KASE/KZT01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>LBP.BDLX/LBP01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>LKR.CBSL/LKR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MAD.OFFICIAL.RATE/MAD01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MXN.FIXING.RATE/MXN02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MXN.MEX01/MXN03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MXN.PUBLISHED/MXN04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MXP.BNMX/MXP01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MXP.FIXING.RATE/MXP02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MXP.MEX01/MXP03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MXP.PUBLISHED/MXP04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MYR.ABS/MYR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MYR.KL.REF/MYR04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MYR.PPKM/MYR03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MYR.SFEMC.INDICATIVE.SURVEY.RATE/MYR02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>MZN.CB/MZN01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>NCFX.Options.Cut/NCF01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>NGN.NAFEX/NGN03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>NZDFIX.SPOT/NZD01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PEN.EMTA.INDICATIVE.SURVEY.RATE/PEN04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PEN.INTERBANK.AVE/PEN05</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PEN.PDSB/PEN01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PEN.WT.AVE/PEN03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PHP.BAPPESO/PHP06</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Annotation>
+            <Description>
+               <doc:description>
+                  <doc:paragraph>Deprecated usage: PHP.BAPPESO/PHP06 replaces PHP.PDSPESO/PHP06.</doc:paragraph>
+                  <doc:paragraph>See: April 01, 2018 - ISDA/EMTA/FXC amendments to Annex A - Philippine Peso Rate Source Definition.</doc:paragraph>
+               </doc:description>
+            </Description>
+         </Annotation>
+         <Value>
+            <SimpleValue>PHP.PDSPESO/PHP06</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PHP.PHPESO/PHP01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PHP.SFEMC.INDICATIVE.SURVEY.RATE/PHP05</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PHP.TELERATE.15439/PHP03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PHP.TELERATE.2920/PHP02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PKR.SBPK/PKR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PKR.SFEMC.INDICATIVE.SURVEY.RATE/PKR02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PLN.OFFICIAL/PLN03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PLZ.NBPQ/PLZ01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>PLZ.NBPR/PLZ02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>RUB.CME-EMTA/RUB03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>RUB.EMTA.INDICATIVE.SURVEY.RATE/RUB04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>RUB.MICEXFRX/RUB01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>RUB.MMVB/RUB02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>RUB.MOEX/RUB05</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>SGD.VWAP/SGD3</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>SKK.NBSB/SKK01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>THB.ABS/THB01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>THB.VWAP/THB01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>TND.BCT/TND01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>TWD.SFEMC.INDICATIVE.SURVEY.RATE/TWD04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>TWD.TAIFX1/TWD03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>TWD.TELERATE.6161/TWD01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>TWD.TFEMA/TWD02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>TWD.TPFL/TWD03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>TZS.BOT/TZS01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UAH.EMTA.INDICATIVE.SURVEY.RATE/UAH03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UAH.EMTA.INDUSTRY.SURVEY.RATE/UAH02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UAH.GFI/UAH01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UAH.NBU/UAH04</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UAH.UICEI/UAH01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>FpML</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UGX.MID/UGX01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UYU.OFFICIAL/UYU01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>UZS.OFFICIAL/UZS01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>VEF.FIX/VEF01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>VER.VBCV/VEB01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>VND.ABS/VND01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>VND.FX/VND02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>VND.SFEMC.INDICATIVE.SURVEY.RATE/VND03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>WMR.ASK/WMR02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>WMR.BID/WMR01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>WMR.MID/WMR03</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>XAF.BEAC/XAF01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>XOF.BCEAO/XOF01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ZMW.REFINITIV/ZMW01</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 1998 FX and Currency Option Definitions, Annex A</SimpleValue>
+         </Value>
+      </Row>
+      <Row>
+         <Value>
+            <SimpleValue>ZMW.WMR/ZMW02</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>ISDA</SimpleValue>
+         </Value>
+         <Value>
+            <SimpleValue>Per the 2026 FX Definitions Settlement Rate Options Matrix</SimpleValue>
+         </Value>
+      </Row>
+   </SimpleCodeList>
+</gcl:CodeList>
