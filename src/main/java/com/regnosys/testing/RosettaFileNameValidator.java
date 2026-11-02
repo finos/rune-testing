@@ -22,8 +22,8 @@ package com.regnosys.testing;
 
 import com.google.common.collect.ImmutableList;
 import com.regnosys.rosetta.common.util.Pair;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
