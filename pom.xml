@@ -100,7 +100,7 @@
         <unruly.version>1.6</unruly.version>
         <jmock.version>2.12.0</jmock.version>
         <jaxb.version>2.3.1</jaxb.version>
-        <guava.version>33.7.2-jre</guava.version>
+        <guava.version>33.8.0-jre</guava.version>
         <!-- org.checkerframework.checker.nullness.qual.Nullable, used by RosettaFileNameValidator -
              guava up to 33.7 supplied a @Nullable transitively, 33.7 dropped it -->
         <checker-qual.version>3.43.0</checker-qual.version>
