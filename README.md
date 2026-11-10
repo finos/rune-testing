@@ -2,6 +2,7 @@
 
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/incubating)
 
+TEST Build
 # Rune Testing
 
 Rune Testing is a java library that is part of `Finos Rune` utilised by [Rune Code Generators](https://github.com/REGnosys/rosetta-code-generators) and models expressed in [Rune DSL](https://github.com/finos/rune-dsl) the main `Rune` project.
