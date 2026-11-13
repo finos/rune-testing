@@ -109,7 +109,7 @@
         <plexus-utils.version>3.6.1</plexus-utils.version>
         <!-- Pins the jackson-databind that arrives transitively via rune-common,
              so a scan does not depend on which rune-common snapshot is deployed -->
-        <jackson.version>2.18.12</jackson.version>
+        <jackson.version>2.23.0</jackson.version>
         <!-- Matches the version resolved transitively via
              rune-common -> rune-maven-plugin -> maven-plugin-api -> maven-artifact -->
         <maven-artifact.version>3.9.14</maven-artifact.version>
